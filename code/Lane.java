@@ -196,7 +196,7 @@ public class Lane extends Thread implements PinsetterObserver {
         publish(event);
 
         int myIndex = 0;
-        for(final Object bowler : party.getMembers()){
+        for (final Object bowler : party.getMembers()) {
             final Bowler thisBowler = (Bowler) bowler;
             final ScoreReport sr = new ScoreReport(thisBowler, finalScores[myIndex], gameNumber);
             myIndex++;
@@ -308,41 +308,34 @@ public class Lane extends Thread implements PinsetterObserver {
      * @post the event has been acted upon if desiered
      */
     public void receivePinsetterEvent(final PinsetterEvent pe) {
+        int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
+        if (pinsDownOnThisThrow < 0)
+            // else this is not a real throw, probably a reset
+            return;
+        //TODO: "this is a real throw" what does this mean?
 
-        if (pe.pinsDownOnThisThrow() >= 0) {            // this is a real throw
-            markScore(currentThrower, frameNumber + 1, pe.getThrowNumber(), pe.pinsDownOnThisThrow());
+        int throwNumber = pe.getThrowNumber();
+        markScore(currentThrower, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
 
-            // next logic handles the ?: what conditions dont allow them another throw?
-            // handle the case of 10th frame first
-            if (frameNumber == 9) {
-                if (pe.totalPinsDown() == 10) {
-                    setter.resetPins();
-                    if (pe.getThrowNumber() == 1) {
-                        tenthFrameStrike = true;
-                    }
-                }
-
-                if ((pe.totalPinsDown() != 10) && (pe.getThrowNumber() == 2 && !tenthFrameStrike)) {
-                    canThrowAgain = false;
-                    //publish( lanePublish() );
-                }
-
-                if (pe.getThrowNumber() == 3) {
-                    canThrowAgain = false;
-                    //publish( lanePublish() );
-                }
-            } else { // its not the 10th frame
-
-                if (pe.pinsDownOnThisThrow() == 10) {        // threw a strike
-                    canThrowAgain = false;
-                    //publish( lanePublish() );
-                } else if (pe.getThrowNumber() == 2) {
-                    canThrowAgain = false;
-                    //publish( lanePublish() );
-                } else if (pe.getThrowNumber() == 3)
-                    System.out.println("I'm here...");
+        // next logic handles the ?: what conditions dont allow them another throw?
+        // handle the case of 10th frame first
+        if (frameNumber == 9) {
+            int totalPinsDown = pe.totalPinsDown();
+            if (totalPinsDown == 10) {
+                setter.resetPins();
+                tenthFrameStrike = throwNumber == 1;
             }
-        }  // else this is not a real throw, probably a reset
+
+            if ((totalPinsDown != 10) && (throwNumber == 2 && !tenthFrameStrike)) {
+                canThrowAgain = false;
+            }
+
+            if (throwNumber == 3) {
+                canThrowAgain = false;
+            }
+        } else { // TODO: verify this is actually the case? "its not the 10th frame"
+            canThrowAgain = !(pinsDownOnThisThrow == 10 || throwNumber == 2);
+        }
 
     }
 
