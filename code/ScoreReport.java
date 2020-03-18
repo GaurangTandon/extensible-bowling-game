@@ -1,16 +1,17 @@
-/**
- * 
- * SMTP implementation based on code by Ral Gagnon mailto:real@rgagnon.com
- * 
+/*
+  SMTP implementation based on code by Ral Gagnon mailto:real@rgagnon.com
  */
 
 
-import java.io.*;
-import java.util.Vector;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.Iterator;
-import java.net.*;
-import java.awt.*;
-import java.awt.print.*;
+import java.util.Vector;
 
 public class ScoreReport {
 
@@ -23,9 +24,10 @@ public class ScoreReport {
 		try{
 			v = ScoreHistoryFile.getScores(nick);
 		} catch (Exception e){System.err.println("Error: " + e);}
-		
+
+		assert v != null;
 		Iterator scoreIt = v.iterator();
-		
+
 		content = "";
 		content += "--Lucky Strike Bowling Alley Score Report--\n";
 		content += "\n";
@@ -34,7 +36,7 @@ public class ScoreReport {
 		content += "Final scores for this session: ";
 		content += scores[0];
 		for (int i = 1; i < games; i++){
-			content += ", " + scores[i];
+			content = String.format("%s%s", content, ", " + scores[i]);
 		}
 		content += ".\n";
 		content += "\n";
@@ -42,7 +44,7 @@ public class ScoreReport {
 		content += "Previous scores by date: \n";
 		while (scoreIt.hasNext()){
 			Score score = (Score) scoreIt.next();
-			content += "  " + score.getDate() + " - " +  score.getScore();
+			content = String.format("%s%s", content, "  " + score.getDate() + " - " + score.getScore());
 			content += "\n";
 		}
 		content += "\n\n";
@@ -60,22 +62,20 @@ public class ScoreReport {
 				new BufferedWriter(
 					new OutputStreamWriter(s.getOutputStream(), "8859_1"));
 
-			String boundary = "DataSeparatorString";
-
 			// here you are supposed to send your username
-			sendln(in, out, "HELO world");
-			sendln(in, out, "MAIL FROM: <mda2376@rit.edu>");
-			sendln(in, out, "RCPT TO: <" + recipient + ">");
-			sendln(in, out, "DATA");
-			sendln(out, "Subject: Bowling Score Report ");
-			sendln(out, "From: <Lucky Strikes Bowling Club>");
+			sendLn(in, out, "HELO world");
+			sendLn(in, out, "MAIL FROM: <mda2376@rit.edu>");
+			sendLn(in, out, "RCPT TO: <" + recipient + ">");
+			sendLn(in, out, "DATA");
+			sendLn(out, "Subject: Bowling Score Report ");
+			sendLn(out, "From: <Lucky Strikes Bowling Club>");
 
-			sendln(out, "Content-Type: text/plain; charset=\"us-ascii\"\r\n");
-			sendln(out, content + "\n\n");
-			sendln(out, "\r\n");
+			sendLn(out, "Content-Type: text/plain; charset=\"us-ascii\"\r\n");
+			sendLn(out, content + "\n\n");
+			sendLn(out, "\r\n");
 
-			sendln(in, out, ".");
-			sendln(in, out, "QUIT");
+			sendLn(in, out, ".");
+			sendLn(in, out, "QUIT");
 			s.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,25 +93,25 @@ public class ScoreReport {
 			try {
 				job.print();
 			} catch (PrinterException e) {
-				System.out.println(e);
+				System.err.println(e.getMessage());
 			}
 		}
 
 	}
 
-	public void sendln(BufferedReader in, BufferedWriter out, String s) {
+	private void sendLn(BufferedReader in, BufferedWriter out, String s) {
 		try {
 			out.write(s + "\r\n");
 			out.flush();
 			// System.out.println(s);
-			s = in.readLine();
+			in.readLine();
 			// System.out.println(s);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void sendln(BufferedWriter out, String s) {
+	private void sendLn(BufferedWriter out, String s) {
 		try {
 			out.write(s + "\r\n");
 			out.flush();

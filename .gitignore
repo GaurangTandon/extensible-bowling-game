@@ -1,8 +1,11 @@
+.idea/
 *.class
+*.iml
 .idea/workspace.xml
 workspace.xml
 SCOREHISTORY.DAT
-out
+out/
+
 
 # Created by https://www.gitignore.io/api/jetbrains
 # Edit at https://www.gitignore.io/?templates=jetbrains

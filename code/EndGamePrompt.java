@@ -1,19 +1,7 @@
-/**
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- */
-
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
-import java.util.*;
-import java.text.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EndGamePrompt implements ActionListener {
 
@@ -21,8 +9,6 @@ public class EndGamePrompt implements ActionListener {
 	private JButton yesButton, noButton;
 
 	private int result;
-
-	private String selectedNick, selectedMember;
 
 	public EndGamePrompt( String partyName ) {
 
@@ -48,7 +34,7 @@ public class EndGamePrompt implements ActionListener {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
 
-		Insets buttonMargin = new Insets(4, 4, 4, 4);
+		new Insets(4, 4, 4, 4);
 
 		yesButton = new JButton("Yes");
 		JPanel yesButtonPanel = new JPanel();
@@ -78,7 +64,7 @@ public class EndGamePrompt implements ActionListener {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		win.setVisible(true);
 
 	}
 
@@ -92,7 +78,7 @@ public class EndGamePrompt implements ActionListener {
 
 	}
 
-	public int getResult() {
+	int getResult() {
 		while ( result == 0 ) {
 			try {
 				Thread.sleep(10);
@@ -104,7 +90,7 @@ public class EndGamePrompt implements ActionListener {
 	}
 	
 	public void distroy() {
-		win.hide();
+		win.setVisible(false);
 	}
 	
 }

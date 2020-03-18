@@ -11,33 +11,24 @@
  * 
  */
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * Class for GUI components need to add a patron
- *
  */
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
-import java.util.*;
-import java.text.*;
-
 public class NewPatronView implements ActionListener {
-
-	private int maxSize;
 
 	private JFrame win;
 	private JButton abort, finished;
-	private JLabel nickLabel, fullLabel, emailLabel;
 	private JTextField nickField, fullField, emailField;
 	private String nick, full, email;
 
 	private boolean done;
 
-	private String selectedNick, selectedMember;
 	private AddPartyView addParty;
 
 	public NewPatronView(AddPartyView v) {
@@ -59,21 +50,21 @@ public class NewPatronView implements ActionListener {
 
 		JPanel nickPanel = new JPanel();
 		nickPanel.setLayout(new FlowLayout());
-		nickLabel = new JLabel("Nick Name");
+		JLabel nickLabel = new JLabel("Nick Name");
 		nickField = new JTextField("", 15);
 		nickPanel.add(nickLabel);
 		nickPanel.add(nickField);
 
 		JPanel fullPanel = new JPanel();
 		fullPanel.setLayout(new FlowLayout());
-		fullLabel = new JLabel("Full Name");
+		JLabel fullLabel = new JLabel("Full Name");
 		fullField = new JTextField("", 15);
 		fullPanel.add(fullLabel);
 		fullPanel.add(fullField);
 
 		JPanel emailPanel = new JPanel();
 		emailPanel.setLayout(new FlowLayout());
-		emailLabel = new JLabel("E-Mail");
+		JLabel emailLabel = new JLabel("E-Mail");
 		emailField = new JTextField("", 15);
 		emailPanel.add(emailLabel);
 		emailPanel.add(emailField);
@@ -86,7 +77,7 @@ public class NewPatronView implements ActionListener {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(4, 1));
 
-		Insets buttonMargin = new Insets(4, 4, 4, 4);
+		new Insets(4, 4, 4, 4);
 
 		finished = new JButton("Add Patron");
 		JPanel finishedPanel = new JPanel();
@@ -116,14 +107,14 @@ public class NewPatronView implements ActionListener {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		win.setVisible(true);
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(abort)) {
 			done = true;
-			win.hide();
+			win.setVisible(false);
 		}
 
 		if (e.getSource().equals(finished)) {
@@ -132,7 +123,7 @@ public class NewPatronView implements ActionListener {
 			email = emailField.getText();
 			done = true;
 			addParty.updateNewPatron( this );
-			win.hide();
+			win.setVisible(false);
 		}
 
 	}
@@ -145,7 +136,7 @@ public class NewPatronView implements ActionListener {
 		return nick;
 	}
 
-	public String getFull() {
+	String getFull() {
 		return full;
 	}
 
