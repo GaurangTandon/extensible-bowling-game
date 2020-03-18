@@ -50,6 +50,10 @@ public class Bowler {
         return email;
     }
 
+    public String getPartyName() {
+        return fullName + "'s Party";
+    }
+
     public void log() {
         System.out.println("Name " + nickName + " fullname " + fullName + " email " + email);
     }
