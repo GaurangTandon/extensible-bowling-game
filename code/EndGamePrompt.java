@@ -5,93 +5,94 @@ import java.awt.event.ActionListener;
 
 public class EndGamePrompt implements ActionListener {
 
-	private JFrame win;
-	private JButton yesButton, noButton;
+    private JFrame win;
+    private JButton yesButton, noButton;
 
-	private int result;
+    private int result;
 
-	public EndGamePrompt( String partyName ) {
+    public EndGamePrompt(String partyName) {
+        result = 0;
 
-		result =0;
-		
-		win = new JFrame("Another Game for " + partyName + "?" );
-		win.getContentPane().setLayout(new BorderLayout());
-		((JPanel) win.getContentPane()).setOpaque(false);
+        win = new JFrame("Another Game for " + partyName + "?");
+        win.getContentPane().setLayout(new BorderLayout());
+        ((JPanel) win.getContentPane()).setOpaque(false);
 
-		JPanel colPanel = new JPanel();
-		colPanel.setLayout(new GridLayout( 2, 1 ));
+        JPanel colPanel = new JPanel();
+        colPanel.setLayout(new GridLayout(2, 1));
 
-		// Label Panel
-		JPanel labelPanel = new JPanel();
-		labelPanel.setLayout(new FlowLayout());
-		
-		JLabel message = new JLabel( "Party " + partyName 
-			+ " has finished bowling.\nWould they like to bowl another game?" );
+        // Label Panel
+        JPanel labelPanel = new JPanel();
+        labelPanel.setLayout(new FlowLayout());
 
-		labelPanel.add( message );
+        JLabel message = new JLabel("Party " + partyName
+                + " has finished bowling.\nWould they like to bowl another game?");
 
-		// Button Panel
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2));
+        labelPanel.add(message);
 
-		new Insets(4, 4, 4, 4);
+        // Button Panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, 2));
 
-		yesButton = new JButton("Yes");
-		JPanel yesButtonPanel = new JPanel();
-		yesButtonPanel.setLayout(new FlowLayout());
-		yesButton.addActionListener(this);
-		yesButtonPanel.add(yesButton);
+        new Insets(4, 4, 4, 4);
 
-		noButton = new JButton("No");
-		JPanel noButtonPanel = new JPanel();
-		noButtonPanel.setLayout(new FlowLayout());
-		noButton.addActionListener(this);
-		noButtonPanel.add(noButton);
+        yesButton = new JButton("Yes");
+        JPanel yesButtonPanel = new JPanel();
+        yesButtonPanel.setLayout(new FlowLayout());
+        yesButton.addActionListener(this);
+        yesButtonPanel.add(yesButton);
 
-		buttonPanel.add(yesButton);
-		buttonPanel.add(noButton);
+        noButton = new JButton("No");
+        JPanel noButtonPanel = new JPanel();
+        noButtonPanel.setLayout(new FlowLayout());
+        noButton.addActionListener(this);
+        noButtonPanel.add(noButton);
 
-		// Clean up main panel
-		colPanel.add(labelPanel);
-		colPanel.add(buttonPanel);
+        buttonPanel.add(yesButton);
+        buttonPanel.add(noButton);
 
-		win.getContentPane().add("Center", colPanel);
+        // Clean up main panel
+        colPanel.add(labelPanel);
+        colPanel.add(buttonPanel);
 
-		win.pack();
+        win.getContentPane().add("Center", colPanel);
 
-		// Center Window on Screen
-		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-		win.setLocation(
-			((screenSize.width) / 2) - ((win.getSize().width) / 2),
-			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.setVisible(true);
+        win.pack();
 
-	}
+        // Center Window on Screen
+        Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+        win.setLocation(
+                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
+                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
+        win.setVisible(true);
 
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(yesButton)) {		
-			result=1;
-		}
-		if (e.getSource().equals(noButton)) {		
-			result=2;
-		}
+    }
 
-	}
+    public void actionPerformed(ActionEvent e) {
+        final Object source = e.getSource();
 
-	int getResult() {
-		while ( result == 0 ) {
-			try {
-				Thread.sleep(10);
-			} catch ( InterruptedException e ) {
-				System.err.println( "Interrupted" );
-			}
-		}
-		return result;	
-	}
-	
-	public void distroy() {
-		win.setVisible(false);
-	}
-	
+		if (source.equals(yesButton)) {
+            result = 1;
+        }
+        if (source.equals(noButton)) {
+            result = 2;
+        }
+
+    }
+
+    int getResult() {
+        while (result == 0) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                System.err.println("Interrupted");
+            }
+        }
+        return result;
+    }
+
+    public void distroy() {
+        win.setVisible(false);
+    }
+
 }
 

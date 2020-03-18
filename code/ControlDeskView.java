@@ -132,7 +132,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		win.setVisible(true);
 
 	}
 
@@ -144,14 +144,17 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	 */
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(addParty)) {
-			AddPartyView addPartyWin = new AddPartyView(this, maxMembers);
+		final Object source = e.getSource();
+
+		if (source.equals(addParty)) {
+			new AddPartyView(this, maxMembers);
 		}
-		if (e.getSource().equals(assign)) {
+
+		if (source.equals(assign)) {
 			controlDesk.assignLane();
 		}
-		if (e.getSource().equals(finished)) {
-			win.hide();
+		if (source.equals(finished)) {
+			win.setVisible(false);
 			System.exit(0);
 		}
 	}

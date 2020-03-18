@@ -103,11 +103,11 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(printButton)) {
-            //Add selected to the vector.
+        final Object source = e.getSource();
+
+        if (source.equals(printButton)) {
             retVal.add(selectedMember);
-        }
-        if (e.getSource().equals(finished)) {
+        } else if (source.equals(finished)) {
             win.setVisible(false);
             result = 1;
         }
