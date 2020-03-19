@@ -1,6 +1,13 @@
 import java.lang.Thread;
 import java.util.Calendar;
 
+/**
+ * Utility class that provides commonly used functionality
+ * such as busyWait using a Thread, or getting the current
+ * time stamp string.
+ * Intended to replace equivalent pieces of code with
+ * just one-line function calls of Util.
+ */
 public class Util {
     public static void busyWait(int duration) {
         try {
