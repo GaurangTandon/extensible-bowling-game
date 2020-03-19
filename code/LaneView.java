@@ -147,22 +147,25 @@ public class LaneView implements LaneObserver, ActionListener {
 
     private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
         assert i >= 0;
-        final boolean evenRound = (i % 19) % 2 == 0, oddRound = i % 2 == 1;
+
+        final boolean oddRound = i % 2 == 1;
+        final boolean strikeAble = !oddRound || i == 19;
         final int[] bowlerScore = (int[]) le.getScore().get(bowlers.get(k));
+        final int currScore = bowlerScore[i];
 
         if (bowlerScore[i] == -1) {
             return;
         }
 
         final JLabel ballLabel = this.ballLabel[k][i];
-        if (bowlerScore[i] == 10 && evenRound)
+        if (currScore == 10 && strikeAble)
             ballLabel.setText("X");
-        else if (i > 0 && bowlerScore[i] + bowlerScore[i - 1] == 10 && oddRound)
+        else if (i > 0 && currScore + bowlerScore[i - 1] == 10 && oddRound)
             ballLabel.setText("/");
-        else if (bowlerScore[i] == -2) {
+        else if (currScore == -2) {
             ballLabel.setText("F");
         } else
-            ballLabel.setText(Integer.toString(bowlerScore[i]));
+            ballLabel.setText(Integer.toString(currScore));
 
     }
 
