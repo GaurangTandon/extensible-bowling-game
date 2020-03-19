@@ -20,39 +20,41 @@
  *
  */
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+
 /**
  * Class for GUI components need to add a party
- */
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
-import java.util.*;
-
-/**
  * Constructor for GUI used to Add Parties to the waiting party queue.
  *
  */
 
-public class AddPartyView implements ActionListener, ListSelectionListener {
+class AddPartyView implements ActionListener, ListSelectionListener {
 
-    public static final String ERR_MEMBER_EXISTS = "Member already in Party";
-    private int maxSize;
+    private static final String ERR_MEMBER_EXISTS = "Member already in Party";
+    private final int maxSize;
 
-    private JFrame win;
-    private JButton addPatron, newPatron, remPatron, finished;
-    private JList partyList, allBowlers;
-    private Vector party, bowlerdb;
+    private final JFrame win;
+    private final JButton addPatron;
+    private final JButton newPatron;
+    private final JButton remPatron;
+    private final JButton finished;
+    private final JList partyList;
+    private final JList allBowlers;
+    private final Vector party;
+    private final ControlDeskView controlDesk;
     private Integer lock;
-
-    private ControlDeskView controlDesk;
+    private Vector bowlerdb;
 
     private String selectedNick, selectedMember;
 
-    public AddPartyView(ControlDeskView controlDesk, int max) {
+    AddPartyView(ControlDeskView controlDesk, int max) {
 
         this.controlDesk = controlDesk;
         maxSize = max;
@@ -105,7 +107,7 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 1));
 
-        Insets buttonMargin = new Insets(4, 4, 4, 4);
+        new Insets(4, 4, 4, 4);
 
         addPatron = new JButton("Add to Party");
         JPanel addPatronPanel = new JPanel();
@@ -150,7 +152,7 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),
                 ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.show();
+        win.setVisible(true);
 
     }
 

@@ -17,17 +17,16 @@
  *
  */
 
+import java.util.Vector;
+
 /**
  *  Container that holds bowlers
  *
  */
-
-import java.util.*;
-
 public class Party {
 
-	/** Vector of bowlers in this party */	
-    private Vector myBowlers;
+	/** Vector of bowlers in this party */
+	private final Vector myBowlers;
 	
 	/**
 	 * Constructor for a Party

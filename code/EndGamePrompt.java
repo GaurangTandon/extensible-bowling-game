@@ -3,10 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EndGamePrompt implements ActionListener {
+class EndGamePrompt implements ActionListener {
 
-    private JFrame win;
-    private JButton yesButton, noButton;
+    private final JFrame win;
+    private final JButton yesButton;
+    private final JButton noButton;
 
     private int result;
 
@@ -81,16 +82,12 @@ public class EndGamePrompt implements ActionListener {
 
     int getResult() {
         while (result == 0) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                System.err.println("Interrupted");
-            }
+            Util.busyWait(10);
         }
         return result;
     }
 
-    public void distroy() {
+    public void destroy() {
         win.setVisible(false);
     }
 

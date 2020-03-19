@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Vector;
 
-public class ScoreHistoryFile {
+class ScoreHistoryFile {
 
-    private static String SCOREHISTORY_DAT = "SCOREHISTORY.DAT";
+    private static final String SCOREHISTORY_DAT = "SCOREHISTORY.DAT";
 
     public static void addScore(String nick, String date, String score)
             throws IOException {

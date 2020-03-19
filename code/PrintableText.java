@@ -1,16 +1,13 @@
-/**
- *
- */
-
 import java.awt.*;
-import java.awt.print.*;
-import java.awt.geom.*;
-import java.awt.font.*;
-import java.text.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.Point2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
 
-public class PrintableText implements Printable {
-    String text;
-    int POINTS_PER_INCH;
+class PrintableText implements Printable {
+    private final String text;
+    private final int POINTS_PER_INCH;
 
     public PrintableText(String t) {
         POINTS_PER_INCH = 72;
@@ -32,7 +29,7 @@ public class PrintableText implements Printable {
         Font font = new Font("courier", Font.PLAIN, 12);
         FontRenderContext frc = g2d.getFontRenderContext();
 
-        String lines[] = text.split("\n");
+        String[] lines = text.split("\n");
 
         int i = 0;
         for (String line : lines) {

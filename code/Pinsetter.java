@@ -65,19 +65,18 @@
  *
  */
 
+import java.util.Random;
+import java.util.Vector;
+
 /**
  * Class to represent the pinsetter
  */
-
-import java.util.*;
-import java.lang.Boolean;
-
 public class Pinsetter {
 
-    private Random rnd;
-    private Vector subscribers;
+    private final Random rnd;
+    private final Vector<PinsetterObserver> subscribers;
 
-    private boolean[] pins;
+    private final boolean[] pins;
     /* 0-9 of state of pine, true for standing,
     false for knocked down
 
@@ -91,21 +90,6 @@ public class Pinsetter {
     private int throwNumber;
 
     /**
-     * sendEvent()
-     * <p>
-     * Sends pinsetter events to all subscribers
-     *
-     * @pre none
-     * @post all subscribers have recieved pinsetter event with updated state
-     */
-    private void sendEvent(int jdpins) {    // send events when our state is changd
-        for (int i = 0; i < subscribers.size(); i++) {
-            ((PinsetterObserver) subscribers.get(i)).receivePinsetterEvent(
-                    new PinsetterEvent(pins, foul, throwNumber, jdpins));
-        }
-    }
-
-    /**
      * Pinsetter()
      * <p>
      * Constructs a new pinsetter
@@ -117,9 +101,24 @@ public class Pinsetter {
     public Pinsetter() {
         pins = new boolean[10];
         rnd = new Random();
-        subscribers = new Vector();
+        subscribers = new Vector<>();
         foul = false;
         reset();
+    }
+
+    /**
+     * sendEvent()
+     * <p>
+     * Sends pinsetter events to all subscribers
+     *
+     * @pre none
+     * @post all subscribers have recieved pinsetter event with updated state
+     */
+    private void sendEvent(int jdpins) {    // send events when our state is changd
+        for (PinsetterObserver subscriber : subscribers) {
+            (subscriber).receivePinsetterEvent(
+                    new PinsetterEvent(pins, foul, throwNumber, jdpins));
+        }
     }
 
     /**
@@ -150,9 +149,7 @@ public class Pinsetter {
         }
 
         Util.busyWait(500);                // pinsetter is where delay will be in a real game
-
         sendEvent(count);
-
         throwNumber++;
     }
 
@@ -168,9 +165,7 @@ public class Pinsetter {
         foul = false;
         throwNumber = 1;
         resetPins();
-
         Util.busyWait(1000);
-
         sendEvent(-1);
     }
 
@@ -200,5 +195,5 @@ public class Pinsetter {
         subscribers.add(subscriber);
     }
 
-};
+}
 

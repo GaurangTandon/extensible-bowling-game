@@ -48,22 +48,22 @@ class ControlDesk extends Thread {
     /**
      * The collection of Lanes
      */
-    private HashSet<Lane> lanes;
+    private final HashSet<Lane> lanes;
 
     /**
      * The party wait queue
      */
-    private Queue partyQueue;
+    private final Queue partyQueue;
 
     /**
      * The number of lanes represented
      */
-    private int numLanes;
+    private final int numLanes;
 
     /**
      * The collection of subscribers
      */
-    private Vector<ControlDeskObserver> subscribers;
+    private final Vector<ControlDeskObserver> subscribers;
 
     /**
      * Constructor for the ControlDesk class
@@ -173,7 +173,7 @@ class ControlDesk extends Thread {
      * @return a Vecotr of Strings
      */
 
-    public Vector<String> getPartyQueue() {
+    private Vector<String> getPartyQueue() {
         final Vector<String> displayPartyQueue = new Vector<>();
         final Vector<Party> pQueue = partyQueue.asVector();
 
@@ -213,7 +213,7 @@ class ControlDesk extends Thread {
      * @param event the ControlDeskEvent to broadcast
      */
 
-    public void publish(final ControlDeskEvent event) {
+    private void publish(final ControlDeskEvent event) {
         for (final ControlDeskObserver subscriber : subscribers) {
             subscriber.receiveControlDeskEvent(event);
         }

@@ -9,9 +9,9 @@
  */
  
 import java.util.Vector;
- 
-public class Queue {
-	private Vector<Party> v;
+
+class Queue {
+	private final Vector<Party> v;
 	
 	/** Queue()
 	 * 

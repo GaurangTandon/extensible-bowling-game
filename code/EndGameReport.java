@@ -8,11 +8,12 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 
-public class EndGameReport implements ActionListener, ListSelectionListener {
+class EndGameReport implements ActionListener, ListSelectionListener {
 
-    private JFrame win;
-    private JButton printButton, finished;
-    private Vector<String> retVal;
+    private final JFrame win;
+    private final JButton printButton;
+    private final JButton finished;
+    private final Vector<String> retVal;
 
     private int result;
 

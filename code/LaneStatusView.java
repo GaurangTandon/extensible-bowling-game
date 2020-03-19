@@ -1,36 +1,28 @@
-/**
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- */
-
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
 
-    private JPanel jp;
+    private final JPanel jp;
 
-    private JLabel curBowler, foul, pinsDown;
-    private JButton viewLane;
-    private JButton viewPinSetter, maintenance;
+    private final JLabel curBowler;
+    private final JLabel pinsDown;
+    private final JButton viewLane;
+    private final JButton viewPinSetter;
+    private final JButton maintenance;
 
-    private PinSetterView psv;
-    private LaneView lv;
-    private Lane lane;
-    int laneNum;
+    private final PinSetterView psv;
+    private final LaneView lv;
+    private final Lane lane;
 
-    boolean laneShowing;
-    boolean psShowing;
+    private boolean laneShowing;
+    private boolean psShowing;
 
     public LaneStatusView(final Lane lane, final int laneNum) {
 
         this.lane = lane;
-        this.laneNum = laneNum;
 
         laneShowing = false;
         psShowing = false;
@@ -47,8 +39,6 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         jp.setLayout(new FlowLayout());
         final JLabel cLabel = new JLabel("Now Bowling: ");
         curBowler = new JLabel("(no one)");
-        final JLabel fLabel = new JLabel("Foul: ");
-        foul = new JLabel(" ");
         final JLabel pdLabel = new JLabel("Pins Down: ");
         pinsDown = new JLabel("0");
 
@@ -56,7 +46,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        final Insets buttonMargin = new Insets(4, 4, 4, 4);
+        new Insets(4, 4, 4, 4);
 
         viewLane = new JButton("View Lane");
         final JPanel viewLanePanel = new JPanel();
@@ -87,8 +77,6 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
         jp.add(cLabel);
         jp.add(curBowler);
-//		jp.add( fLabel );
-//		jp.add( foul );
         jp.add(pdLabel);
         jp.add(pinsDown);
 
@@ -96,7 +84,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
     }
 
-    public JPanel showLane() {
+    JPanel showLane() {
         return jp;
     }
 
@@ -146,8 +134,5 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     public void receivePinsetterEvent(final PinsetterEvent pe) {
         final int totalPinsDown = pe.totalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());
-//		foul.setText( ( new Boolean(pe.isFoulCommited()) ).toString() );
-
     }
-
 }

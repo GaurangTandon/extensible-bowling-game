@@ -131,7 +131,6 @@
  *
  */
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -185,7 +184,7 @@ public class Lane extends Thread implements PinsetterObserver {
         start(); // coming from Thread class, TODO: figure out if needed Thread extension?
     }
 
-    public void exitGame(String partyName) {
+    private void exitGame(String partyName) {
         final Vector<String> printVector;
         final EndGameReport egr = new EndGameReport(partyName, party);
         printVector = egr.getResult();
@@ -217,13 +216,13 @@ public class Lane extends Thread implements PinsetterObserver {
         }
     }
 
-    public void onGameFinish() {
+    private void onGameFinish() {
         Bowler firstBowler = (Bowler) party.getMembers().get(0);
         String partyName = firstBowler.getPartyName();
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();
-        egp.distroy();
+        egp.destroy();
 
         System.out.println("result was: " + result);
 
@@ -236,7 +235,7 @@ public class Lane extends Thread implements PinsetterObserver {
         }
     }
 
-    public void frame9Settlement() {
+    private void frame9Settlement() {
         finalScores[bowlIndex][gameNumber] = cumulScores[bowlIndex][9];
         try {
             String dateString = Util.getDateString();
@@ -247,7 +246,7 @@ public class Lane extends Thread implements PinsetterObserver {
         }
     }
 
-    public void bowlNextBowler() {
+    private void bowlNextBowler() {
         currentThrower = (Bowler) bowlerIterator.next();
 
         canThrowAgain = true;
@@ -264,7 +263,7 @@ public class Lane extends Thread implements PinsetterObserver {
         bowlIndex++;
     }
 
-    public void continueGame() {
+    private void continueGame() {
         if (bowlerIterator.hasNext()) {
             bowlNextBowler();
         } else {
@@ -597,7 +596,7 @@ public class Lane extends Thread implements PinsetterObserver {
      * @param event Event that is to be published
      */
 
-    public void publish(final LaneEvent event) {
+    private void publish(final LaneEvent event) {
         if (subscribers.size() > 0) {
 
             for (final LaneObserver subscriber : subscribers) {

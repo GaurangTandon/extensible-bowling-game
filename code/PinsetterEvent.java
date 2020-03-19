@@ -12,12 +12,12 @@
  *
  */
 
-public class PinsetterEvent {
+class PinsetterEvent {
 
-    private boolean[] pinsStillStanding;
-    private boolean foulCommited;
-    private int throwNumber;
-    private int pinsDownThisThrow;
+    private final boolean[] pinsStillStanding;
+    private final boolean foulCommited;
+    private final int throwNumber;
+    private final int pinsDownThisThrow;
 
     /**
      * PinsetterEvent()
@@ -30,9 +30,7 @@ public class PinsetterEvent {
     public PinsetterEvent(boolean[] ps, boolean foul, int tn, int pinsDownThisThrow) {
         pinsStillStanding = new boolean[10];
 
-        for (int i = 0; i <= 9; i++) {
-            pinsStillStanding[i] = ps[i];
-        }
+        System.arraycopy(ps, 0, pinsStillStanding, 0, 10);
 
         foulCommited = foul;
         throwNumber = tn;
@@ -93,5 +91,5 @@ public class PinsetterEvent {
     public int getThrowNumber() {
         return throwNumber;
     }
-};
+}
 

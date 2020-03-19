@@ -20,21 +20,21 @@ import java.awt.event.ActionListener;
 /**
  * Class for GUI components need to add a patron
  */
-public class NewPatronView implements ActionListener {
+class NewPatronView implements ActionListener {
 
-    private JFrame win;
-    private JButton abort, finished;
-    private JTextField nickField, fullField, emailField;
+    private final JFrame win;
+    private final JButton abort;
+    private final JButton finished;
+    private final JTextField nickField;
+    private final JTextField fullField;
+    private final JTextField emailField;
     private String nick, full, email;
 
-    private boolean done;
-
-    private AddPartyView addParty;
+    private final AddPartyView addParty;
 
     public NewPatronView(AddPartyView v) {
 
         addParty = v;
-        done = false;
 
         win = new JFrame("Add Patron");
         win.getContentPane().setLayout(new BorderLayout());
@@ -116,17 +116,16 @@ public class NewPatronView implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         boolean aborted = source.equals(abort);
-        boolean finisheded = source.equals(finished);
+        boolean finished = source.equals(this.finished);
 
-        if (finisheded) {
+        if (finished) {
             nick = nickField.getText();
             full = fullField.getText();
             email = emailField.getText();
             addParty.updateNewPatron(this);
         }
 
-        if(aborted || finisheded) {
-            done = true;
+        if (aborted || finished) {
             win.setVisible(false);
         }
     }

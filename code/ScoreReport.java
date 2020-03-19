@@ -10,10 +10,9 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Iterator;
 import java.util.Vector;
 
-public class ScoreReport {
+class ScoreReport {
 
     private String content;
 
