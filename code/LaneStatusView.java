@@ -20,8 +20,17 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     private boolean laneShowing;
     private boolean psShowing;
 
-    LaneStatusView(final Lane lane, final int laneNum) {
+    JButton buttonInsertUtil(final JPanel buttonPanel, String text) {
+        final JButton btn = new JButton(text);
+        final JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        btn.addActionListener(this);
+        panel.add(btn);
+        buttonPanel.add(panel);
+        return btn;
+    }
 
+    LaneStatusView(final Lane lane, final int laneNum) {
         this.lane = lane;
 
         laneShowing = false;
@@ -48,32 +57,13 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
         new Insets(4, 4, 4, 4);
 
-        viewLane = new JButton("View Lane");
-        final JPanel viewLanePanel = new JPanel();
-        viewLanePanel.setLayout(new FlowLayout());
-        viewLane.addActionListener(this);
-        viewLanePanel.add(viewLane);
+        viewLane = buttonInsertUtil(buttonPanel, "View Lane");
+        viewPinSetter = buttonInsertUtil(buttonPanel, "Pinsetter");
+        maintenance = buttonInsertUtil(buttonPanel, "     ");
 
-        viewPinSetter = new JButton("Pinsetter");
-        final JPanel viewPinSetterPanel = new JPanel();
-        viewPinSetterPanel.setLayout(new FlowLayout());
-        viewPinSetter.addActionListener(this);
-        viewPinSetterPanel.add(viewPinSetter);
-
-        maintenance = new JButton("     ");
         maintenance.setBackground(Color.GREEN);
-        final JPanel maintenancePanel = new JPanel();
-        maintenancePanel.setLayout(new FlowLayout());
-        maintenance.addActionListener(this);
-        maintenancePanel.add(maintenance);
-
         viewLane.setEnabled(false);
         viewPinSetter.setEnabled(false);
-
-
-        buttonPanel.add(viewLanePanel);
-        buttonPanel.add(viewPinSetterPanel);
-        buttonPanel.add(maintenancePanel);
 
         jp.add(cLabel);
         jp.add(curBowler);
@@ -81,7 +71,6 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         jp.add(pinsDown);
 
         jp.add(buttonPanel);
-
     }
 
     JPanel showLane() {
