@@ -184,7 +184,7 @@ public class Lane extends Thread implements PinsetterObserver {
         start(); // coming from Thread class, TODO: figure out if needed Thread extension?
     }
 
-    private void exitGame(String partyName) {
+    private void exitGame(final String partyName) {
         final Vector<String> printVector;
         final EndGameReport egr = new EndGameReport(partyName, party);
         printVector = egr.getResult();
@@ -217,8 +217,8 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void onGameFinish() {
-        Bowler firstBowler = (Bowler) party.getMembers().get(0);
-        String partyName = firstBowler.getPartyName();
+        final Bowler firstBowler = (Bowler) party.getMembers().get(0);
+        final String partyName = firstBowler.getPartyName();
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();
@@ -238,7 +238,7 @@ public class Lane extends Thread implements PinsetterObserver {
     private void frame9Settlement() {
         finalScores[bowlIndex][gameNumber] = cumulScores[bowlIndex][9];
         try {
-            String dateString = Util.getDateString();
+            final String dateString = Util.getDateString();
             ScoreHistoryFile.addScore(currentThrower.getNick(), dateString,
                     Integer.toString(cumulScores[bowlIndex][9]));
         } catch (final Exception e) {
@@ -307,13 +307,13 @@ public class Lane extends Thread implements PinsetterObserver {
      * @post the event has been acted upon if desiered
      */
     public void receivePinsetterEvent(final PinsetterEvent pe) {
-        int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
+        final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         if (pinsDownOnThisThrow < 0)
             // else this is not a real throw, probably a reset
             return;
         //TODO: "this is a real throw" what does this mean?
 
-        int throwNumber = pe.getThrowNumber();
+        final int throwNumber = pe.getThrowNumber();
         markScore(currentThrower, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
 
         // next logic handles the ?: what conditions dont allow them another throw?
@@ -322,7 +322,7 @@ public class Lane extends Thread implements PinsetterObserver {
             canThrowAgain = !(pinsDownOnThisThrow == 10 || throwNumber == 2);
             return;
         }
-        int totalPinsDown = pe.totalPinsDown();
+        final int totalPinsDown = pe.totalPinsDown();
         if (totalPinsDown == 10) {
             setter.resetPins();
             tenthFrameStrike = throwNumber == 1;
@@ -330,7 +330,7 @@ public class Lane extends Thread implements PinsetterObserver {
         canThrowAgain(totalPinsDown, throwNumber);
     }
 
-    private void canThrowAgain(int totalPinsDown, int throwNumber) {
+    private void canThrowAgain(final int totalPinsDown, final int throwNumber) {
         canThrowAgain = canThrowAgain
                 && !((totalPinsDown != 10) && (throwNumber == 2 && !tenthFrameStrike))
                 && !(throwNumber == 3);
@@ -442,19 +442,13 @@ public class Lane extends Thread implements PinsetterObserver {
         return 2 * (frame - 1) + ball - 1;
     }
 
-    public boolean wasSpare(final int frameChance, final int[] curScore, final int current) {
-        assert frameChance >= 0;
-
-        return frameChance % 2 == 1 && curScore[frameChance - 1] + curScore[frameChance] == 10 && frameChance < Math.min(current - 1, 19);
-    }
-
     /**
      * getScore()
      * <p>
      * Method that calculates a bowlers score
      *
-     * @param currentBowler   The bowler that is currently up
-     * @param frame The frame the current bowler is on
+     * @param currentBowler The bowler that is currently up
+     * @param frame         The frame the current bowler is on
      */
     private void getScore(final Bowler currentBowler, final int frame) {
         final int[] curScore = (int[]) scores.get(currentBowler);
@@ -464,7 +458,8 @@ public class Lane extends Thread implements PinsetterObserver {
 
         //Iterate through each ball until the current one.
         for (int frameChance = 0; frameChance < current + 2; frameChance++) {
-            if (wasSpare(frameChance, curScore, current)) {
+            // TODO: what is the && condition?
+            if (LaneUtil.wasSpare(frameChance, curScore) && frameChance < Math.min(current - 1, 19)) {
                 getScoreSpare(frameChance, curScore);
             } else if (frameChance < Math.min(current, 18) && frameChance % 2 == 0 && curScore[frameChance] == 10) {
                 if (getScoreSubCase2(frameChance, curScore) != 2) break;
@@ -474,14 +469,14 @@ public class Lane extends Thread implements PinsetterObserver {
         }
     }
 
-    private void getScoreSpare(int i, int[] curScore) {
+    private void getScoreSpare(final int i, final int[] curScore) {
         // This ball was a the second of a spare.
-        // Also, we're not on the current ball.
+        // Also, we're not on the current ball. TODO: what does this mean??
         // Add the next ball to the ith one in cumul.
         cumulScores[bowlIndex][(i / 2)] += curScore[i + 1] + curScore[i];
     }
 
-    private int getScoreSubCase2(int i, int[] curScore) {
+    private int getScoreSubCase2(final int i, final int[] curScore) {
         int strikeBalls = 0;
         //This ball is the first ball, and was a strike.
         //If we can get 2 balls after it, good add them to cumul.
@@ -528,7 +523,7 @@ public class Lane extends Thread implements PinsetterObserver {
         return strikeBalls;
     }
 
-    private void getScoreSubCase3(int i, int[] curScore) {
+    private void getScoreSubCase3(final int i, final int[] curScore) {
         //We're dealing with a normal throw, add it and be on our way.
         if (i % 2 == 0 && i < 18) {
             if (i / 2 == 0) {

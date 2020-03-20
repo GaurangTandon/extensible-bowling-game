@@ -3,6 +3,8 @@
  *
  */
 
+import com.sun.jdi.connect.LaunchingConnector;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Vector;
 
-public class LaneView implements LaneObserver, ActionListener {
+public class LaneView extends LaneUtil  implements LaneObserver, ActionListener {
 
     private boolean initDone = true;
 
@@ -24,7 +26,6 @@ public class LaneView implements LaneObserver, ActionListener {
     private JButton maintenance;
 
     public LaneView(Lane lane, int laneNum) {
-
         this.lane = lane;
 
         frame = new JFrame("Lane " + laneNum + ":");
@@ -144,26 +145,16 @@ public class LaneView implements LaneObserver, ActionListener {
     private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
         assert i >= 0;
 
-        final boolean evenRound = i % 2 == 0;
-        final boolean oddRound = i % 2 == 1;
-        final boolean strikeAble = evenRound || i == 19;
         final int[] bowlerScores = (int[]) le.getScore().get(bowlers.get(k));
 
         final int bowlScore = bowlerScores[i];
+        // TODO: what's this exactly?
         if (bowlScore == -1) {
             return;
         }
 
-        String textToSet;
+        String textToSet = LaneUtil.getCharToShow(i, bowlerScores);
         final JLabel ballLabel = this.ballLabel[k][i];
-        if (bowlScore == 10 && strikeAble)
-            textToSet = "X";
-        else if (i > 0 && bowlScore + bowlerScores[i - 1] == 10 && oddRound)
-            textToSet = "/";
-        else if (bowlScore == -2)
-            textToSet = "F";
-        else
-            textToSet = Integer.toString(bowlScore);
 
         ballLabel.setText(textToSet);
     }
