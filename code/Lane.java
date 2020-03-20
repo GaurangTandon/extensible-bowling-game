@@ -432,34 +432,49 @@ public class Lane extends Thread implements PinsetterObserver {
                 frameNumber + 1, curScores, ball, gameIsHalted);
     }
 
+    public void resetCumulAtBowlIndex() {
+        for (int i = 0; i != 10; i++) {
+            cumulScores[bowlIndex][i] = 0;
+        }
+    }
+
+    public int getCurrent(final int frame) {
+        return 2 * (frame - 1) + ball - 1;
+    }
+
+    public boolean wasSpare(final int frameChance, final int[] curScore, final int current) {
+        assert frameChance >= 0;
+
+        return frameChance % 2 == 1 && curScore[frameChance - 1] + curScore[frameChance] == 10 && frameChance < Math.min(current - 1, 19);
+    }
+
     /**
      * getScore()
      * <p>
      * Method that calculates a bowlers score
      *
-     * @param Cur   The bowler that is currently up
+     * @param currentBowler   The bowler that is currently up
      * @param frame The frame the current bowler is on
      */
-    private void getScore(final Bowler Cur, final int frame) {
-        final int[] curScore = (int[]) scores.get(Cur);
-        for (int i = 0; i != 10; i++) {
-            cumulScores[bowlIndex][i] = 0;
-        }
-        final int current = 2 * (frame - 1) + ball - 1;
+    private void getScore(final Bowler currentBowler, final int frame) {
+        final int[] curScore = (int[]) scores.get(currentBowler);
+        resetCumulAtBowlIndex();
+
+        final int current = getCurrent(frame);
+
         //Iterate through each ball until the current one.
-        for (int i = 0; i != current + 2; i++) {
-            if (i % 2 == 1 && curScore[i - 1] + curScore[i] == 10 && i < Math.min(current - 1, 19)) {
-                getScoreSubCase1(i, curScore);
-            } else if (i < Math.min(current, 18) && i % 2 == 0 && curScore[i] == 10) {
-                if (getScoreSubCase2(i, curScore) != 2) break;
+        for (int frameChance = 0; frameChance < current + 2; frameChance++) {
+            if (wasSpare(frameChance, curScore, current)) {
+                getScoreSpare(frameChance, curScore);
+            } else if (frameChance < Math.min(current, 18) && frameChance % 2 == 0 && curScore[frameChance] == 10) {
+                if (getScoreSubCase2(frameChance, curScore) != 2) break;
             } else {
-                getScoreSubCase3(i, curScore);
+                getScoreSubCase3(frameChance, curScore);
             }
         }
     }
 
-    private void getScoreSubCase1(int i, int[] curScore) {
-        // Spare:
+    private void getScoreSpare(int i, int[] curScore) {
         // This ball was a the second of a spare.
         // Also, we're not on the current ball.
         // Add the next ball to the ith one in cumul.
@@ -549,6 +564,7 @@ public class Lane extends Thread implements PinsetterObserver {
             }
         }
     }
+
     /**
      * isPartyAssigned()
      * <p>
@@ -558,15 +574,6 @@ public class Lane extends Thread implements PinsetterObserver {
      */
     boolean isPartyAssigned() {
         return partyAssigned;
-    }
-
-    /**
-     * isGameFinished
-     *
-     * @return true if the game is done, false otherwise
-     */
-    public boolean isGameFinished() {
-        return gameFinished;
     }
 
     /**

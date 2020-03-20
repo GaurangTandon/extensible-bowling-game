@@ -41,14 +41,6 @@ public class LaneView implements LaneObserver, ActionListener {
 
     }
 
-    void show() {
-        frame.setVisible(true);
-    }
-
-    void hide() {
-        frame.setVisible(false);
-    }
-
     void setVisible(boolean state) {
         frame.setVisible(state);
     }
@@ -152,23 +144,28 @@ public class LaneView implements LaneObserver, ActionListener {
     private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
         assert i >= 0;
 
-        final boolean evenRound = (i % 19) % 2 == 0, oddRound = i % 2 == 1;
-        final int[] bowlerScore = (int[]) le.getScore().get(bowlers.get(k));
+        final boolean evenRound = i % 2 == 0;
+        final boolean oddRound = i % 2 == 1;
+        final boolean strikeAble = evenRound || i == 19;
+        final int[] bowlerScores = (int[]) le.getScore().get(bowlers.get(k));
 
-        if (bowlerScore[i] == -1) {
+        final int bowlScore = bowlerScores[i];
+        if (bowlScore == -1) {
             return;
         }
 
+        String textToSet;
         final JLabel ballLabel = this.ballLabel[k][i];
-        if (bowlerScore[i] == 10 && evenRound)
-            ballLabel.setText("X");
-        else if (bowlerScore[i] + bowlerScore[i - 1] == 10 && oddRound)
-            ballLabel.setText("/");
-        else if (bowlerScore[i] == -2)
-            ballLabel.setText("F");
+        if (bowlScore == 10 && strikeAble)
+            textToSet = "X";
+        else if (i > 0 && bowlScore + bowlerScores[i - 1] == 10 && oddRound)
+            textToSet = "/";
+        else if (bowlScore == -2)
+            textToSet = "F";
         else
-            ballLabel.setText(Integer.toString(bowlerScore[i]));
+            textToSet = Integer.toString(bowlScore);
 
+        ballLabel.setText(textToSet);
     }
 
     public void receiveLaneEvent(LaneEvent le) {
