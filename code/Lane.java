@@ -146,7 +146,7 @@ public class Lane extends Thread implements PinsetterObserver {
 
     private boolean partyAssigned;
     private boolean gameFinished;
-    private Iterator bowlerIterator;
+    private Iterator<Bowler> currentBowler;
     private int ball;
     private int bowlIndex;
     private int frameNumber;
@@ -171,8 +171,8 @@ public class Lane extends Thread implements PinsetterObserver {
      */
     public Lane() {
         setter = new Pinsetter();
-        scores = new HashMap();
-        subscribers = new Vector<>();
+        scores = new HashMap<>(0);
+        subscribers = new Vector<>(0);
 
         gameIsHalted = false;
         partyAssigned = false;
@@ -185,9 +185,8 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void exitGame(final String partyName) {
-        final Vector<String> printVector;
         final EndGameReport egr = new EndGameReport(partyName, party);
-        printVector = egr.getResult();
+        final Vector<String> printVector = egr.getResult();
         partyAssigned = false;
         party = null;
 
@@ -195,23 +194,18 @@ public class Lane extends Thread implements PinsetterObserver {
         publish(event);
 
         int myIndex = 0;
-        for (final Object bowler : party.getMembers()) {
-            final Bowler thisBowler = (Bowler) bowler;
-            final ScoreReport sr = new ScoreReport(thisBowler, finalScores[myIndex], gameNumber);
+        for (final Bowler bowler : party.getMembers()) {
+            final ScoreReport sr = new ScoreReport(bowler, finalScores[myIndex], gameNumber);
             myIndex++;
 
-            final String email = thisBowler.getEmail();
+            final String email = bowler.getEmail();
             sr.sendEmail(email);
 
-            final String nick = thisBowler.getNick();
-
-            // TODO: write utility to check if an element belongs to a vector
-            // and use it here
-            for (final String o : printVector) {
-                if (nick.equals(o)) {
-                    System.out.println("Printing " + nick);
-                    sr.sendPrintout();
-                }
+            final String nick = bowler.getNick();
+            final boolean shouldPrint = Util.containsString(printVector, nick);
+            if (shouldPrint) {
+                System.out.println("Printing " + nick);
+                sr.sendPrintout();
             }
         }
     }
@@ -247,7 +241,7 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void bowlNextBowler() {
-        currentThrower = (Bowler) bowlerIterator.next();
+        currentThrower = (Bowler) currentBowler.next();
 
         canThrowAgain = true;
         tenthFrameStrike = false;
@@ -264,7 +258,7 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void continueGame() {
-        if (bowlerIterator.hasNext()) {
+        if (currentBowler.hasNext()) {
             bowlNextBowler();
         } else {
             frameNumber++;
@@ -314,6 +308,7 @@ public class Lane extends Thread implements PinsetterObserver {
         //TODO: "this is a real throw" what does this mean?
 
         final int throwNumber = pe.getThrowNumber();
+        // TODO: what is frameNumber + 1 ??
         markScore(currentThrower, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
 
         // next logic handles the ?: what conditions dont allow them another throw?
@@ -345,7 +340,7 @@ public class Lane extends Thread implements PinsetterObserver {
      * @post the iterator points to the first bowler in the party
      */
     private void resetBowlerIterator() {
-        bowlerIterator = (party.getMembers()).iterator();
+        currentBowler = (party.getMembers()).iterator();
     }
 
     /**

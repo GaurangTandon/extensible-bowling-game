@@ -1,4 +1,5 @@
 import java.util.Calendar;
+import java.util.Vector;
 
 /**
  * Utility class that provides commonly used functionality
@@ -21,5 +22,13 @@ class Util {
         return "" + cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE)
                 + " " + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DAY_OF_WEEK) +
                 "/" + (cal.get(Calendar.YEAR) + 1900);
+    }
+
+    static boolean containsString(final Vector<String> container, final String target){
+        for(final String str : container){
+            if(str.equals(target))
+                return true;
+        }
+        return false;
     }
 }

@@ -36,8 +36,8 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         partyPanel.setBorder(new TitledBorder("Party Members"));
 
         Vector<String> myVector = new Vector<>();
-        for (Object o : (party.getMembers())) {
-            myVector.add(((Bowler) o).getNick());
+        for (Bowler o : party.getMembers()) {
+            myVector.add(o.getNick());
         }
         JList<String> memberList = new JList<>(myVector);
         memberList.setFixedCellWidth(120);

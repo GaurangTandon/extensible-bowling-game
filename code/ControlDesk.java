@@ -156,10 +156,10 @@ class ControlDesk extends Thread {
      * @param partyNicks A Vector of NickNames
      */
 
-    public void addPartyQueue(final Vector partyNicks) {
+    public void addPartyQueue(final Vector<String> partyNicks) {
         final Vector<Bowler> partyBowlers = new Vector<>();
-        for (final Object partyNick : partyNicks) {
-            final Bowler newBowler = registerPatron(((String) partyNick));
+        for (final String partyNick : partyNicks) {
+            final Bowler newBowler = registerPatron(partyNick);
             partyBowlers.add(newBowler);
         }
         final Party newParty = new Party(partyBowlers);
