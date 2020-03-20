@@ -161,12 +161,15 @@ public class PinSetterView implements PinsetterObserver {
         }
     }
 
-    public void show() {
+    void show() {
         frame.setVisible(true);
     }
 
-    public void hide() {
+    void hide() {
         frame.setVisible(false);
     }
 
+    void setVisible(boolean state) {
+        frame.setVisible(state);
+    }
 }

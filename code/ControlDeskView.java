@@ -28,7 +28,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	private final JButton finished;
 	private final JButton assign;
 	private final JFrame win;
-	private final JList<? extends Object> partyList;
+	private final JList<?> partyList;
 
 	/** The maximum  number of members in a party */
 	private final int maxMembers;

@@ -20,7 +20,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     private boolean laneShowing;
     private boolean psShowing;
 
-    public LaneStatusView(final Lane lane, final int laneNum) {
+    LaneStatusView(final Lane lane, final int laneNum) {
 
         this.lane = lane;
 
@@ -90,27 +90,13 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        if (lane.isPartyAssigned()) {
-            if (source.equals(viewPinSetter)) {
-                if (!psShowing) {
-                    psv.show();
-                    psShowing = true;
-                } else {
-                    psv.hide();
-                    psShowing = false;
-                }
-            }
+        if (lane.isPartyAssigned() && source.equals(viewPinSetter)) {
+            psShowing = !psShowing;
+            psv.setVisible(psShowing);
         }
-        if (source.equals(viewLane)) {
-            if (lane.isPartyAssigned()) {
-                if (!laneShowing) {
-                    lv.show();
-                    laneShowing = true;
-                } else {
-                    lv.hide();
-                    laneShowing = false;
-                }
-            }
+        if (source.equals(viewLane) && lane.isPartyAssigned()) {
+            lv.setVisible(laneShowing);
+            laneShowing = !laneShowing;
         }
         if (source.equals(maintenance)) {
             if (lane.isPartyAssigned()) {

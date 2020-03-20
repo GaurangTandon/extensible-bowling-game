@@ -123,7 +123,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
                 System.err.println("Interrupted");
             }
         }
-        return retVal;
+        return (Vector<String>) retVal.clone();
     }
 
     public void destroy() {
