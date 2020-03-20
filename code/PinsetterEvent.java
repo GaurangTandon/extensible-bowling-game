@@ -18,6 +18,7 @@ class PinsetterEvent {
     private final boolean foulCommited;
     private final int throwNumber;
     private final int pinsDownThisThrow;
+    private final boolean isReset;
 
     /**
      * PinsetterEvent()
@@ -35,6 +36,7 @@ class PinsetterEvent {
         foulCommited = foul;
         throwNumber = tn;
         pinsDownThisThrow = pinsDownOnThisThrow;
+        isReset = pinsDownOnThisThrow < 0;
     }
 
     /**
@@ -90,6 +92,10 @@ class PinsetterEvent {
      */
     int getThrowNumber() {
         return throwNumber;
+    }
+
+    public boolean isReset() {
+        return isReset;
     }
 }
 

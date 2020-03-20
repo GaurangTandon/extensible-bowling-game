@@ -211,14 +211,14 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void onGameFinish() {
-        final Bowler firstBowler = (Bowler) party.getMembers().get(0);
+        final Bowler firstBowler = party.getMembers().get(0);
         final String partyName = firstBowler.getPartyName();
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();
         egp.destroy();
 
-        System.out.println("result was: " + result);
+        System.out.println("Result was: " + result);
 
         // TODO: send record of scores to control desk
         if (result == 1) { // yes, want to play agian TODO: make this an enum
@@ -301,12 +301,10 @@ public class Lane extends Thread implements PinsetterObserver {
      * @post the event has been acted upon if desiered
      */
     public void receivePinsetterEvent(final PinsetterEvent pe) {
-        final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
-        if (pinsDownOnThisThrow < 0)
-            // else this is not a real throw, probably a reset
+        if (pe.isReset())
             return;
-        //TODO: "this is a real throw" what does this mean?
 
+        final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         final int throwNumber = pe.getThrowNumber();
         // TODO: what is frameNumber + 1 ??
         markScore(currentThrower, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
@@ -322,10 +320,10 @@ public class Lane extends Thread implements PinsetterObserver {
             setter.resetPins();
             tenthFrameStrike = throwNumber == 1;
         }
-        canThrowAgain(totalPinsDown, throwNumber);
+        setCanThrowAgain(totalPinsDown, throwNumber);
     }
 
-    private void canThrowAgain(final int totalPinsDown, final int throwNumber) {
+    private void setCanThrowAgain(final int totalPinsDown, final int throwNumber) {
         canThrowAgain = canThrowAgain
                 && !((totalPinsDown != 10) && (throwNumber == 2 && !tenthFrameStrike))
                 && !(throwNumber == 3);
@@ -352,15 +350,14 @@ public class Lane extends Thread implements PinsetterObserver {
      * @post scoring system is initialized
      */
     private void resetScores() {
-
         for (final Bowler o : party.getMembers()) {
+            // TODO: 25 what?
             final int[] toPut = new int[25];
             for (int i = 0; i != 25; i++) {
                 toPut[i] = -1;
             }
             scores.put(o, toPut);
         }
-
 
         gameFinished = false;
         frameNumber = 0;
@@ -380,7 +377,7 @@ public class Lane extends Thread implements PinsetterObserver {
         resetBowlerIterator();
         partyAssigned = true;
 
-        final Vector members = party.getMembers();
+        final Vector<Bowler> members = party.getMembers();
         final int size = members.size();
 
         curScores = new int[size];
@@ -425,13 +422,13 @@ public class Lane extends Thread implements PinsetterObserver {
                 frameNumber + 1, curScores, ball, gameIsHalted);
     }
 
-    public void resetCumulAtBowlIndex() {
-        for (int i = 0; i != 10; i++) {
+    private void resetCumulAtBowlIndex() {
+        for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
             cumulScores[bowlIndex][i] = 0;
         }
     }
 
-    public int getCurrent(final int frame) {
+    private int getCurrent(final int frame) {
         return 2 * (frame - 1) + ball - 1;
     }
 
@@ -569,23 +566,11 @@ public class Lane extends Thread implements PinsetterObserver {
      * <p>
      * Method that will add a subscriber
      *
-     * @param adding Observer that is to be added
+     * @param laneObserver Observer that is to be added
      */
 
-    public void subscribe(final LaneObserver adding) {
-        subscribers.add(adding);
-    }
-
-    /**
-     * unsubscribe
-     * <p>
-     * Method that unsubscribes an observer from this object
-     *
-     * @param removing The observer to be removed
-     */
-
-    public void unsubscribe(final LaneObserver removing) {
-        subscribers.remove(removing);
+    void subscribe(final LaneObserver laneObserver) {
+        subscribers.add(laneObserver);
     }
 
     /**
@@ -597,11 +582,8 @@ public class Lane extends Thread implements PinsetterObserver {
      */
 
     private void publish(final LaneEvent event) {
-        if (subscribers.size() > 0) {
-
-            for (final LaneObserver subscriber : subscribers) {
-                (subscriber).receiveLaneEvent(event);
-            }
+        for (final LaneObserver subscriber : subscribers) {
+            subscriber.receiveLaneEvent(event);
         }
     }
 
@@ -611,7 +593,7 @@ public class Lane extends Thread implements PinsetterObserver {
      * @return A reference to this lane's pinsetter
      */
 
-    public Pinsetter getPinsetter() {
+    Pinsetter getPinsetter() {
         return setter;
     }
 
