@@ -139,7 +139,7 @@ import java.util.Vector;
 public class Lane extends Thread implements PinsetterObserver {
     private Party party;
     private final Pinsetter setter;
-    private final HashMap scores;
+    private final HashMap<Bowler, int[]> scores;
     private final Vector<LaneObserver> subscribers;
 
     private boolean gameIsHalted;
@@ -259,7 +259,7 @@ public class Lane extends Thread implements PinsetterObserver {
         if (frameNumber == 9) {
             frame9Settlement();
         }
-        setter.reset();
+        setter.resetState();
         bowlIndex++;
     }
 
@@ -358,7 +358,7 @@ public class Lane extends Thread implements PinsetterObserver {
      */
     private void resetScores() {
 
-        for (final Object o : (party.getMembers())) {
+        for (final Bowler o : party.getMembers()) {
             final int[] toPut = new int[25];
             for (int i = 0; i != 25; i++) {
                 toPut[i] = -1;
@@ -407,13 +407,11 @@ public class Lane extends Thread implements PinsetterObserver {
      * @param score The bowler's score
      */
     private void markScore(final Bowler Cur, final int frame, final int ball, final int score) {
-        final int[] curScore;
         final int index = ((frame - 1) * 2 + ball);
 
-        curScore = (int[]) scores.get(Cur);
-
-
+        final int[] curScore = (int[]) scores.get(Cur);
         curScore[index - 1] = score;
+
         scores.put(Cur, curScore);
         getScore(Cur, frame);
         final LaneEvent event = lanePublish();
