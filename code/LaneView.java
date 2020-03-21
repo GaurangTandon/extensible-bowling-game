@@ -19,12 +19,11 @@ import java.util.Vector;
  * received via lane-event
  */
 public class LaneView implements LaneObserver, ActionListener {
-
     private boolean initDone = true;
 
     private final JFrame frame;
     private final Container cpanel;
-    private Vector bowlers;
+    private Vector<Bowler> bowlers;
     private JLabel[][] ballLabel;
     private JLabel[][] scoreLabel;
     private JButton maintenance;
@@ -43,7 +42,6 @@ public class LaneView implements LaneObserver, ActionListener {
         });
 
         cpanel.add(new JPanel());
-
     }
 
     void setVisible(final boolean state) {
@@ -51,7 +49,6 @@ public class LaneView implements LaneObserver, ActionListener {
     }
 
     private JPanel makeFrame(final Party party) {
-
         initDone = false;
         bowlers = party.getMembers();
         final int numBowlers = bowlers.size();
@@ -98,7 +95,7 @@ public class LaneView implements LaneObserver, ActionListener {
             pins[i] = new JPanel();
             pins[i].setBorder(
                     BorderFactory.createTitledBorder(
-                            ((Bowler) bowlers.get(i)).getNick()));
+                            bowlers.get(i).getNick()));
             pins[i].setLayout(new GridLayout(0, 10));
             for (int k = 0; k != 10; k++) {
                 scores[i][k] = new JPanel();
@@ -124,7 +121,6 @@ public class LaneView implements LaneObserver, ActionListener {
         }
 
         if (le.getFrameNum() == 1 && le.getBall() == 0 && le.getIndex() == 0) {
-            System.out.println("Making the frame.");
             cpanel.removeAll();
             cpanel.add(makeFrame(le.getParty()), "Center");
 

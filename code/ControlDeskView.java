@@ -40,10 +40,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         final JButton button = new JButton(text);
         final JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
-        addParty.addActionListener(this);
-        panel.add(addParty);
-        if (controlPanel != null)
-            controlPanel.add(panel);
+        button.addActionListener(this);
+        panel.add(button);
+        controlPanel.add(panel);
 
         return button;
     }
@@ -54,8 +53,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         controlsPanel.setBorder(new TitledBorder("Controls"));
 
         addParty = buttonUtil("Add Party", controlsPanel);
-        assign = buttonUtil("Assign Lanes", null);
+        assign = buttonUtil("Assign Lanes", controlsPanel);
         finished = buttonUtil("Finished", controlsPanel);
+        controlsPanel.remove(assign);
 
         colPanel.add(controlsPanel, "East");
     }

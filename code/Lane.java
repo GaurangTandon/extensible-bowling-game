@@ -139,7 +139,6 @@ import java.util.Vector;
 public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private Party party;
     private final Pinsetter setter;
-    private final HashMap<Bowler, int[]> scores;
     private final Vector<LaneObserver> subscribers;
 
     private boolean gameIsHalted;
@@ -147,15 +146,14 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private boolean partyAssigned;
     private boolean gameFinished;
     private Iterator<Bowler> currentBowler;
+    // TODO: what is this???
     private int ball;
     private int currBowlerIndex;
     private int frameNumber;
     private boolean tenthFrameStrike;
 
-    private int[][] cumulScores;
     private boolean canThrowAgain;
 
-    private int[][] finalScores;
     private int gameNumber;
 
     private Bowler currentThrower;            // = the thrower who just took a throw
@@ -171,7 +169,6 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     public Lane() {
         setter = new Pinsetter();
-        scores = new HashMap<>(0);
         subscribers = new Vector<>(0);
 
         gameIsHalted = false;
@@ -188,15 +185,10 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private void exitGame(final String partyName) {
         final EndGameReport egr = new EndGameReport(partyName, party);
         final Vector<String> printVector = egr.getResult();
-        partyAssigned = false;
-        party = null;
-
-        final LaneEvent event = lanePublish();
-        publish(event);
 
         int myIndex = 0;
         for (final Bowler bowler : party.getMembers()) {
-            final ScoreReport sr = new ScoreReport(bowler, finalScores[myIndex], gameNumber);
+            final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), gameNumber);
             myIndex++;
 
             final String email = bowler.getEmail();
@@ -209,6 +201,12 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
                 sr.sendPrintout();
             }
         }
+
+        partyAssigned = false;
+        party = null;
+
+        final LaneEvent event = lanePublish();
+        publish(event);
     }
 
     private void onGameFinish() {
@@ -230,11 +228,11 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     }
 
     private void frame9Settlement() {
-        finalScores[currBowlerIndex][gameNumber] = cumulScores[currBowlerIndex][9];
+        scorer.setFinalScores(currBowlerIndex, gameNumber, scorer.get9thFrameCumulScore(currBowlerIndex));
         try {
             final String dateString = Util.getDateString();
             ScoreHistoryFile.addScore(currentThrower.getNick(), dateString,
-                    Integer.toString(cumulScores[currBowlerIndex][9]));
+                    Integer.toString(scorer.get9thFrameCumulScore(currBowlerIndex)));
         } catch (final Exception e) {
             System.err.println("Exception in addScore. " + e);
         }
@@ -307,7 +305,9 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         final int throwNumber = pe.getThrowNumber();
         // TODO: what is frameNumber + 1 ??
-        scorer.markScore(currentThrower, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
+        scorer.markScore(currentThrower, currBowlerIndex, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
+        final LaneEvent event = lanePublish();
+        publish(event);
 
         // next logic handles the ?: what conditions dont allow them another throw?
         // handle the case of 10th frame first
@@ -357,13 +357,11 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         partyAssigned = true;
 
         final Vector<Bowler> members = party.getMembers();
-        final int size = members.size();
-
-        cumulScores = new int[size][10];
-        finalScores = new int[size][128]; //Hardcoding a max of 128 games, bite me.
         gameNumber = 0;
+        gameFinished = false;
+        frameNumber = 0;
 
-        scorer.resetScores(size);
+        scorer.resetScores(members);
     }
 
     /**
@@ -374,8 +372,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        return new LaneEvent(party, currBowlerIndex, currentThrower, cumulScores, scores,
-                frameNumber + 1, scorer.curScores, ball, gameIsHalted);
+        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getScoresHashmap(),
+                frameNumber + 1, scorer.getScores(), ball, gameIsHalted);
     }
 
     /**

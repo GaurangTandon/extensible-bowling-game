@@ -1,6 +1,6 @@
 public class LaneUtil {
     public static boolean wasSpare(final int frameChance, final int[] curScore) {
-        assert frameChance >= 0;
+        if (frameChance <= 0) return false;
 
         final boolean oddRound = frameChance % 2 == 1;
         final int previousScore = curScore[frameChance - 1];

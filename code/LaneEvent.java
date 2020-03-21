@@ -24,6 +24,7 @@
  */
 
 import java.util.HashMap;
+import java.util.Vector;
 
 class LaneEvent {
 
@@ -70,10 +71,6 @@ class LaneEvent {
         return index;
     }
 
-    public int getFrame() {
-        return frame;
-    }
-
     public int getBall() {
         return ball;
     }
@@ -90,8 +87,10 @@ class LaneEvent {
         return bowler;
     }
 
-    public boolean isPartyEmpty(){
-        return p.getMembers().isEmpty();
+    public boolean isPartyEmpty() {
+        if (p == null) return true;
+        Vector<Bowler> members = p.getMembers();
+        return members == null || members.isEmpty();
     }
 }
  
