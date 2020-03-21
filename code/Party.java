@@ -47,11 +47,11 @@ public class Party {
      * @return A vector of the bowlers in this party
      */
 
-    public Vector<Bowler> getMembers() {
+    Vector<Bowler> getMembers() {
         return myBowlers;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 }

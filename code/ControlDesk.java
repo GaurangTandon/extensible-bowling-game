@@ -145,7 +145,7 @@ class ControlDesk extends Thread {
      * @param partyNicks A Vector of NickNames
      */
 
-    void addPartyQueue(final Vector<String> partyNicks) {
+    void addPartyToQueue(final Vector<String> partyNicks) {
         final Vector<Bowler> partyBowlers = new Vector<>();
         for (final String partyNick : partyNicks) {
             final Bowler newBowler = registerPatron(partyNick);
@@ -186,11 +186,11 @@ class ControlDesk extends Thread {
     /**
      * Allows objects to subscribe as observers
      *
-     * @param adding the ControlDeskObserver that will be subscribed
+     * @param controlDeskObserver the ControlDeskObserver that will be subscribed
      */
 
-    void subscribe(final ControlDeskObserver adding) {
-        subscribers.add(adding);
+    void subscribe(final ControlDeskObserver controlDeskObserver) {
+        subscribers.add(controlDeskObserver);
     }
 
     /**
