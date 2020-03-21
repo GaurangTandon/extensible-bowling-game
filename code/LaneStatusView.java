@@ -20,7 +20,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     private boolean laneShowing;
     private boolean psShowing;
 
-    JButton buttonInsertUtil(final JPanel buttonPanel, String text) {
+    JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
         final JButton btn = new JButton(text);
         final JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
@@ -96,7 +96,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     }
 
     public void receiveLaneEvent(final LaneEvent le) {
-        Bowler bowler = le.getBowler();
+        final Bowler bowler = le.getBowler();
         curBowler.setText(bowler.getNickName());
         if (le.isMechanicalProblem()) {
             maintenance.setBackground(Color.RED);

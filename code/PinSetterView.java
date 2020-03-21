@@ -46,7 +46,7 @@ public class PinSetterView implements PinsetterObserver {
 
         final JPanel top = new JPanel();
 
-        JPanel firstRoll = new JPanel();
+        final JPanel firstRoll = new JPanel();
         firstRoll.setBackground(Color.yellow);
 
         secondRoll = new JPanel();
@@ -59,7 +59,7 @@ public class PinSetterView implements PinsetterObserver {
         top.setBackground(Color.black);
         cpanel.add(top, BorderLayout.NORTH);
 
-        JPanel pins = addPins();
+        final JPanel pins = addPins();
         cpanel.add(pins, BorderLayout.CENTER);
 
         frame.pack();
@@ -69,8 +69,8 @@ public class PinSetterView implements PinsetterObserver {
         new PinSetterView(1);
     }
 
-    private void addDummyPanels(JPanel pins, int count) {
-        while(count-- > 0){
+    private void addDummyPanels(final JPanel pins, int count) {
+        for(int i = 1; i <= count; i++){
             pins.add(new JPanel());
         }
     }
@@ -169,7 +169,7 @@ public class PinSetterView implements PinsetterObserver {
         frame.setVisible(false);
     }
 
-    void setVisible(boolean state) {
+    void setVisible(final boolean state) {
         frame.setVisible(state);
     }
 }

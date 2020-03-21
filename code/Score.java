@@ -11,7 +11,7 @@ class Score {
     private final String date;
     private final String score;
 
-    public Score(String nick, String date, String score) {
+    public Score(final String nick, final String date, final String score) {
         this.nick = nick;
         this.date = date;
         this.score = score;

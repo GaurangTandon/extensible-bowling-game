@@ -27,7 +27,7 @@ class ControlDeskEvent {
      *
      */
 
-	public ControlDeskEvent( Vector partyQueue ) {
+	public ControlDeskEvent(final Vector partyQueue ) {
 		this.partyQueue = partyQueue;
 	}
 

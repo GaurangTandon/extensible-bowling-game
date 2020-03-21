@@ -54,16 +54,6 @@ public class Bowler {
         System.out.println("Name " + nickName + " fullname " + fullName + " email " + email);
     }
 
-    public boolean equals(final Bowler bowler) {
-        final String bowlerNickName = bowler.getNickName();
-        final boolean nicknameequals = nickName.equals(bowlerNickName);
-
-        final String bowlerFullName = bowler.getFullName();
-        final boolean fullNameEquals = fullName.equals(bowlerFullName);
-
-        final String bowlerEmail = bowler.getEmail();
-        final boolean emailEquals = email.equals(bowlerEmail);
-
-        return nicknameequals && fullNameEquals && emailEquals;
-    }
+    // Log of deleted unused methods:
+    // equals(Bowler other)
 }

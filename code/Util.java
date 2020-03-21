@@ -9,7 +9,7 @@ import java.util.Vector;
  * just one-line function calls of Util.
  */
 class Util {
-    static void busyWait(int millis) {
+    static void busyWait(final int millis) {
         try {
             Thread.sleep(millis);
         } catch (final InterruptedException e) {

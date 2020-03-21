@@ -166,7 +166,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         final Vector<String> displayPartyQueue = new Vector<>();
         final Vector<Party> pQueue = partyQueue.asVector();
 
-        for (Party party : pQueue) {
+        for (final Party party : pQueue) {
             final String nextParty = party.getName();
             displayPartyQueue.addElement(nextParty);
         }

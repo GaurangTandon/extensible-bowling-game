@@ -1,14 +1,14 @@
 class drive {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
-		int numLanes = 3;
-		int maxPatronsPerParty=5;
+		final int numLanes = 3;
+		final int maxPatronsPerParty=5;
 
-		Alley a = new Alley( numLanes );
-		ControlDesk controlDesk = a.getControlDesk();
+		final Alley a = new Alley( numLanes );
+		final ControlDesk controlDesk = a.getControlDesk();
 
-		ControlDeskView cdv = new ControlDeskView( controlDesk, maxPatronsPerParty);
+		final ControlDeskView cdv = new ControlDeskView( controlDesk, maxPatronsPerParty);
 		controlDesk.subscribe( cdv );
 
 	}

@@ -28,7 +28,7 @@
 class Alley {
 	private final ControlDesk controldesk;
 
-    public Alley( int numLanes ) {
+    public Alley(final int numLanes ) {
         controldesk = new ControlDesk( numLanes );
     }
 

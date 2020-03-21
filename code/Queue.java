@@ -25,12 +25,12 @@ class Queue {
 		return v.remove(0);
 	}
 
-	public void add(Party o) {
+	public void add(final Party o) {
 		v.addElement(o);
 	}
 
 	boolean hasMoreElements() {
-		return v.size() != 0;
+		return !v.isEmpty();
 	}
 
 	public Vector<Party> asVector() {

@@ -2,6 +2,9 @@
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class LaneScorer {
+    public int[] curScores;
+    int partySize;
+
     void resetCumulAtBowlIndex() {
         for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
             cumulScores[bowlIndex][i] = 0;
@@ -153,6 +156,13 @@ class LaneScorer {
     }
 
     /**
+     * This resets the scores for the same party
+     */
+    void resetScores(){
+        resetScores(partySize);
+    }
+
+    /**
      * resetScores()
      * <p>
      * resets the scoring mechanism, must be called before scoring starts
@@ -160,7 +170,10 @@ class LaneScorer {
      * @pre the party has been assigned
      * @post scoring system is initialized
      */
-    void resetScores() {
+    void resetScores(final int partySize) {
+        this.partySize = partySize;
+        curScores = new int[partySize];
+
         for (final Bowler o : party.getMembers()) {
             // TODO: 25 what?
             final int[] toPut = new int[25];

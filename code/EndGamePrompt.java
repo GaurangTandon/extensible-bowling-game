@@ -11,39 +11,39 @@ class EndGamePrompt implements ActionListener {
 
     private int result;
 
-    public EndGamePrompt(String partyName) {
+    public EndGamePrompt(final String partyName) {
         result = 0;
 
         win = new JFrame("Another Game for " + partyName + "?");
         win.getContentPane().setLayout(new BorderLayout());
         ((JPanel) win.getContentPane()).setOpaque(false);
 
-        JPanel colPanel = new JPanel();
+        final JPanel colPanel = new JPanel();
         colPanel.setLayout(new GridLayout(2, 1));
 
         // Label Panel
-        JPanel labelPanel = new JPanel();
+        final JPanel labelPanel = new JPanel();
         labelPanel.setLayout(new FlowLayout());
 
-        JLabel message = new JLabel("Party " + partyName
+        final JLabel message = new JLabel("Party " + partyName
                 + " has finished bowling.\nWould they like to bowl another game?");
 
         labelPanel.add(message);
 
         // Button Panel
-        JPanel buttonPanel = new JPanel();
+        final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2));
 
         new Insets(4, 4, 4, 4);
 
         yesButton = new JButton("Yes");
-        JPanel yesButtonPanel = new JPanel();
+        final JPanel yesButtonPanel = new JPanel();
         yesButtonPanel.setLayout(new FlowLayout());
         yesButton.addActionListener(this);
         yesButtonPanel.add(yesButton);
 
         noButton = new JButton("No");
-        JPanel noButtonPanel = new JPanel();
+        final JPanel noButtonPanel = new JPanel();
         noButtonPanel.setLayout(new FlowLayout());
         noButton.addActionListener(this);
         noButtonPanel.add(noButton);
@@ -60,7 +60,7 @@ class EndGamePrompt implements ActionListener {
         win.pack();
 
         // Center Window on Screen
-        Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),
                 ((screenSize.height) / 2) - ((win.getSize().height) / 2));
@@ -68,7 +68,7 @@ class EndGamePrompt implements ActionListener {
 
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
 		if (source.equals(yesButton)) {

@@ -36,9 +36,8 @@ class LaneEvent {
     private final int frameNum;
     private final int[] curScores;
     private final boolean mechProb;
-    private int frame;
 
-    public LaneEvent(Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore, int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
+    public LaneEvent(final Party pty, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final HashMap theScore, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
         p = pty;
         index = theIndex;
         bowler = theBowler;

@@ -16,13 +16,13 @@ class ScoreReport {
 
     private String content;
 
-    public ScoreReport(Bowler bowler, int[] scores, int games) {
-        String nick = bowler.getNick();
-        String full = bowler.getFullName();
+    public ScoreReport(final Bowler bowler, final int[] scores, final int games) {
+        final String nick = bowler.getNick();
+        final String full = bowler.getFullName();
         Vector<Score> v = null;
         try {
             v = ScoreHistoryFile.getScores(nick);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Error: " + e);
         }
 
@@ -42,7 +42,7 @@ class ScoreReport {
         content += "\n";
         content += "\n";
         content += "Previous scores by date: \n";
-        for (Score score : v) {
+        for (final Score score : v) {
             content = String.format("%s%s", content, "  " + score.getDate() + " - " + score.getScore());
             content += "\n";
         }
@@ -51,13 +51,13 @@ class ScoreReport {
 
     }
 
-    public void sendEmail(String recipient) {
+    public void sendEmail(final String recipient) {
         try {
-            Socket s = new Socket("osfmail.rit.edu", 25);
-            BufferedReader in =
+            final Socket s = new Socket("osfmail.rit.edu", 25);
+            final BufferedReader in =
                     new BufferedReader(
                             new InputStreamReader(s.getInputStream(), "8859_1"));
-            BufferedWriter out =
+            final BufferedWriter out =
                     new BufferedWriter(
                             new OutputStreamWriter(s.getOutputStream(), "8859_1"));
 
@@ -76,46 +76,46 @@ class ScoreReport {
             sendLn(in, out, ".");
             sendLn(in, out, "QUIT");
             s.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
     public void sendPrintout() {
-        PrinterJob job = PrinterJob.getPrinterJob();
+        final PrinterJob job = PrinterJob.getPrinterJob();
 
-        PrintableText printobj = new PrintableText(content);
+        final PrintableText printobj = new PrintableText(content);
 
         job.setPrintable(printobj);
 
         if (job.printDialog()) {
             try {
                 job.print();
-            } catch (PrinterException e) {
+            } catch (final PrinterException e) {
                 System.err.println(e.getMessage());
             }
         }
 
     }
 
-    private void sendLn(BufferedReader in, BufferedWriter out, String s) {
+    private void sendLn(final BufferedReader in, final BufferedWriter out, final String s) {
         try {
             out.write(s + "\r\n");
             out.flush();
             // System.out.println(s);
             in.readLine();
             // System.out.println(s);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void sendLn(BufferedWriter out, String s) {
+    private void sendLn(final BufferedWriter out, final String s) {
         try {
             out.write(s + "\r\n");
             out.flush();
             System.out.println(s);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
