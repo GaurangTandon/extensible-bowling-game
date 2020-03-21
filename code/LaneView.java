@@ -13,21 +13,23 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Vector;
 
+/**
+ * TODO:
+ * LaneView probably does not need access to the entire scoresheet all the time. It can simply make do with the latest score
+ * received via lane-event
+ */
 public class LaneView extends LaneUtil  implements LaneObserver, ActionListener {
 
     private boolean initDone = true;
 
     private final JFrame frame;
     private final Container cpanel;
-    private final Lane lane;
     private Vector bowlers;
     private JLabel[][] ballLabel;
     private JLabel[][] scoreLabel;
     private JButton maintenance;
 
-    public LaneView(Lane lane, int laneNum) {
-        this.lane = lane;
-
+    public LaneView(int laneNum) {
         frame = new JFrame("Lane " + laneNum + ":");
         cpanel = frame.getContentPane();
         cpanel.setLayout(new BorderLayout());
@@ -160,7 +162,7 @@ public class LaneView extends LaneUtil  implements LaneObserver, ActionListener 
     }
 
     public void receiveLaneEvent(LaneEvent le) {
-        if (!lane.isPartyAssigned()) {
+        if (le.isPartyEmpty()) {
             return;
         }
         int numBowlers = le.getParty().getMembers().size();

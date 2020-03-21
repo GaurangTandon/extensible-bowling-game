@@ -91,5 +91,8 @@ class LaneEvent {
         return bowler;
     }
 
+    public boolean isPartyEmpty(){
+        return p.getMembers().isEmpty();
+    }
 }
  

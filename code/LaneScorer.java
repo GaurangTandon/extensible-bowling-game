@@ -1,7 +1,7 @@
 /**
  * This class is supposed to handle all the scoring happening on a particular lane
  */
-class Scorer {
+class LaneScorer {
     void resetCumulAtBowlIndex() {
         for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
             cumulScores[bowlIndex][i] = 0;
@@ -129,6 +129,7 @@ class Scorer {
             }
         }
     }
+
     /**
      * markScore()
      * <p>

@@ -148,7 +148,7 @@ public class Lane extends Thread implements PinsetterObserver {
     private boolean gameFinished;
     private Iterator<Bowler> currentBowler;
     private int ball;
-    private int bowlIndex;
+    private int currBowlerIndex;
     private int frameNumber;
     private boolean tenthFrameStrike;
 
@@ -160,7 +160,7 @@ public class Lane extends Thread implements PinsetterObserver {
     private int gameNumber;
 
     private Bowler currentThrower;            // = the thrower who just took a throw
-    private Scorer scorer;
+    private LaneScorer scorer;
 
     /**
      * Lane()
@@ -179,6 +179,7 @@ public class Lane extends Thread implements PinsetterObserver {
         partyAssigned = false;
 
         gameNumber = 0;
+        scorer = new LaneScorer();
 
         setter.subscribe(this);
 
@@ -231,11 +232,11 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void frame9Settlement() {
-        finalScores[bowlIndex][gameNumber] = cumulScores[bowlIndex][9];
+        finalScores[currBowlerIndex][gameNumber] = cumulScores[currBowlerIndex][9];
         try {
             final String dateString = Util.getDateString();
             ScoreHistoryFile.addScore(currentThrower.getNick(), dateString,
-                    Integer.toString(cumulScores[bowlIndex][9]));
+                    Integer.toString(cumulScores[currBowlerIndex][9]));
         } catch (final Exception e) {
             System.err.println("Exception in addScore. " + e);
         }
@@ -255,7 +256,7 @@ public class Lane extends Thread implements PinsetterObserver {
             frame9Settlement();
         }
         setter.resetState();
-        bowlIndex++;
+        currBowlerIndex++;
     }
 
     private void continueGame() {
@@ -264,7 +265,7 @@ public class Lane extends Thread implements PinsetterObserver {
         } else {
             frameNumber++;
             resetBowlerIterator();
-            bowlIndex = 0;
+            currBowlerIndex = 0;
             if (frameNumber > 9) {
                 gameFinished = true;
                 gameNumber++;
@@ -376,7 +377,7 @@ public class Lane extends Thread implements PinsetterObserver {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        return new LaneEvent(party, bowlIndex, currentThrower, cumulScores, scores,
+        return new LaneEvent(party, currBowlerIndex, currentThrower, cumulScores, scores,
                 frameNumber + 1, curScores, ball, gameIsHalted);
     }
 
