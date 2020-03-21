@@ -136,7 +136,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 
-public class Lane extends Thread implements PinsetterObserver {
+public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private Party party;
     private final Pinsetter setter;
     private final HashMap<Bowler, int[]> scores;
@@ -430,7 +430,7 @@ public class Lane extends Thread implements PinsetterObserver {
     /**
      * Pause the execution of this game
      */
-    void pauseGame() {
+    public void pauseGame() {
         gameIsHalted = true;
         publish(lanePublish());
     }

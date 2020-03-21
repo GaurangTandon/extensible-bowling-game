@@ -28,8 +28,10 @@ public class LaneView extends LaneUtil  implements LaneObserver, ActionListener 
     private JLabel[][] ballLabel;
     private JLabel[][] scoreLabel;
     private JButton maintenance;
+    private final LaneInterface lane;
 
-    public LaneView(int laneNum) {
+    public LaneView(final LaneInterface ln, int laneNum) {
+        lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
         cpanel = frame.getContentPane();
         cpanel.setLayout(new BorderLayout());

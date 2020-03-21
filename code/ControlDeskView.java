@@ -34,7 +34,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      */
     private final int maxMembers;
 
-    private final ControlDesk controlDesk;
+    private final ControlDeskInterface controlDesk;
 
     JButton buttonUtil(final String text, final JPanel controlPanel) {
         final JButton button = new JButton(text);
@@ -111,7 +111,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * Displays a GUI representation of the ControlDesk
      */
 
-    public ControlDeskView(final ControlDesk controlDesk, final int maxMembers) {
+    public ControlDeskView(final ControlDeskInterface controlDesk, final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.getNumLanes();
@@ -152,12 +152,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
         if (source.equals(addParty)) {
             new AddPartyView(this, maxMembers);
-        }
-
-        if (source.equals(assign)) {
+        } else if (source.equals(assign)) {
             controlDesk.assignLane();
-        }
-        if (source.equals(finished)) {
+        } else if (source.equals(finished)) {
             win.setVisible(false);
             System.exit(0);
         }

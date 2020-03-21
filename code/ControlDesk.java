@@ -42,7 +42,7 @@ import java.util.Vector;
 /**
  * Class that represents control desk
  */
-class ControlDesk extends Thread {
+class ControlDesk extends Thread implements ControlDeskInterface {
 
     private final HashSet<Lane> lanes;
 
@@ -119,7 +119,7 @@ class ControlDesk extends Thread {
     /**
      * Iterate through the available lanes and assign the paties in the wait queue if lanes are available.
      */
-    void assignLane() {
+    public final void assignLane() {
         for (final Lane lane : lanes) {
             if (partyQueue.hasMoreElements()) {
                 if (!lane.isPartyAssigned()) {
@@ -145,7 +145,7 @@ class ControlDesk extends Thread {
      * @param partyNicks A Vector of NickNames
      */
 
-    void addPartyToQueue(final Vector<String> partyNicks) {
+    public final void addPartyToQueue(final Vector<String> partyNicks) {
         final Vector<Bowler> partyBowlers = new Vector<>();
         for (final String partyNick : partyNicks) {
             final Bowler newBowler = registerPatron(partyNick);
@@ -179,7 +179,7 @@ class ControlDesk extends Thread {
      * @return an int containing the number of lanes represented
      */
 
-    int getNumLanes() {
+    public final int getNumLanes() {
         return numLanes;
     }
 
@@ -211,7 +211,7 @@ class ControlDesk extends Thread {
      * @return a HashSet of Lanes
      */
 
-    HashSet<? extends Lane> getLanes() {
+    public HashSet<Lane> getLanes() {
         return lanes;
     }
 }
