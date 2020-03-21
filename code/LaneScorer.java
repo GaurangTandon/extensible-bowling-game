@@ -5,29 +5,22 @@ import java.util.Vector;
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class LaneScorer {
-    private int[] curScores;
-    private int[][] cumulScores;
     private int[][] finalScores;
     int partySize;
     private final HashMap<Bowler, int[]> scores;
-    private int bowlIndex;
+    private int bowlerIndex;
     private Vector<Bowler> bowlers;
+    private BowlerScorer[] bowlerScorers;
 
     LaneScorer() {
         scores = new HashMap<>(0);
-    }
-
-    void resetCumulAtBowlIndex() {
-        for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
-            cumulScores[bowlIndex][i] = 0;
-        }
     }
 
     /**
      * This resets the scores for the same party
      */
     void resetScores() {
-        resetScores(bowlers);
+        resetScores(bowlers, false);
     }
 
     /**
@@ -39,43 +32,65 @@ class LaneScorer {
      * @post scoring system is initialized
      */
     void resetScores(final Vector<Bowler> bowlers) {
+        resetScores(bowlers, true);
+    }
+
+    void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
         this.bowlers = bowlers;
         partySize = bowlers.size();
-        curScores = new int[partySize];
-        finalScores = new int[partySize][128]; //Hardcoding a max of 128 games, bite me.
-        cumulScores = new int[partySize][10];
+        if (resetFinalScores)
+            finalScores = new int[partySize][128]; //Hardcoding a max of 128 games, bite me.
+        bowlerScorers = new BowlerScorer[partySize];
+        for (int bowler = 0; bowler < partySize; bowler++) {
+            bowlerScorers[bowler] = new BowlerScorer();
+            scores.put(bowlers.get(bowler), bowlerScorers[bowler].getByFramePartResult());
+       }
+    }
 
-        for (final Bowler o : bowlers) {
-            // TODO: 25 what?
-            final int[] toPut = new int[25];
-            for (int i = 0; i != 25; i++) {
-                toPut[i] = -1;
-            }
-            scores.put(o, toPut);
-        }
+    void roll(final Bowler currBowler, final int currBowlerIndex, final int pinsDowned) {
+        bowlerIndex = currBowlerIndex;
+
+        final BowlerScorer bowlerScorer = bowlerScorers[bowlerIndex];
+        bowlerScorer.roll(pinsDowned);
+        bowlerScorer.updateCumulScores();
+        scores.put(currBowler, bowlerScorer.getByFramePartResult());
     }
 
     void setFinalScores(int bowlerIdx, int gameNum, int value) {
         finalScores[bowlerIdx][gameNum] = value;
     }
 
-    int[] getScores() {
+    int[] getScoresForEachBowler() {
+        int[] curScores = new int[partySize];
+        for (int i = 0; i < partySize; i++) {
+            curScores[i] = bowlerScorers[i].getScore();
+        }
         return curScores;
     }
 
+    // TODO: integrate with finalScores
     int[] getFinalScores(int bowler) {
         return finalScores[bowler];
     }
 
     int[][] getCumulScores() {
+        int[][] cumulScores = new int[partySize][LaneUtil.FRAME_COUNT];
+        for (int bowler = 0; bowler < partySize; bowler++)
+            cumulScores[bowler] = bowlerScorers[bowler].getCumulScore();
         return cumulScores;
     }
 
     int get9thFrameCumulScore(int bowler) {
-        return cumulScores[bowler][9];
+        return bowlerScorers[bowler].getCumulScore()[9];
     }
 
-    HashMap<Bowler, int[]> getScoresHashmap() {
-        return scores;
+    int[][] getByBowlerByFramePartResult() {
+        // return a bowlerx21 matrix of scores
+        int[][] result = new int[partySize][LaneUtil.MAX_ROLLS];
+
+        for (int bowler = 0; bowler < partySize; bowler++) {
+            result[bowler] = bowlerScorers[bowler].getByFramePartResult();
+        }
+        return result;
     }
 }

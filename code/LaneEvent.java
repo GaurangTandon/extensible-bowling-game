@@ -32,18 +32,18 @@ class LaneEvent {
     private final int ball;
     private final Bowler bowler;
     private final int[][] cumulScore;
-    private final HashMap score;
+    private final int[][] score;
     private final int index;
     private final int frameNum;
     private final int[] curScores;
     private final boolean mechProb;
 
-    public LaneEvent(final Party pty, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final HashMap theScore, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
+    public LaneEvent(final Party pty, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
         p = pty;
         index = theIndex;
         bowler = theBowler;
         cumulScore = theCumulScore;
-        score = theScore;
+        score = byFramePartScores;
         curScores = theCurScores;
         frameNum = theFrameNum;
         ball = theBall;
@@ -58,10 +58,13 @@ class LaneEvent {
         return frameNum;
     }
 
-    public HashMap getScore() {
-        return score;
+    public int getScore(int b, int roll) {
+        return score[b][roll];
     }
 
+    public int[] getScore(int b) {
+        return score[b];
+    }
 
     public int[] getCurScores() {
         return curScores;

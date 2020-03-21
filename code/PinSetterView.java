@@ -148,7 +148,7 @@ public class PinSetterView implements PinsetterObserver {
                 }
             }
         }
-        if (pe.getThrowNumber() == 1) {
+        if (pe.isFirstThrow()) {
             secondRoll.setBackground(Color.yellow);
         }
 

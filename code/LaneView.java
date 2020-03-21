@@ -145,10 +145,10 @@ public class LaneView implements LaneObserver, ActionListener {
     private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
         assert i >= 0;
 
-        final int[] bowlerScores = (int[]) le.getScore().get(bowlers.get(k));
+        final int[] bowlerScores = le.getScore(k);
+        final int bowlScore = le.getScore(k, i);
 
-        final int bowlScore = bowlerScores[i];
-        // TODO: what's this exactly?
+        // TODO: what's this exactly? it means that the particular roll was skipped due to a strike
         if (bowlScore == -1) {
             return;
         }

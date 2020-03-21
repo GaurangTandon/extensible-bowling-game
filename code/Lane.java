@@ -131,7 +131,6 @@
  *
  */
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -304,8 +303,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         final int throwNumber = pe.getThrowNumber();
-        // TODO: what is frameNumber + 1 ??
-        scorer.markScore(currentThrower, currBowlerIndex, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
+        scorer.roll(currentThrower, currBowlerIndex, pinsDownOnThisThrow);
         final LaneEvent event = lanePublish();
         publish(event);
 
@@ -372,8 +370,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getScoresHashmap(),
-                frameNumber + 1, scorer.getScores(), ball, gameIsHalted);
+        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
+                frameNumber + 1, scorer.getScoresForEachBowler(), ball, gameIsHalted);
     }
 
     /**

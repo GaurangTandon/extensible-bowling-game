@@ -76,6 +76,14 @@ class PinsetterEvent {
         return count;
     }
 
+    int getThrowNumber(){
+        return throwNumber;
+    }
+
+    boolean isFirstThrow(){
+        return throwNumber == 1;
+    }
+
     /**
      * isFoulCommited()
      *
@@ -85,16 +93,7 @@ class PinsetterEvent {
         return foulCommited;
     }
 
-    /**
-     * getThrowNumber()
-     *
-     * @return current number of throws taken on this lane after last reset
-     */
-    int getThrowNumber() {
-        return throwNumber;
-    }
-
-    public boolean isReset() {
+    boolean isReset() {
         return isReset;
     }
 }

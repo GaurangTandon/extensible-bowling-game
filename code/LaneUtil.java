@@ -1,4 +1,7 @@
 public class LaneUtil {
+    public static final int FRAME_COUNT = 10;
+    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
+    public static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
     public static boolean wasSpare(final int frameChance, final int[] curScore) {
         if (frameChance <= 0) return false;
 
