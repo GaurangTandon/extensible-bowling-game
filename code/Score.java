@@ -5,13 +5,13 @@
  * Window>Preferences>Java>Code Generation.
  */
 
-public class Score {
+class Score {
 
-    private String nick;
-    private String date;
-    private String score;
+    private final String nick;
+    private final String date;
+    private final String score;
 
-    public Score(String nick, String date, String score) {
+    public Score(final String nick, final String date, final String score) {
         this.nick = nick;
         this.date = date;
         this.score = score;

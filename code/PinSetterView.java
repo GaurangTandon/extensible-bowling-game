@@ -8,22 +8,21 @@
  *   $Log$
  */
 
-/**
- * constructs a prototype PinSetter GUI
- */
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 import java.util.Vector;
 
 
+/**
+ * Constructs a prototype PinSetter GUI
+ */
 public class PinSetterView implements PinsetterObserver {
 
 
     //This Vector will keep references to the pin labels to show
     //which ones have fallen.
-    private final Vector<JLabel> pinVect = new Vector<JLabel>();
-    private final JPanel firstRoll;
+    private final Vector<JLabel> pinVector = new Vector<>();
     private final JPanel secondRoll;
 
     /**
@@ -40,13 +39,43 @@ public class PinSetterView implements PinsetterObserver {
 
     private final JFrame frame;
 
-    public void addDummyPanels(JPanel pins, int count){
-        while(count-- > 0){
+    public PinSetterView(final int laneNum) {
+        frame = new JFrame("Lane " + laneNum + ":");
+
+        final Container cpanel = frame.getContentPane();
+
+        final JPanel top = new JPanel();
+
+        final JPanel firstRoll = new JPanel();
+        firstRoll.setBackground(Color.yellow);
+
+        secondRoll = new JPanel();
+        secondRoll.setBackground(Color.black);
+
+        top.add(firstRoll, BorderLayout.WEST);
+        top.add(secondRoll, BorderLayout.EAST);
+
+
+        top.setBackground(Color.black);
+        cpanel.add(top, BorderLayout.NORTH);
+
+        final JPanel pins = addPins();
+        cpanel.add(pins, BorderLayout.CENTER);
+
+        frame.pack();
+    }
+
+    public static void main(final String[] args) {
+        new PinSetterView(1);
+    }
+
+    private void addDummyPanels(final JPanel pins, int count) {
+        for(int i = 1; i <= count; i++){
             pins.add(new JPanel());
         }
     }
 
-    public JPanel addPins() {
+    private JPanel addPins() {
         final JPanel pins = new JPanel();
 
         pins.setLayout(new GridLayout(4, 7));
@@ -58,7 +87,7 @@ public class PinSetterView implements PinsetterObserver {
             final JPanel curr = new JPanel();
             final JLabel currL = new JLabel(Integer.toString(pin));
             curr.add(currL);
-            pinVect.add(currL);
+            pinVector.add(currL);
             panels[pin] = curr;
         }
         //******************************Fourth Row**************
@@ -95,35 +124,6 @@ public class PinSetterView implements PinsetterObserver {
         return pins;
     }
 
-
-    public PinSetterView(final int laneNum) {
-        frame = new JFrame("Lane " + laneNum + ":");
-
-        final Container cpanel = frame.getContentPane();
-
-        final JPanel top = new JPanel();
-
-        firstRoll = new JPanel();
-        firstRoll.setBackground(Color.yellow);
-
-        secondRoll = new JPanel();
-        secondRoll.setBackground(Color.black);
-
-        top.add(firstRoll, BorderLayout.WEST);
-        top.add(secondRoll, BorderLayout.EAST);
-
-
-
-        top.setBackground(Color.black);
-        cpanel.add(top, BorderLayout.NORTH);
-
-        JPanel pins = addPins();
-        cpanel.add(pins, BorderLayout.CENTER);
-
-        frame.pack();
-    }
-
-
     /**
      * This method receives a pinsetter event.  The event is the current
      * state of the PinSetter and the method changes how the GUI looks
@@ -137,11 +137,12 @@ public class PinSetterView implements PinsetterObserver {
 
     public void receivePinsetterEvent(final PinsetterEvent pe) {
         if (!(pe.isFoulCommited())) {
-            JLabel tempPin = new JLabel();
+            new JLabel();
+            JLabel tempPin;
 
             for (int c = 0; c < 10; c++) {
                 final boolean pinKnockedDown = pe.pinKnockedDown(c);
-                tempPin = (JLabel) pinVect.get(c);
+                tempPin = pinVector.get(c);
                 if (pinKnockedDown) {
                     tempPin.setForeground(Color.lightGray);
                 }
@@ -154,22 +155,21 @@ public class PinSetterView implements PinsetterObserver {
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         if (pinsDownOnThisThrow == -1) {
             for (int i = 0; i < 10; i++) {
-                ((JLabel) pinVect.get(i)).setForeground(Color.black);
+                pinVector.get(i).setForeground(Color.black);
             }
             secondRoll.setBackground(Color.black);
         }
     }
 
-    public void show() {
-        frame.show();
+    void show() {
+        frame.setVisible(true);
     }
 
-    public void hide() {
-        frame.hide();
+    void hide() {
+        frame.setVisible(false);
     }
 
-    public static void main(final String[] args) {
-        final PinSetterView pg = new PinSetterView(1);
+    void setVisible(final boolean state) {
+        frame.setVisible(state);
     }
-
 }

@@ -65,21 +65,21 @@
  *
  */
 
+import java.util.Random;
+import java.util.Vector;
+
 /**
  * Class to represent the pinsetter
  */
-
-import java.util.*;
-import java.lang.Boolean;
-
 public class Pinsetter {
 
-    private Random rnd;
-    private Vector subscribers;
+    private final Random rnd;
+    public static final int PIN_COUNT = 10;
+    private final double FOUL_PROBABILITY;
+    private final Vector<PinsetterObserver> subscribers;
 
-    private boolean[] pins;
-    /* 0-9 of state of pine, true for standing,
-    false for knocked down
+    private final boolean[] isPinStanding;
+    /* 0-9
 
     6   7   8   9
       3   4   5
@@ -91,21 +91,6 @@ public class Pinsetter {
     private int throwNumber;
 
     /**
-     * sendEvent()
-     * <p>
-     * Sends pinsetter events to all subscribers
-     *
-     * @pre none
-     * @post all subscribers have recieved pinsetter event with updated state
-     */
-    private void sendEvent(int jdpins) {    // send events when our state is changd
-        for (int i = 0; i < subscribers.size(); i++) {
-            ((PinsetterObserver) subscribers.get(i)).receivePinsetterEvent(
-                    new PinsetterEvent(pins, foul, throwNumber, jdpins));
-        }
-    }
-
-    /**
      * Pinsetter()
      * <p>
      * Constructs a new pinsetter
@@ -114,12 +99,27 @@ public class Pinsetter {
      * @pre none
      * @post a new pinsetter is created
      */
-    public Pinsetter() {
-        pins = new boolean[10];
+    Pinsetter() {
+        FOUL_PROBABILITY = 0.04;
+        isPinStanding = new boolean[PIN_COUNT];
         rnd = new Random();
-        subscribers = new Vector();
-        foul = false;
-        reset();
+        subscribers = new Vector<>();
+        resetState();
+    }
+
+    /**
+     * sendEvent()
+     * <p>
+     * Sends pinsetter events to all subscribers
+     *
+     * @pre none
+     * @post all subscribers have recieved pinsetter event with updated state
+     */
+    private void sendEvent(final int pinsDownedOnThisThrow) {
+        for (final PinsetterObserver subscriber : subscribers) {
+            subscriber.receivePinsetterEvent(
+                    new PinsetterEvent(isPinStanding, foul, throwNumber, pinsDownedOnThisThrow));
+        }
     }
 
     /**
@@ -130,29 +130,26 @@ public class Pinsetter {
      * @pre none
      * @post pins may have been knocked down and the thrownumber has been incremented
      */
-    public void ballThrown() {    // simulated event of ball hits sensor
-        int count = 0;
+    void ballThrown() {
+        int pinsDownedOnThisThrow = 0;
         foul = false;
-        double skill = rnd.nextDouble();
+        final double skill = rnd.nextDouble();
 
-        for (int i = 0; i <= 9; i++) {
-            if (pins[i]) {
-                double pinluck = rnd.nextDouble();
-                foul = pinluck <= .04;
+        for (int i = 0; i < PIN_COUNT; i++) {
+            if (isPinStanding[i]) {
+                final double pinluck = rnd.nextDouble();
+                foul = pinluck <= FOUL_PROBABILITY;
 
-                boolean pinStanding = ((skill + pinluck) / 2.0 * 1.2) <= .5;
-                pins[i] = pinStanding;
+                isPinStanding[i] = ((skill + pinluck) / 2.0 * 1.2) <= .5;
 
-                if (!pinStanding) {
-                    count++;
+                if (!isPinStanding[i]) {
+                    pinsDownedOnThisThrow++;
                 }
             }
         }
 
-        Util.busyWait(500);                // pinsetter is where delay will be in a real game
-
-        sendEvent(count);
-
+        Util.busyWait(500);               // pinsetter is where delay will be in a real game
+        sendEvent(pinsDownedOnThisThrow);
         throwNumber++;
     }
 
@@ -164,13 +161,11 @@ public class Pinsetter {
      * @pre none
      * @post pinsetters state is reset
      */
-    public void reset() {
+    void resetState() {
         foul = false;
         throwNumber = 1;
         resetPins();
-
         Util.busyWait(1000);
-
         sendEvent(-1);
     }
 
@@ -182,9 +177,9 @@ public class Pinsetter {
      * @pre none
      * @post pins array is reset to all pins up
      */
-    public void resetPins() {
-        for (int i = 0; i <= 9; i++) {
-            pins[i] = true;
+    void resetPins() {
+        for (int i = 0; i < PIN_COUNT; i++) {
+            isPinStanding[i] = true;
         }
     }
 
@@ -196,9 +191,9 @@ public class Pinsetter {
      * @pre none
      * @post the subscriber object will recieve events when their generated
      */
-    public void subscribe(PinsetterObserver subscriber) {
+    void subscribe(final PinsetterObserver subscriber) {
         subscribers.add(subscriber);
     }
 
-};
+}
 

@@ -24,21 +24,21 @@
  */
 
 import java.util.HashMap;
+import java.util.Vector;
 
-public class LaneEvent {
+class LaneEvent {
 
-    private Party p;
-    int frame;
-    int ball;
-    Bowler bowler;
-    int[][] cumulScore;
-    HashMap score;
-    int index;
-    int frameNum;
-    int[] curScores;
-    boolean mechProb;
+    private final Party p;
+    private final int ball;
+    private final Bowler bowler;
+    private final int[][] cumulScore;
+    private final HashMap score;
+    private final int index;
+    private final int frameNum;
+    private final int[] curScores;
+    private final boolean mechProb;
 
-    public LaneEvent(Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore, int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
+    public LaneEvent(final Party pty, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final HashMap theScore, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
         p = pty;
         index = theIndex;
         bowler = theBowler;
@@ -71,10 +71,6 @@ public class LaneEvent {
         return index;
     }
 
-    public int getFrame() {
-        return frame;
-    }
-
     public int getBall() {
         return ball;
     }
@@ -91,5 +87,10 @@ public class LaneEvent {
         return bowler;
     }
 
-};
+    public boolean isPartyEmpty() {
+        if (p == null) return true;
+        Vector<Bowler> members = p.getMembers();
+        return members == null || members.isEmpty();
+    }
+}
  

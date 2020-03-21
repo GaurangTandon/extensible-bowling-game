@@ -12,12 +12,13 @@
  *
  */
 
-public class PinsetterEvent {
+class PinsetterEvent {
 
-    private boolean[] pinsStillStanding;
-    private boolean foulCommited;
-    private int throwNumber;
-    private int pinsDownThisThrow;
+    private final boolean[] pinsStillStanding;
+    private final boolean foulCommited;
+    private final int throwNumber;
+    private final int pinsDownThisThrow;
+    private final boolean isReset;
 
     /**
      * PinsetterEvent()
@@ -27,16 +28,15 @@ public class PinsetterEvent {
      * @pre none
      * @post the object has been initialized
      */
-    public PinsetterEvent(boolean[] ps, boolean foul, int tn, int pinsDownThisThrow) {
-        pinsStillStanding = new boolean[10];
+    PinsetterEvent(final boolean[] pinsStanding, final boolean foul, final int tn, final int pinsDownOnThisThrow) {
+        pinsStillStanding = new boolean[Pinsetter.PIN_COUNT];
 
-        for (int i = 0; i <= 9; i++) {
-            pinsStillStanding[i] = ps[i];
-        }
+        System.arraycopy(pinsStanding, 0, pinsStillStanding, 0, Pinsetter.PIN_COUNT);
 
         foulCommited = foul;
         throwNumber = tn;
-        this.pinsDownThisThrow = pinsDownThisThrow;
+        pinsDownThisThrow = pinsDownOnThisThrow;
+        isReset = pinsDownOnThisThrow < 0;
     }
 
     /**
@@ -46,8 +46,8 @@ public class PinsetterEvent {
      *
      * @return true if pin [i] has been knocked down
      */
-    public boolean pinKnockedDown(int i) {
-        return !pinsStillStanding[i];
+    boolean pinKnockedDown(final int pinNumber) {
+        return !pinsStillStanding[pinNumber];
     }
 
     /**
@@ -55,7 +55,7 @@ public class PinsetterEvent {
      *
      * @return the number of pins knocked down assosicated with this event
      */
-    public int pinsDownOnThisThrow() {
+    int pinsDownOnThisThrow() {
         return pinsDownThisThrow;
     }
 
@@ -64,10 +64,10 @@ public class PinsetterEvent {
      *
      * @return the total number of pins down for pinsetter that generated the event
      */
-    public int totalPinsDown() {
+    int totalPinsDown() {
         int count = 0;
 
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
             if (pinKnockedDown(i)) {
                 count++;
             }
@@ -81,7 +81,7 @@ public class PinsetterEvent {
      *
      * @return true if a foul was commited on the lane, false otherwise
      */
-    public boolean isFoulCommited() {
+    boolean isFoulCommited() {
         return foulCommited;
     }
 
@@ -90,8 +90,12 @@ public class PinsetterEvent {
      *
      * @return current number of throws taken on this lane after last reset
      */
-    public int getThrowNumber() {
+    int getThrowNumber() {
         return throwNumber;
     }
-};
+
+    public boolean isReset() {
+        return isReset;
+    }
+}
 

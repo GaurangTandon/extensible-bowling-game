@@ -9,9 +9,9 @@
  */
  
 import java.util.Vector;
- 
-public class Queue {
-	private Vector<Party> v;
+
+class Queue {
+	private final Vector<Party> v;
 	
 	/** Queue()
 	 * 
@@ -25,12 +25,12 @@ public class Queue {
 		return v.remove(0);
 	}
 
-	public void add(Party o) {
+	public void add(final Party o) {
 		v.addElement(o);
 	}
 
 	boolean hasMoreElements() {
-		return v.size() != 0;
+		return !v.isEmpty();
 	}
 
 	public Vector<Party> asVector() {

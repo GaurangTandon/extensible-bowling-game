@@ -14,19 +14,21 @@
  *
  */
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Vector;
+
 /**
  * Class for interfacing with Bowler database
  */
-
-import java.util.*;
-import java.io.*;
-
 class BowlerFile {
 
     /**
      * The location of the bowelr database
      */
-    private static String BOWLER_DAT = "BOWLERS.DAT";
+    private static final String BOWLER_DAT = "BOWLERS.DAT";
 
     /**
      * Retrieves bowler information from the database and returns a Bowler objects with populated fields.
@@ -68,7 +70,7 @@ class BowlerFile {
             final String nickName,
             final String fullName,
             final String email)
-            throws IOException, FileNotFoundException {
+            throws IOException {
 
         final String data = nickName + "\t" + fullName + "\t" + email + "\n";
 
@@ -85,7 +87,7 @@ class BowlerFile {
      */
 
     public static Vector getBowlers()
-            throws IOException, FileNotFoundException {
+            throws IOException {
 
         final Vector allBowlers = new Vector();
 
