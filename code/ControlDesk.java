@@ -37,7 +37,6 @@
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -45,9 +44,6 @@ import java.util.Vector;
  */
 class ControlDesk extends Thread {
 
-    /**
-     * The collection of Lanes
-     */
     private final HashSet<Lane> lanes;
 
     /**
@@ -82,7 +78,9 @@ class ControlDesk extends Thread {
             lanes.add(new Lane());
         }
 
-        this.start();
+        // TODO: assert somewhere after this that the size of lanes stays constant
+
+        start();
 
     }
 
@@ -91,13 +89,9 @@ class ControlDesk extends Thread {
      */
     public void run() {
         while (true) {
-
             assignLane();
 
-            try {
-                sleep(250);
-            } catch (final Exception ignored) {
-            }
+            Util.busyWait(250);
         }
     }
 
@@ -114,9 +108,7 @@ class ControlDesk extends Thread {
 
         try {
             // only one patron / nick.... no dupes, no checks
-
             patron = BowlerFile.getBowlerInfo(nickName);
-
         } catch (final IOException e) {
             System.err.println("Error..." + e);
         }
@@ -127,18 +119,15 @@ class ControlDesk extends Thread {
     /**
      * Iterate through the available lanes and assign the paties in the wait queue if lanes are available.
      */
-
-    public void assignLane() {
-        final Iterator<Lane> it = lanes.iterator();
-
-        while (it.hasNext() && partyQueue.hasMoreElements()) {
-            final Lane curLane = it.next();
-
-            if (!curLane.isPartyAssigned()) {
-                System.out.println("ok... assigning this party");
-                curLane.assignParty((partyQueue.next()));
-            }
+    void assignLane() {
+        for (final Lane lane : lanes) {
+            if (partyQueue.hasMoreElements()) {
+                if (!lane.isPartyAssigned()) {
+                    lane.assignParty(partyQueue.next());
+                }
+            } else break;
         }
+
         publish(new ControlDeskEvent(getPartyQueue()));
     }
 
@@ -156,7 +145,7 @@ class ControlDesk extends Thread {
      * @param partyNicks A Vector of NickNames
      */
 
-    public void addPartyQueue(final Vector<String> partyNicks) {
+    void addPartyQueue(final Vector<String> partyNicks) {
         final Vector<Bowler> partyBowlers = new Vector<>();
         for (final String partyNick : partyNicks) {
             final Bowler newBowler = registerPatron(partyNick);
@@ -178,10 +167,7 @@ class ControlDesk extends Thread {
         final Vector<Party> pQueue = partyQueue.asVector();
 
         for (Party party : pQueue) {
-            final Bowler bowler = (Bowler) party.getMembers()
-                    .get(0);
-            final String nextParty =
-                    bowler.getNickName() + "'s Party";
+            final String nextParty = party.getName();
             displayPartyQueue.addElement(nextParty);
         }
         return displayPartyQueue;
@@ -193,7 +179,7 @@ class ControlDesk extends Thread {
      * @return an int containing the number of lanes represented
      */
 
-    public int getNumLanes() {
+    int getNumLanes() {
         return numLanes;
     }
 
@@ -203,7 +189,7 @@ class ControlDesk extends Thread {
      * @param adding the ControlDeskObserver that will be subscribed
      */
 
-    public void subscribe(final ControlDeskObserver adding) {
+    void subscribe(final ControlDeskObserver adding) {
         subscribers.add(adding);
     }
 
@@ -225,7 +211,7 @@ class ControlDesk extends Thread {
      * @return a HashSet of Lanes
      */
 
-    public HashSet<? extends Lane> getLanes() {
+    HashSet<? extends Lane> getLanes() {
         return lanes;
     }
 }

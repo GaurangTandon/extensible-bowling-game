@@ -213,8 +213,7 @@ public class Lane extends Thread implements PinsetterObserver {
     }
 
     private void onGameFinish() {
-        final Bowler firstBowler = party.getMembers().get(0);
-        final String partyName = firstBowler.getPartyName();
+        final String partyName = party.getName();
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();

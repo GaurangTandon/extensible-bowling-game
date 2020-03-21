@@ -20,32 +20,38 @@
 import java.util.Vector;
 
 /**
- *  Container that holds bowlers
- *
+ * Container that holds bowlers
  */
 public class Party {
 
-	/** Vector of bowlers in this party */
-	private final Vector<Bowler> myBowlers;
-	
-	/**
-	 * Constructor for a Party
-	 * 
-	 * @param bowlers	Vector of bowlers that are in this party
-	 */
-		
-    public Party( Vector bowlers ) {
-		myBowlers = new Vector(bowlers);
+    /**
+     * Vector of bowlers in this party
+     */
+    private final Vector<Bowler> myBowlers;
+    private final String name;
+
+    /**
+     * Constructor for a Party
+     *
+     * @param bowlers Vector of bowlers that are in this party
+     */
+
+    public Party(Vector bowlers) {
+        myBowlers = new Vector(bowlers);
+        name = myBowlers.get(0).getNickName() + "'s Party";
     }
 
-	/**
-	 * Accessor for members in this party
-	 * 
-	 * @return 	A vector of the bowlers in this party
-	 */
+    /**
+     * Accessor for members in this party
+     *
+     * @return A vector of the bowlers in this party
+     */
 
     public Vector<Bowler> getMembers() {
-		return myBowlers;
+        return myBowlers;
     }
 
+    public String getName() {
+        return name;
+    }
 }
