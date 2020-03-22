@@ -215,10 +215,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         final int result = egp.getResult();
         egp.destroy();
 
-        System.out.println("Result was: " + result);
-
         // TODO: send record of scores to control desk
-        if (result == 1) { // yes, want to play agian TODO: make this an enum
+        if (result == 1) { // yes, want to play again TODO: make this an enum
             scorer.resetScores();
             resetBowlerIterator();
         } else if (result == 2) {// no, dont want to play another game

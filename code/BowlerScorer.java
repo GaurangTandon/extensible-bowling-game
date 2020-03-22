@@ -113,22 +113,30 @@ public class BowlerScorer {
     int[] getByFramePartResult() {
         int[] res = new int[LaneUtil.MAX_ROLLS];
         for (int i = 0; i < LaneUtil.MAX_ROLLS; i++) res[i] = -1;
-        int framePart = 0;
+        int frame = 0, frameIndex = 0;
 
         for (int roll = 0; roll < rollCount; roll++) {
-            res[framePart] = rolls[roll];
+            res[frame * 2 + frameIndex] = rolls[roll];
 
             if (isStrike(roll)) {
-                framePart++;
+                frame++;
+                frameIndex = 0;
+            } else {
+                if (frame < LaneUtil.FRAME_COUNT - 1 && frameIndex == 1) {
+                    frameIndex = 0;
+                    frame++;
+                } else {
+                    frameIndex++;
+                }
             }
 
-            framePart++;
+            frame = Math.min(frame, LaneUtil.FRAME_COUNT - 1);
         }
 
         return res;
     }
 
-    int getCurrFrame(){
+    int getCurrFrame() {
         return currFrame;
     }
 }
