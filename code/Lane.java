@@ -136,6 +136,10 @@ import java.util.Vector;
 
 
 public class Lane extends Thread implements PinsetterObserver, LaneInterface {
+    public static final int FRAME_COUNT = 10;
+    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
+    public static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
+
     private Party party;
     private final Pinsetter setter;
     private final Vector<LaneObserver> subscribers;

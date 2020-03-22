@@ -24,7 +24,7 @@ public class BowlerScorerTest {
         rollSpare();
         rollSpare();
         bs.roll(5);
-        int[] expScore = new int[LaneUtil.FRAME_COUNT];
+        int[] expScore = new int[Lane.FRAME_COUNT];
         expScore[0] = Pinsetter.PIN_COUNT + Pinsetter.PIN_COUNT - 1;
         expScore[1] = expScore[0] + Pinsetter.PIN_COUNT + 5;
         expScore[2] = expScore[1] + 5;
@@ -34,9 +34,9 @@ public class BowlerScorerTest {
 
     private static void testAllOnes() {
         bs = new BowlerScorer();
-        rollMany(1, LaneUtil.FRAME_COUNT * 2);
-        final int[] expScore = new int[LaneUtil.FRAME_COUNT];
-        for (int i = 0; i < LaneUtil.FRAME_COUNT; i++) {
+        rollMany(1, Lane.FRAME_COUNT * 2);
+        final int[] expScore = new int[Lane.FRAME_COUNT];
+        for (int i = 0; i < Lane.FRAME_COUNT; i++) {
             expScore[i] = 2 * (i + 1);
         }
         checkEquality(expScore);
@@ -45,9 +45,9 @@ public class BowlerScorerTest {
 
     private static void testGutters() {
         bs = new BowlerScorer();
-        rollMany(0, LaneUtil.FRAME_COUNT * 2);
-        final int[] expScore = new int[LaneUtil.FRAME_COUNT];
-        for (int i = 0; i < LaneUtil.FRAME_COUNT; i++) {
+        rollMany(0, Lane.FRAME_COUNT * 2);
+        final int[] expScore = new int[Lane.FRAME_COUNT];
+        for (int i = 0; i < Lane.FRAME_COUNT; i++) {
             expScore[i] = 0;
         }
         checkEquality(expScore);
@@ -56,9 +56,9 @@ public class BowlerScorerTest {
 
     private static void testBest() {
         bs = new BowlerScorer();
-        rollMany(Pinsetter.PIN_COUNT, LaneUtil.FRAME_COUNT + 2);
-        final int[] expScore = new int[LaneUtil.FRAME_COUNT];
-        for (int i = 0; i < LaneUtil.FRAME_COUNT; i++) {
+        rollMany(Pinsetter.PIN_COUNT, Lane.FRAME_COUNT + 2);
+        final int[] expScore = new int[Lane.FRAME_COUNT];
+        for (int i = 0; i < Lane.FRAME_COUNT; i++) {
             expScore[i] = 30 * (i + 1);
         }
         checkEquality(expScore);

@@ -74,7 +74,7 @@ class LaneScorer {
     }
 
     int[][] getCumulScores() {
-        int[][] cumulScores = new int[partySize][LaneUtil.FRAME_COUNT];
+        int[][] cumulScores = new int[partySize][Lane.FRAME_COUNT];
         for (int bowler = 0; bowler < partySize; bowler++)
             cumulScores[bowler] = bowlerScorers[bowler].getCumulScore();
         return cumulScores;
@@ -86,7 +86,7 @@ class LaneScorer {
 
     int[][] getByBowlerByFramePartResult() {
         // return a bowlerx21 matrix of scores
-        int[][] result = new int[partySize][LaneUtil.MAX_ROLLS];
+        int[][] result = new int[partySize][Lane.MAX_ROLLS];
 
         for (int bowler = 0; bowler < partySize; bowler++) {
             result[bowler] = bowlerScorers[bowler].getByFramePartResult();

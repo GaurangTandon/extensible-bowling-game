@@ -62,14 +62,6 @@ class LaneEvent {
         return score[b][roll];
     }
 
-    public int[] getScore(int b) {
-        return score[b];
-    }
-
-    public int[] getCurScores() {
-        return curScores;
-    }
-
     public int getIndex() {
         return index;
     }

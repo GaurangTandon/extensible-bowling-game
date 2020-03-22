@@ -142,10 +142,24 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
+    static String getCharToShow(final int currScore) {
+        final String textToSet;
+        switch (currScore) {
+            case BowlerScorer.STRIKE:
+                textToSet = "X";
+                break;
+            case BowlerScorer.SPARE:
+                textToSet = "/";
+                break;
+            default:
+                textToSet = Integer.toString(currScore);
+        }
+        return textToSet;
+    }
+
     private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
         assert i >= 0;
 
-        final int[] bowlerScores = le.getScore(k);
         final int bowlScore = le.getScore(k, i);
 
         // What's this exactly? it means that the particular roll was skipped due to a strike
@@ -153,7 +167,7 @@ public class LaneView implements LaneObserver, ActionListener {
             return;
         }
 
-        final String textToSet = LaneUtil.getCharToShow(i, bowlerScores);
+        final String textToSet = getCharToShow(bowlScore);
         final JLabel ballLabel = this.ballLabel[k][i];
 
         ballLabel.setText(textToSet);

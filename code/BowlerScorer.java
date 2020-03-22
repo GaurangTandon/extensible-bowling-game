@@ -10,9 +10,9 @@ public class BowlerScorer {
 
     BowlerScorer() {
         // extra 2 elements for safety from index out of bounds
-        rolls = new int[LaneUtil.MAX_ROLLS + 2];
-        cumulScore = new int[LaneUtil.FRAME_COUNT];
-        finalScore = new int[LaneUtil.FRAME_COUNT];
+        rolls = new int[Lane.MAX_ROLLS + 2];
+        cumulScore = new int[Lane.FRAME_COUNT];
+        finalScore = new int[Lane.FRAME_COUNT];
 
         currFrame = 0;
         partIndex = 0;
@@ -51,7 +51,7 @@ public class BowlerScorer {
         frame = 0;
         while (roll < rollCount) {
             int scoreOnThisFrame = 0;
-            if (frame == LaneUtil.FRAME_COUNT - 1) {
+            if (frame == Lane.FRAME_COUNT - 1) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
                 roll += 2;
             } else {
@@ -68,7 +68,7 @@ public class BowlerScorer {
             // += so that case when frame=9 gets handled easily
             cumulScore[frame] += scoreOnThisFrame;
             frame++;
-            frame = Math.min(frame, LaneUtil.FRAME_COUNT - 1);
+            frame = Math.min(frame, Lane.FRAME_COUNT - 1);
             roll++;
         }
 
@@ -84,7 +84,7 @@ public class BowlerScorer {
         if (isStrike(rollCount) || partIndex == 1) {
             currFrame++;
             // numFrames might exceed when you're in the last frame, but it should
-            currFrame = Math.min(currFrame, LaneUtil.FRAME_COUNT - 1);
+            currFrame = Math.min(currFrame, Lane.FRAME_COUNT - 1);
             partIndex = 0;
         } else {
             partIndex++;
@@ -101,9 +101,8 @@ public class BowlerScorer {
         return cumulScore;
     }
 
-    boolean isFrameInProgress() {
-        return partIndex == 1;
-    }
+    public static final int STRIKE = 11;
+    public static final int SPARE = 12;
 
     /**
      * Used in LaneView to display the entire row of cells for a bowler
@@ -111,18 +110,25 @@ public class BowlerScorer {
      * @return
      */
     int[] getByFramePartResult() {
-        int[] res = new int[LaneUtil.MAX_ROLLS];
-        for (int i = 0; i < LaneUtil.MAX_ROLLS; i++) res[i] = -1;
+        int[] res = new int[Lane.MAX_ROLLS];
+        for (int i = 0; i < Lane.MAX_ROLLS; i++) res[i] = -1;
         int frame = 0, frameIndex = 0;
 
         for (int roll = 0; roll < rollCount; roll++) {
-            res[frame * 2 + frameIndex] = rolls[roll];
+            int index = frame * 2 + frameIndex;
 
             if (isStrike(roll)) {
+                res[index] = STRIKE;
+                frame++;
+                frameIndex = 0;
+            } else if (isSpare(roll)) {
+                res[index] = rolls[roll];
+                res[index + 1] = SPARE;
                 frame++;
                 frameIndex = 0;
             } else {
-                if (frame < LaneUtil.FRAME_COUNT - 1 && frameIndex == 1) {
+                res[index] = rolls[roll];
+                if (frame < Lane.FRAME_COUNT - 1 && frameIndex == 1) {
                     frameIndex = 0;
                     frame++;
                 } else {
@@ -130,7 +136,7 @@ public class BowlerScorer {
                 }
             }
 
-            frame = Math.min(frame, LaneUtil.FRAME_COUNT - 1);
+            frame = Math.min(frame, Lane.FRAME_COUNT - 1);
         }
 
         return res;
