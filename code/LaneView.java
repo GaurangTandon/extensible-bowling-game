@@ -148,7 +148,7 @@ public class LaneView implements LaneObserver, ActionListener {
         final int[] bowlerScores = le.getScore(k);
         final int bowlScore = le.getScore(k, i);
 
-        // TODO: what's this exactly? it means that the particular roll was skipped due to a strike
+        // What's this exactly? it means that the particular roll was skipped due to a strike
         if (bowlScore == -1) {
             return;
         }

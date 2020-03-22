@@ -3,17 +3,18 @@ public class BowlerScorer {
 
     private int[] cumulScore;
     private int[] finalScore;
-    private int numOfFramesBowled;
+    private int currFrame;
     private int partIndex;
     private int rollCount;
     private int score;
 
     BowlerScorer() {
-        rolls = new int[LaneUtil.MAX_ROLLS];
+        // extra 2 elements for safety from index out of bounds
+        rolls = new int[LaneUtil.MAX_ROLLS + 2];
         cumulScore = new int[LaneUtil.FRAME_COUNT];
         finalScore = new int[LaneUtil.FRAME_COUNT];
 
-        numOfFramesBowled = 0;
+        currFrame = 0;
         partIndex = 0;
         score = 0;
     }
@@ -38,46 +39,57 @@ public class BowlerScorer {
 
     // roll1 = first roll of the two spares
     int spareBonus(int roll1) {
-        return rolls[roll1 + 1];
+        return rolls[roll1 + 2];
     }
 
     void updateCumulScores() {
-        int frame = 0, roll = 0;
+        int roll = 0, frame = 0;
 
-        // first set frame wise score
+        for (frame = 0; frame <= currFrame; frame++)
+            cumulScore[frame] = 0;
+
+        frame = 0;
         while (roll < rollCount) {
-            if (isStrike(roll)) {
-                cumulScore[frame] = Pinsetter.PIN_COUNT + strikeBonus(roll);
-            } else if (isSpare(roll)) {
-                cumulScore[frame] = Pinsetter.PIN_COUNT + spareBonus(roll);
-                roll++;
-            } else if (partIndex == 0) {
-                // basically, this condition ensures that this frame
-                // for which we are getting the score has completed
-                // if it has completed, then partIndex will be 0 (since it's pointing to the next frame)
-                cumulScore[frame] = getPinsDownOnThisFrame(roll);
-                roll++;
+            int scoreOnThisFrame = 0;
+            if (frame == LaneUtil.FRAME_COUNT - 1) {
+                scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
+                roll += 2;
+            } else {
+                if (isStrike(roll)) {
+                    scoreOnThisFrame = Pinsetter.PIN_COUNT + strikeBonus(roll);
+                } else if (isSpare(roll)) {
+                    scoreOnThisFrame = Pinsetter.PIN_COUNT + spareBonus(roll);
+                    roll++;
+                } else {
+                    scoreOnThisFrame = getPinsDownOnThisFrame(roll);
+                    roll++;
+                }
             }
-            roll++;
+            // += so that case when frame=9 gets handled easily
+            cumulScore[frame] += scoreOnThisFrame;
             frame++;
+            frame = Math.min(frame, LaneUtil.FRAME_COUNT - 1);
+            roll++;
         }
 
-        // then make all scores cumulative
-        for (frame = 1; frame < numOfFramesBowled; frame++) {
+        for (frame = 1; frame <= currFrame; frame++)
             cumulScore[frame] += cumulScore[frame - 1];
-        }
-        score = cumulScore[numOfFramesBowled - 1];
+
+        score = cumulScore[currFrame];
     }
 
     void roll(int pinsDown) {
         rolls[rollCount] = pinsDown;
+
         if (isStrike(rollCount) || partIndex == 1) {
-            numOfFramesBowled++;
+            currFrame++;
             // numFrames might exceed when you're in the last frame, but it should
-            numOfFramesBowled = Math.min(numOfFramesBowled, LaneUtil.FRAME_COUNT);
+            currFrame = Math.min(currFrame, LaneUtil.FRAME_COUNT - 1);
+            partIndex = 0;
         } else {
             partIndex++;
         }
+
         rollCount++;
     }
 
@@ -89,8 +101,13 @@ public class BowlerScorer {
         return cumulScore;
     }
 
+    boolean isFrameInProgress() {
+        return partIndex == 1;
+    }
+
     /**
      * Used in LaneView to display the entire row of cells for a bowler
+     *
      * @return
      */
     int[] getByFramePartResult() {
@@ -101,7 +118,7 @@ public class BowlerScorer {
         for (int roll = 0; roll < rollCount; roll++) {
             res[framePart] = rolls[roll];
 
-            if(isStrike(roll)){
+            if (isStrike(roll)) {
                 framePart++;
             }
 
@@ -109,5 +126,9 @@ public class BowlerScorer {
         }
 
         return res;
+    }
+
+    int getCurrFrame(){
+        return currFrame;
     }
 }

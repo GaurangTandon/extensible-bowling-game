@@ -7,19 +7,39 @@ public class BowlerScorerTest {
         }
     }
 
-    private void testSpares(){
-        // TODO
+    private static void rollSpare() {
+        bs.roll(Pinsetter.PIN_COUNT - 1);
+        bs.roll(1);
     }
 
-    private static void rollAllOnes() {
+    private static void checkEquality(int[] expScore) {
+        bs.updateCumulScores();
+        final int[] gotScore = bs.getCumulScore();
+        for (int i = 0; i < bs.getCurrFrame(); i++)
+            assert gotScore[i] == expScore[i];
+    }
+
+    private static void testSpares() {
+        bs = new BowlerScorer();
+        rollSpare();
+        rollSpare();
+        bs.roll(5);
+        int[] expScore = new int[LaneUtil.FRAME_COUNT];
+        expScore[0] = Pinsetter.PIN_COUNT + Pinsetter.PIN_COUNT - 1;
+        expScore[1] = expScore[0] + Pinsetter.PIN_COUNT + 5;
+        expScore[2] = expScore[1] + 5;
+
+        checkEquality(expScore);
+    }
+
+    private static void testAllOnes() {
         bs = new BowlerScorer();
         rollMany(1, LaneUtil.FRAME_COUNT * 2);
         final int[] expScore = new int[LaneUtil.FRAME_COUNT];
-        final int[] gotScore = bs.getCumulScore();
         for (int i = 0; i < LaneUtil.FRAME_COUNT; i++) {
             expScore[i] = 2 * (i + 1);
-            assert gotScore[i] == expScore[i];
         }
+        checkEquality(expScore);
     }
 
 
@@ -27,11 +47,10 @@ public class BowlerScorerTest {
         bs = new BowlerScorer();
         rollMany(0, LaneUtil.FRAME_COUNT * 2);
         final int[] expScore = new int[LaneUtil.FRAME_COUNT];
-        final int[] gotScore = bs.getCumulScore();
         for (int i = 0; i < LaneUtil.FRAME_COUNT; i++) {
             expScore[i] = 0;
-            assert gotScore[i] == expScore[i];
         }
+        checkEquality(expScore);
     }
 
 
@@ -39,17 +58,17 @@ public class BowlerScorerTest {
         bs = new BowlerScorer();
         rollMany(Pinsetter.PIN_COUNT, LaneUtil.FRAME_COUNT + 2);
         final int[] expScore = new int[LaneUtil.FRAME_COUNT];
-        final int[] gotScore = bs.getCumulScore();
         for (int i = 0; i < LaneUtil.FRAME_COUNT; i++) {
             expScore[i] = 30 * (i + 1);
-            assert gotScore[i] == expScore[i];
         }
+        checkEquality(expScore);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         testBest();
         testGutters();
-        rollAllOnes();
+        testAllOnes();
+        testSpares();
         System.out.println("All tests passed");
     }
 }
