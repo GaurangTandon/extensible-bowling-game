@@ -162,7 +162,7 @@ public class Pinsetter {
             }
         }
 
-        Util.busyWait(500);               // pinsetter is where delay will be in a real game
+        Util.busyWait(500);
         sendEvent(pinsDownedOnThisThrow);
         throwNumber++;
     }

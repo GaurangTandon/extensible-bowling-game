@@ -56,6 +56,10 @@ class LaneScorer {
         scores.put(currBowler, bowlerScorer.getByFramePartResult());
     }
 
+    boolean canRollAgain(final int currBowlerIndex, final int frameNumber){
+        return bowlerScorers[currBowlerIndex].canRollAgain(frameNumber);
+    }
+
     void setFinalScores(int bowlerIdx, int gameNum, int value) {
         finalScores[bowlerIdx][gameNum] = value;
     }

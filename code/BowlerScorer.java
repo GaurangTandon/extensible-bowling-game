@@ -1,3 +1,5 @@
+import javax.swing.plaf.LabelUI;
+
 public class BowlerScorer {
     private int[] rolls;
 
@@ -51,7 +53,7 @@ public class BowlerScorer {
         frame = 0;
         while (roll < rollCount) {
             int scoreOnThisFrame = 0;
-            if (frame == Lane.FRAME_COUNT - 1) {
+            if (frame == Lane.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
                 roll += 2;
             } else {
@@ -68,7 +70,7 @@ public class BowlerScorer {
             // += so that case when frame=9 gets handled easily
             cumulScore[frame] += scoreOnThisFrame;
             frame++;
-            frame = Math.min(frame, Lane.FRAME_COUNT - 1);
+            frame = Math.min(frame, Lane.LAST_FRAME);
             roll++;
         }
 
@@ -78,13 +80,22 @@ public class BowlerScorer {
         score = cumulScore[currFrame];
     }
 
+    /**
+     * Add this roll to the array
+     * and also update frame and partindex accordingly
+     *
+     * @param pinsDown
+     */
     void roll(int pinsDown) {
         rolls[rollCount] = pinsDown;
 
-        if (isStrike(rollCount) || partIndex == 1) {
+        boolean transgressFrame = false;
+        transgressFrame |= isStrike(rollCount);
+        transgressFrame |= (partIndex == 1);
+        transgressFrame &= currFrame < Lane.LAST_FRAME;
+
+        if (transgressFrame) {
             currFrame++;
-            // numFrames might exceed when you're in the last frame, but it should
-            currFrame = Math.min(currFrame, Lane.FRAME_COUNT - 1);
             partIndex = 0;
         } else {
             partIndex++;
@@ -119,10 +130,10 @@ public class BowlerScorer {
 
             if (isStrike(roll)) {
                 res[index] = STRIKE;
-                if(frame < Lane.FRAME_COUNT - 1) {
+                if (frame < Lane.LAST_FRAME) {
                     frame++;
                     frameIndex = 0;
-                }else{
+                } else {
                     frameIndex++;
                 }
             } else if (isSpare(roll)) {
@@ -132,7 +143,7 @@ public class BowlerScorer {
                 frameIndex = 0;
             } else {
                 res[index] = rolls[roll];
-                if (frame < Lane.FRAME_COUNT - 1 && frameIndex == 1) {
+                if (frame < Lane.LAST_FRAME && frameIndex == 1) {
                     frameIndex = 0;
                     frame++;
                 } else {
@@ -140,10 +151,39 @@ public class BowlerScorer {
                 }
             }
 
-            frame = Math.min(frame, Lane.FRAME_COUNT - 1);
+            frame = Math.min(frame, Lane.LAST_FRAME);
         }
 
         return res;
+    }
+
+    /**
+     * @param frameNumber the frame the Lane currently is in
+     * @return true if this bowler can roll another ball in the same frame
+     * This is true if
+     * (1) frame is not the last, the previous roll didn't complete 10 pins, previous roll was the first in the frame
+     * (2) frame is the last, previous roll had a strike or previous to previous roll was a strike (both must be from same frame)
+     * (3) frame is last and previous roll made a spare
+     */
+    boolean canRollAgain(int frameNumber) {
+        // remember that these property values are AFTER the bowler made his last roll
+        // so i am basically checking that the bowler is still in the same frame
+        // as he was in the last roll
+
+        if (currFrame != frameNumber) {
+            return false;
+        }
+
+        if (currFrame < Lane.LAST_FRAME)
+            return true;
+
+        if (partIndex == 3) return false;
+        // can only roll the third one in case of a spare or a strike
+        // in any previous two rolls
+        if (partIndex == 2)
+            return (getPinsDownOnThisFrame(rollCount - 2) >= 10);
+
+        return true;
     }
 
     int getCurrFrame() {

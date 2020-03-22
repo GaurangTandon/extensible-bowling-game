@@ -76,10 +76,6 @@ class PinsetterEvent {
         return count;
     }
 
-    int getThrowNumber(){
-        return throwNumber;
-    }
-
     boolean isFirstThrow(){
         return throwNumber == 1;
     }
