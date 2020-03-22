@@ -70,6 +70,12 @@ import java.util.Vector;
 
 /**
  * Class to represent the pinsetter
+ * It's only job is to allow the Lane to:
+ * reset the pinsetter (at start of every frame, etc.)
+ * be able to throw a ball into it
+ * receive an event when ball throw was completed
+ * It is the duty of the BowlerScorer:
+ * to decide when to reset the pinsetter and keep scoring
  */
 public class Pinsetter {
 
@@ -134,17 +140,25 @@ public class Pinsetter {
         int pinsDownedOnThisThrow = 0;
         foul = false;
         final double skill = rnd.nextDouble();
+//        final boolean TESTING = true;
 
         for (int i = 0; i < PIN_COUNT; i++) {
-            if (isPinStanding[i]) {
-                final double pinluck = rnd.nextDouble();
-                foul = pinluck <= FOUL_PROBABILITY;
+//            if (TESTING) {
+//                if (throwNumber < 9) {
+//                    isPinStanding[i] = false;
+//                } else if (i <= 1 && throwNumber >= 9) {
+//                    isPinStanding[i] = false;
+//                }
+//            } else if (!TESTING) {
+            if (!isPinStanding[i]) continue;
 
-                isPinStanding[i] = ((skill + pinluck) / 2.0 * 1.2) <= .5;
+            final double pinluck = rnd.nextDouble();
+            foul = pinluck <= FOUL_PROBABILITY;
 
-                if (!isPinStanding[i]) {
-                    pinsDownedOnThisThrow++;
-                }
+            isPinStanding[i] = ((skill + pinluck) / 2.0 * 1.2) <= .5;
+//            }
+            if (!isPinStanding[i]) {
+                pinsDownedOnThisThrow++;
             }
         }
 

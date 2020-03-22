@@ -240,7 +240,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     }
 
     private void bowlNextBowler() {
-        currentThrower = (Bowler) currentBowler.next();
+        currentThrower = currentBowler.next();
 
         canThrowAgain = true;
         tenthFrameStrike = false;
@@ -304,7 +304,6 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             return;
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
-        final int throwNumber = pe.getThrowNumber();
         scorer.roll(currentThrower, currBowlerIndex, pinsDownOnThisThrow);
         final LaneEvent event = lanePublish();
         publish(event);
@@ -312,6 +311,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         // next logic handles the ?: what conditions dont allow them another throw?
         // handle the case of 10th frame first
         if (frameNumber != 9) { // TODO: verify this is actually the case? "its not the 10th frame"
+            // TODO: implement throwNumber in BowlerScorer and rely on that to accurately determine
+            // canThrowAgaian
             canThrowAgain = !(pinsDownOnThisThrow == 10 || throwNumber == 2);
             return;
         }
