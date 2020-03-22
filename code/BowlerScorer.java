@@ -119,8 +119,12 @@ public class BowlerScorer {
 
             if (isStrike(roll)) {
                 res[index] = STRIKE;
-                frame++;
-                frameIndex = 0;
+                if(frame < Lane.FRAME_COUNT - 1) {
+                    frame++;
+                    frameIndex = 0;
+                }else{
+                    frameIndex++;
+                }
             } else if (isSpare(roll)) {
                 res[index] = rolls[roll];
                 res[index + 1] = SPARE;
