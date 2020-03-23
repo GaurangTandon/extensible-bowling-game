@@ -29,23 +29,27 @@ class LaneEvent {
 
     private final Vector<String> bowlerNicks;
     private final int partySize;
-    private final Bowler bowler;
     private final int[][] cumulScore;
     private final int[][] score;
     private final int frameNum;
     private final boolean mechProb;
+    private final String bowlerNick;
     private final boolean shouldSetupGraphics;
 
-    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final boolean mechProblem, final boolean ssGraphics) {
+    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final boolean mechProblem, final boolean ssGraphics) {
         bowlerNicks = theBowlerNicks;
         partySize = thePartySize;
         shouldSetupGraphics = ssGraphics;
 
-        bowler = theBowler;
+        bowlerNick = theNick;
         cumulScore = theCumulScore;
         score = byFramePartScores;
         frameNum = theFrameNum;
         mechProb = mechProblem;
+    }
+
+    final String getBowlerNick(){
+        return bowlerNick;
     }
 
     final boolean shouldSetupGraphics() {
@@ -75,10 +79,6 @@ class LaneEvent {
 
     final int[][] getCumulScore() {
         return cumulScore;
-    }
-
-    public final Bowler getBowler() {
-        return bowler;
     }
 
     final boolean isPartyEmpty() {
