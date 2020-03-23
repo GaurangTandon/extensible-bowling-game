@@ -13,8 +13,8 @@ import java.util.Vector;
 
 /**
  * TODO:
- * LaneView probably does not need access to the entire scoresheet all the time. It can simply make do with the latest score
- * received via lane-event
+ * LaneView probably does not need access to the entire scoresheet all the time. It can simply make do with the latest
+ * score received via lane-event
  */
 public class LaneView implements LaneObserver, ActionListener {
     private boolean initDone = true;
@@ -26,7 +26,7 @@ public class LaneView implements LaneObserver, ActionListener {
     private JButton maintenance;
     private final LaneInterface lane;
 
-    public LaneView(final LaneInterface ln, final int laneNum) {
+    LaneView(final LaneInterface ln, final int laneNum) {
         lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
         cpanel = frame.getContentPane();
@@ -127,18 +127,13 @@ public class LaneView implements LaneObserver, ActionListener {
             new Insets(4, 4, 4, 4);
 
             maintenance = new JButton("Maintenance Call");
-            final JPanel maintenancePanel = new JPanel();
-            maintenancePanel.setLayout(new FlowLayout());
-            maintenance.addActionListener(this);
-            maintenancePanel.add(maintenance);
-
-            buttonPanel.add(maintenancePanel);
+            Util.addButtonPanel(maintenance, buttonPanel, this);
             cpanel.add(buttonPanel, "South");
             frame.pack();
         }
     }
 
-    static String getCharToShow(final int currScore) {
+    private static String getCharToShow(final int currScore) {
         final String textToSet;
         switch (currScore) {
             case BowlerScorer.STRIKE:

@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -21,7 +24,7 @@ class Util {
         final Calendar cal = Calendar.getInstance();
         return "" + cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE)
                 + " " + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DAY_OF_WEEK) +
-                "/" + (cal.get(Calendar.YEAR) + 1900);
+                "/" + cal.get(Calendar.YEAR);
     }
 
     static boolean containsString(final Vector<String> container, final String target){
@@ -30,5 +33,13 @@ class Util {
                 return true;
         }
         return false;
+    }
+
+    static void addButtonPanel(JButton btn, JPanel toPanel, ActionListener listener) {
+        final JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        btn.addActionListener(listener);
+        panel.add(btn);
+        toPanel.add(panel);
     }
 }

@@ -22,11 +22,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
     JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
         final JButton btn = new JButton(text);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        btn.addActionListener(this);
-        panel.add(btn);
-        buttonPanel.add(panel);
+        Util.addButtonPanel(btn, buttonPanel, this);
         return btn;
     }
 
