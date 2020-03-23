@@ -131,7 +131,6 @@
  *
  */
 
-import java.util.Iterator;
 import java.util.Vector;
 
 
@@ -146,12 +145,9 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private final Vector<LaneObserver> subscribers;
 
     private boolean gameIsHalted;
-
-    private boolean partyAssigned;
     private boolean gameFinished;
     private int currBowlerIndex;
     private int frameNumber;
-
     private int gameNumber;
 
     private LaneScorer scorer;
@@ -169,8 +165,6 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         subscribers = new Vector<>(0);
 
         gameIsHalted = false;
-        partyAssigned = false;
-
         gameNumber = 0;
         scorer = new LaneScorer();
 
@@ -199,7 +193,6 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             }
         }
 
-        partyAssigned = false;
         party = null;
 
         final LaneEvent event = lanePublish();
@@ -245,7 +238,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         currBowlerIndex++;
     }
 
-    private String getCurrentThrowerNick(){
+    private String getCurrentThrowerNick() {
         return party.getMemberNick(currBowlerIndex);
     }
 
@@ -270,13 +263,13 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     public void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (partyAssigned && !gameFinished) {
+            if (isPartyAssigned() && !gameFinished) {
                 while (gameIsHalted) {
                     Util.busyWait(10);
                 }
 
                 continueGame();
-            } else if (partyAssigned) onGameFinish();
+            } else if (isPartyAssigned()) onGameFinish();
 
             Util.busyWait(10);
         }
@@ -312,8 +305,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     void assignParty(final Party theParty) {
         party = theParty;
-        currBowlerIndex = 0;;
-        partyAssigned = true;
+        currBowlerIndex = 0;
 
         final Vector<Bowler> members = party.getMembers();
         gameNumber = 0;
@@ -345,7 +337,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return true if party assigned, false otherwise
      */
     boolean isPartyAssigned() {
-        return partyAssigned;
+        return party != null;
     }
 
     /**
