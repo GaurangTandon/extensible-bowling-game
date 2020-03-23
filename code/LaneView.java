@@ -114,7 +114,7 @@ public class LaneView implements LaneObserver, ActionListener {
             Util.busyWait(1);
         }
 
-        if (le.getFrameNum() == 1 && le.getBall() == 0 && le.getIndex() == 0) {
+        if (le.shouldSetupGraphics()) {
             cpanel.removeAll();
             cpanel.add(makeFrame(le.getBowlerNicks(), le.getPartySize()), "Center");
 
