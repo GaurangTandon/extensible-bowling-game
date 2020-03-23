@@ -64,14 +64,6 @@ class LaneScorer {
         finalScores[bowlerIdx][gameNum] = value;
     }
 
-    int[] getScoresForEachBowler() {
-        int[] curScores = new int[partySize];
-        for (int i = 0; i < partySize; i++) {
-            curScores[i] = bowlerScorers[i].getScore();
-        }
-        return curScores;
-    }
-
     int[] getFinalScores(int bowler) {
         return finalScores[bowler];
     }

@@ -23,7 +23,6 @@
  *
  */
 
-import java.util.HashMap;
 import java.util.Vector;
 
 class LaneEvent {
@@ -36,10 +35,9 @@ class LaneEvent {
     private final int[][] score;
     private final int index;
     private final int frameNum;
-    private final int[] curScores;
     private final boolean mechProb;
 
-    public LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
+    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final int theBall, final boolean mechProblem) {
         bowlerNicks = theBowlerNicks;
         partySize = thePartySize;
 
@@ -47,50 +45,49 @@ class LaneEvent {
         bowler = theBowler;
         cumulScore = theCumulScore;
         score = byFramePartScores;
-        curScores = theCurScores;
         frameNum = theFrameNum;
         ball = theBall;
         mechProb = mechProblem;
     }
 
-    public Vector<String> getBowlerNicks() {
+    final Vector<String> getBowlerNicks() {
         return bowlerNicks;
     }
 
 
-    public boolean isMechanicalProblem() {
+    final boolean isMechanicalProblem() {
         return mechProb;
     }
 
-    public int getPartySize() {
+    final int getPartySize() {
         return partySize;
     }
 
-    public int getFrameNum() {
+    final int getFrameNum() {
         return frameNum;
     }
 
-    public int getScore(int b, int roll) {
+    final int getScore(final int b, final int roll) {
         return score[b][roll];
     }
 
-    public int getIndex() {
+    final int getIndex() {
         return index;
     }
 
-    public int getBall() {
+    final int getBall() {
         return ball;
     }
 
-    public int[][] getCumulScore() {
+    final int[][] getCumulScore() {
         return cumulScore;
     }
 
-    public Bowler getBowler() {
+    public final Bowler getBowler() {
         return bowler;
     }
 
-    public boolean isPartyEmpty() {
+    final boolean isPartyEmpty() {
         return partySize == 0;
     }
 }
