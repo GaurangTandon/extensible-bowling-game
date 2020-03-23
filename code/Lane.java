@@ -131,12 +131,16 @@
  *
  */
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 
 public class Lane extends Thread implements PinsetterObserver, LaneInterface {
+    public static final int FRAME_COUNT = 10;
+    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
+    public static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
+    public static final int LAST_FRAME = FRAME_COUNT - 1;
+
     private Party party;
     private final Pinsetter setter;
     private final Vector<LaneObserver> subscribers;
@@ -150,9 +154,6 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private int ball;
     private int currBowlerIndex;
     private int frameNumber;
-    private boolean tenthFrameStrike;
-
-    private boolean canThrowAgain;
 
     private int gameNumber;
 
@@ -216,10 +217,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         final int result = egp.getResult();
         egp.destroy();
 
-        System.out.println("Result was: " + result);
-
         // TODO: send record of scores to control desk
-        if (result == 1) { // yes, want to play agian TODO: make this an enum
+        if (result == 1) { // yes, want to play again TODO: make this an enum
             scorer.resetScores();
             resetBowlerIterator();
         } else if (result == 2) {// no, dont want to play another game
@@ -227,29 +226,28 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         }
     }
 
-    private void frame9Settlement() {
-        scorer.setFinalScores(currBowlerIndex, gameNumber, scorer.get9thFrameCumulScore(currBowlerIndex));
+    private void setFinalScoresOnGameEnd() {
+        int finalScore = scorer.getBowlersFinalScoreForCurrentGame(currBowlerIndex);
+        scorer.setFinalScores(currBowlerIndex, gameNumber, finalScore);
         try {
             final String dateString = Util.getDateString();
-            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString,
-                    Integer.toString(scorer.get9thFrameCumulScore(currBowlerIndex)));
+            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, Integer.toString(finalScore));
         } catch (final Exception e) {
             System.err.println("Exception in addScore. " + e);
         }
     }
 
     private void bowlNextBowler() {
-        currentThrower = (Bowler) currentBowler.next();
-
-        canThrowAgain = true;
-        tenthFrameStrike = false;
+        currentThrower = currentBowler.next();
         ball = 0;
-        while (canThrowAgain) {
+
+        while (scorer.canRollAgain(currBowlerIndex, frameNumber)) {
             setter.ballThrown();
             ball++;
         }
-        if (frameNumber == 9) {
-            frame9Settlement();
+
+        if (frameNumber == Lane.LAST_FRAME) {
+            setFinalScoresOnGameEnd();
         }
         setter.resetState();
         currBowlerIndex++;
@@ -303,30 +301,9 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             return;
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
-        final int throwNumber = pe.getThrowNumber();
-        // TODO: what is frameNumber + 1 ??
-        scorer.markScore(currentThrower, currBowlerIndex, frameNumber + 1, throwNumber, pinsDownOnThisThrow);
+        scorer.roll(currentThrower, currBowlerIndex, pinsDownOnThisThrow);
         final LaneEvent event = lanePublish();
         publish(event);
-
-        // next logic handles the ?: what conditions dont allow them another throw?
-        // handle the case of 10th frame first
-        if (frameNumber != 9) { // TODO: verify this is actually the case? "its not the 10th frame"
-            canThrowAgain = !(pinsDownOnThisThrow == 10 || throwNumber == 2);
-            return;
-        }
-        final int totalPinsDown = pe.totalPinsDown();
-        if (totalPinsDown == 10) {
-            setter.resetPins();
-            tenthFrameStrike = throwNumber == 1;
-        }
-        setCanThrowAgain(totalPinsDown, throwNumber);
-    }
-
-    private void setCanThrowAgain(final int totalPinsDown, final int throwNumber) {
-        canThrowAgain = canThrowAgain
-                && !((totalPinsDown != 10) && (throwNumber == 2 && !tenthFrameStrike))
-                && !(throwNumber == 3);
     }
 
     /**
@@ -372,8 +349,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getScoresHashmap(),
-                frameNumber + 1, scorer.getScores(), ball, gameIsHalted);
+        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
+                frameNumber + 1, scorer.getScoresForEachBowler(), ball, gameIsHalted);
     }
 
     /**

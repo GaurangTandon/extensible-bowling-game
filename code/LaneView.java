@@ -3,8 +3,6 @@
  *
  */
 
-import com.sun.jdi.connect.LaunchingConnector;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +21,6 @@ public class LaneView implements LaneObserver, ActionListener {
 
     private final JFrame frame;
     private final Container cpanel;
-    private Vector<Bowler> bowlers;
     private JLabel[][] ballLabel;
     private JLabel[][] scoreLabel;
     private JButton maintenance;
@@ -50,8 +47,8 @@ public class LaneView implements LaneObserver, ActionListener {
 
     private JPanel makeFrame(final Party party) {
         initDone = false;
-        bowlers = party.getMembers();
-        final int numBowlers = bowlers.size();
+        final Vector<String> bowlerNicks = party.getMemberNicks();
+        final int numBowlers = party.getPartySize();
 
         final JPanel panel = new JPanel();
 
@@ -94,8 +91,7 @@ public class LaneView implements LaneObserver, ActionListener {
         for (int i = 0; i != numBowlers; i++) {
             pins[i] = new JPanel();
             pins[i].setBorder(
-                    BorderFactory.createTitledBorder(
-                            bowlers.get(i).getNick()));
+                    BorderFactory.createTitledBorder(bowlerNicks.get(i)));
             pins[i].setLayout(new GridLayout(0, 10));
             for (int k = 0; k != 10; k++) {
                 scores[i][k] = new JPanel();
@@ -142,42 +138,55 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
+    static String getCharToShow(final int currScore) {
+        final String textToSet;
+        switch (currScore) {
+            case BowlerScorer.STRIKE:
+                textToSet = "X";
+                break;
+            case BowlerScorer.SPARE:
+                textToSet = "/";
+                break;
+            default:
+                textToSet = Integer.toString(currScore);
+        }
+        return textToSet;
+    }
+
     private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
         assert i >= 0;
 
-        final int[] bowlerScores = (int[]) le.getScore().get(bowlers.get(k));
+        final int bowlScore = le.getScore(k, i);
 
-        final int bowlScore = bowlerScores[i];
-        // TODO: what's this exactly?
+        // it means that the particular roll was skipped due to a strike
         if (bowlScore == -1) {
             return;
         }
 
-        final String textToSet = LaneUtil.getCharToShow(i, bowlerScores);
+        final String textToSet = getCharToShow(bowlScore);
         final JLabel ballLabel = this.ballLabel[k][i];
 
         ballLabel.setText(textToSet);
     }
 
     public void receiveLaneEvent(final LaneEvent le) {
-        if (le.isPartyEmpty()) {
+        if (le.isPartyEmpty())
             return;
-        }
-        final int numBowlers = le.getParty().getMembers().size();
+
+        final int numBowlers = le.getPartySize();
         receiveLaneEventGraphicSetup(le);
 
         final int[][] lescores = le.getCumulScore();
-        for (int k = 0; k < numBowlers; k++) {
-            for (int i = 0; i <= le.getFrameNum() - 1; i++) {
-                if (lescores[k][i] != 0)
-                    scoreLabel[k][i].setText(
-                            (Integer.valueOf(lescores[k][i])).toString());
+        for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
+            for (int frameIdx = 0; frameIdx < le.getFrameNum(); frameIdx++) {
+                if (lescores[bowlerIdx][frameIdx] != 0)
+                    scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(lescores[bowlerIdx][frameIdx]));
             }
-            for (int i = 0; i < 21; i++) {
-                receiveLaneEventScoringSegment(le, k, i);
+
+            for (int i = 0; i < Lane.MAX_ROLLS; i++) {
+                receiveLaneEventScoringSegment(le, bowlerIdx, i);
             }
         }
-
     }
 
     public void actionPerformed(final ActionEvent e) {
