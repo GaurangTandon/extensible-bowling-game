@@ -28,7 +28,8 @@ import java.util.Vector;
 
 class LaneEvent {
 
-    private final Party p;
+    private final Vector<String> bowlerNicks;
+    private final int partySize;
     private final int ball;
     private final Bowler bowler;
     private final int[][] cumulScore;
@@ -38,8 +39,10 @@ class LaneEvent {
     private final int[] curScores;
     private final boolean mechProb;
 
-    public LaneEvent(final Party pty, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
-        p = pty;
+    public LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
+        bowlerNicks = theBowlerNicks;
+        partySize = thePartySize;
+
         index = theIndex;
         bowler = theBowler;
         cumulScore = theCumulScore;
@@ -50,12 +53,17 @@ class LaneEvent {
         mechProb = mechProblem;
     }
 
+    public Vector<String> getBowlerNicks() {
+        return bowlerNicks;
+    }
+
+
     public boolean isMechanicalProblem() {
         return mechProb;
     }
 
     public int getPartySize() {
-        return p.getPartySize();
+        return partySize;
     }
 
     public int getFrameNum() {
@@ -78,18 +86,12 @@ class LaneEvent {
         return cumulScore;
     }
 
-    public Party getParty() {
-        return p;
-    }
-
     public Bowler getBowler() {
         return bowler;
     }
 
     public boolean isPartyEmpty() {
-        if (p == null) return true;
-        Vector<Bowler> members = p.getMembers();
-        return members == null || members.isEmpty();
+        return partySize == 0;
     }
 }
  

@@ -45,10 +45,8 @@ public class LaneView implements LaneObserver, ActionListener {
         frame.setVisible(state);
     }
 
-    private JPanel makeFrame(final Party party) {
+    private JPanel makeFrame(final Vector<String> bowlerNicks, final int numBowlers) {
         initDone = false;
-        final Vector<String> bowlerNicks = party.getMemberNicks();
-        final int numBowlers = party.getPartySize();
 
         final JPanel panel = new JPanel();
 
@@ -118,7 +116,7 @@ public class LaneView implements LaneObserver, ActionListener {
 
         if (le.getFrameNum() == 1 && le.getBall() == 0 && le.getIndex() == 0) {
             cpanel.removeAll();
-            cpanel.add(makeFrame(le.getParty()), "Center");
+            cpanel.add(makeFrame(le.getBowlerNicks(), le.getPartySize()), "Center");
 
             // Button Panel
             final JPanel buttonPanel = new JPanel();

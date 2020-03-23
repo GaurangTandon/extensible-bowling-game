@@ -349,7 +349,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
+        return new LaneEvent(party.getMemberNicks(), party.getPartySize(), currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
                 frameNumber + 1, scorer.getScoresForEachBowler(), ball, gameIsHalted);
     }
 
