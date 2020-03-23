@@ -23,73 +23,59 @@
  *
  */
 
-import java.util.HashMap;
 import java.util.Vector;
 
 class LaneEvent {
 
-    private final Party p;
-    private final int ball;
-    private final Bowler bowler;
+    private final Vector<String> bowlerNicks;
+    private final int partySize;
     private final int[][] cumulScore;
     private final int[][] score;
-    private final int index;
-    private final int frameNum;
-    private final int[] curScores;
     private final boolean mechProb;
+    private final String bowlerNick;
+    private final boolean shouldSetupGraphics;
 
-    public LaneEvent(final Party pty, final int theIndex, final Bowler theBowler, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final int[] theCurScores, final int theBall, final boolean mechProblem) {
-        p = pty;
-        index = theIndex;
-        bowler = theBowler;
+    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick, final int[][] theCumulScore, final int[][] byFramePartScores, final boolean mechProblem, final boolean ssGraphics) {
+        bowlerNicks = theBowlerNicks;
+        partySize = thePartySize;
+        shouldSetupGraphics = ssGraphics;
+
+        bowlerNick = theNick;
         cumulScore = theCumulScore;
         score = byFramePartScores;
-        curScores = theCurScores;
-        frameNum = theFrameNum;
-        ball = theBall;
         mechProb = mechProblem;
     }
 
-    public boolean isMechanicalProblem() {
+    final String getBowlerNick() {
+        return bowlerNick;
+    }
+
+    final boolean shouldSetupGraphics() {
+        return shouldSetupGraphics;
+    }
+
+    final Vector<String> getBowlerNicks() {
+        return bowlerNicks;
+    }
+
+    final boolean isMechanicalProblem() {
         return mechProb;
     }
 
-    public int getPartySize() {
-        return p.getPartySize();
+    final int getPartySize() {
+        return partySize;
     }
 
-    public int getFrameNum() {
-        return frameNum;
-    }
-
-    public int getScore(int b, int roll) {
+    final int getScore(final int b, final int roll) {
         return score[b][roll];
     }
 
-    public int getIndex() {
-        return index;
-    }
-
-    public int getBall() {
-        return ball;
-    }
-
-    public int[][] getCumulScore() {
+    final int[][] getCumulScore() {
         return cumulScore;
     }
 
-    public Party getParty() {
-        return p;
-    }
-
-    public Bowler getBowler() {
-        return bowler;
-    }
-
-    public boolean isPartyEmpty() {
-        if (p == null) return true;
-        Vector<Bowler> members = p.getMembers();
-        return members == null || members.isEmpty();
+    final boolean isPartyEmpty() {
+        return partySize == 0;
     }
 }
  
