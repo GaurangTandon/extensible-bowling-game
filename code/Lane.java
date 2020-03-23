@@ -152,6 +152,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private boolean partyAssigned;
     private boolean gameFinished;
     private Iterator<Bowler> currentBowler;
+
     // TODO: what is this???
     private int ball;
     private int currBowlerIndex;
@@ -160,7 +161,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private int gameNumber;
 
     private Bowler currentThrower;            // = the thrower who just took a throw
-    private LaneScorer scorer;
+    final private LaneScorer scorer;
 
     /**
      * Lane()

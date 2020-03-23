@@ -1,4 +1,4 @@
-public class BowlerScorerTest {
+class BowlerScorerTest {
     private static BowlerScorer bs;
 
     private static void rollMany(final int val, final int count) {

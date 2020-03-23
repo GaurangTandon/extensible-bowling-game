@@ -1,7 +1,7 @@
 class BowlerScorer {
-    private int[] rolls;
-    private int[] cumulScore;
-    private int[] perFramepartRes;
+    final private int[] rolls;
+    final private int[] cumulScore;
+    final private int[] perFramepartRes;
     private int currFrame;
     private int partIndex;
     private int rollCount;

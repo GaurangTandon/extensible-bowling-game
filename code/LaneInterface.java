@@ -1,3 +1,3 @@
-public interface LaneInterface {
+interface LaneInterface {
     void pauseGame();
 }
