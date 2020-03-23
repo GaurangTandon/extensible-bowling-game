@@ -17,7 +17,7 @@ import java.util.Vector;
  * received via lane-event
  */
 public class LaneView implements LaneObserver, ActionListener {
-    private boolean initDone = true;
+    private boolean initPending;
 
     private final JFrame frame;
     private final Container cpanel;
@@ -26,7 +26,7 @@ public class LaneView implements LaneObserver, ActionListener {
     private JButton maintenance;
     private final LaneInterface lane;
 
-    public LaneView(final LaneInterface ln, final int laneNum) {
+    LaneView(final LaneInterface ln, final int laneNum) {
         lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
         cpanel = frame.getContentPane();
@@ -41,12 +41,12 @@ public class LaneView implements LaneObserver, ActionListener {
         cpanel.add(new JPanel());
     }
 
-    void setVisible(final boolean state) {
+    final void setVisible(final boolean state) {
         frame.setVisible(state);
     }
 
     private JPanel makeFrame(final Vector<String> bowlerNicks, final int numBowlers) {
-        initDone = false;
+        initPending = true;
 
         final JPanel panel = new JPanel();
 
@@ -104,13 +104,13 @@ public class LaneView implements LaneObserver, ActionListener {
             panel.add(pins[i]);
         }
 
-        initDone = true;
+        initPending = false;
         return panel;
     }
 
 
     private void receiveLaneEventGraphicSetup(final LaneEvent le) {
-        while (!initDone) {
+        while (initPending) {
             Util.busyWait(1);
         }
 
@@ -136,7 +136,7 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
-    static String getCharToShow(final int currScore) {
+    private static String getCharToShow(final int currScore) {
         final String textToSet;
         switch (currScore) {
             case BowlerScorer.STRIKE:
@@ -157,17 +157,15 @@ public class LaneView implements LaneObserver, ActionListener {
         final int bowlScore = le.getScore(k, i);
 
         // it means that the particular roll was skipped due to a strike
-        if (bowlScore == -1) {
-            return;
+        if (bowlScore != -1) {
+            final String textToSet = getCharToShow(bowlScore);
+            final JLabel ballLabel = this.ballLabel[k][i];
+
+            ballLabel.setText(textToSet);
         }
-
-        final String textToSet = getCharToShow(bowlScore);
-        final JLabel ballLabel = this.ballLabel[k][i];
-
-        ballLabel.setText(textToSet);
     }
 
-    public void receiveLaneEvent(final LaneEvent le) {
+    public final void receiveLaneEvent(final LaneEvent le) {
         if (le.isPartyEmpty())
             return;
 
@@ -187,7 +185,7 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
-    public void actionPerformed(final ActionEvent e) {
+    public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
         if (source.equals(maintenance)) {
             lane.pauseGame();

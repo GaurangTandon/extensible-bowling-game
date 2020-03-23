@@ -7,30 +7,30 @@
 
 class Score {
 
-    private final String nick;
+    private final String nickname;
     private final String date;
     private final String score;
 
-    public Score(final String nick, final String date, final String score) {
-        this.nick = nick;
+    Score(final String nick, final String date, final String score) {
+        nickname = nick;
         this.date = date;
         this.score = score;
     }
 
-    public String getNickName() {
-        return nick;
+    public final String getNickName() {
+        return nickname;
     }
 
-    public String getDate() {
+    final String getDate() {
         return date;
     }
 
-    public String getScore() {
+    final String getScore() {
         return score;
     }
 
-    public String toString() {
-        return nick + "\t" + date + "\t" + score;
+    public final String toString() {
+        return nickname + "\t" + date + "\t" + score;
     }
 
 }

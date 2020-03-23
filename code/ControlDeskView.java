@@ -36,7 +36,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
     private final ControlDeskInterface controlDesk;
 
-    JButton buttonUtil(final String text, final JPanel controlPanel) {
+    private JButton buttonUtil(final String text, final JPanel controlPanel) {
         final JButton button = new JButton(text);
         final JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
@@ -47,7 +47,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         return button;
     }
 
-    void setupControlsPanel(final JPanel colPanel) {
+    private void setupControlsPanel(final JPanel colPanel) {
         final JPanel controlsPanel = new JPanel();
         controlsPanel.setLayout(new GridLayout(3, 1));
         controlsPanel.setBorder(new TitledBorder("Controls"));
@@ -60,7 +60,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         colPanel.add(controlsPanel, "East");
     }
 
-    void setupLaneStatusPanel(final JPanel colPanel, final int numLanes) {
+    private void setupLaneStatusPanel(final JPanel colPanel, final int numLanes) {
         final JPanel laneStatusPanel = new JPanel();
         laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
         laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
@@ -80,7 +80,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         colPanel.add(laneStatusPanel, "Center");
     }
 
-    void setupPartyPanel(final JPanel colPanel) {
+    private void setupPartyPanel(final JPanel colPanel) {
         final JPanel partyPanel = new JPanel();
         partyPanel.setLayout(new FlowLayout());
         partyPanel.setBorder(new TitledBorder("Party Queue"));
@@ -93,13 +93,13 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         partyList.setVisibleRowCount(10);
         final JScrollPane partyPane = new JScrollPane(partyList);
         partyPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         partyPanel.add(partyPane);
 
         colPanel.add(partyPanel, "West");
     }
 
-    void showWindowInScreenCenter() {
+    private void showWindowInScreenCenter() {
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),
@@ -111,7 +111,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * Displays a GUI representation of the ControlDesk
      */
 
-    public ControlDeskView(final ControlDeskInterface controlDesk, final int maxMembers) {
+    ControlDeskView(final ControlDeskInterface controlDesk, final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.getNumLanes();
@@ -147,7 +147,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * @param e the ActionEvent that triggered the handler
      */
 
-    public void actionPerformed(final ActionEvent e) {
+    public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
         if (source.equals(addParty)) {
@@ -166,7 +166,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * @param addPartyView the AddPartyView that is providing a new party
      */
 
-    void updateAddParty(final AddPartyView addPartyView) {
+    final void updateAddParty(final AddPartyView addPartyView) {
         controlDesk.addPartyToQueue(addPartyView.getParty());
     }
 
@@ -176,7 +176,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * @param ce the ControlDeskEvent that triggered the handler
      */
 
-    public void receiveControlDeskEvent(final ControlDeskEvent ce) {
+    public final void receiveControlDeskEvent(final ControlDeskEvent ce) {
         partyList.setListData(ce.getPartyQueue());
     }
 }

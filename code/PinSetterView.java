@@ -141,7 +141,7 @@ public class PinSetterView implements PinsetterObserver {
             JLabel tempPin;
 
             for (int c = 0; c < 10; c++) {
-                final boolean pinKnockedDown = pe.pinKnockedDown(c);
+                final boolean pinKnockedDown = pe.isPinKnockedDown(c);
                 tempPin = pinVector.get(c);
                 if (pinKnockedDown) {
                     tempPin.setForeground(Color.lightGray);

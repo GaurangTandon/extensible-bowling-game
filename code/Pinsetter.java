@@ -78,10 +78,8 @@ import java.util.Vector;
  * to decide when to reset the pinsetter and keep scoring
  */
 public class Pinsetter {
-
     private final Random rnd;
-    public static final int PIN_COUNT = 10;
-    private final double FOUL_PROBABILITY;
+    static final int PIN_COUNT = 10;
     private final Vector<PinsetterObserver> subscribers;
 
     private final boolean[] isPinStanding;
@@ -106,7 +104,6 @@ public class Pinsetter {
      * @post a new pinsetter is created
      */
     Pinsetter() {
-        FOUL_PROBABILITY = 0.04;
         isPinStanding = new boolean[PIN_COUNT];
         rnd = new Random();
         subscribers = new Vector<>();
@@ -145,6 +142,7 @@ public class Pinsetter {
             if (!isPinStanding[i]) continue;
 
             final double pinluck = rnd.nextDouble();
+            double FOUL_PROBABILITY = 0.04;
             foul = pinluck <= FOUL_PROBABILITY;
 
             isPinStanding[i] = ((skill + pinluck) / 2.0 * 1.2) <= .5;

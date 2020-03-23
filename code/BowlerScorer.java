@@ -1,11 +1,8 @@
-import javax.swing.plaf.LabelUI;
-
 public class BowlerScorer {
-    private int[] rolls;
+    private final int[] rolls;
 
-    private int[] cumulScore;
-    private int[] finalScore;
-    private int[] perFramepartRes;
+    private final int[] cumulScore;
+    private final int[] perFramepartRes;
     private int currFrame;
     private int partIndex;
     private int rollCount;
@@ -16,11 +13,11 @@ public class BowlerScorer {
         rolls = new int[Lane.MAX_ROLLS + 2];
         cumulScore = new int[Lane.FRAME_COUNT];
         resetCumulScores();
-        finalScore = new int[Lane.FRAME_COUNT];
         perFramepartRes = new int[Lane.MAX_ROLLS];
         for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramepartRes[i] = -1;
 
         currFrame = 0;
+        rollCount = 0;
         partIndex = 0;
         score = 0;
     }

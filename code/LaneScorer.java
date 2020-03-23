@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -6,15 +5,10 @@ import java.util.Vector;
  */
 class LaneScorer {
     private int[][] finalScores;
-    int partySize;
-    private final HashMap<Integer, int[]> scores;
+    private int partySize;
     private int bowlerIndex;
     private Vector<Bowler> bowlers;
     private BowlerScorer[] bowlerScorers;
-
-    LaneScorer() {
-        scores = new HashMap<>(0);
-    }
 
     /**
      * This resets the scores for the same party
@@ -35,7 +29,7 @@ class LaneScorer {
         resetScores(bowlers, true);
     }
 
-    final void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
+    private void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
         this.bowlers = bowlers;
         partySize = bowlers.size();
 
@@ -45,8 +39,7 @@ class LaneScorer {
 
         for (int bowler = 0; bowler < partySize; bowler++) {
             bowlerScorers[bowler] = new BowlerScorer();
-            scores.put(bowler, bowlerScorers[bowler].getByFramePartResult());
-       }
+        }
     }
 
     final void roll(final int currBowlerIndex, final int pinsDowned) {
@@ -55,10 +48,9 @@ class LaneScorer {
         final BowlerScorer bowlerScorer = bowlerScorers[bowlerIndex];
         bowlerScorer.roll(pinsDowned);
         bowlerScorer.updateCumulScores();
-        scores.put(currBowlerIndex, bowlerScorer.getByFramePartResult());
     }
 
-    final boolean canRollAgain(final int currBowlerIndex, final int frameNumber){
+    final boolean canRollAgain(final int currBowlerIndex, final int frameNumber) {
         return bowlerScorers[currBowlerIndex].canRollAgain(frameNumber);
     }
 
@@ -91,7 +83,15 @@ class LaneScorer {
         return result;
     }
 
-    final boolean isFirstRoll(final int bowlerIndex){
+    final boolean isFirstRoll(final int bowlerIndex) {
         return bowlerScorers[bowlerIndex].getRollCount() == 1;
+    }
+
+    public final int getPartySize() {
+        return partySize;
+    }
+
+    private void setPartySize(final int partySize) {
+        this.partySize = partySize;
     }
 }
