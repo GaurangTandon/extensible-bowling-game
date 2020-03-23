@@ -54,6 +54,10 @@ class LaneEvent {
         return mechProb;
     }
 
+    public int getPartySize() {
+        return p.getPartySize();
+    }
+
     public int getFrameNum() {
         return frameNum;
     }

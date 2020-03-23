@@ -51,6 +51,19 @@ public class Party {
         return myBowlers;
     }
 
+    int getPartySize() {
+        return myBowlers.size();
+    }
+
+    Vector<String> getMemberNicks() {
+        Vector<String> nicks = new Vector<>(getPartySize());
+
+        for (final Bowler bowler : myBowlers) {
+            nicks.add(bowler.getNickName());
+        }
+        return nicks;
+    }
+
     String getName() {
         return name;
     }

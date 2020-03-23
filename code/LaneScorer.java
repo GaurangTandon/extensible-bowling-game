@@ -72,7 +72,6 @@ class LaneScorer {
         return curScores;
     }
 
-    // TODO: integrate with finalScores
     int[] getFinalScores(int bowler) {
         return finalScores[bowler];
     }
@@ -84,8 +83,8 @@ class LaneScorer {
         return cumulScores;
     }
 
-    int get9thFrameCumulScore(int bowler) {
-        return bowlerScorers[bowler].getCumulScore()[9];
+    int getBowlersFinalScoreForCurrentGame(int bowler) {
+        return bowlerScorers[bowler].getScore();
     }
 
     int[][] getByBowlerByFramePartResult() {

@@ -227,11 +227,11 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     }
 
     private void setFinalScoresOnGameEnd() {
-        scorer.setFinalScores(currBowlerIndex, gameNumber, scorer.get9thFrameCumulScore(currBowlerIndex));
+        int finalScore = scorer.getBowlersFinalScoreForCurrentGame(currBowlerIndex);
+        scorer.setFinalScores(currBowlerIndex, gameNumber, finalScore);
         try {
             final String dateString = Util.getDateString();
-            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString,
-                    Integer.toString(scorer.get9thFrameCumulScore(currBowlerIndex)));
+            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, Integer.toString(finalScore));
         } catch (final Exception e) {
             System.err.println("Exception in addScore. " + e);
         }
