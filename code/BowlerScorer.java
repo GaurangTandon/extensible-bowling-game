@@ -1,10 +1,6 @@
-import javax.swing.plaf.LabelUI;
-
-public class BowlerScorer {
+class BowlerScorer {
     private int[] rolls;
-
     private int[] cumulScore;
-    private int[] finalScore;
     private int[] perFramepartRes;
     private int currFrame;
     private int partIndex;
@@ -15,7 +11,6 @@ public class BowlerScorer {
         // extra 2 elements for safety from index out of bounds
         rolls = new int[Lane.MAX_ROLLS + 2];
         cumulScore = new int[Lane.FRAME_COUNT];
-        finalScore = new int[Lane.FRAME_COUNT];
         perFramepartRes = new int[Lane.MAX_ROLLS];
         for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramepartRes[i] = -1;
 
@@ -25,43 +20,43 @@ public class BowlerScorer {
     }
 
     // @pre roll - is the start of a frame
-    int getPinsDownOnThisFrame(int roll) {
+    private int getPinsDownOnThisFrame(int roll) {
         return rolls[roll] + rolls[roll + 1];
     }
 
-    boolean isStrike(int roll) {
+    private boolean isStrike(int roll) {
         return rolls[roll] == Pinsetter.PIN_COUNT;
     }
 
     // roll1 = first roll of the two spares
     // must be the first roll of the frame as well
-    boolean isSpare(int roll1) {
+    private boolean isSpare(int roll1) {
         return getPinsDownOnThisFrame(roll1) == Pinsetter.PIN_COUNT && rolls[roll1 + 1] > 0;
     }
 
     // this roll is the second roll of a frame
-    boolean isSpareRoll2(int roll2) {
+    private boolean isSpareRoll2(int roll2) {
         return rolls[roll2] + rolls[roll2 - 1] == Pinsetter.PIN_COUNT && rolls[roll2] > 0;
     }
 
-    int strikeBonus(int roll) {
+    private int strikeBonus(int roll) {
         return rolls[roll + 1] + rolls[roll + 2];
     }
 
     // roll1 = first roll of the two spares
-    int spareBonus(int roll1) {
+    private int spareBonus(int roll1) {
         return rolls[roll1 + 2];
     }
 
     void updateCumulScores() {
-        int roll = 0, frame = 0;
+        int roll = 0, frame;
 
         for (frame = 0; frame <= currFrame; frame++)
             cumulScore[frame] = 0;
 
         frame = 0;
         while (roll < rollCount) {
-            int scoreOnThisFrame = 0;
+            int scoreOnThisFrame;
             if (frame == Lane.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
                 roll += 2;
@@ -89,9 +84,8 @@ public class BowlerScorer {
         score = cumulScore[currFrame];
     }
 
-    void updateFrameAndPartIndex() {
-        boolean transgressFrame = false;
-        transgressFrame |= isStrike(rollCount);
+    private void updateFrameAndPartIndex() {
+        boolean transgressFrame = isStrike(rollCount);
         transgressFrame |= (partIndex == 1);
         transgressFrame &= currFrame < Lane.LAST_FRAME;
 
@@ -107,7 +101,7 @@ public class BowlerScorer {
      * Add this roll to the array
      * and also update frame and partindex accordingly
      *
-     * @param pinsDown
+     * @param pinsDown: number of fallen pins
      */
     void roll(int pinsDown) {
         rolls[rollCount] = pinsDown;
@@ -131,19 +125,18 @@ public class BowlerScorer {
     }
 
     int[] getCumulScore() {
-        return cumulScore;
+        return cumulScore.clone();
     }
 
-    public static final int STRIKE = 11;
-    public static final int SPARE = 12;
+    static final int STRIKE = 11;
+    static final int SPARE = 12;
 
     /**
      * Used in LaneView to display the entire row of cells for a bowler
      *
-     * @return
      */
     int[] getByFramePartResult() {
-        return perFramepartRes;
+        return perFramepartRes.clone();
     }
 
     /**

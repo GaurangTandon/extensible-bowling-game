@@ -77,10 +77,10 @@ import java.util.Vector;
  * It is the duty of the BowlerScorer:
  * to decide when to reset the pinsetter and keep scoring
  */
-public class Pinsetter {
+class Pinsetter {
 
     private final Random rnd;
-    public static final int PIN_COUNT = 10;
+    static final int PIN_COUNT = 10;
     private final double FOUL_PROBABILITY;
     private final Vector<PinsetterObserver> subscribers;
 
@@ -183,7 +183,7 @@ public class Pinsetter {
      * @pre none
      * @post pins array is reset to all pins up
      */
-    void resetPins() {
+    private void resetPins() {
         for (int i = 0; i < PIN_COUNT; i++) {
             isPinStanding[i] = true;
         }

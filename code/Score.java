@@ -11,21 +11,17 @@ class Score {
     private final String date;
     private final String score;
 
-    public Score(final String nick, final String date, final String score) {
+    Score(final String nick, final String date, final String score) {
         this.nick = nick;
         this.date = date;
         this.score = score;
     }
 
-    public String getNickName() {
-        return nick;
-    }
-
-    public String getDate() {
+    String getDate() {
         return date;
     }
 
-    public String getScore() {
+    String getScore() {
         return score;
     }
 

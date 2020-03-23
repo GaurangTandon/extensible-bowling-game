@@ -10,10 +10,6 @@ class LaneScorer {
     private Vector<Bowler> bowlers;
     private BowlerScorer[] bowlerScorers;
 
-    LaneScorer() {
-
-    }
-
     /**
      * This resets the scores for the same party
      */

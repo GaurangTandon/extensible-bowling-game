@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
 
+    // FIXME: Too many Class Properties - Status OK as they are due to Swing
     private final JPanel jp;
 
     private final JLabel curBowler;

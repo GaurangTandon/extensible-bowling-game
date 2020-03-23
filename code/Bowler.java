@@ -34,19 +34,19 @@ public class Bowler {
     }
 
 
-    public String getNickName() {
+    String getNickName() {
         return nickName;
     }
 
-    public String getFullName() {
+    String getFullName() {
         return fullName;
     }
 
-    public String getNick() {
+    String getNick() {
         return nickName;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 

@@ -32,7 +32,7 @@ class NewPatronView implements ActionListener {
 
     private final AddPartyView addParty;
 
-    public NewPatronView(final AddPartyView v) {
+    NewPatronView(final AddPartyView v) {
 
         addParty = v;
 
@@ -130,7 +130,7 @@ class NewPatronView implements ActionListener {
         }
     }
 
-    public String getNick() {
+    String getNick() {
         return nick;
     }
 
@@ -138,7 +138,7 @@ class NewPatronView implements ActionListener {
         return full;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 

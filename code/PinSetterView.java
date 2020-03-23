@@ -39,7 +39,7 @@ public class PinSetterView implements PinsetterObserver {
 
     private final JFrame frame;
 
-    public PinSetterView(final int laneNum) {
+    PinSetterView(final int laneNum) {
         frame = new JFrame("Lane " + laneNum + ":");
 
         final Container cpanel = frame.getContentPane();
@@ -159,14 +159,6 @@ public class PinSetterView implements PinsetterObserver {
             }
             secondRoll.setBackground(Color.black);
         }
-    }
-
-    void show() {
-        frame.setVisible(true);
-    }
-
-    void hide() {
-        frame.setVisible(false);
     }
 
     void setVisible(final boolean state) {

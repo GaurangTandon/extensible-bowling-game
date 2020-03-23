@@ -136,6 +136,8 @@ import java.util.Vector;
 
 
 public class Lane extends Thread implements PinsetterObserver, LaneInterface {
+    // FIXME: Too many Class Properties - Status BAD, but a lot to fix
+
     static final int FRAME_COUNT = 10;
     // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
     static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;

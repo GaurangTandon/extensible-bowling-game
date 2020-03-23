@@ -9,7 +9,7 @@ class PrintableText implements Printable {
     private final String text;
     private final int POINTS_PER_INCH;
 
-    public PrintableText(final String t) {
+    PrintableText(final String t) {
         POINTS_PER_INCH = 72;
         text = t;
     }

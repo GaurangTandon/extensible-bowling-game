@@ -11,7 +11,7 @@ class EndGamePrompt implements ActionListener {
 
     private int result;
 
-    public EndGamePrompt(final String partyName) {
+    EndGamePrompt(final String partyName) {
         result = 0;
 
         win = new JFrame("Another Game for " + partyName + "?");
@@ -87,7 +87,7 @@ class EndGamePrompt implements ActionListener {
         return result;
     }
 
-    public void destroy() {
+    void destroy() {
         win.setVisible(false);
     }
 

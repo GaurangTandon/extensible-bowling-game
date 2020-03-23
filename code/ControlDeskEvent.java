@@ -27,7 +27,7 @@ class ControlDeskEvent {
      *
      */
 
-	public ControlDeskEvent(final Vector partyQueue ) {
+	ControlDeskEvent(final Vector partyQueue) {
 		this.partyQueue = partyQueue;
 	}
 
@@ -38,8 +38,8 @@ class ControlDeskEvent {
      *
      */
 
-	public Vector getPartyQueue() {
-		return partyQueue;
+	Vector getPartyQueue() {
+		return (Vector) partyQueue.clone();
 	}
 
 }

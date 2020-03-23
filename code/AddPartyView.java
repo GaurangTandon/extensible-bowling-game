@@ -37,6 +37,7 @@ import java.util.Vector;
 
 class AddPartyView implements ActionListener, ListSelectionListener {
 
+    // FIXME: Too many Class Properties - Status OK as they are due to Swing
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
     private final int maxSize;
 
