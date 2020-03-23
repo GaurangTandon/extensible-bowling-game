@@ -45,11 +45,11 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final JButton newPatron;
     private final JButton remPatron;
     private final JButton finished;
-    private final JList partyList;
-    private final JList allBowlers;
-    private final Vector party;
+    private final JList<String> partyList;
+    private final JList<Object> allBowlers;
+    private final Vector<String> party;
     private final ControlDeskView controlDesk;
-    private Vector bowlerdb;
+    private Vector<Object> bowlerdb;
 
     private String selectedNick, selectedMember;
 
@@ -70,11 +70,11 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         partyPanel.setLayout(new FlowLayout());
         partyPanel.setBorder(new TitledBorder("Your Party"));
 
-        party = new Vector();
-        final Vector empty = new Vector();
+        party = new Vector<>();
+        final Vector<String> empty = new Vector<>();
         empty.add("(Empty)");
 
-        partyList = new JList(empty);
+        partyList = new JList<>(empty);
         partyList.setFixedCellWidth(120);
         partyList.setVisibleRowCount(5);
         partyList.addListSelectionListener(this);
@@ -88,12 +88,12 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         bowlerPanel.setBorder(new TitledBorder("Bowler Database"));
 
         try {
-            bowlerdb = new Vector(BowlerFile.getBowlers());
+            bowlerdb = new Vector<Object>(BowlerFile.getBowlers());
         } catch (final Exception e) {
             System.err.println("File Error");
-            bowlerdb = new Vector();
+            bowlerdb = new Vector<>();
         }
-        allBowlers = new JList(bowlerdb);
+        allBowlers = new JList<>(bowlerdb);
         allBowlers.setVisibleRowCount(8);
         allBowlers.setFixedCellWidth(120);
         final JScrollPane bowlerPane = new JScrollPane(allBowlers);
@@ -108,34 +108,10 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
         new Insets(4, 4, 4, 4);
 
-        addPatron = new JButton("Add to Party");
-        final JPanel addPatronPanel = new JPanel();
-        addPatronPanel.setLayout(new FlowLayout());
-        addPatron.addActionListener(this);
-        addPatronPanel.add(addPatron);
-
-        remPatron = new JButton("Remove Member");
-        final JPanel remPatronPanel = new JPanel();
-        remPatronPanel.setLayout(new FlowLayout());
-        remPatron.addActionListener(this);
-        remPatronPanel.add(remPatron);
-
-        newPatron = new JButton("New Patron");
-        final JPanel newPatronPanel = new JPanel();
-        newPatronPanel.setLayout(new FlowLayout());
-        newPatron.addActionListener(this);
-        newPatronPanel.add(newPatron);
-
-        finished = new JButton("Finished");
-        final JPanel finishedPanel = new JPanel();
-        finishedPanel.setLayout(new FlowLayout());
-        finished.addActionListener(this);
-        finishedPanel.add(finished);
-
-        buttonPanel.add(addPatronPanel);
-        buttonPanel.add(remPatronPanel);
-        buttonPanel.add(newPatronPanel);
-        buttonPanel.add(finishedPanel);
+        addPatron = Util.addButtonPanel("Add to Party", buttonPanel, this);
+        remPatron = Util.addButtonPanel("Remove Member", buttonPanel, this);
+        newPatron = Util.addButtonPanel("New Patron", buttonPanel, this);
+        finished = Util.addButtonPanel("Finished", buttonPanel, this);
 
         // Clean up main panel
         colPanel.add(partyPanel);
@@ -222,7 +198,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
      * @param newPatron the NewPatronView that called this method
      */
 
-    public void updateNewPatron(final NewPatronView newPatron) {
+    void updateNewPatron(final NewPatronView newPatron) {
         try {
             final Bowler checkBowler = BowlerFile.getBowlerInfo(newPatron.getNickName());
             if (checkBowler == null) {
@@ -230,7 +206,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
                         newPatron.getNickName(),
                         newPatron.getFull(),
                         newPatron.getEmail());
-                bowlerdb = new Vector(BowlerFile.getBowlers());
+                bowlerdb = new Vector<Object>(BowlerFile.getBowlers());
                 allBowlers.setListData(bowlerdb);
                 party.add(newPatron.getNickName());
                 partyList.setListData(party);
@@ -246,8 +222,8 @@ class AddPartyView implements ActionListener, ListSelectionListener {
      * Accessor for Party
      */
 
-    public Vector getParty() {
-        return party;
+    public Vector<String> getParty() {
+        return (Vector<String>) party.clone();
     }
 
 }

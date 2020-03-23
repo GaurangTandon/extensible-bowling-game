@@ -5,30 +5,20 @@ import java.awt.event.ActionListener;
 
 public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
 
-    private final JPanel jp;
+    private final JPanel gamePanel;
 
-    private final JLabel curBowler;
+    private final JLabel currentBowler;
     private final JLabel pinsDown;
     private final JButton viewLane;
     private final JButton viewPinSetter;
     private final JButton maintenance;
 
-    private final PinSetterView psv;
-    private final LaneView lv;
+    private final PinSetterView pinSetterView;
+    private final LaneView laneView;
     private final Lane lane;
 
     private boolean laneShowing;
     private boolean psShowing;
-
-    private JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
-        final JButton btn = new JButton(text);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        btn.addActionListener(this);
-        panel.add(btn);
-        buttonPanel.add(panel);
-        return btn;
-    }
 
     LaneStatusView(final Lane lane, final int laneNum) {
         this.lane = lane;
@@ -36,18 +26,18 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         laneShowing = false;
         psShowing = false;
 
-        psv = new PinSetterView(laneNum);
+        pinSetterView = new PinSetterView(laneNum);
         final Pinsetter ps = lane.getPinsetter();
-        ps.subscribe(psv);
+        ps.subscribe(pinSetterView);
 
-        lv = new LaneView(lane, laneNum);
-        lane.subscribe(lv);
+        laneView = new LaneView(lane, laneNum);
+        lane.subscribe(laneView);
 
 
-        jp = new JPanel();
-        jp.setLayout(new FlowLayout());
+        gamePanel = new JPanel();
+        gamePanel.setLayout(new FlowLayout());
         final JLabel cLabel = new JLabel("Now Bowling: ");
-        curBowler = new JLabel("(no one)");
+        currentBowler = new JLabel("(no one)");
         final JLabel pdLabel = new JLabel("Pins Down: ");
         pinsDown = new JLabel("0");
 
@@ -55,36 +45,34 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        new Insets(4, 4, 4, 4);
-
-        viewLane = buttonInsertUtil(buttonPanel, "View Lane");
-        viewPinSetter = buttonInsertUtil(buttonPanel, "Pinsetter");
-        maintenance = buttonInsertUtil(buttonPanel, "     ");
+        viewLane = Util.addButtonPanel("View Lane", buttonPanel, this);
+        viewPinSetter = Util.addButtonPanel("Pinsetter", buttonPanel, this);
+        maintenance = Util.addButtonPanel("     ", buttonPanel, this);
 
         maintenance.setBackground(Color.GREEN);
         viewLane.setEnabled(false);
         viewPinSetter.setEnabled(false);
 
-        jp.add(cLabel);
-        jp.add(curBowler);
-        jp.add(pdLabel);
-        jp.add(pinsDown);
+        gamePanel.add(cLabel);
+        gamePanel.add(currentBowler);
+        gamePanel.add(pdLabel);
+        gamePanel.add(pinsDown);
 
-        jp.add(buttonPanel);
+        gamePanel.add(buttonPanel);
     }
 
     final JPanel showLane() {
-        return jp;
+        return gamePanel;
     }
 
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
         if (lane.isPartyAssigned() && source.equals(viewPinSetter)) {
             psShowing = !psShowing;
-            psv.setVisible(psShowing);
+            pinSetterView.setVisible(psShowing);
         }
         if (source.equals(viewLane) && lane.isPartyAssigned()) {
-            lv.setVisible(laneShowing);
+            laneView.setVisible(laneShowing);
             laneShowing = !laneShowing;
         }
         if (source.equals(maintenance)) {
@@ -97,7 +85,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
     public final void receiveLaneEvent(final LaneEvent le) {
         final String bowlerNick = le.getBowlerNick();
-        curBowler.setText(bowlerNick);
+        currentBowler.setText(bowlerNick);
         if (le.isMechanicalProblem()) {
             maintenance.setBackground(Color.RED);
         }

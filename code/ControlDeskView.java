@@ -36,25 +36,14 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
     private final ControlDeskInterface controlDesk;
 
-    private JButton buttonUtil(final String text, final JPanel controlPanel) {
-        final JButton button = new JButton(text);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        button.addActionListener(this);
-        panel.add(button);
-        controlPanel.add(panel);
-
-        return button;
-    }
-
     private void setupControlsPanel(final JPanel colPanel) {
         final JPanel controlsPanel = new JPanel();
         controlsPanel.setLayout(new GridLayout(3, 1));
         controlsPanel.setBorder(new TitledBorder("Controls"));
 
-        addParty = buttonUtil("Add Party", controlsPanel);
-        assign = buttonUtil("Assign Lanes", controlsPanel);
-        finished = buttonUtil("Finished", controlsPanel);
+        addParty = Util.addButtonPanel("Add Party", controlsPanel, this);
+        assign = Util.addButtonPanel("Assign Lanes", controlsPanel, this);
+        finished = Util.addButtonPanel("Finished", controlsPanel, this);
         controlsPanel.remove(assign);
 
         colPanel.add(controlsPanel, "East");

@@ -32,7 +32,7 @@ class NewPatronView implements ActionListener {
 
     private final AddPartyView addParty;
 
-    public NewPatronView(final AddPartyView v) {
+    NewPatronView(final AddPartyView v) {
 
         addParty = v;
 
@@ -48,51 +48,16 @@ class NewPatronView implements ActionListener {
         patronPanel.setLayout(new GridLayout(3, 1));
         patronPanel.setBorder(new TitledBorder("Your Info"));
 
-        final JPanel nickPanel = new JPanel();
-        nickPanel.setLayout(new FlowLayout());
-        final JLabel nickLabel = new JLabel("Nick Name");
-        nickField = new JTextField("", 15);
-        nickPanel.add(nickLabel);
-        nickPanel.add(nickField);
-
-        final JPanel fullPanel = new JPanel();
-        fullPanel.setLayout(new FlowLayout());
-        final JLabel fullLabel = new JLabel("Full Name");
-        fullField = new JTextField("", 15);
-        fullPanel.add(fullLabel);
-        fullPanel.add(fullField);
-
-        final JPanel emailPanel = new JPanel();
-        emailPanel.setLayout(new FlowLayout());
-        final JLabel emailLabel = new JLabel("E-Mail");
-        emailField = new JTextField("", 15);
-        emailPanel.add(emailLabel);
-        emailPanel.add(emailField);
-
-        patronPanel.add(nickPanel);
-        patronPanel.add(fullPanel);
-        patronPanel.add(emailPanel);
+        nickField = Util.addFieldPanel("Nick Name", patronPanel);
+        fullField = Util.addFieldPanel("Full Name", patronPanel);
+        emailField = Util.addFieldPanel("E-Mail", patronPanel);
 
         // Button Panel
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 1));
 
-        new Insets(4, 4, 4, 4);
-
-        finished = new JButton("Add Patron");
-        final JPanel finishedPanel = new JPanel();
-        finishedPanel.setLayout(new FlowLayout());
-        finished.addActionListener(this);
-        finishedPanel.add(finished);
-
-        abort = new JButton("Abort");
-        final JPanel abortPanel = new JPanel();
-        abortPanel.setLayout(new FlowLayout());
-        abort.addActionListener(this);
-        abortPanel.add(abort);
-
-        buttonPanel.add(abortPanel);
-        buttonPanel.add(finishedPanel);
+        finished = Util.addButtonPanel("Add Patron", buttonPanel, this);
+        abort = Util.addButtonPanel("Abort", buttonPanel, this);
 
         // Clean up main panel
         colPanel.add(patronPanel, "Center");
@@ -111,8 +76,7 @@ class NewPatronView implements ActionListener {
 
     }
 
-    // TODO: this method is duplicated across several classes
-    // with similar characteristics, investigate
+    // TODO: this method is duplicated across several classes with similar characteristics, investigate
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
         final boolean aborted = source.equals(abort);
@@ -130,7 +94,7 @@ class NewPatronView implements ActionListener {
         }
     }
 
-    public String getNickName() {
+    String getNickName() {
         return nick;
     }
 
@@ -138,7 +102,7 @@ class NewPatronView implements ActionListener {
         return full;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
