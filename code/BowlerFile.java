@@ -17,7 +17,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.Vector;
 
 /**
@@ -37,7 +36,7 @@ class BowlerFile {
      * @return a Bowler object
      */
 
-    public static Bowler getBowlerInfo(final String nickName)
+    static Bowler getBowlerInfo(final String nickName)
             throws IOException {
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
@@ -66,18 +65,14 @@ class BowlerFile {
      * @param email    the E-mail Address of the Bowler
      */
 
-    public static void putBowlerInfo(
+    static void putBowlerInfo(
             final String nickName,
             final String fullName,
             final String email)
             throws IOException {
 
         final String data = nickName + "\t" + fullName + "\t" + email + "\n";
-
-        final RandomAccessFile out = new RandomAccessFile(BOWLER_DAT, "rw");
-        out.skipBytes((int) out.length());
-        out.writeBytes(data);
-        out.close();
+        Util.writeToFile(data, BOWLER_DAT);
     }
 
     /**
@@ -86,10 +81,10 @@ class BowlerFile {
      * @return a Vector of Strings
      */
 
-    public static Vector getBowlers()
+    static Vector<String> getBowlers()
             throws IOException {
 
-        final Vector allBowlers = new Vector();
+        final Vector<String> allBowlers = new Vector<>();
 
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;

@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -41,5 +43,12 @@ class Util {
         btn.addActionListener(listener);
         panel.add(btn);
         toPanel.add(panel);
+    }
+
+    static void writeToFile(String data, String filename) throws IOException {
+        final RandomAccessFile out = new RandomAccessFile(filename, "rw");
+        out.skipBytes((int) out.length());
+        out.writeBytes(data);
+        out.close();
     }
 }

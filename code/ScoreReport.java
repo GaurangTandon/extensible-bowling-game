@@ -16,7 +16,7 @@ class ScoreReport {
 
     private String content;
 
-    public ScoreReport(final Bowler bowler, final int[] scores, final int games) {
+    ScoreReport(final Bowler bowler, final int[] scores, final int games) {
         final String nick = bowler.getNick();
         final String full = bowler.getFullName();
         Vector<Score> v = null;
@@ -51,7 +51,7 @@ class ScoreReport {
 
     }
 
-    public void sendEmail(final String recipient) {
+    void sendEmail(final String recipient) {
         try {
             final Socket s = new Socket("osfmail.rit.edu", 25);
             final BufferedReader in =
@@ -81,7 +81,7 @@ class ScoreReport {
         }
     }
 
-    public void sendPrintout() {
+    void sendPrintout() {
         final PrinterJob job = PrinterJob.getPrinterJob();
 
         final PrintableText printobj = new PrintableText(content);

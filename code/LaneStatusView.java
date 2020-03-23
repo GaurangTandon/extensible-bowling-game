@@ -20,7 +20,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     private boolean laneShowing;
     private boolean psShowing;
 
-    JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
+    private JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
         final JButton btn = new JButton(text);
         Util.addButtonPanel(btn, buttonPanel, this);
         return btn;

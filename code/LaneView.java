@@ -72,8 +72,8 @@ public class LaneView implements LaneObserver, ActionListener {
             }
         }
 
-        for (int i = 0; i != numBowlers; i++) {
-            for (int j = 0; j != 9; j++) {
+        for (int i = 0; i < numBowlers; i++) {
+            for (int j = 0; j < 9; j++) {
                 ballGrid[i][j] = new JPanel();
                 ballGrid[i][j].setLayout(new GridLayout(0, 3));
                 ballGrid[i][j].add(new JLabel("  "), BorderLayout.EAST);

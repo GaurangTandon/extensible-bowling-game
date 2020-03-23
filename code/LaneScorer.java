@@ -6,14 +6,12 @@ import java.util.Vector;
  */
 class LaneScorer {
     private int[][] finalScores;
-    int partySize;
-    private final HashMap<Bowler, int[]> scores;
-    private int bowlerIndex;
+    private int partySize;
     private Vector<Bowler> bowlers;
     private BowlerScorer[] bowlerScorers;
 
     LaneScorer() {
-        scores = new HashMap<>(0);
+
     }
 
     /**
@@ -35,7 +33,7 @@ class LaneScorer {
         resetScores(bowlers, true);
     }
 
-    void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
+    private void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
         this.bowlers = bowlers;
         partySize = bowlers.size();
         if (resetFinalScores)
@@ -43,17 +41,14 @@ class LaneScorer {
         bowlerScorers = new BowlerScorer[partySize];
         for (int bowler = 0; bowler < partySize; bowler++) {
             bowlerScorers[bowler] = new BowlerScorer();
-            scores.put(bowlers.get(bowler), bowlerScorers[bowler].getByFramePartResult());
        }
     }
 
-    void roll(final Bowler currBowler, final int currBowlerIndex, final int pinsDowned) {
-        bowlerIndex = currBowlerIndex;
+    void roll(final int currBowlerIndex, final int pinsDowned) {
 
-        final BowlerScorer bowlerScorer = bowlerScorers[bowlerIndex];
+        final BowlerScorer bowlerScorer = bowlerScorers[currBowlerIndex];
         bowlerScorer.roll(pinsDowned);
         bowlerScorer.updateCumulScores();
-        scores.put(currBowler, bowlerScorer.getByFramePartResult());
     }
 
     boolean canRollAgain(final int currBowlerIndex, final int frameNumber){
@@ -62,14 +57,6 @@ class LaneScorer {
 
     void setFinalScores(int bowlerIdx, int gameNum, int value) {
         finalScores[bowlerIdx][gameNum] = value;
-    }
-
-    int[] getScoresForEachBowler() {
-        int[] curScores = new int[partySize];
-        for (int i = 0; i < partySize; i++) {
-            curScores[i] = bowlerScorers[i].getScore();
-        }
-        return curScores;
     }
 
     int[] getFinalScores(int bowler) {

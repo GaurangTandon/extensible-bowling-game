@@ -1,25 +1,20 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.Vector;
 
 class ScoreHistoryFile {
 
     private static final String SCOREHISTORY_DAT = "SCOREHISTORY.DAT";
 
-    public static void addScore(final String nick, final String date, final String score)
+    static void addScore(final String nick, final String date, final String score)
             throws IOException {
 
         final String data = nick + "\t" + date + "\t" + score + "\n";
-
-        final RandomAccessFile out = new RandomAccessFile(SCOREHISTORY_DAT, "rw");
-        out.skipBytes((int) out.length());
-        out.writeBytes(data);
-        out.close();
+        Util.writeToFile(data, SCOREHISTORY_DAT);
     }
 
-    public static Vector<Score> getScores(final String nick)
+    static Vector<Score> getScores(final String nick)
             throws IOException {
         final Vector<Score> scores = new Vector<>();
 

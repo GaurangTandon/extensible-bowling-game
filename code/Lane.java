@@ -301,7 +301,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             return;
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
-        scorer.roll(currentThrower, currBowlerIndex, pinsDownOnThisThrow);
+        scorer.roll(currBowlerIndex, pinsDownOnThisThrow);
         final LaneEvent event = lanePublish();
         publish(event);
     }
