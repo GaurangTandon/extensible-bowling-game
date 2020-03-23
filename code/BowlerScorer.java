@@ -5,6 +5,7 @@ public class BowlerScorer {
 
     private int[] cumulScore;
     private int[] finalScore;
+    private int[] perFramepartRes;
     private int currFrame;
     private int partIndex;
     private int rollCount;
@@ -15,6 +16,8 @@ public class BowlerScorer {
         rolls = new int[Lane.MAX_ROLLS + 2];
         cumulScore = new int[Lane.FRAME_COUNT];
         finalScore = new int[Lane.FRAME_COUNT];
+        perFramepartRes = new int[Lane.MAX_ROLLS];
+        for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramepartRes[i] = -1;
 
         currFrame = 0;
         partIndex = 0;
@@ -31,8 +34,14 @@ public class BowlerScorer {
     }
 
     // roll1 = first roll of the two spares
+    // must be the first roll of the frame as well
     boolean isSpare(int roll1) {
-        return getPinsDownOnThisFrame(roll1) == Pinsetter.PIN_COUNT;
+        return getPinsDownOnThisFrame(roll1) == Pinsetter.PIN_COUNT && rolls[roll1 + 1] > 0;
+    }
+
+    // this roll is the second roll of a frame
+    boolean isSpareRoll2(int roll2) {
+        return rolls[roll2] + rolls[roll2 - 1] == Pinsetter.PIN_COUNT && rolls[roll2] > 0;
     }
 
     int strikeBonus(int roll) {
@@ -80,15 +89,7 @@ public class BowlerScorer {
         score = cumulScore[currFrame];
     }
 
-    /**
-     * Add this roll to the array
-     * and also update frame and partindex accordingly
-     *
-     * @param pinsDown
-     */
-    void roll(int pinsDown) {
-        rolls[rollCount] = pinsDown;
-
+    void updateFrameAndPartIndex() {
         boolean transgressFrame = false;
         transgressFrame |= isStrike(rollCount);
         transgressFrame |= (partIndex == 1);
@@ -100,6 +101,27 @@ public class BowlerScorer {
         } else {
             partIndex++;
         }
+    }
+
+    /**
+     * Add this roll to the array
+     * and also update frame and partindex accordingly
+     *
+     * @param pinsDown
+     */
+    void roll(int pinsDown) {
+        rolls[rollCount] = pinsDown;
+
+        // update the display
+        int updateIndex = 2 * currFrame + partIndex;
+
+        if (partIndex == 1 && isSpareRoll2(rollCount)) {
+            perFramepartRes[updateIndex] = SPARE;
+        } else if ((partIndex == 0 || currFrame == Lane.LAST_FRAME) && isStrike(rollCount))
+            perFramepartRes[updateIndex] = STRIKE;
+        else perFramepartRes[updateIndex] = rolls[rollCount];
+
+        updateFrameAndPartIndex();
 
         rollCount++;
     }
@@ -121,40 +143,7 @@ public class BowlerScorer {
      * @return
      */
     int[] getByFramePartResult() {
-        int[] res = new int[Lane.MAX_ROLLS];
-        for (int i = 0; i < Lane.MAX_ROLLS; i++) res[i] = -1;
-        int frame = 0, frameIndex = 0;
-
-        for (int roll = 0; roll < rollCount; roll++) {
-            int index = frame * 2 + frameIndex;
-
-            if (isStrike(roll)) {
-                res[index] = STRIKE;
-                if (frame < Lane.LAST_FRAME) {
-                    frame++;
-                    frameIndex = 0;
-                } else {
-                    frameIndex++;
-                }
-            } else if (isSpare(roll)) {
-                res[index] = rolls[roll];
-                res[index + 1] = SPARE;
-                frame++;
-                frameIndex = 0;
-            } else {
-                res[index] = rolls[roll];
-                if (frame < Lane.LAST_FRAME && frameIndex == 1) {
-                    frameIndex = 0;
-                    frame++;
-                } else {
-                    frameIndex++;
-                }
-            }
-
-            frame = Math.min(frame, Lane.LAST_FRAME);
-        }
-
-        return res;
+        return perFramepartRes;
     }
 
     /**
@@ -170,9 +159,8 @@ public class BowlerScorer {
         // so i am basically checking that the bowler is still in the same frame
         // as he was in the last roll
 
-        if (currFrame != frameNumber) {
+        if (currFrame != frameNumber)
             return false;
-        }
 
         if (currFrame < Lane.LAST_FRAME)
             return true;

@@ -140,23 +140,15 @@ public class Pinsetter {
         int pinsDownedOnThisThrow = 0;
         foul = false;
         final double skill = rnd.nextDouble();
-//        final boolean TESTING = true;
 
         for (int i = 0; i < PIN_COUNT; i++) {
-//            if (TESTING) {
-//                if (throwNumber < 9) {
-//                    isPinStanding[i] = false;
-//                } else if (i <= 1 && throwNumber >= 9) {
-//                    isPinStanding[i] = false;
-//                }
-//            } else if (!TESTING) {
             if (!isPinStanding[i]) continue;
 
             final double pinluck = rnd.nextDouble();
             foul = pinluck <= FOUL_PROBABILITY;
 
             isPinStanding[i] = ((skill + pinluck) / 2.0 * 1.2) <= .5;
-//            }
+
             if (!isPinStanding[i]) {
                 pinsDownedOnThisThrow++;
             }
