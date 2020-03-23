@@ -15,6 +15,7 @@ public class BowlerScorer {
         // extra 2 elements for safety from index out of bounds
         rolls = new int[Lane.MAX_ROLLS + 2];
         cumulScore = new int[Lane.FRAME_COUNT];
+        resetCumulScores();
         finalScore = new int[Lane.FRAME_COUNT];
         perFramepartRes = new int[Lane.MAX_ROLLS];
         for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramepartRes[i] = -1;
@@ -53,15 +54,20 @@ public class BowlerScorer {
         return rolls[roll1 + 2];
     }
 
+    void resetCumulScores() {
+        for (int frame = 0; frame < Lane.FRAME_COUNT; frame++)
+            cumulScore[frame] = -1;
+    }
+
     void updateCumulScores() {
         int roll = 0, frame = 0;
 
-        for (frame = 0; frame <= currFrame; frame++)
-            cumulScore[frame] = 0;
+        resetCumulScores();
+        for (int i = 0; i <= currFrame; i++) cumulScore[i] = 0;
 
-        frame = 0;
         while (roll < rollCount) {
             int scoreOnThisFrame = 0;
+
             if (frame == Lane.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
                 roll += 2;
@@ -85,6 +91,10 @@ public class BowlerScorer {
 
         for (frame = 1; frame <= currFrame; frame++)
             cumulScore[frame] += cumulScore[frame - 1];
+
+        // don't display score for this frame
+        // if it hasn't started yet
+        if (partIndex == 0) cumulScore[currFrame] = -1;
 
         score = cumulScore[currFrame];
     }

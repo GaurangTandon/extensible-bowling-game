@@ -354,7 +354,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         shouldSetupGraphics &= ball == 0;
         shouldSetupGraphics &= currBowlerIndex == 0;
         return new LaneEvent(party.getMemberNicks(), party.getPartySize(), currentThrower.getNick(), scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
-                frameNumber + 1, gameIsHalted, shouldSetupGraphics);
+                gameIsHalted, shouldSetupGraphics);
     }
 
     /**

@@ -31,12 +31,11 @@ class LaneEvent {
     private final int partySize;
     private final int[][] cumulScore;
     private final int[][] score;
-    private final int frameNum;
     private final boolean mechProb;
     private final String bowlerNick;
     private final boolean shouldSetupGraphics;
 
-    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick, final int[][] theCumulScore, final int[][] byFramePartScores, final int theFrameNum, final boolean mechProblem, final boolean ssGraphics) {
+    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick, final int[][] theCumulScore, final int[][] byFramePartScores, final boolean mechProblem, final boolean ssGraphics) {
         bowlerNicks = theBowlerNicks;
         partySize = thePartySize;
         shouldSetupGraphics = ssGraphics;
@@ -44,11 +43,10 @@ class LaneEvent {
         bowlerNick = theNick;
         cumulScore = theCumulScore;
         score = byFramePartScores;
-        frameNum = theFrameNum;
         mechProb = mechProblem;
     }
 
-    final String getBowlerNick(){
+    final String getBowlerNick() {
         return bowlerNick;
     }
 
@@ -60,17 +58,12 @@ class LaneEvent {
         return bowlerNicks;
     }
 
-
     final boolean isMechanicalProblem() {
         return mechProb;
     }
 
     final int getPartySize() {
         return partySize;
-    }
-
-    final int getFrameNum() {
-        return frameNum;
     }
 
     final int getScore(final int b, final int roll) {

@@ -38,9 +38,11 @@ class LaneScorer {
     void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
         this.bowlers = bowlers;
         partySize = bowlers.size();
+
         if (resetFinalScores)
             finalScores = new int[partySize][128]; //Hardcoding a max of 128 games, bite me.
         bowlerScorers = new BowlerScorer[partySize];
+
         for (int bowler = 0; bowler < partySize; bowler++) {
             bowlerScorers[bowler] = new BowlerScorer();
             scores.put(bowlers.get(bowler), bowlerScorers[bowler].getByFramePartResult());
