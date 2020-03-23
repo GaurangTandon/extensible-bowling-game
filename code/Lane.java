@@ -149,15 +149,11 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
 
     private boolean partyAssigned;
     private boolean gameFinished;
-    private Iterator<Bowler> currentBowler;
-    // TODO: what is this???
-    private int ball;
     private int currBowlerIndex;
     private int frameNumber;
 
     private int gameNumber;
 
-    private Bowler currentThrower;            // = the thrower who just took a throw
     private LaneScorer scorer;
 
     /**
@@ -220,7 +216,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         // TODO: send record of scores to control desk
         if (result == 1) { // yes, want to play again TODO: make this an enum
             scorer.resetScores();
-            resetBowlerIterator();
+            currBowlerIndex = 0;
         } else if (result == 2) {// no, dont want to play another game
             exitGame(partyName);
         }
@@ -231,19 +227,15 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         scorer.setFinalScores(currBowlerIndex, gameNumber, finalScore);
         try {
             final String dateString = Util.getDateString();
-            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, Integer.toString(finalScore));
+            ScoreHistoryFile.addScore(getCurrentThrowerNick(), dateString, Integer.toString(finalScore));
         } catch (final Exception e) {
             System.err.println("Exception in addScore. " + e);
         }
     }
 
     private void bowlNextBowler() {
-        currentThrower = currentBowler.next();
-        ball = 0;
-
         while (scorer.canRollAgain(currBowlerIndex, frameNumber)) {
             setter.ballThrown();
-            ball++;
         }
 
         if (frameNumber == Lane.LAST_FRAME) {
@@ -253,12 +245,15 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         currBowlerIndex++;
     }
 
+    private String getCurrentThrowerNick(){
+        return party.getMemberNick(currBowlerIndex);
+    }
+
     private void continueGame() {
-        if (currentBowler.hasNext()) {
+        if (currBowlerIndex < party.getPartySize()) {
             bowlNextBowler();
         } else {
             frameNumber++;
-            resetBowlerIterator();
             currBowlerIndex = 0;
             if (frameNumber > 9) {
                 gameFinished = true;
@@ -301,23 +296,10 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             return;
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
-        scorer.roll(currentThrower, currBowlerIndex, pinsDownOnThisThrow);
+        scorer.roll(currBowlerIndex, pinsDownOnThisThrow);
         final LaneEvent event = lanePublish();
         publish(event);
     }
-
-    /**
-     * resetBowlerIterator()
-     * <p>
-     * sets the current bower iterator back to the first bowler
-     *
-     * @pre the party as been assigned
-     * @post the iterator points to the first bowler in the party
-     */
-    private void resetBowlerIterator() {
-        currentBowler = party.getMembers().iterator();
-    }
-
 
     /**
      * assignParty()
@@ -330,7 +312,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     void assignParty(final Party theParty) {
         party = theParty;
-        resetBowlerIterator();
+        currBowlerIndex = 0;;
         partyAssigned = true;
 
         final Vector<Bowler> members = party.getMembers();
@@ -349,11 +331,9 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        boolean shouldSetupGraphics = true;
-        shouldSetupGraphics &= frameNumber == 0;
-        shouldSetupGraphics &= ball == 0;
+        boolean shouldSetupGraphics = scorer.isFirstRoll(currBowlerIndex);
         shouldSetupGraphics &= currBowlerIndex == 0;
-        return new LaneEvent(party.getMemberNicks(), party.getPartySize(), currentThrower.getNick(), scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
+        return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(), scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
                 gameIsHalted, shouldSetupGraphics);
     }
 

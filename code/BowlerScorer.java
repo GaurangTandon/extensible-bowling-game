@@ -187,4 +187,8 @@ public class BowlerScorer {
     int getCurrFrame() {
         return currFrame;
     }
+
+    int getRollCount() {
+        return rollCount;
+    }
 }
