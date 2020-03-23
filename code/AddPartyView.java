@@ -224,15 +224,15 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     public void updateNewPatron(final NewPatronView newPatron) {
         try {
-            final Bowler checkBowler = BowlerFile.getBowlerInfo(newPatron.getNick());
+            final Bowler checkBowler = BowlerFile.getBowlerInfo(newPatron.getNickName());
             if (checkBowler == null) {
                 BowlerFile.putBowlerInfo(
-                        newPatron.getNick(),
+                        newPatron.getNickName(),
                         newPatron.getFull(),
                         newPatron.getEmail());
                 bowlerdb = new Vector(BowlerFile.getBowlers());
                 allBowlers.setListData(bowlerdb);
-                party.add(newPatron.getNick());
+                party.add(newPatron.getNickName());
                 partyList.setListData(party);
             } else {
                 System.err.println("A Bowler with that name already exists.");

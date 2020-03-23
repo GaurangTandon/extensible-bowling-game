@@ -11,7 +11,7 @@ class EndGamePrompt implements ActionListener {
 
     private int result;
 
-    public EndGamePrompt(final String partyName) {
+    EndGamePrompt(final String partyName) {
         result = 0;
 
         win = new JFrame("Another Game for " + partyName + "?");
@@ -68,7 +68,7 @@ class EndGamePrompt implements ActionListener {
 
     }
 
-    public void actionPerformed(final ActionEvent e) {
+    public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
 		if (source.equals(yesButton)) {
@@ -80,14 +80,14 @@ class EndGamePrompt implements ActionListener {
 
     }
 
-    int getResult() {
+    final int getResult() {
         while (result == 0) {
             Util.busyWait(10);
         }
         return result;
     }
 
-    public void destroy() {
+    final void destroy() {
         win.setVisible(false);
     }
 

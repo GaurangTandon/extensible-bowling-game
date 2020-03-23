@@ -130,7 +130,7 @@ class NewPatronView implements ActionListener {
         }
     }
 
-    public String getNick() {
+    public String getNickName() {
         return nick;
     }
 

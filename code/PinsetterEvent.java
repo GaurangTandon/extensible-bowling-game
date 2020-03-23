@@ -40,13 +40,13 @@ class PinsetterEvent {
     }
 
     /**
-     * pinKnockedDown()
+     * isPinKnockedDown()
      * <p>
      * check if a pin has been knocked down
      *
      * @return true if pin [i] has been knocked down
      */
-    boolean pinKnockedDown(final int pinNumber) {
+    final boolean isPinKnockedDown(final int pinNumber) {
         return !pinsStillStanding[pinNumber];
     }
 
@@ -55,7 +55,7 @@ class PinsetterEvent {
      *
      * @return the number of pins knocked down assosicated with this event
      */
-    int pinsDownOnThisThrow() {
+    final int pinsDownOnThisThrow() {
         return pinsDownThisThrow;
     }
 
@@ -64,11 +64,11 @@ class PinsetterEvent {
      *
      * @return the total number of pins down for pinsetter that generated the event
      */
-    int totalPinsDown() {
+    final int totalPinsDown() {
         int count = 0;
 
         for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
-            if (pinKnockedDown(i)) {
+            if (isPinKnockedDown(i)) {
                 count++;
             }
         }
@@ -76,7 +76,7 @@ class PinsetterEvent {
         return count;
     }
 
-    boolean isFirstThrow(){
+    final boolean isFirstThrow(){
         return throwNumber == 1;
     }
 
@@ -85,11 +85,11 @@ class PinsetterEvent {
      *
      * @return true if a foul was commited on the lane, false otherwise
      */
-    boolean isFoulCommited() {
+    final boolean isFoulCommited() {
         return foulCommited;
     }
 
-    boolean isReset() {
+    final boolean isReset() {
         return isReset;
     }
 }

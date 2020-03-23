@@ -20,7 +20,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
     private boolean laneShowing;
     private boolean psShowing;
 
-    JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
+    private JButton buttonInsertUtil(final JPanel buttonPanel, final String text) {
         final JButton btn = new JButton(text);
         final JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
@@ -73,11 +73,11 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         jp.add(buttonPanel);
     }
 
-    JPanel showLane() {
+    final JPanel showLane() {
         return jp;
     }
 
-    public void actionPerformed(final ActionEvent e) {
+    public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
         if (lane.isPartyAssigned() && source.equals(viewPinSetter)) {
             psShowing = !psShowing;
@@ -95,7 +95,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         }
     }
 
-    public void receiveLaneEvent(final LaneEvent le) {
+    public final void receiveLaneEvent(final LaneEvent le) {
         final String bowlerNick = le.getBowlerNick();
         curBowler.setText(bowlerNick);
         if (le.isMechanicalProblem()) {
@@ -106,7 +106,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         viewPinSetter.setEnabled(enabled);
     }
 
-    public void receivePinsetterEvent(final PinsetterEvent pe) {
+    public final void receivePinsetterEvent(final PinsetterEvent pe) {
         final int totalPinsDown = pe.totalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());
     }
