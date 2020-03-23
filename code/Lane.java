@@ -136,10 +136,10 @@ import java.util.Vector;
 
 
 public class Lane extends Thread implements PinsetterObserver, LaneInterface {
-    public static final int FRAME_COUNT = 10;
+    static final int FRAME_COUNT = 10;
     // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
-    public static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
-    public static final int LAST_FRAME = FRAME_COUNT - 1;
+    static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
+    static final int LAST_FRAME = FRAME_COUNT - 1;
 
     private Party party;
     private final Pinsetter setter;
@@ -349,8 +349,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @return The new lane event
      */
     private LaneEvent lanePublish() {
-        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
-                frameNumber + 1, scorer.getScoresForEachBowler(), ball, gameIsHalted);
+        return new LaneEvent(party, currBowlerIndex, currentThrower, scorer,
+                frameNumber + 1, ball, gameIsHalted);
     }
 
     /**
