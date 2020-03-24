@@ -20,9 +20,12 @@ public class ButtonPanel {
         components.put("_panel", panel);
     }
 
-    public ButtonPanel(int rows, int cols) {
+    public ButtonPanel(int rows, int cols, String heading) {
         panel = new JPanel();
         panel.setLayout(new GridLayout(rows, cols));
+        if (heading.length() > 0) {
+            panel.setBorder(new TitledBorder(heading));
+        }
         components = new HashMap<>();
         components.put("_panel", panel);
     }
@@ -30,7 +33,7 @@ public class ButtonPanel {
     public ButtonPanel put(final String id, final String text, ActionListener listener) {
         final JButton button = new JButton(text);
         final JPanel subPanel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        subPanel.setLayout(new FlowLayout());
         button.addActionListener(listener);
         subPanel.add(button);
         panel.add(subPanel);

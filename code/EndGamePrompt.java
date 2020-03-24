@@ -59,7 +59,7 @@ class EndGamePrompt implements ActionListener {
 
         win.pack();
 
-        // Center Window on Screen
+        // Center WindowPanel on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),

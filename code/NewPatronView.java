@@ -22,9 +22,8 @@ import java.awt.event.ActionListener;
  */
 class NewPatronView implements ActionListener {
 
-    private final JFrame win;
-    private final JButton abort;
-    private final JButton finished;
+    private final Widget.ButtonPanel buttonPanel;
+    private final Widget.WindowPanel window;
     private final JTextField nickField;
     private final JTextField fullField;
     private final JTextField emailField;
@@ -35,10 +34,6 @@ class NewPatronView implements ActionListener {
     NewPatronView(final AddPartyView v) {
 
         addParty = v;
-
-        win = new JFrame("Add Patron");
-        win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
 
         final JPanel colPanel = new JPanel();
         colPanel.setLayout(new BorderLayout());
@@ -53,33 +48,23 @@ class NewPatronView implements ActionListener {
         emailField = Util.addFieldPanel("E-Mail", patronPanel);
 
         // Button Panel
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1));
-
-        finished = Util.addButtonPanel("Add Patron", buttonPanel, this);
-        abort = Util.addButtonPanel("Abort", buttonPanel, this);
+        buttonPanel = new Widget.ButtonPanel(4, 1, "")
+                .put("finished", "Add Patron", this)
+                .put("abort", "Abort", this);
 
         // Clean up main panel
         colPanel.add(patronPanel, "Center");
-        colPanel.add(buttonPanel, "East");
+        colPanel.add(buttonPanel.get("_panel"), "East");
 
-        win.getContentPane().add("Center", colPanel);
-        win.pack();
 
-        // Center Window on Screen
-        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.setVisible(true);
-
+        window = new Widget.WindowPanel("Add Patron", colPanel);
     }
 
     // TODO: this method is duplicated across several classes with similar characteristics, investigate
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        final boolean aborted = source.equals(abort);
-        final boolean finished = source.equals(this.finished);
+        final boolean aborted = source.equals(buttonPanel.get("abort"));
+        final boolean finished = source.equals(buttonPanel.get("finished"));
 
         if (finished) {
             nick = nickField.getText();
@@ -89,7 +74,7 @@ class NewPatronView implements ActionListener {
         }
 
         if (aborted || finished) {
-            win.setVisible(false);
+            window.setVisible(false);
         }
     }
 

@@ -100,11 +100,11 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         bowlerPanel.add(bowlerPane);
 
         // Button Panel
-        buttonPanel = new Widget.ButtonPanel(4, 1);
-        buttonPanel.put("addPatron", "Add to Party", this);
-        buttonPanel.put("remPatron", "Remove Member", this);
-        buttonPanel.put("newPatron", "New Patron", this);
-        buttonPanel.put("finished", "Finished", this);
+        buttonPanel = new Widget.ButtonPanel(4, 1, "")
+                .put("addPatron", "Add to Party", this)
+                .put("remPatron", "Remove Member", this)
+                .put("newPatron", "New Patron", this)
+                .put("finished", "Finished", this);
 
         // Clean up main panel
         colPanel.add(partyPanel);
@@ -113,7 +113,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
         win.getContentPane().add("Center", colPanel);
         win.pack();
-        // Center Window on Screen
+        // Center WindowPanel on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),

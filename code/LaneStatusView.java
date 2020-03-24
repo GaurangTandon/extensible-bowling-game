@@ -5,13 +5,11 @@ import java.awt.event.ActionListener;
 
 public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
 
+    private final Widget.ButtonPanel buttonPanel;
     private final JPanel gamePanel;
 
     private final JLabel currentBowler;
     private final JLabel pinsDown;
-    private final JButton viewLane;
-    private final JButton viewPinSetter;
-    private final JButton maintenance;
 
     private final PinSetterView pinSetterView;
     private final LaneView laneView;
@@ -42,23 +40,21 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         pinsDown = new JLabel("0");
 
         // Button Panel
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel = new Widget.ButtonPanel("")
+                .put("viewLane", "View Lane", this)
+                .put("viewPinSetter", "Pinsetter", this)
+                .put("maintenance", "     ", this);
 
-        viewLane = Util.addButtonPanel("View Lane", buttonPanel, this);
-        viewPinSetter = Util.addButtonPanel("Pinsetter", buttonPanel, this);
-        maintenance = Util.addButtonPanel("     ", buttonPanel, this);
-
-        maintenance.setBackground(Color.GREEN);
-        viewLane.setEnabled(false);
-        viewPinSetter.setEnabled(false);
+        buttonPanel.get("maintenance").setBackground(Color.GREEN);
+        buttonPanel.get("viewLane").setEnabled(false);
+        buttonPanel.get("viewPinSetter").setEnabled(false);
 
         gamePanel.add(cLabel);
         gamePanel.add(currentBowler);
         gamePanel.add(pdLabel);
         gamePanel.add(pinsDown);
 
-        gamePanel.add(buttonPanel);
+        gamePanel.add(buttonPanel.get("_panel"));
     }
 
     final JPanel showLane() {
@@ -67,18 +63,18 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        if (lane.isPartyAssigned() && source.equals(viewPinSetter)) {
+        if (lane.isPartyAssigned() && source.equals(buttonPanel.get("viewPinSetter"))) {
             psShowing = !psShowing;
             pinSetterView.setVisible(psShowing);
         }
-        if (source.equals(viewLane) && lane.isPartyAssigned()) {
+        if (source.equals(buttonPanel.get("viewLane")) && lane.isPartyAssigned()) {
             laneView.setVisible(laneShowing);
             laneShowing = !laneShowing;
         }
-        if (source.equals(maintenance)) {
+        if (source.equals(buttonPanel.get("maintenance"))) {
             if (lane.isPartyAssigned()) {
                 lane.unPauseGame();
-                maintenance.setBackground(Color.GREEN);
+                buttonPanel.get("maintenance").setBackground(Color.GREEN);
             }
         }
     }
@@ -87,11 +83,11 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         final String bowlerNick = le.getBowlerNick();
         currentBowler.setText(bowlerNick);
         if (le.isMechanicalProblem()) {
-            maintenance.setBackground(Color.RED);
+            buttonPanel.get("maintenance").setBackground(Color.RED);
         }
         final boolean enabled = lane.isPartyAssigned();
-        viewLane.setEnabled(enabled);
-        viewPinSetter.setEnabled(enabled);
+        buttonPanel.get("viewLane").setEnabled(enabled);
+        buttonPanel.get("viewPinSetter").setEnabled(enabled);
     }
 
     public final void receivePinsetterEvent(final PinsetterEvent pe) {

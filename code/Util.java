@@ -36,16 +36,6 @@ class Util {
         return false;
     }
 
-    static JButton addButtonPanel(final String text, JPanel toPanel, ActionListener listener) {
-        final JButton btn = new JButton(text);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        btn.addActionListener(listener);
-        panel.add(btn);
-        toPanel.add(panel);
-        return btn;
-    }
-
     static JTextField addFieldPanel(final String text, JPanel toPanel) {
         final JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new FlowLayout());
