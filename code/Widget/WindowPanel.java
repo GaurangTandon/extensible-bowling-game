@@ -8,7 +8,7 @@ public class WindowPanel implements GenericPanelInterface {
 
     private final JFrame win;
 
-    public WindowPanel(String title, Component container) {
+    private WindowPanel(String title, Component container, boolean center) {
         win = new JFrame(title);
         win.getContentPane().setLayout(new BorderLayout());
         ((JPanel) win.getContentPane()).setOpaque(false);
@@ -18,14 +18,16 @@ public class WindowPanel implements GenericPanelInterface {
 
         // Center WindowPanel on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
+        if (center) {
+            win.setLocation(
+                    ((screenSize.width) / 2) - ((win.getSize().width) / 2),
+                    ((screenSize.height) / 2) - ((win.getSize().height) / 2));
+        }
         win.setVisible(true);
     }
 
     public WindowPanel(String title, GenericPanelInterface panel) {
-        this(title, panel.getPanel());
+        this(title, panel.getPanel(), true);
     }
 
     public void setVisible(boolean state) {

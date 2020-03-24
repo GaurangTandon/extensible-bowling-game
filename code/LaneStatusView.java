@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
 
     private final Widget.ButtonPanel buttonPanel;
-    private final JPanel gamePanel;
+    private final Widget.ContainerPanel gamePanel;
 
     private final JLabel currentBowler;
     private final JLabel pinsDown;
@@ -20,7 +20,6 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
     LaneStatusView(final Lane lane, final int laneNum) {
         this.lane = lane;
-
         laneShowing = false;
         psShowing = false;
 
@@ -31,34 +30,26 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         laneView = new LaneView(lane, laneNum);
         lane.subscribe(laneView);
 
-
-        gamePanel = new JPanel();
-        gamePanel.setLayout(new FlowLayout());
-        final JLabel cLabel = new JLabel("Now Bowling: ");
-        currentBowler = new JLabel("(no one)");
-        final JLabel pdLabel = new JLabel("Pins Down: ");
-        pinsDown = new JLabel("0");
-
-        // Button Panel
         buttonPanel = new Widget.ButtonPanel("")
                 .put("viewLane", "View Lane", this)
                 .put("viewPinSetter", "Pinsetter", this)
                 .put("maintenance", "     ", this);
-
         buttonPanel.get("maintenance").setBackground(Color.GREEN);
         buttonPanel.get("viewLane").setEnabled(false);
         buttonPanel.get("viewPinSetter").setEnabled(false);
 
-        gamePanel.add(cLabel);
-        gamePanel.add(currentBowler);
-        gamePanel.add(pdLabel);
-        gamePanel.add(pinsDown);
-
-        gamePanel.add(buttonPanel.get("_panel"));
+        currentBowler = new JLabel("(no one)");
+        pinsDown = new JLabel("0");
+        gamePanel = new Widget.ContainerPanel("")
+                .put(new JLabel("Now Bowling: "))
+                .put(currentBowler)
+                .put(new JLabel("Pins Down: "))
+                .put(pinsDown)
+                .put(buttonPanel);
     }
 
     final JPanel showLane() {
-        return gamePanel;
+        return (JPanel) gamePanel.getPanel();
     }
 
     public final void actionPerformed(final ActionEvent e) {

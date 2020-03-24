@@ -138,19 +138,15 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-
         if (source.equals(buttonPanel.get("addPatron"))) {
             addPatron();
         }
-
         if (source.equals(buttonPanel.get("remPatron"))) {
             removePatron();
         }
-
         if (source.equals(buttonPanel.get("newPatron"))) {
             new NewPatronView(this);
         }
-
         if (source.equals(buttonPanel.get("finished"))) {
             onPartyFinished();
         }
@@ -205,5 +201,4 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     public Vector<String> getParty() {
         return (Vector<String>) party.clone();
     }
-
 }

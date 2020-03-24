@@ -32,11 +32,7 @@ class NewPatronView implements ActionListener {
     private final AddPartyView addParty;
 
     NewPatronView(final AddPartyView v) {
-
         addParty = v;
-
-        final JPanel colPanel = new JPanel();
-        colPanel.setLayout(new BorderLayout());
 
         patronPanel = new Widget.TextFieldPanel(3, 1, "Your Info")
                 .put("nickField", "Nick Name")
@@ -46,12 +42,12 @@ class NewPatronView implements ActionListener {
                 .put("finished", "Add Patron", this)
                 .put("abort", "Abort", this);
 
-        // Clean up main panel
-        colPanel.add(patronPanel.get("_panel"), "Center");
-        colPanel.add(buttonPanel.get("_panel"), "East");
-
-
-        window = new Widget.WindowPanel("Add Patron", colPanel);
+        window = new Widget.WindowPanel(
+                "Add Patron",
+                new Widget.ContainerPanel()
+                        .put(patronPanel)
+                        .put(buttonPanel)
+        );
     }
 
     // TODO: this method is duplicated across several classes with similar characteristics, investigate
