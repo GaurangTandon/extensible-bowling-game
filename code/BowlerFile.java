@@ -86,8 +86,8 @@ class BowlerFile {
      * @return a Vector of Strings
      */
 
-    public static Vector getBowlers()
-            throws IOException {
+    static Vector getBowlers()
+            throws IOException, ArrayIndexOutOfBoundsException {
 
         final Vector allBowlers = new Vector();
 

@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -69,8 +70,11 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         // Bowlers Panel
         try {
             bowlerdb = new Vector<Object>(BowlerFile.getBowlers());
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
+            bowlerdb = new Vector<>();
+        } catch (final ArrayIndexOutOfBoundsException e) {
+            System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
             bowlerdb = new Vector<>();
         }
         bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerdb, 8, this);

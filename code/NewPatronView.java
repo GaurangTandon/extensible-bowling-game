@@ -48,8 +48,8 @@ class NewPatronView implements ActionListener {
         window = new Widget.WindowPanel(
                 "Add Patron",
                 new Widget.ContainerPanel()
-                        .put(patronPanel)
-                        .put(buttonPanel)
+                        .put(patronPanel, "Center")
+                        .put(buttonPanel, "East")
         );
     }
 
