@@ -24,11 +24,19 @@ public class WindowPanel implements GenericPanelInterface {
         win.setVisible(true);
     }
 
+    public WindowPanel(String title, GenericPanelInterface panel) {
+        this(title, panel.getPanel());
+    }
+
     public void setVisible(boolean state) {
         win.setVisible(state);
     }
 
     public Component get(String id) throws NameNotFoundException {
         throw new NameNotFoundException();
+    }
+
+    public Component getPanel() {
+        return win;
     }
 }

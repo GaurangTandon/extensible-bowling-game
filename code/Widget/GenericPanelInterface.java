@@ -5,4 +5,5 @@ import java.awt.*;
 
 public interface GenericPanelInterface {
     public Component get(final String id) throws NameNotFoundException;
+    public Component getPanel();
 }

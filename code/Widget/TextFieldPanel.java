@@ -45,6 +45,10 @@ public class TextFieldPanel implements GenericPanelInterface {
         return components.get(id);
     }
 
+    public Component getPanel() {
+        return panel;
+    }
+
     public String getText(final String id) {
         JTextField field = (JTextField) components.get(id);
         return field.getText();

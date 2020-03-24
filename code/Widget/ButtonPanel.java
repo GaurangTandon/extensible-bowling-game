@@ -44,4 +44,8 @@ public class ButtonPanel implements GenericPanelInterface {
     public Component get(final String id) {
         return components.get(id);
     }
+
+    public Component getPanel() {
+        return panel;
+    }
 }

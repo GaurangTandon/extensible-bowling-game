@@ -20,6 +20,9 @@
  *
  */
 
+import Widget.ContainerPanel;
+import Widget.WindowPanel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -41,8 +44,8 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final int maxSize;
 
     private final Widget.ButtonPanel buttonPanel;
+    private final Widget.WindowPanel win;
 
-    private final JFrame win;
     private final JList<String> partyList;
     private final JList<Object> allBowlers;
     private final Vector<String> party;
@@ -54,13 +57,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     AddPartyView(final ControlDeskView controlDesk, final int max) {
         this.controlDesk = controlDesk;
         maxSize = max;
-
-        win = new JFrame("Add Party");
-        win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
-
-        final JPanel colPanel = new JPanel();
-        colPanel.setLayout(new GridLayout(1, 3));
 
         // Party Panel
         final JPanel partyPanel = new JPanel();
@@ -87,7 +83,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         try {
             bowlerdb = new Vector<Object>(BowlerFile.getBowlers());
         } catch (final Exception e) {
-            System.err.println("File Error");
+            System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
             bowlerdb = new Vector<>();
         }
         allBowlers = new JList<>(bowlerdb);
@@ -106,19 +102,13 @@ class AddPartyView implements ActionListener, ListSelectionListener {
                 .put("newPatron", "New Patron", this)
                 .put("finished", "Finished", this);
 
-        // Clean up main panel
-        colPanel.add(partyPanel);
-        colPanel.add(bowlerPanel);
-        colPanel.add(buttonPanel.get("_panel"));
-
-        win.getContentPane().add("Center", colPanel);
-        win.pack();
-        // Center WindowPanel on Screen
-        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.setVisible(true);
+        win = new WindowPanel(
+                "Add Party",
+                new ContainerPanel(1, 3, "")
+                        .put(partyPanel)
+                        .put(bowlerPanel)
+                        .put(buttonPanel)
+        );
     }
 
     private void addPatron() {
