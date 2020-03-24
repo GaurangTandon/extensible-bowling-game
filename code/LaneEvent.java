@@ -24,7 +24,7 @@
  */
 
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 class LaneEvent {
 
@@ -89,7 +89,7 @@ class LaneEvent {
 
     public boolean isPartyEmpty() {
         if (p == null) return true;
-        Vector<Bowler> members = p.getMembers();
+        ArrayList<Bowler> members = p.getMembers();
         return members == null || members.isEmpty();
     }
 }

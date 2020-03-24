@@ -5,7 +5,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 class EndGameReport implements ActionListener, ListSelectionListener {
@@ -13,7 +13,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     private final JFrame win;
     private final JButton printButton;
     private final JButton finished;
-    private final Vector<String> retVal;
+    private final ArrayList<String> retVal;
 
     private int result;
 
@@ -22,7 +22,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     public EndGameReport(final String partyName, final Party party) {
 
         result = 0;
-        retVal = new Vector<>();
+        retVal = new ArrayList<>();
         win = new JFrame("End Game Report for " + partyName + "?");
         win.getContentPane().setLayout(new BorderLayout());
         ((JPanel) win.getContentPane()).setOpaque(false);
@@ -35,11 +35,12 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         partyPanel.setLayout(new FlowLayout());
         partyPanel.setBorder(new TitledBorder("Party Members"));
 
-        final Vector<String> myVector = new Vector<>();
+
+        DefaultListModel<String> myList = new DefaultListModel<>();
         for (final Bowler o : party.getMembers()) {
-            myVector.add(o.getNick());
+            myList.addElement((o.getNick()).toString());
         }
-        final JList<String> memberList = new JList<>(myVector);
+        final JList<String> memberList = new JList<>(myList);
         memberList.setFixedCellWidth(120);
         memberList.setVisibleRowCount(5);
         memberList.addListSelectionListener(this);
@@ -89,7 +90,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     public static void main(final String[] args) {
-        final Vector<Bowler> bowlers = new Vector<>();
+        final ArrayList<Bowler> bowlers = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             bowlers.add(new Bowler("aaaaa", "aaaaa", "aaaaa"));
         }
@@ -115,11 +116,11 @@ class EndGameReport implements ActionListener, ListSelectionListener {
 
     }
 
-    Vector<String> getResult() {
+    ArrayList<String> getResult() {
         while (result == 0) {
             Util.busyWait(10);
         }
-        return (Vector<String>) retVal.clone();
+        return (ArrayList<String>) retVal.clone();
     }
 
     @SuppressWarnings("unused")

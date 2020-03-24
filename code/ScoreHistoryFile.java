@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Vector;
+import java.util.ArrayList;
 
 class ScoreHistoryFile {
 
@@ -19,9 +19,9 @@ class ScoreHistoryFile {
         out.close();
     }
 
-    public static Vector<Score> getScores(final String nick)
+    public static ArrayList<Score> getScores(final String nick)
             throws IOException {
-        final Vector<Score> scores = new Vector<>();
+        final ArrayList<Score> scores = new ArrayList<>();
 
         final BufferedReader in =
                 new BufferedReader(new FileReader(SCOREHISTORY_DAT));

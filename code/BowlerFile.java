@@ -9,7 +9,7 @@
  * 		Updated comments to match javadoc format.
  *
  * 		Revision 1.4  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
+ * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to ArrayList so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
  *
  *
  */
@@ -18,7 +18,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Class for interfacing with Bowler database
@@ -83,13 +83,13 @@ class BowlerFile {
     /**
      * Retrieves a list of nicknames in the bowler database
      *
-     * @return a Vector of Strings
+     * @return a ArrayList of Strings
      */
 
-    public static Vector getBowlers()
+    public static ArrayList getBowlers()
             throws IOException {
 
-        final Vector allBowlers = new Vector();
+        final ArrayList allBowlers = new ArrayList();
 
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;

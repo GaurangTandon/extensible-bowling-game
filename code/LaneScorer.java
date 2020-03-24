@@ -1,5 +1,5 @@
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * This class is supposed to handle all the scoring happening on a particular lane
@@ -11,7 +11,7 @@ class LaneScorer {
     int partySize;
     private final HashMap<Bowler, int[]> scores;
     private int bowlIndex;
-    private Vector<Bowler> bowlers;
+    private ArrayList<Bowler> bowlers;
 
     LaneScorer() {
         scores = new HashMap<>(0);
@@ -181,7 +181,7 @@ class LaneScorer {
      * @pre the party has been assigned
      * @post scoring system is initialized
      */
-    void resetScores(final Vector<Bowler> bowlers) {
+    void resetScores(final ArrayList<Bowler> bowlers) {
         this.bowlers = bowlers;
         partySize = bowlers.size();
         curScores = new int[partySize];

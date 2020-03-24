@@ -133,13 +133,13 @@
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private Party party;
     private final Pinsetter setter;
-    private final Vector<LaneObserver> subscribers;
+    private final ArrayList<LaneObserver> subscribers;
 
     private boolean gameIsHalted;
 
@@ -169,7 +169,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     public Lane() {
         setter = new Pinsetter();
-        subscribers = new Vector<>(0);
+        subscribers = new ArrayList<>(0);
 
         gameIsHalted = false;
         partyAssigned = false;
@@ -184,7 +184,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
 
     private void exitGame(final String partyName) {
         final EndGameReport egr = new EndGameReport(partyName, party);
-        final Vector<String> printVector = egr.getResult();
+        final ArrayList<String> printVector = egr.getResult();
 
         int myIndex = 0;
         for (final Bowler bowler : party.getMembers()) {
@@ -356,7 +356,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         resetBowlerIterator();
         partyAssigned = true;
 
-        final Vector<Bowler> members = party.getMembers();
+        final ArrayList<Bowler> members = party.getMembers();
         gameNumber = 0;
         gameFinished = false;
         frameNumber = 0;

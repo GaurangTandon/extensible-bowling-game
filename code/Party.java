@@ -17,7 +17,7 @@
  *
  */
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Container that holds bowlers
@@ -25,29 +25,29 @@ import java.util.Vector;
 public class Party {
 
     /**
-     * Vector of bowlers in this party
+     * ArrayList of bowlers in this party
      */
-    private final Vector<Bowler> myBowlers;
+    private final ArrayList<Bowler> myBowlers;
     private final String name;
 
     /**
      * Constructor for a Party
      *
-     * @param bowlers Vector of bowlers that are in this party
+     * @param bowlers ArrayList of bowlers that are in this party
      */
 
-    public Party(final Vector bowlers) {
-        myBowlers = new Vector(bowlers);
+    public Party(final ArrayList bowlers) {
+        myBowlers = new ArrayList(bowlers);
         name = myBowlers.get(0).getNickName() + "'s Party";
     }
 
     /**
      * Accessor for members in this party
      *
-     * @return A vector of the bowlers in this party
+     * @return A ArrayList of the bowlers in this party
      */
 
-    Vector<Bowler> getMembers() {
+    ArrayList<Bowler> getMembers() {
         return myBowlers;
     }
 

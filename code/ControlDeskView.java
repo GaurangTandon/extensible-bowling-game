@@ -7,7 +7,7 @@
  * 		$Log$
  *
  */
-
+import java.io.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Class for representation of the control desk
@@ -85,10 +85,10 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         partyPanel.setLayout(new FlowLayout());
         partyPanel.setBorder(new TitledBorder("Party Queue"));
 
-        final Vector<String> empty = new Vector<>();
+        final ArrayList<String> empty = new ArrayList<>();
         empty.add("(Empty)");
 
-        partyList = new JList<Object>(empty);
+        partyList = new JList<Object>(empty.toArray());
         partyList.setFixedCellWidth(120);
         partyList.setVisibleRowCount(10);
         final JScrollPane partyPane = new JScrollPane(partyList);
@@ -167,7 +167,8 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      */
 
     void updateAddParty(final AddPartyView addPartyView) {
-        controlDesk.addPartyToQueue(addPartyView.getParty());
+        ArrayList myArrayList = (ArrayList) addPartyView.getParty();
+        controlDesk.addPartyToQueue(myArrayList);
     }
 
     /**
@@ -177,6 +178,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      */
 
     public void receiveControlDeskEvent(final ControlDeskEvent ce) {
-        partyList.setListData(ce.getPartyQueue());
+        System.out.println((ce.getPartyQueue()).getClass().getName());
+//        Collection<ce.getPartyQueue()> cx = new ArrayList<>();
+
+        ArrayList<String> pq =  new ArrayList<String>(ce.getPartyQueue());
+
+        partyList.setListData(pq.toArray(new ArrayList[pq.size()]));
     }
 }

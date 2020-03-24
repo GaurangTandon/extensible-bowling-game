@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * TODO:
@@ -23,7 +23,7 @@ public class LaneView implements LaneObserver, ActionListener {
 
     private final JFrame frame;
     private final Container cpanel;
-    private Vector<Bowler> bowlers;
+    private ArrayList<Bowler> bowlers;
     private JLabel[][] ballLabel;
     private JLabel[][] scoreLabel;
     private JButton maintenance;

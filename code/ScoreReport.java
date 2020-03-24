@@ -10,7 +10,7 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Vector;
+import java.util.ArrayList;
 
 class ScoreReport {
 
@@ -19,7 +19,7 @@ class ScoreReport {
     public ScoreReport(final Bowler bowler, final int[] scores, final int games) {
         final String nick = bowler.getNick();
         final String full = bowler.getFullName();
-        Vector<Score> v = null;
+        ArrayList<Score> v = null;
         try {
             v = ScoreHistoryFile.getScores(nick);
         } catch (final Exception e) {

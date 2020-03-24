@@ -11,7 +11,7 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 /**
@@ -20,9 +20,9 @@ import java.util.Vector;
 public class PinSetterView implements PinsetterObserver {
 
 
-    //This Vector will keep references to the pin labels to show
+    //This ArrayList will keep references to the pin labels to show
     //which ones have fallen.
-    private final Vector<JLabel> pinVector = new Vector<>();
+    private final ArrayList<JLabel> pinVector = new ArrayList<>();
     private final JPanel secondRoll;
 
     /**

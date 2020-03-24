@@ -1,5 +1,5 @@
 import java.util.Calendar;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Utility class that provides commonly used functionality
@@ -24,7 +24,7 @@ class Util {
                 "/" + (cal.get(Calendar.YEAR) + 1900);
     }
 
-    static boolean containsString(final Vector<String> container, final String target){
+    static boolean containsString(final ArrayList<String> container, final String target){
         for(final String str : container){
             if(str.equals(target))
                 return true;

@@ -66,7 +66,7 @@
  */
 
 import java.util.Random;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Class to represent the pinsetter
@@ -76,7 +76,7 @@ public class Pinsetter {
     private final Random rnd;
     public static final int PIN_COUNT = 10;
     private final double FOUL_PROBABILITY;
-    private final Vector<PinsetterObserver> subscribers;
+    private final ArrayList<PinsetterObserver> subscribers;
 
     private final boolean[] isPinStanding;
     /* 0-9
@@ -103,7 +103,7 @@ public class Pinsetter {
         FOUL_PROBABILITY = 0.04;
         isPinStanding = new boolean[PIN_COUNT];
         rnd = new Random();
-        subscribers = new Vector<>();
+        subscribers = new ArrayList<>();
         resetState();
     }
 

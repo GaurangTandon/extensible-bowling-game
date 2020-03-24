@@ -12,4 +12,4 @@ and then run the application with
 java drive
 ```
 
-here `drive.class` is the main driver class that integrates and runs everything together.
+here `drive.class` is the main driver cla*ss that integrates and runs everything together.

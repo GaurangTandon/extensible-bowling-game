@@ -24,7 +24,7 @@
  * 		Updated comments to match javadoc format.
  *
  * 		Revision 1.7  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
+ * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to ArrayList so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
  *
  * 		Revision 1.6  2003/02/02 06:09:39  ???
  * 		Updated many classes to support the ControlDeskView.
@@ -37,7 +37,7 @@
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Class that represents control desk
@@ -59,7 +59,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     /**
      * The collection of subscribers
      */
-    private final Vector<ControlDeskObserver> subscribers;
+    private final ArrayList<ControlDeskObserver> subscribers;
 
     /**
      * Constructor for the ControlDesk class
@@ -72,7 +72,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         lanes = new HashSet<>(numLanes);
         partyQueue = new Queue();
 
-        subscribers = new Vector<>();
+        subscribers = new ArrayList<>();
 
         for (int i = 0; i < numLanes; i++) {
             lanes.add(new Lane());
@@ -140,13 +140,13 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     }
 
     /**
-     * Creates a party from a Vector of nickNAmes and adds them to the wait queue.
+     * Creates a party from a ArrayList of nickNAmes and adds them to the wait queue.
      *
-     * @param partyNicks A Vector of NickNames
+     * @param partyNicks A ArrayList of NickNames
      */
 
-    public final void addPartyToQueue(final Vector<String> partyNicks) {
-        final Vector<Bowler> partyBowlers = new Vector<>();
+    public final void addPartyToQueue(final ArrayList<String> partyNicks) {
+        final ArrayList<Bowler> partyBowlers = new ArrayList<>();
         for (final String partyNick : partyNicks) {
             final Bowler newBowler = registerPatron(partyNick);
             partyBowlers.add(newBowler);
@@ -157,18 +157,18 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     }
 
     /**
-     * Returns a Vector of party names to be displayed in the GUI representation of the wait queue.
+     * Returns a ArrayList of party names to be displayed in the GUI representation of the wait queue.
      *
      * @return a Vecotr of Strings
      */
 
-    private Vector<String> getPartyQueue() {
-        final Vector<String> displayPartyQueue = new Vector<>();
-        final Vector<Party> pQueue = partyQueue.asVector();
+    private ArrayList<String> getPartyQueue() {
+        final ArrayList<String> displayPartyQueue = new ArrayList<String>();
+        final ArrayList<Party> pQueue = partyQueue.asVector();
 
         for (final Party party : pQueue) {
             final String nextParty = party.getName();
-            displayPartyQueue.addElement(nextParty);
+            displayPartyQueue.add(nextParty);
         }
         return displayPartyQueue;
     }

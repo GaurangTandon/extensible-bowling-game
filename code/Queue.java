@@ -8,17 +8,17 @@
  * 
  */
  
-import java.util.Vector;
+import java.util.ArrayList;
 
 class Queue {
-	private final Vector<Party> v;
+	private final ArrayList<Party> v;
 	
 	/** Queue()
 	 * 
 	 * creates a new queue
 	 */
 	public Queue() {
-		v = new Vector<>();
+		v = new ArrayList<>();
 	}
 
 	public Party next() {
@@ -26,14 +26,14 @@ class Queue {
 	}
 
 	public void add(final Party o) {
-		v.addElement(o);
+		v.add(o);
 	}
 
 	boolean hasMoreElements() {
 		return !v.isEmpty();
 	}
 
-	public Vector<Party> asVector() {
+	public ArrayList<Party> asVector() {
 		return v;
 	}
 	
