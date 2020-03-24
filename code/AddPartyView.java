@@ -40,11 +40,9 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
     private final int maxSize;
 
+    private final Widget.ButtonPanel buttonPanel;
+
     private final JFrame win;
-    private final JButton addPatron;
-    private final JButton newPatron;
-    private final JButton remPatron;
-    private final JButton finished;
     private final JList<String> partyList;
     private final JList<Object> allBowlers;
     private final Vector<String> party;
@@ -54,7 +52,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private String selectedNick, selectedMember;
 
     AddPartyView(final ControlDeskView controlDesk, final int max) {
-
         this.controlDesk = controlDesk;
         maxSize = max;
 
@@ -103,32 +100,25 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         bowlerPanel.add(bowlerPane);
 
         // Button Panel
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1));
-
-        new Insets(4, 4, 4, 4);
-
-        addPatron = Util.addButtonPanel("Add to Party", buttonPanel, this);
-        remPatron = Util.addButtonPanel("Remove Member", buttonPanel, this);
-        newPatron = Util.addButtonPanel("New Patron", buttonPanel, this);
-        finished = Util.addButtonPanel("Finished", buttonPanel, this);
+        buttonPanel = new Widget.ButtonPanel(4, 1);
+        buttonPanel.put("addPatron", "Add to Party", this);
+        buttonPanel.put("remPatron", "Remove Member", this);
+        buttonPanel.put("newPatron", "New Patron", this);
+        buttonPanel.put("finished", "Finished", this);
 
         // Clean up main panel
         colPanel.add(partyPanel);
         colPanel.add(bowlerPanel);
-        colPanel.add(buttonPanel);
+        colPanel.add(buttonPanel.get("_panel"));
 
         win.getContentPane().add("Center", colPanel);
-
         win.pack();
-
         // Center Window on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),
                 ((screenSize.height) / 2) - ((win.getSize().height) / 2));
         win.setVisible(true);
-
     }
 
     private void addPatron() {
@@ -159,19 +149,19 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-        if (source.equals(addPatron)) {
+        if (source.equals(buttonPanel.get("addPatron"))) {
             addPatron();
         }
 
-        if (source.equals(remPatron)) {
+        if (source.equals(buttonPanel.get("remPatron"))) {
             removePatron();
         }
 
-        if (source.equals(newPatron)) {
+        if (source.equals(buttonPanel.get("newPatron"))) {
             new NewPatronView(this);
         }
 
-        if (source.equals(finished)) {
+        if (source.equals(buttonPanel.get("finished"))) {
             onPartyFinished();
         }
     }

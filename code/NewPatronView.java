@@ -64,7 +64,6 @@ class NewPatronView implements ActionListener {
         colPanel.add(buttonPanel, "East");
 
         win.getContentPane().add("Center", colPanel);
-
         win.pack();
 
         // Center Window on Screen
