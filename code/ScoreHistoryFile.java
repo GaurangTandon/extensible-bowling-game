@@ -6,32 +6,35 @@ import java.util.Vector;
 
 class ScoreHistoryFile {
 
-    private static final String SCOREHISTORY_DAT = "SCOREHISTORY.DAT";
+    private static final String SCORE_HISTORY_DAT = "SCORE_HISTORY.DAT";
 
-    public static void addScore(final String nick, final String date, final String score)
+    static void addScore(final String nick, final String date, final String score)
             throws IOException {
+        generateScoreHistoryString(nick, date, score, SCORE_HISTORY_DAT);
+    }
 
+    static void generateScoreHistoryString(String nick, String date, String score, String scoreHistoryDat)
+            throws IOException {
         final String data = nick + "\t" + date + "\t" + score + "\n";
-
-        final RandomAccessFile out = new RandomAccessFile(SCOREHISTORY_DAT, "rw");
+        final RandomAccessFile out = new RandomAccessFile(scoreHistoryDat, "rw");
         out.skipBytes((int) out.length());
         out.writeBytes(data);
         out.close();
     }
 
-    public static Vector<Score> getScores(final String nick)
+    static Vector<Score> getScores(final String nick)
             throws IOException {
         final Vector<Score> scores = new Vector<>();
 
         final BufferedReader in =
-                new BufferedReader(new FileReader(SCOREHISTORY_DAT));
+                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
         String data;
         while ((data = in.readLine()) != null) {
-            // File format is nick\tfname\te-mail
-            final String[] scoredata = data.split("\t");
-            //"Nick: scoredata[0] Date: scoredata[1] Score: scoredata[2]
-            if (nick.equals(scoredata[0])) {
-                scores.add(new Score(scoredata[0], scoredata[1], scoredata[2]));
+            // File format is nick \t first_name \t e-mail
+            final String[] scoreData = data.split("\t");
+            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
+            if (nick.equals(scoreData[0])) {
+                scores.add(new Score(scoreData[0], scoreData[1], scoreData[2]));
             }
         }
         return scores;

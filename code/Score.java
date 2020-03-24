@@ -1,5 +1,5 @@
 /**
- * To change this generated comment edit the template variable "typecomment":
+ * To change this generated comment edit the template variable "type comment":
  * WindowFrame>Preferences>Java>Templates.
  * To enable and disable the creation of type comments go to
  * WindowFrame>Preferences>Java>Code Generation.
@@ -15,10 +15,6 @@ class Score {
         nickname = nick;
         this.date = date;
         this.score = score;
-    }
-
-    public final String getNickName() {
-        return nickname;
     }
 
     final String getDate() {

@@ -6,7 +6,6 @@ import java.util.Vector;
 class LaneScorer {
     private int[][] finalScores;
     private int partySize;
-    private int bowlerIndex;
     private Vector<Bowler> bowlers;
     private BowlerScorer[] bowlerScorers;
 
@@ -43,11 +42,9 @@ class LaneScorer {
     }
 
     final void roll(final int currBowlerIndex, final int pinsDowned) {
-        bowlerIndex = currBowlerIndex;
-
-        final BowlerScorer bowlerScorer = bowlerScorers[bowlerIndex];
+        final BowlerScorer bowlerScorer = bowlerScorers[currBowlerIndex];
         bowlerScorer.roll(pinsDowned);
-        bowlerScorer.updateCumulScores();
+        bowlerScorer.updateCumulativeScores();
     }
 
     final boolean canRollAgain(final int currBowlerIndex, final int frameNumber) {
@@ -62,11 +59,11 @@ class LaneScorer {
         return finalScores[bowler];
     }
 
-    final int[][] getCumulScores() {
-        final int[][] cumulScores = new int[partySize][Lane.FRAME_COUNT];
+    final int[][] getCumulativeScores() {
+        final int[][] cumulativeScores = new int[partySize][Lane.FRAME_COUNT];
         for (int bowler = 0; bowler < partySize; bowler++)
-            cumulScores[bowler] = bowlerScorers[bowler].getCumulScore();
-        return cumulScores;
+            cumulativeScores[bowler] = bowlerScorers[bowler].getCumulativeScore();
+        return cumulativeScores;
     }
 
     final int getBowlersFinalScoreForCurrentGame(final int bowler) {
@@ -74,7 +71,7 @@ class LaneScorer {
     }
 
     final int[][] getByBowlerByFramePartResult() {
-        // return a bowlerx21 matrix of scores
+        // return a bowler x 21 matrix of scores
         final int[][] result = new int[partySize][Lane.MAX_ROLLS];
 
         for (int bowler = 0; bowler < partySize; bowler++) {
@@ -85,13 +82,5 @@ class LaneScorer {
 
     final boolean isFirstRoll(final int bowlerIndex) {
         return bowlerScorers[bowlerIndex].getRollCount() == 1;
-    }
-
-    public final int getPartySize() {
-        return partySize;
-    }
-
-    private void setPartySize(final int partySize) {
-        this.partySize = partySize;
     }
 }

@@ -19,7 +19,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
 
     private String selectedMember;
 
-    public EndGameReport(final String partyName, final Party party) {
+    EndGameReport(final String partyName, final Party party) {
 
         result = 0;
         retVal = new Vector<>();

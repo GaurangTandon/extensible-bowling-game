@@ -22,7 +22,7 @@ import java.util.Vector;
 /**
  * Container that holds bowlers
  */
-public class Party {
+class Party {
 
     /**
      * Vector of bowlers in this party

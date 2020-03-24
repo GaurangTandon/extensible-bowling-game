@@ -17,11 +17,11 @@ class Queue {
 	 * 
 	 * creates a new queue
 	 */
-	public Queue() {
+	Queue() {
 		v = new Vector<>();
 	}
 
-	public Party next() {
+	Party next() {
 		return v.remove(0);
 	}
 
@@ -33,8 +33,8 @@ class Queue {
 		return !v.isEmpty();
 	}
 
-	public Vector<Party> asVector() {
-		return v;
+	Vector<Party> asVector() {
+		return (Vector<Party>) v.clone();
 	}
 	
 }

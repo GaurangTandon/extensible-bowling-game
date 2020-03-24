@@ -17,7 +17,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.Vector;
 
 /**
@@ -26,14 +25,14 @@ import java.util.Vector;
 class BowlerFile {
 
     /**
-     * The location of the bowelr database
+     * The location of the bowler database
      */
     private static final String BOWLER_DAT = "BOWLERS.DAT";
 
     /**
      * Retrieves bowler information from the database and returns a Bowler objects with populated fields.
      *
-     * @param nickName the nickName of the bolwer to retrieve
+     * @param nickName the nickName of the bowler to retrieve
      * @return a Bowler object
      */
 
@@ -44,7 +43,7 @@ class BowlerFile {
         Bowler foundBowler = null;
 
         while ((data = in.readLine()) != null && foundBowler == null) {
-            // File format is nick\tfname\te-mail
+            // File format is nick \t first_name \te-mail
             final String[] bowler = data.split("\t");
 
             if (nickName.equals(bowler[0])) {
@@ -71,13 +70,7 @@ class BowlerFile {
             final String fullName,
             final String email)
             throws IOException {
-
-        final String data = nickName + "\t" + fullName + "\t" + email + "\n";
-
-        final RandomAccessFile out = new RandomAccessFile(BOWLER_DAT, "rw");
-        out.skipBytes((int) out.length());
-        out.writeBytes(data);
-        out.close();
+        ScoreHistoryFile.generateScoreHistoryString(nickName, fullName, email, BOWLER_DAT);
     }
 
     /**
@@ -94,7 +87,7 @@ class BowlerFile {
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
         while ((data = in.readLine()) != null) {
-            // File format is nick\tfname\te-mail
+            // File format is nick \t first_name \t e-mail
             final String[] bowler = data.split("\t");
             //"Nick: bowler[0] Full: bowler[1] email: bowler[2]
             allBowlers.add(bowler[0]);

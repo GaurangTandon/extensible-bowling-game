@@ -54,7 +54,6 @@ class NewPatronView implements ActionListener {
         );
     }
 
-    // TODO: this method is duplicated across several classes with similar characteristics, investigate
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
         final boolean aborted = source.equals(buttonPanel.get(BTN_ABORT));

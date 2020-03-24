@@ -22,13 +22,13 @@ class ControlDeskEvent {
     private final Vector partyQueue;
 
     /**
-     * Contstructor for the ControlDeskEvent
+     * Constructor for the ControlDeskEvent
      *
-     * @param partyqueue a Vector of Strings containing the names of the parties in the wait queue
+     * @param partyQueue a Vector of Strings containing the names of the parties in the wait queue
      */
 
-    ControlDeskEvent(final Vector partyqueue) {
-        partyQueue = partyqueue;
+    ControlDeskEvent(final Vector partyQueue) {
+        this.partyQueue = partyQueue;
     }
 
     /**

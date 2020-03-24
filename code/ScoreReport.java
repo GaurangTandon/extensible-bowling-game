@@ -1,5 +1,5 @@
 /*
-  SMTP implementation based on code by Ral Gagnon mailto:real@rgagnon.com
+  SMTP implementation based on code by Real Gagnon mailto:real@rgagnon.com
  */
 
 
@@ -16,7 +16,7 @@ class ScoreReport {
 
     private String content;
 
-    public ScoreReport(final Bowler bowler, final int[] scores, final int games) {
+    ScoreReport(final Bowler bowler, final int[] scores, final int games) {
         final String nick = bowler.getNickName();
         final String full = bowler.getFullName();
         Vector<Score> v = null;
@@ -27,31 +27,22 @@ class ScoreReport {
         }
 
         assert v != null;
-
-        content = "";
-        content += "--Lucky Strike Bowling Alley Score Report--\n";
-        content += "\n";
-        content += "Report for " + full + ", aka \"" + nick + "\":\n";
-        content += "\n";
-        content += "Final scores for this session: ";
-        content += scores[0];
+        content = "--Lucky Strike Bowling Alley Score Report--\n\n"
+                + "Report for " + full + ", aka \"" + nick + "\":\n\n"
+                + "Final scores for this session: " + scores[0];
         for (int i = 1; i < games; i++) {
             content = String.format("%s%s", content, ", " + scores[i]);
         }
-        content += ".\n";
-        content += "\n";
-        content += "\n";
-        content += "Previous scores by date: \n";
+        content += ".\n\n\nPrevious scores by date: \n";
         for (final Score score : v) {
             content = String.format("%s%s", content, "  " + score.getDate() + " - " + score.getScore());
             content += "\n";
         }
-        content += "\n\n";
-        content += "Thank you for your continuing patronage.";
+        content += "\n\nThank you for your continuing patronage.";
 
     }
 
-    public void sendEmail(final String recipient) {
+    void sendEmail(final String recipient) {
         try {
             final Socket s = new Socket("osfmail.rit.edu", 25);
             final BufferedReader in =
@@ -62,7 +53,7 @@ class ScoreReport {
                             new OutputStreamWriter(s.getOutputStream(), "8859_1"));
 
             // here you are supposed to send your username
-            sendLn(in, out, "HELO world");
+            sendLn(in, out, "HELLO world");
             sendLn(in, out, "MAIL FROM: <mda2376@rit.edu>");
             sendLn(in, out, "RCPT TO: <" + recipient + ">");
             sendLn(in, out, "DATA");
@@ -81,12 +72,12 @@ class ScoreReport {
         }
     }
 
-    public void sendPrintout() {
+    void sendPrintout() {
         final PrinterJob job = PrinterJob.getPrinterJob();
 
-        final PrintableText printobj = new PrintableText(content);
+        final PrintableText printObj = new PrintableText(content);
 
-        job.setPrintable(printobj);
+        job.setPrintable(printObj);
 
         if (job.printDialog()) {
             try {

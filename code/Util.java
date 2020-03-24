@@ -1,7 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -22,7 +18,6 @@ class Util {
     }
 
     static String getDateString() {
-        // DONE: obsolete API used, replace
         final Calendar cal = Calendar.getInstance();
         return cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE) + " " + cal.get(Calendar.MONTH) +
                 "/" + cal.get(Calendar.DAY_OF_WEEK) + "/" + (cal.get(Calendar.YEAR));

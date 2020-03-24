@@ -6,7 +6,7 @@ import java.awt.*;
 
 abstract class GenericPanel {
 
-    protected JPanel panel;
+    final JPanel panel;
 
     GenericPanel() {
         panel = new JPanel();
@@ -29,7 +29,7 @@ abstract class GenericPanel {
         }
     }
 
-    public Component getPanel() {
+    Component getPanel() {
         return panel;
     }
 }

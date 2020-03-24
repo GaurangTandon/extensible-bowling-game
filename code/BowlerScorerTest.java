@@ -1,4 +1,4 @@
-public class BowlerScorerTest {
+class BowlerScorerTest {
     private static BowlerScorer bs;
 
     private static void rollMany(final int val, final int count) {
@@ -13,8 +13,8 @@ public class BowlerScorerTest {
     }
 
     private static void checkEquality(final int[] expScore) {
-        bs.updateCumulScores();
-        final int[] gotScore = bs.getCumulScore();
+        bs.updateCumulativeScores();
+        final int[] gotScore = bs.getCumulativeScore();
         for (int i = 0; i < bs.getCurrFrame(); i++)
             assert gotScore[i] == expScore[i];
     }

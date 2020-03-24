@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class TextFieldPanel extends GenericPanel {
 
-    private HashMap<String, Component> components;
+    private final HashMap<String, Component> components;
 
     public TextFieldPanel(int rows, int cols, String heading) {
         super(rows, cols, heading);

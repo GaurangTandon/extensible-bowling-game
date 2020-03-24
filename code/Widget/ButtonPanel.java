@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class ButtonPanel extends GenericPanel {
 
-    private HashMap<String, Component> components;
+    private final HashMap<String, Component> components;
 
     public ButtonPanel(String heading) {
         super(heading);

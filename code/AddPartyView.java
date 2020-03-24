@@ -49,7 +49,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     private final Vector<String> party;
     private final ControlDeskView controlDesk;
-    private Vector<Object> bowlerdb;
+    private Vector<Object> bowlerDB;
     private String selectedNick, selectedMember;
 
     private static final String BTN_ADD_PATRON = "Add to Party";
@@ -69,15 +69,15 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
         // Bowlers Panel
         try {
-            bowlerdb = new Vector<Object>(BowlerFile.getBowlers());
+            bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
         } catch (final IOException e) {
             System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
-            bowlerdb = new Vector<>();
+            bowlerDB = new Vector<>();
         } catch (final ArrayIndexOutOfBoundsException e) {
             System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
-            bowlerdb = new Vector<>();
+            bowlerDB = new Vector<>();
         }
-        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerdb, 8, this);
+        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
 
         // Button Panel
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
@@ -167,8 +167,8 @@ class AddPartyView implements ActionListener, ListSelectionListener {
                         newPatron.getNickName(),
                         newPatron.getFull(),
                         newPatron.getEmail());
-                bowlerdb = new Vector<Object>(BowlerFile.getBowlers());
-                bowlerPanel.setListData(bowlerdb);
+                bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
+                bowlerPanel.setListData(bowlerDB);
                 party.add(newPatron.getNickName());
                 partyPanel.setListData(party);
             } else {
