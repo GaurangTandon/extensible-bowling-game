@@ -79,7 +79,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
 
         win.pack();
 
-        // Center WindowPanel on Screen
+        // Center WindowFrame on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((win.getSize().width) / 2),

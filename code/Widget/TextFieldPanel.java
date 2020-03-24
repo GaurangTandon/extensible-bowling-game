@@ -1,20 +1,15 @@
 package Widget;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.HashMap;
 
-public class TextFieldPanel implements GenericPanelInterface {
-    private JPanel panel;
+public class TextFieldPanel extends GenericPanel {
+
     private HashMap<String, Component> components;
 
     public TextFieldPanel(int rows, int cols, String heading) {
-        panel = new JPanel();
-        panel.setLayout(new GridLayout(rows, cols));
-        if (heading.length() > 0) {
-            panel.setBorder(new TitledBorder(heading));
-        }
+        super(rows, cols, heading);
         components = new HashMap<>();
         components.put("_panel", panel);
     }

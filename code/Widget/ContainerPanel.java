@@ -1,33 +1,19 @@
 package Widget;
 
-import javax.naming.NameNotFoundException;
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class ContainerPanel implements GenericPanelInterface {
-
-    private final JPanel panel;
+public class ContainerPanel extends GenericPanel {
 
     public ContainerPanel() {
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        super();
     }
 
     public ContainerPanel(String heading) {
-        panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        if (heading.length() > 0) {
-            panel.setBorder(new TitledBorder(heading));
-        }
+        super(heading);
     }
 
     public ContainerPanel(int rows, int cols, String heading) {
-        panel = new JPanel();
-        panel.setLayout(new GridLayout(rows, cols));
-        if (heading.length() > 0) {
-            panel.setBorder(new TitledBorder(heading));
-        }
+        super(rows, cols, heading);
     }
 
     public ContainerPanel put(final Component subPanel) {
@@ -40,18 +26,14 @@ public class ContainerPanel implements GenericPanelInterface {
         return this;
     }
 
-    public ContainerPanel put(final GenericPanelInterface subPanel) {
+    public ContainerPanel put(final GenericPanel subPanel) {
         panel.add(subPanel.getPanel());
         return this;
     }
 
-    public ContainerPanel put(final GenericPanelInterface subPanel, final String constraints) {
+    public ContainerPanel put(final GenericPanel subPanel, final String constraints) {
         panel.add(subPanel.getPanel(), constraints);
         return this;
-    }
-
-    public Component get(final String id) throws NameNotFoundException {
-        throw new NameNotFoundException();
     }
 
     public Component getPanel() {

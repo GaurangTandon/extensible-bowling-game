@@ -12,6 +12,7 @@
  */
 
 import Widget.TextFieldPanel;
+import Widget.WindowFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ class NewPatronView implements ActionListener {
 
     private final Widget.ButtonPanel buttonPanel;
     private final TextFieldPanel patronPanel;
-    private final Widget.WindowPanel window;
+    private final WindowFrame window;
     private String nick, full, email;
 
     private final AddPartyView addParty;
@@ -45,7 +46,7 @@ class NewPatronView implements ActionListener {
                 .put(BTN_FINISHED, this)
                 .put(BTN_ABORT, this);
 
-        window = new Widget.WindowPanel(
+        window = new WindowFrame(
                 "Add Patron",
                 new Widget.ContainerPanel()
                         .put(patronPanel, "Center")

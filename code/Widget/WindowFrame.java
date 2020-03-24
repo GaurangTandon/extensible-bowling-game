@@ -1,14 +1,13 @@
 package Widget;
 
-import javax.naming.NameNotFoundException;
 import javax.swing.*;
 import java.awt.*;
 
-public class WindowPanel implements GenericPanelInterface {
+public class WindowFrame {
 
     private final JFrame win;
 
-    private WindowPanel(String title, Component container, boolean center) {
+    private WindowFrame(String title, Component container, boolean center) {
         win = new JFrame(title);
         win.getContentPane().setLayout(new BorderLayout());
         ((JPanel) win.getContentPane()).setOpaque(false);
@@ -16,7 +15,7 @@ public class WindowPanel implements GenericPanelInterface {
         win.getContentPane().add("Center", container);
         win.pack();
 
-        // Center WindowPanel on Screen
+        // Center WindowFrame on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         if (center) {
             win.setLocation(
@@ -26,19 +25,11 @@ public class WindowPanel implements GenericPanelInterface {
         win.setVisible(true);
     }
 
-    public WindowPanel(String title, GenericPanelInterface panel) {
+    public WindowFrame(String title, GenericPanel panel) {
         this(title, panel.getPanel(), true);
     }
 
     public void setVisible(boolean state) {
         win.setVisible(state);
-    }
-
-    public Component get(String id) throws NameNotFoundException {
-        throw new NameNotFoundException();
-    }
-
-    public Component getPanel() {
-        return win;
     }
 }

@@ -1,8 +1,8 @@
 /**
  * To change this generated comment edit the template variable "typecomment":
- * WindowPanel>Preferences>Java>Templates.
+ * WindowFrame>Preferences>Java>Templates.
  * To enable and disable the creation of type comments go to
- * WindowPanel>Preferences>Java>Code Generation.
+ * WindowFrame>Preferences>Java>Code Generation.
  */
 
 class Score {

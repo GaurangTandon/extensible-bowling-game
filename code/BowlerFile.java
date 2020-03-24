@@ -37,7 +37,7 @@ class BowlerFile {
      * @return a Bowler object
      */
 
-    public static Bowler getBowlerInfo(final String nickName)
+    static Bowler getBowlerInfo(final String nickName)
             throws IOException {
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
@@ -66,7 +66,7 @@ class BowlerFile {
      * @param email    the E-mail Address of the Bowler
      */
 
-    public static void putBowlerInfo(
+    static void putBowlerInfo(
             final String nickName,
             final String fullName,
             final String email)

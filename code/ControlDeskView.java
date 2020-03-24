@@ -8,6 +8,8 @@
  *
  */
 
+import Widget.WindowFrame;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -21,7 +23,7 @@ import java.util.Vector;
  */
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
-    private final Widget.WindowPanel win;
+    private final WindowFrame win;
     private final Widget.ButtonPanel controlsPanel;
     private JList<?> partyList;
 
@@ -88,7 +90,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
                 .put(BTN_ASSIGN, this)
                 .put(BTN_FINISHED, this);
 
-        win = new Widget.WindowPanel(
+        win = new WindowFrame(
                 "Control Desk",
                 new Widget.ContainerPanel()
                         .put(controlsPanel, "East")

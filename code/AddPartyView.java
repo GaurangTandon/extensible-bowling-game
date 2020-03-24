@@ -21,7 +21,7 @@
  */
 
 import Widget.ContainerPanel;
-import Widget.WindowPanel;
+import Widget.WindowFrame;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -43,7 +43,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final int maxSize;
 
     private final Widget.ButtonPanel buttonPanel;
-    private final Widget.WindowPanel win;
+    private final WindowFrame win;
     private final Widget.ScrollablePanel<String> partyPanel;
     private final Widget.ScrollablePanel<Object> bowlerPanel;
 
@@ -87,7 +87,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
                 .put(BTN_FINISHED, this);
 
         // Window
-        win = new WindowPanel(
+        win = new WindowFrame(
                 "Add Party",
                 new ContainerPanel(1, 3, "")
                         .put(partyPanel)
