@@ -11,6 +11,8 @@
  *
  */
 
+import Widget.TextFieldPanel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -23,10 +25,8 @@ import java.awt.event.ActionListener;
 class NewPatronView implements ActionListener {
 
     private final Widget.ButtonPanel buttonPanel;
+    private final TextFieldPanel patronPanel;
     private final Widget.WindowPanel window;
-    private final JTextField nickField;
-    private final JTextField fullField;
-    private final JTextField emailField;
     private String nick, full, email;
 
     private final AddPartyView addParty;
@@ -38,22 +38,16 @@ class NewPatronView implements ActionListener {
         final JPanel colPanel = new JPanel();
         colPanel.setLayout(new BorderLayout());
 
-        // Patron Panel
-        final JPanel patronPanel = new JPanel();
-        patronPanel.setLayout(new GridLayout(3, 1));
-        patronPanel.setBorder(new TitledBorder("Your Info"));
-
-        nickField = Util.addFieldPanel("Nick Name", patronPanel);
-        fullField = Util.addFieldPanel("Full Name", patronPanel);
-        emailField = Util.addFieldPanel("E-Mail", patronPanel);
-
-        // Button Panel
+        patronPanel = new Widget.TextFieldPanel(3, 1, "Your Info")
+                .put("nickField", "Nick Name")
+                .put("fullField", "Full Name")
+                .put("emailField", "E-Mail");
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
                 .put("finished", "Add Patron", this)
                 .put("abort", "Abort", this);
 
         // Clean up main panel
-        colPanel.add(patronPanel, "Center");
+        colPanel.add(patronPanel.get("_panel"), "Center");
         colPanel.add(buttonPanel.get("_panel"), "East");
 
 
@@ -67,9 +61,9 @@ class NewPatronView implements ActionListener {
         final boolean finished = source.equals(buttonPanel.get("finished"));
 
         if (finished) {
-            nick = nickField.getText();
-            full = fullField.getText();
-            email = emailField.getText();
+            nick = patronPanel.getText("nickField");
+            full = patronPanel.getText("fullField");
+            email = patronPanel.getText("emailField");
             addParty.updateNewPatron(this);
         }
 

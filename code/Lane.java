@@ -326,7 +326,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     private LaneEvent lanePublish() {
         boolean shouldSetupGraphics = scorer.isFirstRoll(currBowlerIndex);
         shouldSetupGraphics &= currBowlerIndex == 0;
-        return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(), scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
+        return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
+                scorer.getCumulScores(), scorer.getByBowlerByFramePartResult(),
                 gameIsHalted, shouldSetupGraphics);
     }
 

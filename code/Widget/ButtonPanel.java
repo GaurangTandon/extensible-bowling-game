@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-public class ButtonPanel {
+public class ButtonPanel implements GenericPanelInterface {
     private JPanel panel;
     private HashMap<String, Component> components;
 

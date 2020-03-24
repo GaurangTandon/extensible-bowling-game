@@ -35,15 +35,4 @@ class Util {
         }
         return false;
     }
-
-    static JTextField addFieldPanel(final String text, JPanel toPanel) {
-        final JPanel itemPanel = new JPanel();
-        itemPanel.setLayout(new FlowLayout());
-        final JLabel itemLabel = new JLabel(text);
-        final JTextField itemField = new JTextField("", 15);
-        itemPanel.add(itemLabel);
-        itemPanel.add(itemField);
-        toPanel.add(itemPanel);
-        return itemField;
-    }
 }

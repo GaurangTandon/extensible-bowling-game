@@ -1,9 +1,10 @@
 package Widget;
 
+import javax.naming.NameNotFoundException;
 import javax.swing.*;
 import java.awt.*;
 
-public class WindowPanel {
+public class WindowPanel implements GenericPanelInterface {
 
     private final JFrame win;
 
@@ -25,5 +26,9 @@ public class WindowPanel {
 
     public void setVisible(boolean state) {
         win.setVisible(state);
+    }
+
+    public Component get(String id) throws NameNotFoundException {
+        throw new NameNotFoundException();
     }
 }
