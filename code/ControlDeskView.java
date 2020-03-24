@@ -13,8 +13,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -33,6 +31,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
     private final int maxMembers;
     private final ControlDeskInterface controlDesk;
 
+    private static final String BTN_ADD_PARTY = "Add Party";
+    private static final String BTN_ASSIGN = "Assign";
+    private static final String BTN_FINISHED = "Finished";
 
     private JPanel setupLaneStatusPanel(final int numLanes) {
         final JPanel laneStatusPanel = new JPanel();
@@ -83,9 +84,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         final int numLanes = controlDesk.getNumLanes();
 
         controlsPanel = new Widget.ButtonPanel(3, 1, "Controls")
-                .put("addParty", "Add Party", this)
-                .put("assign", "Assign", this)
-                .put("finished", "Finished", this);
+                .put(BTN_ADD_PARTY, this)
+                .put(BTN_ASSIGN, this)
+                .put(BTN_FINISHED, this);
 
         win = new Widget.WindowPanel(
                 "Control Desk",
@@ -105,11 +106,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-        if (source.equals(controlsPanel.get("addParty"))) {
+        if (source.equals(controlsPanel.get(BTN_ADD_PARTY))) {
             new AddPartyView(this, maxMembers);
-        } else if (source.equals(controlsPanel.get("assign"))) {
+        } else if (source.equals(controlsPanel.get(BTN_ASSIGN))) {
             controlDesk.assignLane();
-        } else if (source.equals(controlsPanel.get("finished"))) {
+        } else if (source.equals(controlsPanel.get(BTN_FINISHED))) {
             win.setVisible(false);
             System.exit(0);
         }

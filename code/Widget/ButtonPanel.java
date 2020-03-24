@@ -30,14 +30,14 @@ public class ButtonPanel implements GenericPanelInterface {
         components.put("_panel", panel);
     }
 
-    public ButtonPanel put(final String id, final String text, ActionListener listener) {
+    public ButtonPanel put(final String text, ActionListener listener) {
         final JButton button = new JButton(text);
         final JPanel subPanel = new JPanel();
         subPanel.setLayout(new FlowLayout());
         button.addActionListener(listener);
         subPanel.add(button);
         panel.add(subPanel);
-        components.put(id, button);
+        components.put(text, button);
         return this;
     }
 

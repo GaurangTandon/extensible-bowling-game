@@ -9,16 +9,6 @@ public class TextFieldPanel implements GenericPanelInterface {
     private JPanel panel;
     private HashMap<String, Component> components;
 
-    public TextFieldPanel(String heading) {
-        panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        if (heading.length() > 0) {
-            panel.setBorder(new TitledBorder(heading));
-        }
-        components = new HashMap<>();
-        components.put("_panel", panel);
-    }
-
     public TextFieldPanel(int rows, int cols, String heading) {
         panel = new JPanel();
         panel.setLayout(new GridLayout(rows, cols));
@@ -29,7 +19,7 @@ public class TextFieldPanel implements GenericPanelInterface {
         components.put("_panel", panel);
     }
 
-    public TextFieldPanel put(final String id, final String text) {
+    public TextFieldPanel put(final String text) {
         final JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new FlowLayout());
         final JLabel itemLabel = new JLabel(text);
@@ -37,7 +27,7 @@ public class TextFieldPanel implements GenericPanelInterface {
         itemPanel.add(itemLabel);
         itemPanel.add(itemField);
         panel.add(itemPanel);
-        components.put(id, itemField);
+        components.put(text, itemField);
         return this;
     }
 

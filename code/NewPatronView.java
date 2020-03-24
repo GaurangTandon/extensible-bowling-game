@@ -13,9 +13,6 @@
 
 import Widget.TextFieldPanel;
 
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,16 +28,22 @@ class NewPatronView implements ActionListener {
 
     private final AddPartyView addParty;
 
+    private static final String TXT_NICK_FIELD = "Nick Name";
+    private static final String TXT_FULL_FIELD = "Full Name";
+    private static final String TXT_EMAIL_FIELD = "E-Mail";
+    private static final String BTN_FINISHED = "Add Patron";
+    private static final String BTN_ABORT = "Abort";
+
     NewPatronView(final AddPartyView v) {
         addParty = v;
 
         patronPanel = new Widget.TextFieldPanel(3, 1, "Your Info")
-                .put("nickField", "Nick Name")
-                .put("fullField", "Full Name")
-                .put("emailField", "E-Mail");
+                .put(TXT_NICK_FIELD)
+                .put(TXT_FULL_FIELD)
+                .put(TXT_EMAIL_FIELD);
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
-                .put("finished", "Add Patron", this)
-                .put("abort", "Abort", this);
+                .put(BTN_FINISHED, this)
+                .put(BTN_ABORT, this);
 
         window = new Widget.WindowPanel(
                 "Add Patron",
@@ -53,13 +56,13 @@ class NewPatronView implements ActionListener {
     // TODO: this method is duplicated across several classes with similar characteristics, investigate
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        final boolean aborted = source.equals(buttonPanel.get("abort"));
-        final boolean finished = source.equals(buttonPanel.get("finished"));
+        final boolean aborted = source.equals(buttonPanel.get(BTN_ABORT));
+        final boolean finished = source.equals(buttonPanel.get(BTN_FINISHED));
 
         if (finished) {
-            nick = patronPanel.getText("nickField");
-            full = patronPanel.getText("fullField");
-            email = patronPanel.getText("emailField");
+            nick = patronPanel.getText(TXT_NICK_FIELD);
+            full = patronPanel.getText(TXT_FULL_FIELD);
+            email = patronPanel.getText(TXT_EMAIL_FIELD);
             addParty.updateNewPatron(this);
         }
 

@@ -51,6 +51,11 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private Vector<Object> bowlerdb;
     private String selectedNick, selectedMember;
 
+    private static final String BTN_ADD_PATRON = "Add to Party";
+    private static final String BTN_REM_PATRON = "Remove Member";
+    private static final String BTN_NEW_PATRON = "New Patron";
+    private static final String BTN_FINISHED = "Finished";
+
     AddPartyView(final ControlDeskView controlDesk, final int max) {
         this.controlDesk = controlDesk;
         maxSize = max;
@@ -72,10 +77,10 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
         // Button Panel
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
-                .put("addPatron", "Add to Party", this)
-                .put("remPatron", "Remove Member", this)
-                .put("newPatron", "New Patron", this)
-                .put("finished", "Finished", this);
+                .put(BTN_ADD_PATRON, this)
+                .put(BTN_REM_PATRON, this)
+                .put(BTN_NEW_PATRON, this)
+                .put(BTN_FINISHED, this);
 
         // Window
         win = new WindowPanel(
@@ -114,16 +119,16 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        if (source.equals(buttonPanel.get("addPatron"))) {
+        if (source.equals(buttonPanel.get(BTN_ADD_PATRON))) {
             addPatron();
         }
-        if (source.equals(buttonPanel.get("remPatron"))) {
+        if (source.equals(buttonPanel.get(BTN_REM_PATRON))) {
             removePatron();
         }
-        if (source.equals(buttonPanel.get("newPatron"))) {
+        if (source.equals(buttonPanel.get(BTN_NEW_PATRON))) {
             new NewPatronView(this);
         }
-        if (source.equals(buttonPanel.get("finished"))) {
+        if (source.equals(buttonPanel.get(BTN_FINISHED))) {
             onPartyFinished();
         }
     }
