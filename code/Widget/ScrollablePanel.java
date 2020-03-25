@@ -28,4 +28,6 @@ public class ScrollablePanel<T> extends GenericPanel {
     public JList getList() {
         return dataList;
     }
+
+    public JPanel getPanel() { return (JPanel) super.getPanel(); }
 }
