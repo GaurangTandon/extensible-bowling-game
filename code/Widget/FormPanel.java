@@ -7,12 +7,12 @@ abstract class FormPanel extends GenericPanel {
 
     HashMap<String, Component> components;
 
-    FormPanel(String heading) {
+    FormPanel(final String heading) {
         super(heading);
         setupComponentStore();
     }
 
-    FormPanel(int rows, int cols, String heading) {
+    FormPanel(final int rows, final int cols, final String heading) {
         super(rows, cols, heading);
         setupComponentStore();
     }

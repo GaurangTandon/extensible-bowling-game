@@ -82,5 +82,4 @@ class NewPatronView implements ActionListener {
     String getEmail() {
         return email;
     }
-
 }

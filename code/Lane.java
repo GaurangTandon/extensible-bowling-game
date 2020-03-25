@@ -35,7 +35,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     }
 
     private void exitGame(final String partyName) {
-        final EndGameReport egr = new EndGameReport(partyName, party);
+        final EndGameReport egr = new EndGameReport(partyName, party.getMemberNicks());
         final Vector<String> printVector = egr.getResult();
 
         int myIndex = 0;
@@ -112,15 +112,24 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (isPartyAssigned() && !game.isFinished()) {
-                while (game.isHalted()) {
-                    Util.busyWait(10);
-                }
+            // Since it is not guaranteed game is set
+            // as soon as party got assigned, and this is
+            // a multi-threaded environment
+            if(game != null) {
+                if (isPartyAssigned() && !game.isFinished()) {
+                    waitWhilePaused();
 
-                bowlOneBowlerOneFrame();
-                game.nextBowler();
-            } else if (isPartyAssigned()) onGameFinish();
+                    bowlOneBowlerOneFrame();
+                    game.nextBowler();
+                } else if (isPartyAssigned()) onGameFinish();
+            }
 
+            Util.busyWait(10);
+        }
+    }
+
+    private void waitWhilePaused() {
+        while (game.isHalted()) {
             Util.busyWait(10);
         }
     }

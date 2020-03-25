@@ -36,7 +36,7 @@ class Party {
      * @param bowlers Vector of bowlers that are in this party
      */
 
-    public Party(final Vector bowlers) {
+    Party(final Vector bowlers) {
         this.bowlers = new Vector(bowlers);
         name = this.bowlers.get(0).getNickName() + "'s Party";
     }
@@ -56,7 +56,7 @@ class Party {
     }
 
     final Vector<String> getMemberNicks() {
-        Vector<String> nicks = new Vector<>(getPartySize());
+        final Vector<String> nicks = new Vector<>(getPartySize());
 
         for (final Bowler bowler : bowlers) {
             nicks.add(bowler.getNickName());
@@ -68,7 +68,7 @@ class Party {
         return name;
     }
 
-    final String getMemberNick(int index){
+    final String getMemberNick(final int index){
         return bowlers.get(index).getNickName();
     }
 }

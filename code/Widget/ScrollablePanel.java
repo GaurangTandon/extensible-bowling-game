@@ -9,7 +9,7 @@ public class ScrollablePanel<T> extends GenericPanel {
 
     private final JList<T> dataList;
 
-    public ScrollablePanel(String title, Vector<T> data, int visibleCount, ListSelectionListener listener) {
+    public ScrollablePanel(final String title, final Vector<T> data, final int visibleCount, final ListSelectionListener listener) {
         super(title);
         dataList = new JList<>(data);
         dataList.setFixedCellWidth(120);
@@ -17,11 +17,11 @@ public class ScrollablePanel<T> extends GenericPanel {
         dataList.addListSelectionListener(listener);
         final JScrollPane dataPane = new JScrollPane(dataList);
         // Remove in one of the occurrences
-        dataPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        dataPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         panel.add(dataPane);
     }
 
-    public void setListData(Vector<T> data) {
+    public void setListData(final Vector<? extends T> data) {
         dataList.setListData(data);
     }
 

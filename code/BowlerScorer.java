@@ -26,31 +26,31 @@ class BowlerScorer {
     static final int SPARE = 12;
 
     // @pre roll - is the start of a frame
-    private int getPinsDownOnThisFrame(int roll) {
+    private int getPinsDownOnThisFrame(final int roll) {
         return rolls[roll] + rolls[roll + 1];
     }
 
-    private boolean isStrike(int roll) {
+    private boolean isStrike(final int roll) {
         return rolls[roll] == Pinsetter.PIN_COUNT;
     }
 
     // roll1 = first roll of the two spares
     // must be the first roll of the frame as well
-    private boolean isSpare(int roll1) {
+    private boolean isSpare(final int roll1) {
         return getPinsDownOnThisFrame(roll1) == Pinsetter.PIN_COUNT && rolls[roll1 + 1] > 0;
     }
 
     // this roll is the second roll of a frame
-    private boolean isSpareRoll2(int roll2) {
+    private boolean isSpareRoll2(final int roll2) {
         return rolls[roll2] + rolls[roll2 - 1] == Pinsetter.PIN_COUNT && rolls[roll2] > 0;
     }
 
-    private int strikeBonus(int roll) {
+    private int strikeBonus(final int roll) {
         return rolls[roll + 1] + rolls[roll + 2];
     }
 
     // roll1 = first roll of the two spares
-    private int spareBonus(int roll1) {
+    private int spareBonus(final int roll1) {
         return rolls[roll1 + 2];
     }
 
@@ -59,7 +59,7 @@ class BowlerScorer {
             cumulativeScore[frame] = -1;
     }
 
-    private void resetCumulativeScores(int currFrame) {
+    private void resetCumulativeScores(final int currFrame) {
         for (int frame = 0; frame < currFrame; frame++)
             cumulativeScore[frame] = 0;
     }
@@ -71,7 +71,7 @@ class BowlerScorer {
         resetCumulativeScores(currFrame);
 
         while (roll < rollCount) {
-            int scoreOnThisFrame;
+            final int scoreOnThisFrame;
 
             if (frame == Lane.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
@@ -127,11 +127,11 @@ class BowlerScorer {
      *
      * @param pinsDown The number of pins hit in the strike
      */
-    void roll(int pinsDown) {
+    void roll(final int pinsDown) {
         rolls[rollCount] = pinsDown;
 
         // update the display
-        int updateIndex = 2 * currFrame + partIndex;
+        final int updateIndex = 2 * currFrame + partIndex;
 
         if (partIndex == 1 && isSpareRoll2(rollCount)) {
             perFramePartRes[updateIndex] = SPARE;
@@ -165,7 +165,7 @@ class BowlerScorer {
      * (2) frame is the last, previous roll had a strike or previous to previous roll was a strike (both must be from same frame)
      * (3) frame is last and previous roll made a spare
      */
-    boolean canRollAgain(int frameNumber) {
+    boolean canRollAgain(final int frameNumber) {
         // remember that these property values are AFTER the bowler made his last roll
         // so i am basically checking that the bowler is still in the same frame
         // as he was in the last roll

@@ -7,29 +7,28 @@ public class WindowFrame {
 
     private final JFrame win;
 
-    private WindowFrame(String title, Component container, boolean center) {
+    private WindowFrame(final String title, final Component container) {
         win = new JFrame(title);
         win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
+        ((JComponent) win.getContentPane()).setOpaque(false);
 
         win.getContentPane().add("Center", container);
         win.pack();
 
         // Center WindowFrame on Screen
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        if (center) {
-            win.setLocation(
-                    ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                    ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        }
+        final Dimension size = win.getSize();
+        win.setLocation(
+                ((screenSize.width) / 2) - ((size.width) / 2),
+                ((screenSize.height) / 2) - ((size.height) / 2));
         win.setVisible(true);
     }
 
-    public WindowFrame(String title, GenericPanel panel) {
-        this(title, panel.getPanel(), true);
+    public WindowFrame(final String title, final GenericPanel panel) {
+        this(title, panel.getPanel());
     }
 
-    public void setVisible(boolean state) {
+    public void setVisible(final boolean state) {
         win.setVisible(state);
     }
 }

@@ -28,7 +28,7 @@
 class Alley {
 	private final ControlDesk controldesk;
 
-    Alley(final int numLanes) {
+    Alley(@SuppressWarnings("SameParameterValue") final int numLanes) {
         controldesk = new ControlDesk( numLanes );
     }
 

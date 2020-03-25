@@ -22,12 +22,15 @@ import java.util.Vector;
 /**
  * Class for interfacing with Bowler database
  */
-class BowlerFile {
+final class BowlerFile {
 
     /**
      * The location of the bowler database
      */
     private static final String BOWLER_DAT = "BOWLERS.DAT";
+
+    private BowlerFile() {
+    }
 
     /**
      * Retrieves bowler information from the database and returns a Bowler objects with populated fields.
@@ -55,6 +58,19 @@ class BowlerFile {
         if (foundBowler == null)
             System.out.println("Nick not found...");
         return foundBowler;
+    }
+
+    static Vector putBowlerIfDidntExist(final String nick, final String full, final String email) {
+        try {
+            final Bowler checkBowler = getBowlerInfo(nick);
+            if (checkBowler == null) return null;
+
+            putBowlerInfo(nick, full, email);
+            return getBowlers();
+        } catch (final IOException e) {
+            System.err.println("File I/O Error");
+            return null;
+        }
     }
 
     /**

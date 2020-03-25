@@ -7,6 +7,7 @@ import java.awt.print.Printable;
 
 class PrintableText implements Printable {
     private final String text;
+    @SuppressWarnings("NonConstantFieldWithUpperCaseName")
     private final int POINTS_PER_INCH;
 
     PrintableText(final String t) {

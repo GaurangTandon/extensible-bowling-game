@@ -1,5 +1,5 @@
-import java.util.Calendar;
-import java.util.Vector;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Utility class that provides commonly used functionality
@@ -8,7 +8,10 @@ import java.util.Vector;
  * Intended to replace equivalent pieces of code with
  * just one-line function calls of Util.
  */
-class Util {
+final class Util {
+    private Util() {
+    }
+
     static void busyWait(final int millis) {
         try {
             Thread.sleep(millis);
@@ -18,12 +21,13 @@ class Util {
     }
 
     static String getDateString() {
-        final Calendar cal = Calendar.getInstance();
-        return cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE) + " " + cal.get(Calendar.MONTH) +
-                "/" + cal.get(Calendar.DAY_OF_WEEK) + "/" + (cal.get(Calendar.YEAR));
+        final LocalDateTime now = LocalDateTime.now();
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm MM/dd/yyyy");
+        return now.format(formatter);
     }
 
-    static boolean containsString(final Vector<String> container, final String target) {
+    static boolean containsString(final Iterable<String> container, final String target) {
+        if (target == null) return false;
         for (final String str : container) {
             if (str.equals(target))
                 return true;

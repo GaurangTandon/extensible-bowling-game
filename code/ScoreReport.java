@@ -3,6 +3,7 @@
  */
 
 
+import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
@@ -75,7 +76,7 @@ class ScoreReport {
     void sendPrintout() {
         final PrinterJob job = PrinterJob.getPrinterJob();
 
-        final PrintableText printObj = new PrintableText(content);
+        final Printable printObj = new PrintableText(content);
 
         job.setPrintable(printObj);
 

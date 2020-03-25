@@ -43,8 +43,8 @@ class LaneEvent {
         return partySize;
     }
 
-    final int getScore(final int bowlerIdx, final int roll) {
-        return score[bowlerIdx][roll];
+    final int[] getScore(final int bowlerIdx) {
+        return score[bowlerIdx];
     }
 
     final int[][] getCumulativeScore() {

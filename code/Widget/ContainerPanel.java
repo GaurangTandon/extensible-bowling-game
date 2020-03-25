@@ -5,14 +5,13 @@ import java.awt.*;
 public class ContainerPanel extends GenericPanel {
 
     public ContainerPanel() {
-        super();
     }
 
-    public ContainerPanel(String heading) {
+    public ContainerPanel(final String heading) {
         super(heading);
     }
 
-    public ContainerPanel(int rows, int cols, String heading) {
+    public ContainerPanel(final int rows, final int cols, final String heading) {
         super(rows, cols, heading);
     }
 

@@ -4,16 +4,18 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Vector;
 
-class ScoreHistoryFile {
-
+final class ScoreHistoryFile {
     private static final String SCORE_HISTORY_DAT = "SCORE_HISTORY.DAT";
+
+    private ScoreHistoryFile() {
+    }
 
     static void addScore(final String nick, final String date, final String score)
             throws IOException {
         generateScoreHistoryString(nick, date, score, SCORE_HISTORY_DAT);
     }
 
-    static void generateScoreHistoryString(String nick, String date, String score, String scoreHistoryDat)
+    static void generateScoreHistoryString(final String nick, final String date, final String score, final String scoreHistoryDat)
             throws IOException {
         final String data = nick + "\t" + date + "\t" + score + "\n";
         final RandomAccessFile out = new RandomAccessFile(scoreHistoryDat, "rw");

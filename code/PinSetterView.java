@@ -65,12 +65,8 @@ public class PinSetterView implements PinsetterObserver {
         frame.pack();
     }
 
-    public static void main(final String[] args) {
-        new PinSetterView(1);
-    }
-
-    private void addDummyPanels(final JPanel pins, int count) {
-        for(int i = 1; i <= count; i++){
+    private void addDummyPanels(final JPanel pins, final int count) {
+        for (int i = 1; i <= count; i++) {
             pins.add(new JPanel());
         }
     }
@@ -80,8 +76,46 @@ public class PinSetterView implements PinsetterObserver {
 
         pins.setLayout(new GridLayout(4, 7));
 
-        //**********************Grid of the pins**************************
+        final JPanel[] panels = getPanels();
 
+        makeFourthRow(pins, panels);
+        makeThirdRow(pins, panels);
+        makeSecondRow(pins, panels);
+        makeFirstRow(pins, panels, 1, 3);
+
+        pins.setBackground(Color.black);
+        pins.setForeground(Color.yellow);
+
+        return pins;
+    }
+
+    private void makeFirstRow(final JPanel pins, final JPanel[] panels, final int pinNum, final int rightPad) {
+        addDummyPanels(pins, 3);
+        pins.add(panels[pinNum]);
+        addDummyPanels(pins, rightPad);
+    }
+
+    private void makeSecondRow(final JPanel pins, final JPanel[] panels) {
+        makeFirstRow(pins, panels, 2, 1);
+        pins.add(panels[3]);
+        addDummyPanels(pins, 2);
+    }
+
+    private void makeThirdRow(final JPanel pins, final JPanel[] panels) {
+        for (int i = 4; i <= 6; i++) {
+            addDummyPanels(pins, 1);
+            pins.add(panels[i]);
+        }
+    }
+
+    private void makeFourthRow(final JPanel pins, final JPanel[] panels) {
+        for (int i = 7; i <= 10; i++) {
+            pins.add(panels[i]);
+            if (i != 10) addDummyPanels(pins, 1);
+        }
+    }
+
+    private JPanel[] getPanels() {
         final JPanel[] panels = new JPanel[11];
         for (int pin = 1; pin <= 10; pin++) {
             final JPanel curr = new JPanel();
@@ -90,38 +124,7 @@ public class PinSetterView implements PinsetterObserver {
             pinVector.add(currL);
             panels[pin] = curr;
         }
-        //******************************Fourth Row**************
-
-        for (int i = 7; i <= 10; i++) {
-            pins.add(panels[i]);
-            if (i != 10) addDummyPanels(pins, 1);
-        }
-
-        //*****************************Third Row***********
-
-        for (int i = 4; i <= 6; i++) {
-            addDummyPanels(pins, 1);
-            pins.add(panels[i]);
-        }
-
-        //*****************************Second Row**************
-
-        addDummyPanels(pins, 3);
-        pins.add(panels[2]);
-        addDummyPanels(pins, 1);
-        pins.add(panels[3]);
-        addDummyPanels(pins, 2);
-
-        //******************************First Row*****************
-
-        addDummyPanels(pins, 3);
-        pins.add(panels[1]);
-        addDummyPanels(pins, 3);
-
-        pins.setBackground(Color.black);
-        pins.setForeground(Color.yellow);
-
-        return pins;
+        return panels;
     }
 
     /**
@@ -137,12 +140,9 @@ public class PinSetterView implements PinsetterObserver {
 
     public void receivePinsetterEvent(final PinsetterEvent pe) {
         if (!(pe.isFoulCommitted())) {
-            new JLabel();
-            JLabel tempPin;
-
             for (int c = 0; c < 10; c++) {
                 final boolean pinKnockedDown = pe.isPinKnockedDown(c);
-                tempPin = pinVector.get(c);
+                final JLabel tempPin = pinVector.get(c);
                 if (pinKnockedDown) {
                     tempPin.setForeground(Color.lightGray);
                 }
