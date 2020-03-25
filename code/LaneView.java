@@ -56,40 +56,46 @@ public class LaneView implements LaneObserver, ActionListener {
         final JPanel[] balls = new JPanel[maxBalls]; // is reused per bowler
 
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
-            final JPanel pin = new JPanel();
-            pin.setBorder(BorderFactory.createTitledBorder(bowlerNicks.get(bowlerIdx)));
-            pin.setLayout(new GridLayout(0, 10));
-
-            for (int j = 0; j < maxBalls; j++) {
-                ballLabel[bowlerIdx][j] = new JLabel(" ");
-                balls[j] = new JPanel();
-                balls[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                balls[j].add(ballLabel[bowlerIdx][j]);
-            }
-
-            for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
-                final JPanel ballPanel = new JPanel();
-                ballPanel.setLayout(new GridLayout(0, 3));
-                if (frameIdx != Lane.LAST_FRAME)
-                    ballPanel.add(new JLabel("  "), BorderLayout.EAST);
-                ballPanel.add(balls[2 * frameIdx], BorderLayout.EAST);
-                ballPanel.add(balls[2 * frameIdx + 1], BorderLayout.EAST);
-                if (frameIdx == Lane.LAST_FRAME)
-                    ballPanel.add(balls[2 * frameIdx + 2]);
-
-                final JPanel score = new JPanel();
-                scoreLabel[bowlerIdx][frameIdx] = new JLabel("  ", SwingConstants.CENTER);
-                score.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                score.setLayout(new GridLayout(0, 1));
-                score.add(ballPanel, BorderLayout.EAST);
-                score.add(scoreLabel[bowlerIdx][frameIdx], BorderLayout.SOUTH);
-                pin.add(score, BorderLayout.EAST);
-            }
+            final JPanel pin = makeOneBowlerCellsRow(maxBalls, balls, bowlerIdx, bowlerNicks.get(bowlerIdx));
             panel.add(pin);
         }
 
         initPending = false;
         return panel;
+    }
+
+    private JPanel makeOneBowlerCellsRow(final int maxBalls, final JPanel[] balls, final int bowlerIdx, final String bowlerNick) {
+        final JPanel pin = new JPanel();
+        pin.setBorder(BorderFactory.createTitledBorder(bowlerNick));
+        pin.setLayout(new GridLayout(0, 10));
+
+        for (int j = 0; j < maxBalls; j++) {
+            ballLabel[bowlerIdx][j] = new JLabel(" ");
+            balls[j] = new JPanel();
+            balls[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            balls[j].add(ballLabel[bowlerIdx][j]);
+        }
+
+        for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
+            final JPanel ballPanel = new JPanel();
+            ballPanel.setLayout(new GridLayout(0, 3));
+            if (frameIdx != Lane.LAST_FRAME)
+                ballPanel.add(new JLabel("  "), BorderLayout.EAST);
+            ballPanel.add(balls[2 * frameIdx], BorderLayout.EAST);
+            ballPanel.add(balls[2 * frameIdx + 1], BorderLayout.EAST);
+            if (frameIdx == Lane.LAST_FRAME)
+                ballPanel.add(balls[2 * frameIdx + 2]);
+
+            final JPanel score = new JPanel();
+            scoreLabel[bowlerIdx][frameIdx] = new JLabel("  ", SwingConstants.CENTER);
+            score.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            score.setLayout(new GridLayout(0, 1));
+            score.add(ballPanel, BorderLayout.EAST);
+            score.add(scoreLabel[bowlerIdx][frameIdx], BorderLayout.SOUTH);
+            pin.add(score, BorderLayout.EAST);
+        }
+
+        return pin;
     }
 
 
