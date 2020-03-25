@@ -80,7 +80,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * Displays a GUI representation of the ControlDesk
      */
 
-    ControlDeskView(final ControlDeskInterface controlDesk, final int maxMembers) {
+    ControlDeskView(final ControlDeskInterface controlDesk, @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.getNumLanes();
