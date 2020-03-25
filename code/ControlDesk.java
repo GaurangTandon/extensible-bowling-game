@@ -91,7 +91,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
             } else break;
         }
 
-        publish(new ControlDeskEvent(getPartyQueue()));
+        publish();
     }
 
     /**
@@ -116,7 +116,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         }
         final Party newParty = new Party(partyBowlers);
         partyQueue.add(newParty);
-        publish(new ControlDeskEvent(getPartyQueue()));
+        publish();
     }
 
     /**
@@ -158,11 +158,9 @@ class ControlDesk extends Thread implements ControlDeskInterface {
 
     /**
      * Broadcast an event to subscribing objects.
-     *
-     * @param event the ControlDeskEvent to broadcast
      */
-
-    private void publish(final ControlDeskEvent event) {
+    private void publish() {
+        final ControlDeskEvent event = new ControlDeskEvent(getPartyQueue());
         for (final ControlDeskObserver subscriber : subscribers) {
             subscriber.receiveControlDeskEvent(event);
         }

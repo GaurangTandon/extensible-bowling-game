@@ -22,17 +22,13 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     private static final String BTN_PRINT = "Print Report";
     private static final String BTN_FINISHED = "Finished";
 
-    EndGameReport(final String partyName, final Party party) {
+    EndGameReport(final String partyName, final Vector<String> partyMemberNicks) {
         result = 0;
-        retVal = new Vector<>();
+        retVal = new Vector<>(0);
 
-        final Vector<String> myVector = new Vector<>();
-        for (final Bowler o : party.getMembers()) {
-            myVector.add(o.getNickName());
-        }
         // Member Panel
         final Widget.ScrollablePanel<String> partyPanel = new Widget.ScrollablePanel<>(
-                "Party Members", myVector, 5, this);
+                "Party Members", partyMemberNicks, 5, this);
         partyPanel.getPanel().add(partyPanel.getList()); // Can't understand why list is added again
 
         buttonPanel = new Widget.ButtonPanel(2, 1, "")
@@ -44,16 +40,6 @@ class EndGameReport implements ActionListener, ListSelectionListener {
                 new ContainerPanel(1, 2, "")
                         .put(partyPanel)
                         .put(buttonPanel));
-    }
-
-    public static void main(final String[] args) {
-        final Vector<Bowler> bowlers = new Vector<>();
-        for (int i = 0; i < 4; i++) {
-            bowlers.add(new Bowler("aaaaa", "aaaaa", "aaaaa"));
-        }
-        final Party party = new Party(bowlers);
-        final String partyName = "wank";
-        new EndGameReport(partyName, party);
     }
 
     public void valueChanged(final ListSelectionEvent e) {

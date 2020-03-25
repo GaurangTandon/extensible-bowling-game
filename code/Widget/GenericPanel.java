@@ -13,18 +13,18 @@ abstract class GenericPanel {
         panel.setLayout(new BorderLayout());
     }
 
-    GenericPanel(String heading) {
+    GenericPanel(final String heading) {
         panel = new JPanel();
         panel.setLayout(new FlowLayout());
-        if (heading.length() > 0) {
+        if (!heading.isEmpty()) {
             panel.setBorder(new TitledBorder(heading));
         }
     }
 
-    GenericPanel(int rows, int cols, String heading) {
+    GenericPanel(final int rows, final int cols, final String heading) {
         panel = new JPanel();
         panel.setLayout(new GridLayout(rows, cols));
-        if (heading.length() > 0) {
+        if (!heading.isEmpty()) {
             panel.setBorder(new TitledBorder(heading));
         }
     }

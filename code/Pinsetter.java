@@ -75,7 +75,7 @@ class Pinsetter {
             if (!isPinStanding[i]) continue;
 
             final double pinLuck = rnd.nextDouble();
-            double FOUL_PROBABILITY = 0.04;
+            final double FOUL_PROBABILITY = 0.04;
             foul = pinLuck <= FOUL_PROBABILITY;
 
             isPinStanding[i] = ((skill + pinLuck) / 2.0 * 1.2) <= .5;

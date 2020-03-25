@@ -35,7 +35,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     }
 
     private void exitGame(final String partyName) {
-        final EndGameReport egr = new EndGameReport(partyName, party);
+        final EndGameReport egr = new EndGameReport(partyName, party.getMemberNicks());
         final Vector<String> printVector = egr.getResult();
 
         int myIndex = 0;

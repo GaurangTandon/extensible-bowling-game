@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class TextFieldPanel extends FormPanel {
 
-    public TextFieldPanel(int rows, int cols, String heading) {
+    public TextFieldPanel(final int rows, final int cols, final String heading) {
         super(rows, cols, heading);
     }
 
@@ -22,7 +22,7 @@ public class TextFieldPanel extends FormPanel {
     }
 
     public String getText(final String id) {
-        JTextField field = (JTextField) components.get(id);
+        final JTextField field = (JTextField) components.get(id);
         return field.getText();
     }
 }

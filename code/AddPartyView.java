@@ -34,7 +34,6 @@ import java.util.Vector;
 /**
  * Class for GUI components need to add a party
  * Constructor for GUI used to Add Parties to the waiting party queue.
- *
  */
 
 class AddPartyView implements ActionListener, ListSelectionListener {
@@ -114,7 +113,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         }
     }
 
-    private void onPartyFinished(){
+    private void onPartyFinished() {
         if (party != null && !party.isEmpty()) {
             controlDesk.updateAddParty(this);
         }
@@ -139,17 +138,19 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     /**
      * Handler for List actions
+     *
      * @param e the ListActionEvent that triggered the handler
      */
 
     public void valueChanged(final ListSelectionEvent e) {
-        if (e.getSource().equals(bowlerPanel.getList())) {
+        final Object source = e.getSource();
+        if (source.equals(bowlerPanel.getList())) {
             selectedNick =
-                    ((String) ((JList) e.getSource()).getSelectedValue());
+                    ((String) ((JList) source).getSelectedValue());
         }
-        if (e.getSource().equals(partyPanel.getList())) {
+        if (source.equals(partyPanel.getList())) {
             selectedMember =
-                    ((String) ((JList) e.getSource()).getSelectedValue());
+                    ((String) ((JList) source).getSelectedValue());
         }
     }
 
@@ -161,15 +162,16 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     void updateNewPatron(final NewPatronView newPatron) {
         try {
-            final Bowler checkBowler = BowlerFile.getBowlerInfo(newPatron.getNickName());
+            final String nickName = newPatron.getNickName();
+            final Bowler checkBowler = BowlerFile.getBowlerInfo(nickName);
             if (checkBowler == null) {
                 BowlerFile.putBowlerInfo(
-                        newPatron.getNickName(),
+                        nickName,
                         newPatron.getFull(),
                         newPatron.getEmail());
                 bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
                 bowlerPanel.setListData(bowlerDB);
-                party.add(newPatron.getNickName());
+                party.add(nickName);
                 partyPanel.setListData(party);
             } else {
                 System.err.println("A Bowler with that name already exists.");

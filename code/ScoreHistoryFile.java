@@ -15,7 +15,7 @@ final class ScoreHistoryFile {
         generateScoreHistoryString(nick, date, score, SCORE_HISTORY_DAT);
     }
 
-    static void generateScoreHistoryString(String nick, String date, String score, String scoreHistoryDat)
+    static void generateScoreHistoryString(final String nick, final String date, final String score, final String scoreHistoryDat)
             throws IOException {
         final String data = nick + "\t" + date + "\t" + score + "\n";
         final RandomAccessFile out = new RandomAccessFile(scoreHistoryDat, "rw");
