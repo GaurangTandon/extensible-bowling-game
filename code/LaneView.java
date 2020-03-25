@@ -16,13 +16,13 @@ import java.util.Vector;
  * It can simply make do with the latest score received via lane-event
  */
 public class LaneView implements LaneObserver, ActionListener {
-    private boolean initPending = false;
+    private boolean initPending;
 
     private final JFrame frame;
     private final Container cPanel;
-    private JLabel[][] ballLabel = null;
-    private JLabel[][] scoreLabel = null;
-    private JButton maintenance = null;
+    private JLabel[][] ballLabel;
+    private JLabel[][] scoreLabel;
+    private JButton maintenance;
     private final LaneInterface lane;
 
     LaneView(final LaneInterface ln, final int laneNum) {
@@ -150,7 +150,7 @@ public class LaneView implements LaneObserver, ActionListener {
         return textToSet;
     }
 
-    private void setBoxLabels(final int[] scores, int bowlerIdx) {
+    private void setBoxLabels(final int[] scores, final int bowlerIdx) {
         for (int i = 0; i < Lane.MAX_ROLLS; i++) {
             final int bowlScore = scores[i];
 
@@ -178,7 +178,7 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
-    private void setScoreLabels(int[] bowlerScores, int bowlerIdx) {
+    private void setScoreLabels(final int[] bowlerScores, final int bowlerIdx) {
         for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
             if (bowlerScores[frameIdx] != -1)
                 scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(bowlerScores[frameIdx]));

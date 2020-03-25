@@ -8,6 +8,7 @@
  *
  */
 
+import Widget.ButtonPanel;
 import Widget.WindowFrame;
 
 import javax.swing.*;
@@ -85,7 +86,8 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.getNumLanes();
 
-        controlsPanel = new Widget.ButtonPanel(3, 1, "Controls")
+        final ButtonPanel controls = new ButtonPanel(3, 1, "Controls");
+        controlsPanel = controls
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
                 .put(BTN_FINISHED, this);

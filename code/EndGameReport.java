@@ -15,7 +15,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     private final Vector<String> retVal;
     private int result;
 
-    private String selectedMember = null;
+    private String selectedMember;
 
     private static final String BTN_PRINT = "Print Report";
     private static final String BTN_FINISHED = "Finished";

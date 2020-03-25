@@ -81,7 +81,7 @@ public class PinSetterView implements PinsetterObserver {
         makeFourthRow(pins, panels);
         makeThirdRow(pins, panels);
         makeSecondRow(pins, panels);
-        makeFirstRow(pins, panels, 3, 1, 3);
+        makeFirstRow(pins, panels, 1, 3);
 
         pins.setBackground(Color.black);
         pins.setForeground(Color.yellow);
@@ -89,14 +89,14 @@ public class PinSetterView implements PinsetterObserver {
         return pins;
     }
 
-    private void makeFirstRow(final JPanel pins, final JPanel[] panels, final int leftPad, final int pinNum, final int rightPad) {
-        addDummyPanels(pins, leftPad);
+    private void makeFirstRow(final JPanel pins, final JPanel[] panels, final int pinNum, final int rightPad) {
+        addDummyPanels(pins, 3);
         pins.add(panels[pinNum]);
         addDummyPanels(pins, rightPad);
     }
 
     private void makeSecondRow(final JPanel pins, final JPanel[] panels) {
-        makeFirstRow(pins, panels, 3, 2, 1);
+        makeFirstRow(pins, panels, 2, 1);
         pins.add(panels[3]);
         addDummyPanels(pins, 2);
     }

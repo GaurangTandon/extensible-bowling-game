@@ -10,7 +10,7 @@ public class WindowFrame {
     private WindowFrame(final String title, final Component container) {
         win = new JFrame(title);
         win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
+        ((JComponent) win.getContentPane()).setOpaque(false);
 
         win.getContentPane().add("Center", container);
         win.pack();

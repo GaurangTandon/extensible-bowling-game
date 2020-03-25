@@ -24,8 +24,8 @@ class Pinsetter {
           0
 
     */
-    private boolean foul = false;
-    private int throwNumber = 0;
+    private boolean foul;
+    private int throwNumber;
 
     /**
      * Pinsetter()

@@ -4,10 +4,10 @@ import java.util.Vector;
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class LaneScorer {
-    private int[][] finalScores = null;
-    private int partySize = 0;
-    private Vector<Bowler> bowlers = null;
-    private BowlerScorer[] bowlerScorers = null;
+    private int[][] finalScores;
+    private int partySize;
+    private Vector<Bowler> bowlers;
+    private BowlerScorer[] bowlerScorers;
 
     /**
      * This resets the scores for the same party

@@ -8,10 +8,10 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
     static final int LAST_FRAME = FRAME_COUNT - 1;
 
-    private Party party = null;
+    private Party party;
     private final Pinsetter pinsetter;
     private final Vector<LaneObserver> subscribers;
-    private Game game = null;
+    private Game game;
 
     private final LaneScorer scorer;
 

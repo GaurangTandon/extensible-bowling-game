@@ -17,7 +17,7 @@ public class ScrollablePanel<T> extends GenericPanel {
         dataList.addListSelectionListener(listener);
         final JScrollPane dataPane = new JScrollPane(dataList);
         // Remove in one of the occurrences
-        dataPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        dataPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         panel.add(dataPane);
     }
 
