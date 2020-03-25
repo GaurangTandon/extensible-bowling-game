@@ -1,5 +1,8 @@
-class BowlerScorerTest {
+final class BowlerScorerTest {
     private static BowlerScorer bs;
+
+    private BowlerScorerTest() {
+    }
 
     private static void rollMany(final int val, final int count) {
         for (int i = 0; i < count; i++) {

@@ -22,12 +22,15 @@ import java.util.Vector;
 /**
  * Class for interfacing with Bowler database
  */
-class BowlerFile {
+final class BowlerFile {
 
     /**
      * The location of the bowler database
      */
     private static final String BOWLER_DAT = "BOWLERS.DAT";
+
+    private BowlerFile() {
+    }
 
     /**
      * Retrieves bowler information from the database and returns a Bowler objects with populated fields.

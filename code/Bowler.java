@@ -27,7 +27,7 @@ class Bowler {
     private final String nickName;
     private final String email;
 
-    public Bowler(final String nick, final String full, final String mail) {
+    Bowler(final String nick, final String full, final String mail) {
         nickName = nick;
         fullName = full;
         email = mail;

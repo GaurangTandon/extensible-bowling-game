@@ -8,7 +8,10 @@ import java.util.Vector;
  * Intended to replace equivalent pieces of code with
  * just one-line function calls of Util.
  */
-class Util {
+final class Util {
+    private Util() {
+    }
+
     static void busyWait(final int millis) {
         try {
             Thread.sleep(millis);
@@ -23,7 +26,7 @@ class Util {
                 "/" + cal.get(Calendar.DAY_OF_WEEK) + "/" + (cal.get(Calendar.YEAR));
     }
 
-    static boolean containsString(final Vector<String> container, final String target) {
+    static boolean containsString(final Iterable<String> container, final String target) {
         for (final String str : container) {
             if (str.equals(target))
                 return true;

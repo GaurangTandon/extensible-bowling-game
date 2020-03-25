@@ -1,4 +1,6 @@
-class drive {
+final class drive {
+	private drive() {
+	}
 
 	public static void main(final String[] args) {
 
@@ -8,7 +10,7 @@ class drive {
 		final Alley a = new Alley( numLanes );
 		final ControlDesk controlDesk = a.getControlDesk();
 
-		final ControlDeskView cdv = new ControlDeskView( controlDesk, maxPatronsPerParty);
+		final ControlDeskObserver cdv = new ControlDeskView( controlDesk, maxPatronsPerParty);
 		controlDesk.subscribe( cdv );
 
 	}

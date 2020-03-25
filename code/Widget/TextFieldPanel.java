@@ -2,7 +2,6 @@ package Widget;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 
 public class TextFieldPanel extends FormPanel {
 

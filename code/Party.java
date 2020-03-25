@@ -36,7 +36,7 @@ class Party {
      * @param bowlers Vector of bowlers that are in this party
      */
 
-    public Party(final Vector bowlers) {
+    Party(final Vector bowlers) {
         this.bowlers = new Vector(bowlers);
         name = this.bowlers.get(0).getNickName() + "'s Party";
     }
