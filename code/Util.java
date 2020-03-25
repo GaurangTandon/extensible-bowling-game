@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -21,12 +21,13 @@ final class Util {
     }
 
     static String getDateString() {
-        final LocalDate now = LocalDate.now();
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:MM MM/dd/yyyy");
+        final LocalDateTime now = LocalDateTime.now();
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm MM/dd/yyyy");
         return now.format(formatter);
     }
 
     static boolean containsString(final Iterable<String> container, final String target) {
+        if (target == null) return false;
         for (final String str : container) {
             if (str.equals(target))
                 return true;

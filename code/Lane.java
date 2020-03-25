@@ -112,12 +112,17 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (isPartyAssigned() && !game.isFinished()) {
-                waitWhilePaused();
+            // Since it is not guaranteed game is set
+            // as soon as party got assigned, and this is
+            // a multi-threaded environment
+            if(game != null) {
+                if (isPartyAssigned() && !game.isFinished()) {
+                    waitWhilePaused();
 
-                bowlOneBowlerOneFrame();
-                game.nextBowler();
-            } else if (isPartyAssigned()) onGameFinish();
+                    bowlOneBowlerOneFrame();
+                    game.nextBowler();
+                } else if (isPartyAssigned()) onGameFinish();
+            }
 
             Util.busyWait(10);
         }
