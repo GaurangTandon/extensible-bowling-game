@@ -3,7 +3,6 @@ package Widget;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.HashMap;
 
 abstract class GenericPanel {
 
@@ -32,11 +31,5 @@ abstract class GenericPanel {
 
     Component getPanel() {
         return panel;
-    }
-
-    HashMap<String, Component> setupComponentStore() {
-        HashMap<String, Component> components = new HashMap<>();
-        components.put("_panel", panel);
-        return components;
     }
 }

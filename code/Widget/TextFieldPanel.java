@@ -4,13 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class TextFieldPanel extends GenericPanel {
-
-    private final HashMap<String, Component> components;
+public class TextFieldPanel extends FormPanel {
 
     public TextFieldPanel(int rows, int cols, String heading) {
         super(rows, cols, heading);
-        components = setupComponentStore();
     }
 
     public TextFieldPanel put(final String text) {
@@ -23,14 +20,6 @@ public class TextFieldPanel extends GenericPanel {
         panel.add(itemPanel);
         components.put(text, itemField);
         return this;
-    }
-
-    public Component get(final String id) {
-        return components.get(id);
-    }
-
-    public Component getPanel() {
-        return panel;
     }
 
     public String getText(final String id) {

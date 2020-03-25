@@ -3,20 +3,15 @@ package Widget;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
-public class ButtonPanel extends GenericPanel {
-
-    private final HashMap<String, Component> components;
+public class ButtonPanel extends FormPanel {
 
     public ButtonPanel(String heading) {
         super(heading);
-        components = setupComponentStore();
     }
 
     public ButtonPanel(int rows, int cols, String heading) {
         super(rows, cols, heading);
-        components = setupComponentStore();
     }
 
     public ButtonPanel put(final String text, ActionListener listener) {
@@ -28,13 +23,5 @@ public class ButtonPanel extends GenericPanel {
         panel.add(subPanel);
         components.put(text, button);
         return this;
-    }
-
-    public Component get(final String id) {
-        return components.get(id);
-    }
-
-    public Component getPanel() {
-        return panel;
     }
 }
