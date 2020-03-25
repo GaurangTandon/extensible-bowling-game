@@ -1,10 +1,3 @@
-/**
- * To change this generated comment edit the template variable "type comment":
- * WindowFrame>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * WindowFrame>Preferences>Java>Code Generation.
- */
-
 class Score {
 
     private final String nickname;

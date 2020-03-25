@@ -11,14 +11,12 @@ public class ButtonPanel extends GenericPanel {
 
     public ButtonPanel(String heading) {
         super(heading);
-        components = new HashMap<>();
-        components.put("_panel", panel);
+        components = setupComponentStore();
     }
 
     public ButtonPanel(int rows, int cols, String heading) {
         super(rows, cols, heading);
-        components = new HashMap<>();
-        components.put("_panel", panel);
+        components = setupComponentStore();
     }
 
     public ButtonPanel put(final String text, ActionListener listener) {

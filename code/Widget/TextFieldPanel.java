@@ -10,8 +10,7 @@ public class TextFieldPanel extends GenericPanel {
 
     public TextFieldPanel(int rows, int cols, String heading) {
         super(rows, cols, heading);
-        components = new HashMap<>();
-        components.put("_panel", panel);
+        components = setupComponentStore();
     }
 
     public TextFieldPanel put(final String text) {
