@@ -5,16 +5,19 @@ import java.util.HashMap;
 
 abstract class FormPanel extends GenericPanel {
 
-    final HashMap<String, Component> components;
+    HashMap<String, Component> components;
 
     FormPanel(String heading) {
         super(heading);
-        components = new HashMap<>();
-        components.put("_panel", panel);
+        setupComponentStore();
     }
 
     FormPanel(int rows, int cols, String heading) {
         super(rows, cols, heading);
+        setupComponentStore();
+    }
+
+    private void setupComponentStore() {
         components = new HashMap<>();
         components.put("_panel", panel);
     }
