@@ -178,8 +178,6 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
-}
-
     private void setScoreLabels(int[] bowlerScores, int bowlerIdx) {
         for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
             if (bowlerScores[frameIdx] != -1)
