@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -21,9 +23,9 @@ final class Util {
     }
 
     static String getDateString() {
-        final Calendar cal = Calendar.getInstance();
-        return cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE) + " " + cal.get(Calendar.MONTH) +
-                "/" + cal.get(Calendar.DAY_OF_WEEK) + "/" + (cal.get(Calendar.YEAR));
+        final LocalDate now = LocalDate.now();
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:MM MM/dd/yyyy");
+        return now.format(formatter);
     }
 
     static boolean containsString(final Iterable<String> container, final String target) {
