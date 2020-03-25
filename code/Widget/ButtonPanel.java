@@ -14,7 +14,7 @@ public class ButtonPanel extends FormPanel {
         super(rows, cols, heading);
     }
 
-    public ButtonPanel put(final String text, final ActionListener listener) {
+    public final ButtonPanel put(final String text, final ActionListener listener) {
         final JButton button = new JButton(text);
         final JPanel subPanel = new JPanel();
         subPanel.setLayout(new FlowLayout());

@@ -1,10 +1,8 @@
 import Widget.ContainerPanel;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -17,7 +15,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     private final Vector<String> retVal;
     private int result;
 
-    private String selectedMember;
+    private String selectedMember = null;
 
     private static final String BTN_PRINT = "Print Report";
     private static final String BTN_FINISHED = "Finished";

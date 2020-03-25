@@ -16,13 +16,13 @@ import java.util.Vector;
  * It can simply make do with the latest score received via lane-event
  */
 public class LaneView implements LaneObserver, ActionListener {
-    private boolean initPending;
+    private boolean initPending = false;
 
     private final JFrame frame;
     private final Container cPanel;
-    private JLabel[][] ballLabel;
-    private JLabel[][] scoreLabel;
-    private JButton maintenance;
+    private JLabel[][] ballLabel = null;
+    private JLabel[][] scoreLabel = null;
+    private JButton maintenance = null;
     private final LaneInterface lane;
 
     LaneView(final LaneInterface ln, final int laneNum) {
@@ -108,7 +108,7 @@ public class LaneView implements LaneObserver, ActionListener {
     }
 
 
-    private void receiveLaneEventGraphicSetup(final LaneEvent le) {
+    private void setupLaneGraphics(final LaneEvent le) {
         while (initPending) {
             Util.busyWait(1);
         }
@@ -150,17 +150,17 @@ public class LaneView implements LaneObserver, ActionListener {
         return textToSet;
     }
 
-    private void receiveLaneEventScoringSegment(final LaneEvent le, final int k, final int i) {
-        assert i >= 0;
+    private void setBoxLabels(final int[] scores, int bowlerIdx) {
+        for (int i = 0; i < Lane.MAX_ROLLS; i++) {
+            final int bowlScore = scores[i];
 
-        final int bowlScore = le.getScore(k, i);
+            // it means that the particular roll was skipped due to a strike
+            if (bowlScore != -1) {
+                final String textToSet = getCharToShow(bowlScore);
+                final JLabel ballLabel = this.ballLabel[bowlerIdx][i];
 
-        // it means that the particular roll was skipped due to a strike
-        if (bowlScore != -1) {
-            final String textToSet = getCharToShow(bowlScore);
-            final JLabel ballLabel = this.ballLabel[k][i];
-
-            ballLabel.setText(textToSet);
+                ballLabel.setText(textToSet);
+            }
         }
     }
 
@@ -169,18 +169,21 @@ public class LaneView implements LaneObserver, ActionListener {
             return;
 
         final int numBowlers = le.getPartySize();
-        receiveLaneEventGraphicSetup(le);
+        setupLaneGraphics(le);
 
-        final int[][] leScores = le.getCumulativeScore();
+        final int[][] leCumulativeScore = le.getCumulativeScore();
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
-            for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
-                if (leScores[bowlerIdx][frameIdx] != -1)
-                    scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(leScores[bowlerIdx][frameIdx]));
-            }
+            setScoreLabels(leCumulativeScore[bowlerIdx], bowlerIdx);
+            setBoxLabels(le.getScore(bowlerIdx), bowlerIdx);
+        }
+    }
 
-            for (int i = 0; i < Lane.MAX_ROLLS; i++) {
-                receiveLaneEventScoringSegment(le, bowlerIdx, i);
-            }
+}
+
+    private void setScoreLabels(int[] bowlerScores, int bowlerIdx) {
+        for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
+            if (bowlerScores[frameIdx] != -1)
+                scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(bowlerScores[frameIdx]));
         }
     }
 

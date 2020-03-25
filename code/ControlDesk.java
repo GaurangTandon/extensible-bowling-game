@@ -94,13 +94,15 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         publish();
     }
 
-    /**
-     *
-     */
-
-    public void viewScores(final Lane ln) {
-        // TODO: attach a LaneScoreView object to that lane
-    }
+// --Commented out by Inspection START (25/03/20, 2:37 PM):
+//    /**
+//     *
+//     */
+//
+//    public void viewScores(final Lane ln) {
+//        // TODO: attach a LaneScoreView object to that lane
+//    }
+// --Commented out by Inspection STOP (25/03/20, 2:37 PM)
 
     /**
      * Creates a party from a Vector of nicknames and adds them to the wait queue.

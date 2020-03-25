@@ -1,3 +1,4 @@
+@SuppressWarnings("StaticVariableMayNotBeInitialized")
 final class BowlerScorerTest {
     private static BowlerScorer bs;
 
@@ -10,6 +11,7 @@ final class BowlerScorerTest {
         }
     }
 
+    @SuppressWarnings("StaticVariableUsedBeforeInitialization")
     private static void rollSpare() {
         bs.roll(Pinsetter.PIN_COUNT - 1);
         bs.roll(1);

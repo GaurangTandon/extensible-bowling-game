@@ -49,7 +49,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final Vector<String> party;
     private final ControlDeskView controlDesk;
     private Vector<Object> bowlerDB;
-    private String selectedNick, selectedMember;
+    private String selectedNick = null, selectedMember = null;
 
     private static final String BTN_ADD_PATRON = "Add to Party";
     private static final String BTN_REM_PATRON = "Remove Member";
@@ -67,6 +67,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
 
         // Bowlers Panel
+        //noinspection ProhibitedExceptionCaught
         try {
             bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
         } catch (final IOException e) {

@@ -8,10 +8,10 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
     static final int LAST_FRAME = FRAME_COUNT - 1;
 
-    private Party party;
+    private Party party = null;
     private final Pinsetter pinsetter;
     private final Vector<LaneObserver> subscribers;
-    private Game game;
+    private Game game = null;
 
     private final LaneScorer scorer;
 
@@ -113,14 +113,18 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         //noinspection InfiniteLoopStatement
         while (true) {
             if (isPartyAssigned() && !game.isFinished()) {
-                while (game.isHalted()) {
-                    Util.busyWait(10);
-                }
+                waitWhilePaused();
 
                 bowlOneBowlerOneFrame();
                 game.nextBowler();
             } else if (isPartyAssigned()) onGameFinish();
 
+            Util.busyWait(10);
+        }
+    }
+
+    private void waitWhilePaused() {
+        while (game.isHalted()) {
             Util.busyWait(10);
         }
     }

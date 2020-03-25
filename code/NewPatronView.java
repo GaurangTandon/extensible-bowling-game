@@ -25,7 +25,7 @@ class NewPatronView implements ActionListener {
     private final Widget.ButtonPanel buttonPanel;
     private final TextFieldPanel patronPanel;
     private final WindowFrame window;
-    private String nick, full, email;
+    private String nick = null, full = null, email = null;
 
     private final AddPartyView addParty;
 

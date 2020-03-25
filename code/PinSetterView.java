@@ -65,10 +65,6 @@ public class PinSetterView implements PinsetterObserver {
         frame.pack();
     }
 
-    public static void main(final String[] args) {
-        new PinSetterView(1);
-    }
-
     private void addDummyPanels(final JPanel pins, final int count) {
         for(int i = 1; i <= count; i++){
             pins.add(new JPanel());
