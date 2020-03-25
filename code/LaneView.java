@@ -12,15 +12,14 @@ import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 /**
- * TODO:
- * LaneView probably does not need access to the entire scoresheet all the time. It can simply make do with the latest score
- * received via lane-event
+ * TODO: LaneView probably does not need access to the entire score sheet all the time.
+ * It can simply make do with the latest score received via lane-event
  */
 public class LaneView implements LaneObserver, ActionListener {
     private boolean initPending;
 
     private final JFrame frame;
-    private final Container cpanel;
+    private final Container cPanel;
     private JLabel[][] ballLabel;
     private JLabel[][] scoreLabel;
     private JButton maintenance;
@@ -29,8 +28,8 @@ public class LaneView implements LaneObserver, ActionListener {
     LaneView(final LaneInterface ln, final int laneNum) {
         lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
-        cpanel = frame.getContentPane();
-        cpanel.setLayout(new BorderLayout());
+        cPanel = frame.getContentPane();
+        cPanel.setLayout(new BorderLayout());
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(final WindowEvent e) {
@@ -38,7 +37,7 @@ public class LaneView implements LaneObserver, ActionListener {
             }
         });
 
-        cpanel.add(new JPanel());
+        cPanel.add(new JPanel());
     }
 
     final void setVisible(final boolean state) {
@@ -115,8 +114,8 @@ public class LaneView implements LaneObserver, ActionListener {
         }
 
         if (le.shouldSetupGraphics()) {
-            cpanel.removeAll();
-            cpanel.add(makeFrame(le.getBowlerNicks(), le.getPartySize()), "Center");
+            cPanel.removeAll();
+            cPanel.add(makeFrame(le.getBowlerNicks(), le.getPartySize()), "Center");
 
             // Button Panel
             final JPanel buttonPanel = new JPanel();
@@ -131,7 +130,7 @@ public class LaneView implements LaneObserver, ActionListener {
             maintenancePanel.add(maintenance);
 
             buttonPanel.add(maintenancePanel);
-            cpanel.add(buttonPanel, "South");
+            cPanel.add(buttonPanel, "South");
             frame.pack();
         }
     }
@@ -172,11 +171,11 @@ public class LaneView implements LaneObserver, ActionListener {
         final int numBowlers = le.getPartySize();
         receiveLaneEventGraphicSetup(le);
 
-        final int[][] lescores = le.getCumulScore();
+        final int[][] leScores = le.getCumulativeScore();
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
             for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
-                if (lescores[bowlerIdx][frameIdx] != -1)
-                    scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(lescores[bowlerIdx][frameIdx]));
+                if (leScores[bowlerIdx][frameIdx] != -1)
+                    scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(leScores[bowlerIdx][frameIdx]));
             }
 
             for (int i = 0; i < Lane.MAX_ROLLS; i++) {
@@ -191,5 +190,4 @@ public class LaneView implements LaneObserver, ActionListener {
             lane.pauseGame();
         }
     }
-
 }

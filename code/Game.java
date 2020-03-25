@@ -46,7 +46,7 @@ class Game {
         return number;
     }
 
-    final void puase() {
+    final void pause() {
         halted = true;
     }
 

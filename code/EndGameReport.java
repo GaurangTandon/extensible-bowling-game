@@ -1,3 +1,5 @@
+import Widget.ContainerPanel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -10,82 +12,38 @@ import java.util.Vector;
 
 class EndGameReport implements ActionListener, ListSelectionListener {
 
-    private final JFrame win;
-    private final JButton printButton;
-    private final JButton finished;
+    private final Widget.WindowFrame win;
+    private final Widget.ButtonPanel buttonPanel;
     private final Vector<String> retVal;
-
     private int result;
 
     private String selectedMember;
 
-    public EndGameReport(final String partyName, final Party party) {
+    private static final String BTN_PRINT = "Print Report";
+    private static final String BTN_FINISHED = "Finished";
 
+    EndGameReport(final String partyName, final Party party) {
         result = 0;
         retVal = new Vector<>();
-        win = new JFrame("End Game Report for " + partyName + "?");
-        win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
-
-        final JPanel colPanel = new JPanel();
-        colPanel.setLayout(new GridLayout(1, 2));
-
-        // Member Panel
-        final JPanel partyPanel = new JPanel();
-        partyPanel.setLayout(new FlowLayout());
-        partyPanel.setBorder(new TitledBorder("Party Members"));
 
         final Vector<String> myVector = new Vector<>();
         for (final Bowler o : party.getMembers()) {
             myVector.add(o.getNickName());
         }
-        final JList<String> memberList = new JList<>(myVector);
-        memberList.setFixedCellWidth(120);
-        memberList.setVisibleRowCount(5);
-        memberList.addListSelectionListener(this);
-        final JScrollPane partyPane = new JScrollPane(memberList);
-        //        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        partyPanel.add(partyPane);
+        // Member Panel
+        final Widget.ScrollablePanel<String> partyPanel = new Widget.ScrollablePanel<>(
+                "Party Members", myVector, 5, this);
+        partyPanel.getPanel().add(partyPanel.getList()); // Can't understand why list is added again
 
-        partyPanel.add(memberList);
+        buttonPanel = new Widget.ButtonPanel(2, 1, "")
+                .put(BTN_PRINT, this)
+                .put(BTN_FINISHED, this);
 
-        // Button Panel
-        // Button Panel
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(2, 1));
-
-        new Insets(4, 4, 4, 4);
-
-        printButton = new JButton("Print Report");
-        final JPanel printButtonPanel = new JPanel();
-        printButtonPanel.setLayout(new FlowLayout());
-        printButton.addActionListener(this);
-        printButtonPanel.add(printButton);
-
-        finished = new JButton("Finished");
-        final JPanel finishedPanel = new JPanel();
-        finishedPanel.setLayout(new FlowLayout());
-        finished.addActionListener(this);
-        finishedPanel.add(finished);
-
-        buttonPanel.add(printButton);
-        buttonPanel.add(finished);
-
-        // Clean up main panel
-        colPanel.add(partyPanel);
-        colPanel.add(buttonPanel);
-
-        win.getContentPane().add("Center", colPanel);
-
-        win.pack();
-
-        // Center Window on Screen
-        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.setVisible(true);
-
+        win = new Widget.WindowFrame(
+                "End Game Report for " + partyName + "?",
+                new ContainerPanel(1, 2, "")
+                        .put(partyPanel)
+                        .put(buttonPanel));
     }
 
     public static void main(final String[] args) {
@@ -106,9 +64,9 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-        if (source.equals(printButton)) {
+        if (source.equals(buttonPanel.get(BTN_PRINT))) {
             retVal.add(selectedMember);
-        } else if (source.equals(finished)) {
+        } else if (source.equals(buttonPanel.get(BTN_FINISHED))) {
             win.setVisible(false);
             result = 1;
         }

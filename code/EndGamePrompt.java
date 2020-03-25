@@ -1,80 +1,41 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class EndGamePrompt implements ActionListener {
 
-    private final JFrame win;
-    private final JButton yesButton;
-    private final JButton noButton;
-
+    private final Widget.WindowFrame win;
+    private final Widget.ButtonPanel buttonPanel;
     private int result;
+
+    private static final String BTN_YES = "Yes";
+    private static final String BTN_NO = "No";
 
     EndGamePrompt(final String partyName) {
         result = 0;
 
-        win = new JFrame("Another Game for " + partyName + "?");
-        win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
+        final Widget.ContainerPanel labelPanel = new Widget.ContainerPanel("")
+                .put(new JLabel("Party " + partyName
+                        + " has finished bowling.\nWould they like to bowl another game?"));
+        buttonPanel = new Widget.ButtonPanel(1, 2, "")
+                .put(BTN_YES, this)
+                .put(BTN_NO, this);
 
-        final JPanel colPanel = new JPanel();
-        colPanel.setLayout(new GridLayout(2, 1));
-
-        // Label Panel
-        final JPanel labelPanel = new JPanel();
-        labelPanel.setLayout(new FlowLayout());
-
-        final JLabel message = new JLabel("Party " + partyName
-                + " has finished bowling.\nWould they like to bowl another game?");
-
-        labelPanel.add(message);
-
-        // Button Panel
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 2));
-
-        new Insets(4, 4, 4, 4);
-
-        yesButton = new JButton("Yes");
-        final JPanel yesButtonPanel = new JPanel();
-        yesButtonPanel.setLayout(new FlowLayout());
-        yesButton.addActionListener(this);
-        yesButtonPanel.add(yesButton);
-
-        noButton = new JButton("No");
-        final JPanel noButtonPanel = new JPanel();
-        noButtonPanel.setLayout(new FlowLayout());
-        noButton.addActionListener(this);
-        noButtonPanel.add(noButton);
-
-        buttonPanel.add(yesButton);
-        buttonPanel.add(noButton);
-
-        // Clean up main panel
-        colPanel.add(labelPanel);
-        colPanel.add(buttonPanel);
-
-        win.getContentPane().add("Center", colPanel);
-
-        win.pack();
-
-        // Center Window on Screen
-        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.setVisible(true);
-
+        win = new Widget.WindowFrame(
+                "Another Game for " + partyName + "?",
+                new Widget.ContainerPanel(2, 1, "")
+                        .put(labelPanel)
+                        .put(buttonPanel)
+        );
     }
 
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-		if (source.equals(yesButton)) {
+		if (source.equals(buttonPanel.get(BTN_YES))) {
             result = 1;
         }
-        if (source.equals(noButton)) {
+        if (source.equals(buttonPanel.get(BTN_NO))) {
             result = 2;
         }
 

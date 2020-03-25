@@ -21,7 +21,7 @@
  * Class that holds all bowler info
  */
 
-public class Bowler {
+class Bowler {
 
     private final String fullName;
     private final String nickName;

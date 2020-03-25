@@ -1,21 +1,7 @@
-/*  $Id$
- *
- *  Revisions:
- *    $Log: PinsetterEvent.java,v $
- *    Revision 1.2  2003/01/26 22:34:44  ???
- *    Total rewrite of lane and pinsetter for R2's observer model
- *    Added Lane/Pinsetter Observer
- *    Rewrite of scoring algorythm in lane
- *
- *    Revision 1.1  2003/01/19 21:04:24  ???
- *    created pinsetterevent and pinsetterobserver
- *
- */
-
 class PinsetterEvent {
 
     private final boolean[] pinsStillStanding;
-    private final boolean foulCommited;
+    private final boolean foulCommitted;
     private final int throwNumber;
     private final int pinsDownThisThrow;
     private final boolean isReset;
@@ -33,7 +19,7 @@ class PinsetterEvent {
 
         System.arraycopy(pinsStanding, 0, pinsStillStanding, 0, Pinsetter.PIN_COUNT);
 
-        foulCommited = foul;
+        foulCommitted = foul;
         throwNumber = tn;
         pinsDownThisThrow = pinsDownOnThisThrow;
         isReset = pinsDownOnThisThrow < 0;
@@ -53,7 +39,7 @@ class PinsetterEvent {
     /**
      * pinsDownOnThisThrow()
      *
-     * @return the number of pins knocked down assosicated with this event
+     * @return the number of pins knocked down associated with this event
      */
     final int pinsDownOnThisThrow() {
         return pinsDownThisThrow;
@@ -81,12 +67,12 @@ class PinsetterEvent {
     }
 
     /**
-     * isFoulCommited()
+     * isFoulCommitted()
      *
-     * @return true if a foul was commited on the lane, false otherwise
+     * @return true if a foul was committed on the lane, false otherwise
      */
-    final boolean isFoulCommited() {
-        return foulCommited;
+    final boolean isFoulCommitted() {
+        return foulCommitted;
     }
 
     final boolean isReset() {

@@ -8,13 +8,13 @@
  *
  */
 
+import Widget.WindowFrame;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -23,44 +23,21 @@ import java.util.Vector;
  */
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
-    private JButton addParty;
-    private JButton finished;
-    private JButton assign;
-    private final JFrame win;
+    private final WindowFrame win;
+    private final Widget.ButtonPanel controlsPanel;
     private JList<?> partyList;
 
     /**
      * The maximum  number of members in a party
      */
     private final int maxMembers;
-
     private final ControlDeskInterface controlDesk;
 
-    private JButton buttonUtil(final String text, final JPanel controlPanel) {
-        final JButton button = new JButton(text);
-        final JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        button.addActionListener(this);
-        panel.add(button);
-        controlPanel.add(panel);
+    private static final String BTN_ADD_PARTY = "Add Party";
+    private static final String BTN_ASSIGN = "Assign";
+    private static final String BTN_FINISHED = "Finished";
 
-        return button;
-    }
-
-    private void setupControlsPanel(final JPanel colPanel) {
-        final JPanel controlsPanel = new JPanel();
-        controlsPanel.setLayout(new GridLayout(3, 1));
-        controlsPanel.setBorder(new TitledBorder("Controls"));
-
-        addParty = buttonUtil("Add Party", controlsPanel);
-        assign = buttonUtil("Assign Lanes", controlsPanel);
-        finished = buttonUtil("Finished", controlsPanel);
-        controlsPanel.remove(assign);
-
-        colPanel.add(controlsPanel, "East");
-    }
-
-    private void setupLaneStatusPanel(final JPanel colPanel, final int numLanes) {
+    private JPanel setupLaneStatusPanel(final int numLanes) {
         final JPanel laneStatusPanel = new JPanel();
         laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
         laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
@@ -77,10 +54,10 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
             laneStatusPanel.add(lanePanel);
         }
 
-        colPanel.add(laneStatusPanel, "Center");
+        return laneStatusPanel;
     }
 
-    private void setupPartyPanel(final JPanel colPanel) {
+    private JPanel setupPartyPanel() {
         final JPanel partyPanel = new JPanel();
         partyPanel.setLayout(new FlowLayout());
         partyPanel.setBorder(new TitledBorder("Party Queue"));
@@ -96,15 +73,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         partyPanel.add(partyPane);
 
-        colPanel.add(partyPanel, "West");
-    }
-
-    private void showWindowInScreenCenter() {
-        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.setVisible(true);
+        return partyPanel;
     }
 
     /**
@@ -116,29 +85,18 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.getNumLanes();
 
-        win = new JFrame("Control Desk");
-        win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
+        controlsPanel = new Widget.ButtonPanel(3, 1, "Controls")
+                .put(BTN_ADD_PARTY, this)
+                .put(BTN_ASSIGN, this)
+                .put(BTN_FINISHED, this);
 
-        final JPanel colPanel = new JPanel();
-        colPanel.setLayout(new BorderLayout());
-
-        setupControlsPanel(colPanel);
-        setupLaneStatusPanel(colPanel, numLanes);
-        setupPartyPanel(colPanel);
-
-        win.getContentPane().add("Center", colPanel);
-
-        win.pack();
-
-        /* Close program when this window closes */
-        win.addWindowListener(new WindowAdapter() {
-            public void windowClosing(final WindowEvent e) {
-                System.exit(0);
-            }
-        });
-
-        showWindowInScreenCenter();
+        win = new WindowFrame(
+                "Control Desk",
+                new Widget.ContainerPanel()
+                        .put(controlsPanel, "East")
+                        .put(setupLaneStatusPanel(numLanes), "Center")
+                        .put(setupPartyPanel(), "West")
+        );
     }
 
     /**
@@ -150,11 +108,11 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-        if (source.equals(addParty)) {
+        if (source.equals(controlsPanel.get(BTN_ADD_PARTY))) {
             new AddPartyView(this, maxMembers);
-        } else if (source.equals(assign)) {
+        } else if (source.equals(controlsPanel.get(BTN_ASSIGN))) {
             controlDesk.assignLane();
-        } else if (source.equals(finished)) {
+        } else if (source.equals(controlsPanel.get(BTN_FINISHED))) {
             win.setVisible(false);
             System.exit(0);
         }

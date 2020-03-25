@@ -39,10 +39,10 @@ public class PinSetterView implements PinsetterObserver {
 
     private final JFrame frame;
 
-    public PinSetterView(final int laneNum) {
+    PinSetterView(final int laneNum) {
         frame = new JFrame("Lane " + laneNum + ":");
 
-        final Container cpanel = frame.getContentPane();
+        final Container cPanel = frame.getContentPane();
 
         final JPanel top = new JPanel();
 
@@ -57,10 +57,10 @@ public class PinSetterView implements PinsetterObserver {
 
 
         top.setBackground(Color.black);
-        cpanel.add(top, BorderLayout.NORTH);
+        cPanel.add(top, BorderLayout.NORTH);
 
         final JPanel pins = addPins();
-        cpanel.add(pins, BorderLayout.CENTER);
+        cPanel.add(pins, BorderLayout.CENTER);
 
         frame.pack();
     }
@@ -136,7 +136,7 @@ public class PinSetterView implements PinsetterObserver {
 
 
     public void receivePinsetterEvent(final PinsetterEvent pe) {
-        if (!(pe.isFoulCommited())) {
+        if (!(pe.isFoulCommitted())) {
             new JLabel();
             JLabel tempPin;
 
@@ -159,14 +159,6 @@ public class PinSetterView implements PinsetterObserver {
             }
             secondRoll.setBackground(Color.black);
         }
-    }
-
-    void show() {
-        frame.setVisible(true);
-    }
-
-    void hide() {
-        frame.setVisible(false);
     }
 
     void setVisible(final boolean state) {

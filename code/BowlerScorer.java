@@ -1,8 +1,8 @@
-public class BowlerScorer {
+class BowlerScorer {
     private final int[] rolls;
 
-    private final int[] cumulScore;
-    private final int[] perFramepartRes;
+    private final int[] cumulativeScore;
+    private final int[] perFramePartRes;
     private int currFrame;
     private int partIndex;
     private int rollCount;
@@ -11,10 +11,10 @@ public class BowlerScorer {
     BowlerScorer() {
         // extra 2 elements for safety from index out of bounds
         rolls = new int[Lane.MAX_ROLLS + 2];
-        cumulScore = new int[Lane.FRAME_COUNT];
-        resetCumulScores();
-        perFramepartRes = new int[Lane.MAX_ROLLS];
-        for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramepartRes[i] = -1;
+        cumulativeScore = new int[Lane.FRAME_COUNT];
+        resetCumulativeScores();
+        perFramePartRes = new int[Lane.MAX_ROLLS];
+        for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramePartRes[i] = -1;
 
         currFrame = 0;
         rollCount = 0;
@@ -22,48 +22,56 @@ public class BowlerScorer {
         score = 0;
     }
 
+    static final int STRIKE = 11;
+    static final int SPARE = 12;
+
     // @pre roll - is the start of a frame
-    int getPinsDownOnThisFrame(int roll) {
+    private int getPinsDownOnThisFrame(int roll) {
         return rolls[roll] + rolls[roll + 1];
     }
 
-    boolean isStrike(int roll) {
+    private boolean isStrike(int roll) {
         return rolls[roll] == Pinsetter.PIN_COUNT;
     }
 
     // roll1 = first roll of the two spares
     // must be the first roll of the frame as well
-    boolean isSpare(int roll1) {
+    private boolean isSpare(int roll1) {
         return getPinsDownOnThisFrame(roll1) == Pinsetter.PIN_COUNT && rolls[roll1 + 1] > 0;
     }
 
     // this roll is the second roll of a frame
-    boolean isSpareRoll2(int roll2) {
+    private boolean isSpareRoll2(int roll2) {
         return rolls[roll2] + rolls[roll2 - 1] == Pinsetter.PIN_COUNT && rolls[roll2] > 0;
     }
 
-    int strikeBonus(int roll) {
+    private int strikeBonus(int roll) {
         return rolls[roll + 1] + rolls[roll + 2];
     }
 
     // roll1 = first roll of the two spares
-    int spareBonus(int roll1) {
+    private int spareBonus(int roll1) {
         return rolls[roll1 + 2];
     }
 
-    void resetCumulScores() {
+    private void resetCumulativeScores() {
         for (int frame = 0; frame < Lane.FRAME_COUNT; frame++)
-            cumulScore[frame] = -1;
+            cumulativeScore[frame] = -1;
     }
 
-    void updateCumulScores() {
+    private void resetCumulativeScores(int currFrame) {
+        for (int frame = 0; frame < currFrame; frame++)
+            cumulativeScore[frame] = 0;
+    }
+
+    void updateCumulativeScores() {
         int roll = 0, frame = 0;
 
-        resetCumulScores();
-        for (int i = 0; i <= currFrame; i++) cumulScore[i] = 0;
+        resetCumulativeScores();
+        resetCumulativeScores(currFrame);
 
         while (roll < rollCount) {
-            int scoreOnThisFrame = 0;
+            int scoreOnThisFrame;
 
             if (frame == Lane.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
@@ -80,25 +88,28 @@ public class BowlerScorer {
                 }
             }
             // += so that case when frame=9 gets handled easily
-            cumulScore[frame] += scoreOnThisFrame;
-            frame++;
-            frame = Math.min(frame, Lane.LAST_FRAME);
+            cumulativeScore[frame] += scoreOnThisFrame;
+            frame = Math.min(frame + 1, Lane.LAST_FRAME);
             roll++;
         }
 
         for (frame = 1; frame <= currFrame; frame++)
-            cumulScore[frame] += cumulScore[frame - 1];
+            cumulativeScore[frame] += cumulativeScore[frame - 1];
 
         // don't display score for this frame
         // if it hasn't started yet
-        if (partIndex == 0) cumulScore[currFrame] = -1;
+        if (partIndex == 0) cumulativeScore[currFrame] = -1;
 
-        score = cumulScore[currFrame];
+        score = cumulativeScore[currFrame];
     }
 
-    void updateFrameAndPartIndex() {
-        boolean transgressFrame = false;
-        transgressFrame |= isStrike(rollCount);
+    int getScore() {
+        return score;
+    }
+
+    private void updateFrameAndPartIndex() {
+        boolean transgressFrame;
+        transgressFrame = isStrike(rollCount);
         transgressFrame |= (partIndex == 1);
         transgressFrame &= currFrame < Lane.LAST_FRAME;
 
@@ -112,9 +123,9 @@ public class BowlerScorer {
 
     /**
      * Add this roll to the array
-     * and also update frame and partindex accordingly
+     * and also update frame and part index accordingly
      *
-     * @param pinsDown
+     * @param pinsDown The number of pins hit in the strike
      */
     void roll(int pinsDown) {
         rolls[rollCount] = pinsDown;
@@ -123,34 +134,27 @@ public class BowlerScorer {
         int updateIndex = 2 * currFrame + partIndex;
 
         if (partIndex == 1 && isSpareRoll2(rollCount)) {
-            perFramepartRes[updateIndex] = SPARE;
+            perFramePartRes[updateIndex] = SPARE;
         } else if ((partIndex == 0 || currFrame == Lane.LAST_FRAME) && isStrike(rollCount))
-            perFramepartRes[updateIndex] = STRIKE;
-        else perFramepartRes[updateIndex] = rolls[rollCount];
+            perFramePartRes[updateIndex] = STRIKE;
+        else perFramePartRes[updateIndex] = rolls[rollCount];
 
         updateFrameAndPartIndex();
 
         rollCount++;
     }
 
-    int getScore() {
-        return score;
+    int[] getCumulativeScore() {
+        return cumulativeScore.clone();
     }
-
-    int[] getCumulScore() {
-        return cumulScore;
-    }
-
-    public static final int STRIKE = 11;
-    public static final int SPARE = 12;
 
     /**
      * Used in LaneView to display the entire row of cells for a bowler
      *
-     * @return
+     * @return integer array, result per frame part
      */
     int[] getByFramePartResult() {
-        return perFramepartRes;
+        return perFramePartRes.clone();
     }
 
     /**

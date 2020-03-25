@@ -1,40 +1,3 @@
-/* ControlDesk.java
- *
- *  Version:
- *  		$Id$
- *
- *  Revisions:
- * 		$Log: ControlDesk.java,v $
- * 		Revision 1.13  2003/02/02 23:26:32  ???
- * 		ControlDesk now runs its own thread and polls for free lanes to assign queue members to
- *
- * 		Revision 1.12  2003/02/02 20:46:13  ???
- * 		Added " 's Party" to party names.
- *
- * 		Revision 1.11  2003/02/02 20:43:25  ???
- * 		misc cleanup
- *
- * 		Revision 1.10  2003/02/02 17:49:10  ???
- * 		Fixed problem in getPartyQueue that was returning the first element as every element.
- *
- * 		Revision 1.9  2003/02/02 17:39:48  ???
- * 		Added accessor for lanes.
- *
- * 		Revision 1.8  2003/02/02 16:53:59  ???
- * 		Updated comments to match javadoc format.
- *
- * 		Revision 1.7  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
- *
- * 		Revision 1.6  2003/02/02 06:09:39  ???
- * 		Updated many classes to support the ControlDeskView.
- *
- * 		Revision 1.5  2003/01/26 23:16:10  ???
- * 		Improved thread handeling in lane/controldesk
- *
- *
- */
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Vector;
@@ -64,7 +27,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     /**
      * Constructor for the ControlDesk class
      *
-     * @param numLanes the numbler of lanes to be represented
+     * @param numLanes the number of lanes to be represented
      */
 
     ControlDesk(final int numLanes) {
@@ -117,7 +80,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     }
 
     /**
-     * Iterate through the available lanes and assign the paties in the wait queue if lanes are available.
+     * Iterate through the available lanes and assign the parties in the wait queue if lanes are available.
      */
     public final void assignLane() {
         for (final Lane lane : lanes) {
@@ -140,7 +103,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     }
 
     /**
-     * Creates a party from a Vector of nickNAmes and adds them to the wait queue.
+     * Creates a party from a Vector of nicknames and adds them to the wait queue.
      *
      * @param partyNicks A Vector of NickNames
      */
@@ -159,7 +122,7 @@ class ControlDesk extends Thread implements ControlDeskInterface {
     /**
      * Returns a Vector of party names to be displayed in the GUI representation of the wait queue.
      *
-     * @return a Vecotr of Strings
+     * @return a Vector of Strings
      */
 
     private Vector<String> getPartyQueue() {

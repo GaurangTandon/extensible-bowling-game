@@ -11,9 +11,9 @@
  *
  */
 
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
+import Widget.TextFieldPanel;
+import Widget.WindowFrame;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,115 +22,56 @@ import java.awt.event.ActionListener;
  */
 class NewPatronView implements ActionListener {
 
-    private final JFrame win;
-    private final JButton abort;
-    private final JButton finished;
-    private final JTextField nickField;
-    private final JTextField fullField;
-    private final JTextField emailField;
+    private final Widget.ButtonPanel buttonPanel;
+    private final TextFieldPanel patronPanel;
+    private final WindowFrame window;
     private String nick, full, email;
 
     private final AddPartyView addParty;
 
-    public NewPatronView(final AddPartyView v) {
+    private static final String TXT_NICK_FIELD = "Nick Name";
+    private static final String TXT_FULL_FIELD = "Full Name";
+    private static final String TXT_EMAIL_FIELD = "E-Mail";
+    private static final String BTN_FINISHED = "Add Patron";
+    private static final String BTN_ABORT = "Abort";
 
+    NewPatronView(final AddPartyView v) {
         addParty = v;
 
-        win = new JFrame("Add Patron");
-        win.getContentPane().setLayout(new BorderLayout());
-        ((JPanel) win.getContentPane()).setOpaque(false);
+        patronPanel = new Widget.TextFieldPanel(3, 1, "Your Info")
+                .put(TXT_NICK_FIELD)
+                .put(TXT_FULL_FIELD)
+                .put(TXT_EMAIL_FIELD);
+        buttonPanel = new Widget.ButtonPanel(4, 1, "")
+                .put(BTN_FINISHED, this)
+                .put(BTN_ABORT, this);
 
-        final JPanel colPanel = new JPanel();
-        colPanel.setLayout(new BorderLayout());
-
-        // Patron Panel
-        final JPanel patronPanel = new JPanel();
-        patronPanel.setLayout(new GridLayout(3, 1));
-        patronPanel.setBorder(new TitledBorder("Your Info"));
-
-        final JPanel nickPanel = new JPanel();
-        nickPanel.setLayout(new FlowLayout());
-        final JLabel nickLabel = new JLabel("Nick Name");
-        nickField = new JTextField("", 15);
-        nickPanel.add(nickLabel);
-        nickPanel.add(nickField);
-
-        final JPanel fullPanel = new JPanel();
-        fullPanel.setLayout(new FlowLayout());
-        final JLabel fullLabel = new JLabel("Full Name");
-        fullField = new JTextField("", 15);
-        fullPanel.add(fullLabel);
-        fullPanel.add(fullField);
-
-        final JPanel emailPanel = new JPanel();
-        emailPanel.setLayout(new FlowLayout());
-        final JLabel emailLabel = new JLabel("E-Mail");
-        emailField = new JTextField("", 15);
-        emailPanel.add(emailLabel);
-        emailPanel.add(emailField);
-
-        patronPanel.add(nickPanel);
-        patronPanel.add(fullPanel);
-        patronPanel.add(emailPanel);
-
-        // Button Panel
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1));
-
-        new Insets(4, 4, 4, 4);
-
-        finished = new JButton("Add Patron");
-        final JPanel finishedPanel = new JPanel();
-        finishedPanel.setLayout(new FlowLayout());
-        finished.addActionListener(this);
-        finishedPanel.add(finished);
-
-        abort = new JButton("Abort");
-        final JPanel abortPanel = new JPanel();
-        abortPanel.setLayout(new FlowLayout());
-        abort.addActionListener(this);
-        abortPanel.add(abort);
-
-        buttonPanel.add(abortPanel);
-        buttonPanel.add(finishedPanel);
-
-        // Clean up main panel
-        colPanel.add(patronPanel, "Center");
-        colPanel.add(buttonPanel, "East");
-
-        win.getContentPane().add("Center", colPanel);
-
-        win.pack();
-
-        // Center Window on Screen
-        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
-        win.setLocation(
-                ((screenSize.width) / 2) - ((win.getSize().width) / 2),
-                ((screenSize.height) / 2) - ((win.getSize().height) / 2));
-        win.setVisible(true);
-
+        window = new WindowFrame(
+                "Add Patron",
+                new Widget.ContainerPanel()
+                        .put(patronPanel, "Center")
+                        .put(buttonPanel, "East")
+        );
     }
 
-    // TODO: this method is duplicated across several classes
-    // with similar characteristics, investigate
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        final boolean aborted = source.equals(abort);
-        final boolean finished = source.equals(this.finished);
+        final boolean aborted = source.equals(buttonPanel.get(BTN_ABORT));
+        final boolean finished = source.equals(buttonPanel.get(BTN_FINISHED));
 
         if (finished) {
-            nick = nickField.getText();
-            full = fullField.getText();
-            email = emailField.getText();
+            nick = patronPanel.getText(TXT_NICK_FIELD);
+            full = patronPanel.getText(TXT_FULL_FIELD);
+            email = patronPanel.getText(TXT_EMAIL_FIELD);
             addParty.updateNewPatron(this);
         }
 
         if (aborted || finished) {
-            win.setVisible(false);
+            window.setVisible(false);
         }
     }
 
-    public String getNickName() {
+    String getNickName() {
         return nick;
     }
 
@@ -138,7 +79,7 @@ class NewPatronView implements ActionListener {
         return full;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
