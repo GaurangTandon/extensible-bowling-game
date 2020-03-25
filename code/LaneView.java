@@ -51,16 +51,17 @@ public class LaneView implements LaneObserver, ActionListener {
 
         panel.setLayout(new GridLayout(0, 1));
 
-        // TODO: magic constant hell
-        final JPanel[][] balls = new JPanel[numBowlers][23];
-        ballLabel = new JLabel[numBowlers][23];
-        final JPanel[][] scores = new JPanel[numBowlers][10];
-        scoreLabel = new JLabel[numBowlers][10];
-        final JPanel[][] ballGrid = new JPanel[numBowlers][10];
+        final int maxBalls = Lane.MAX_ROLLS + 2;
+
+        final JPanel[][] balls = new JPanel[numBowlers][maxBalls];
+        ballLabel = new JLabel[numBowlers][maxBalls];
+        final JPanel[][] scores = new JPanel[numBowlers][Lane.FRAME_COUNT];
+        scoreLabel = new JLabel[numBowlers][Lane.FRAME_COUNT];
+        final JPanel[][] ballGrid = new JPanel[numBowlers][Lane.FRAME_COUNT];
         final JPanel[] pins = new JPanel[numBowlers];
 
         for (int i = 0; i != numBowlers; i++) {
-            for (int j = 0; j != 23; j++) {
+            for (int j = 0; j < maxBalls; j++) {
                 ballLabel[i][j] = new JLabel(" ");
                 balls[i][j] = new JPanel();
                 balls[i][j].setBorder(

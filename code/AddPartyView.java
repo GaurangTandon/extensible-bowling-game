@@ -162,23 +162,15 @@ class AddPartyView implements ActionListener, ListSelectionListener {
      */
 
     void updateNewPatron(final NewPatronView newPatron) {
-        try {
-            final String nickName = newPatron.getNickName();
-            final Bowler checkBowler = BowlerFile.getBowlerInfo(nickName);
-            if (checkBowler == null) {
-                BowlerFile.putBowlerInfo(
-                        nickName,
-                        newPatron.getFull(),
-                        newPatron.getEmail());
-                bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
-                bowlerPanel.setListData(bowlerDB);
-                party.add(nickName);
-                partyPanel.setListData(party);
-            } else {
-                System.err.println("A Bowler with that name already exists.");
-            }
-        } catch (final Exception e) {
-            System.err.println("File I/O Error");
+        final String nickName = newPatron.getNickName();
+        final Vector<Object> res = BowlerFile.putBowlerIfDidntExist(nickName, newPatron.getFull(), newPatron.getEmail());
+        if (res != null) {
+            bowlerDB = new Vector<Object>(res);
+            bowlerPanel.setListData(bowlerDB);
+            party.add(nickName);
+            partyPanel.setListData(party);
+        } else {
+            System.err.println("A Bowler with that name already exists.");
         }
     }
 

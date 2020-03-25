@@ -66,7 +66,7 @@ public class PinSetterView implements PinsetterObserver {
     }
 
     private void addDummyPanels(final JPanel pins, final int count) {
-        for(int i = 1; i <= count; i++){
+        for (int i = 1; i <= count; i++) {
             pins.add(new JPanel());
         }
     }
@@ -140,12 +140,9 @@ public class PinSetterView implements PinsetterObserver {
 
     public void receivePinsetterEvent(final PinsetterEvent pe) {
         if (!(pe.isFoulCommitted())) {
-            new JLabel();
-            JLabel tempPin;
-
             for (int c = 0; c < 10; c++) {
                 final boolean pinKnockedDown = pe.isPinKnockedDown(c);
-                tempPin = pinVector.get(c);
+                JLabel tempPin = pinVector.get(c);
                 if (pinKnockedDown) {
                     tempPin.setForeground(Color.lightGray);
                 }

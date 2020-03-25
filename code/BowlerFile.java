@@ -60,6 +60,19 @@ final class BowlerFile {
         return foundBowler;
     }
 
+    static Vector putBowlerIfDidntExist(final String nick, final String full, final String email) {
+        try {
+            final Bowler checkBowler = getBowlerInfo(nick);
+            if (checkBowler == null) return null;
+
+            putBowlerInfo(nick, full, email);
+            return getBowlers();
+        } catch (final IOException e) {
+            System.err.println("File I/O Error");
+            return null;
+        }
+    }
+
     /**
      * Stores a Bowler in the database
      *

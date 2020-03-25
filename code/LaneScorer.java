@@ -4,6 +4,7 @@ import java.util.Vector;
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class LaneScorer {
+    public static final int MAX_GAMES = 128;
     private int[][] finalScores;
     private int partySize;
     private Vector<Bowler> bowlers;
@@ -33,7 +34,7 @@ class LaneScorer {
         partySize = bowlers.size();
 
         if (resetFinalScores)
-            finalScores = new int[partySize][128]; //Hardcoding a max of 128 games, bite me.
+            finalScores = new int[partySize][MAX_GAMES];
         bowlerScorers = new BowlerScorer[partySize];
 
         for (int bowler = 0; bowler < partySize; bowler++) {
