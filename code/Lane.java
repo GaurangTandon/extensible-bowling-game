@@ -8,7 +8,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
     static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
     static final int LAST_FRAME = FRAME_COUNT - 1;
 
-    private Party party;
+    private GeneralParty party;
     private final Pinsetter pinsetter;
     private final Vector<LaneObserver> subscribers;
     private Game game;
@@ -39,7 +39,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         final Vector<String> printVector = egr.getResult();
 
         int myIndex = 0;
-        for (final Bowler bowler : party.getMembers()) {
+        for (final GeneralBowler bowler : party.getMembers()) {
             final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), game.getNumber());
             myIndex++;
 
@@ -162,11 +162,11 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @pre none
      * @post the party has been assigned to the lane
      */
-    final void assignParty(final Party theParty) {
+    final void assignParty(final GeneralParty theParty) {
         party = theParty;
         game = new Game(party.getPartySize());
 
-        final Vector<Bowler> members = party.getMembers();
+        final Vector<GeneralBowler> members = party.getMembers();
 
         scorer.resetScores(members);
     }

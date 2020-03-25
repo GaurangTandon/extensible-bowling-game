@@ -63,14 +63,13 @@ class ControlDesk extends Thread implements ControlDeskInterface {
      * Retrieves a matching Bowler from the bowler database.
      *
      * @param nickName The NickName of the Bowler
-     * @return a Bowler object.
+     * @return a GeneralBowler object.
      */
 
-    private Bowler registerPatron(final String nickName) {
-        Bowler patron = null;
+    private GeneralBowler registerPatron(final String nickName) {
+        GeneralBowler patron = null;
 
         try {
-            // only one patron / nick.... no dupes, no checks
             patron = BowlerFile.getBowlerInfo(nickName);
         } catch (final IOException e) {
             System.err.println("Error..." + e);
@@ -111,12 +110,12 @@ class ControlDesk extends Thread implements ControlDeskInterface {
      */
 
     public final void addPartyToQueue(final Vector<String> partyNicks) {
-        final Vector<Bowler> partyBowlers = new Vector<>();
+        final Vector<GeneralBowler> partyBowlers = new Vector<>();
         for (final String partyNick : partyNicks) {
-            final Bowler newBowler = registerPatron(partyNick);
+            final GeneralBowler newBowler = registerPatron(partyNick);
             partyBowlers.add(newBowler);
         }
-        final Party newParty = new Party(partyBowlers);
+        final GeneralParty newParty = new Party(partyBowlers);
         partyQueue.add(newParty);
         publish();
     }
@@ -129,9 +128,9 @@ class ControlDesk extends Thread implements ControlDeskInterface {
 
     private Vector<String> getPartyQueue() {
         final Vector<String> displayPartyQueue = new Vector<>();
-        final Vector<Party> pQueue = partyQueue.asVector();
+        final Vector<GeneralParty> pQueue = partyQueue.asVector();
 
-        for (final Party party : pQueue) {
+        for (final GeneralParty party : pQueue) {
             final String nextParty = party.getName();
             displayPartyQueue.addElement(nextParty);
         }

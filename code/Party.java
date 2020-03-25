@@ -17,17 +17,18 @@
  *
  */
 
+import javax.naming.PartialResultException;
 import java.util.Vector;
 
 /**
  * Container that holds bowlers
  */
-class Party {
+class Party implements GeneralParty {
 
     /**
      * Vector of bowlers in this party
      */
-    private final Vector<Bowler> bowlers;
+    private final Vector<GeneralBowler> bowlers;
     private final String name;
 
     /**
@@ -47,28 +48,28 @@ class Party {
      * @return A vector of the bowlers in this party
      */
 
-    final Vector<Bowler> getMembers() {
+    public final Vector<GeneralBowler> getMembers() {
         return bowlers;
     }
 
-    final int getPartySize() {
+    public final int getPartySize() {
         return bowlers.size();
     }
 
-    final Vector<String> getMemberNicks() {
+    public final Vector<String> getMemberNicks() {
         final Vector<String> nicks = new Vector<>(getPartySize());
 
-        for (final Bowler bowler : bowlers) {
+        for (final GeneralBowler bowler : bowlers) {
             nicks.add(bowler.getNickName());
         }
         return nicks;
     }
 
-    final String getName() {
+    public final String getName() {
         return name;
     }
 
-    final String getMemberNick(final int index){
+    public final String getMemberNick(final int index) {
         return bowlers.get(index).getNickName();
     }
 }

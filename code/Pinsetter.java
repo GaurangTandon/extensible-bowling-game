@@ -10,7 +10,7 @@ import java.util.Vector;
  * It is the duty of the BowlerScorer:
  * to decide when to reset the pinsetter and keep scoring
  */
-class Pinsetter {
+class Pinsetter implements GeneralPinsetter {
     private final Random rnd;
     static final int PIN_COUNT = 10;
     private final Vector<PinsetterObserver> subscribers;
@@ -27,15 +27,6 @@ class Pinsetter {
     private boolean foul;
     private int throwNumber;
 
-    /**
-     * Pinsetter()
-     * <p>
-     * Constructs a new pinsetter
-     *
-     * @return Pinsetter object
-     * @pre none
-     * @post a new pinsetter is created
-     */
     Pinsetter() {
         isPinStanding = new boolean[PIN_COUNT];
         rnd = new Random();
@@ -66,7 +57,7 @@ class Pinsetter {
      * @pre none
      * @post pins may have been knocked down and the throwNumber has been incremented
      */
-    void ballThrown() {
+    public void ballThrown() {
         int pinsDownedOnThisThrow = 0;
         foul = false;
         final double skill = rnd.nextDouble();
@@ -98,14 +89,13 @@ class Pinsetter {
      * @pre none
      * @post pinsetters state is reset
      */
-    void resetState() {
+    public void resetState() {
         foul = false;
         throwNumber = 1;
         resetPins();
         Util.busyWait(1000);
         sendEvent(-1);
     }
-
     /**
      * resetPins()
      * <p>
@@ -128,9 +118,8 @@ class Pinsetter {
      * @pre none
      * @post the subscriber object will receive events when their generated
      */
-    void subscribe(final PinsetterObserver subscriber) {
+    public void subscribe(final PinsetterObserver subscriber) {
         subscribers.add(subscriber);
     }
-
 }
 
