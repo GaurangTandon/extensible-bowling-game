@@ -35,7 +35,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
     private final ControlDeskInterface controlDesk;
 
     private static final String BTN_ADD_PARTY = "Add Party";
-    private static final String BTN_ASSIGN = "Assign";
+    private static final String BTN_ASSIGN = "Assign lanes";
     private static final String BTN_FINISHED = "Finished";
 
     private JPanel setupLaneStatusPanel(final int numLanes) {

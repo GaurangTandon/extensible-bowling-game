@@ -56,8 +56,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
 
         party = null;
 
-        final LaneEvent event = lanePublish();
-        publish(event);
+        publish();
     }
 
     private void onGameFinish() {
@@ -149,8 +148,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         scorer.roll(game.currentBowler(), pinsDownOnThisThrow);
-        final LaneEvent event = lanePublish();
-        publish(event);
+        publish();
     }
 
     /**
@@ -218,7 +216,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @param event Event that is to be published
      */
 
-    private void publish(final LaneEvent event) {
+    private void publish() {
+        final LaneEvent event = lanePublish();
         for (final LaneObserver subscriber : subscribers) {
             subscriber.receiveLaneEvent(event);
         }
@@ -239,7 +238,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     public final void pauseGame() {
         game.pause();
-        publish(lanePublish());
+        publish();
     }
 
     /**
@@ -247,7 +246,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     final void unPauseGame() {
         game.unpause();
-        publish(lanePublish());
+        publish();
     }
 
 }

@@ -140,14 +140,9 @@ public class PinSetterView implements PinsetterObserver {
 
     public void receivePinsetterEvent(final PinsetterEvent pe) {
         if (!(pe.isFoulCommitted())) {
-            for (int c = 0; c < 10; c++) {
-                final boolean pinKnockedDown = pe.isPinKnockedDown(c);
-                final JLabel tempPin = pinVector.get(c);
-                if (pinKnockedDown) {
-                    tempPin.setForeground(Color.lightGray);
-                }
-            }
+            displayKnockedDownPins(pe);
         }
+
         if (pe.isFirstThrow()) {
             secondRoll.setBackground(Color.yellow);
         }
@@ -158,6 +153,16 @@ public class PinSetterView implements PinsetterObserver {
                 pinVector.get(i).setForeground(Color.black);
             }
             secondRoll.setBackground(Color.black);
+        }
+    }
+
+    private void displayKnockedDownPins(final PinsetterEvent pe) {
+        for (int c = 0; c < Pinsetter.PIN_COUNT; c++) {
+            final boolean pinKnockedDown = pe.isPinKnockedDown(c);
+            final JLabel tempPin = pinVector.get(c);
+            if (pinKnockedDown) {
+                tempPin.setForeground(Color.lightGray);
+            }
         }
     }
 

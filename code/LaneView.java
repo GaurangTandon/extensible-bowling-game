@@ -86,8 +86,9 @@ public class LaneView implements LaneObserver, ActionListener {
             if (frameIdx == Lane.LAST_FRAME)
                 ballPanel.add(balls[2 * frameIdx + 2]);
 
-            final JPanel score = new JPanel();
             scoreLabel[bowlerIdx][frameIdx] = new JLabel("  ", SwingConstants.CENTER);
+
+            final JPanel score = new JPanel();
             score.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             score.setLayout(new GridLayout(0, 1));
             score.add(ballPanel, BorderLayout.EAST);

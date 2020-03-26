@@ -43,9 +43,9 @@ class Pinsetter implements GeneralPinsetter {
      * @post all subscribers have received pinsetter event with updated state
      */
     private void sendEvent(final int pinsDownedOnThisThrow) {
+        final PinsetterEvent pe = new PinsetterEvent(isPinStanding, foul, throwNumber, pinsDownedOnThisThrow);
         for (final PinsetterObserver subscriber : subscribers) {
-            subscriber.receivePinsetterEvent(
-                    new PinsetterEvent(isPinStanding, foul, throwNumber, pinsDownedOnThisThrow));
+            subscriber.receivePinsetterEvent(pe);
         }
     }
 
@@ -96,6 +96,7 @@ class Pinsetter implements GeneralPinsetter {
         Util.busyWait(1000);
         sendEvent(-1);
     }
+
     /**
      * resetPins()
      * <p>
