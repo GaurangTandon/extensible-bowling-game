@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * Class that represents control desk
  */
-class ControlDesk extends Thread implements ControlDeskInterface {
+class ControlDesk extends Publisher implements ControlDeskInterface, Runnable {
 
     private final HashSet<Lane> lanes;
 
@@ -18,12 +18,6 @@ class ControlDesk extends Thread implements ControlDeskInterface {
      * The number of lanes represented
      */
     private final int numLanes;
-
-    /**
-     * The collection of subscribers
-     */
-    private final Vector<ControlDeskObserver> subscribers;
-
     /**
      * Constructor for the ControlDesk class
      *
@@ -35,16 +29,11 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         lanes = new HashSet<>(numLanes);
         partyQueue = new Queue();
 
-        subscribers = new Vector<>();
-
         for (int i = 0; i < numLanes; i++) {
-            lanes.add(new Lane());
+            final Lane lane = new Lane();
+            lanes.add(lane);
+            new Thread(lane).start();
         }
-
-        // TODO: assert somewhere after this that the size of lanes stays constant
-
-        start();
-
     }
 
     /**
@@ -147,24 +136,8 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         return numLanes;
     }
 
-    /**
-     * Allows objects to subscribe as observers
-     *
-     * @param controlDeskObserver the ControlDeskObserver that will be subscribed
-     */
-
-    void subscribe(final ControlDeskObserver controlDeskObserver) {
-        subscribers.add(controlDeskObserver);
-    }
-
-    /**
-     * Broadcast an event to subscribing objects.
-     */
-    private void publish() {
-        final ControlDeskEvent event = new ControlDeskEvent(getPartyQueue());
-        for (final ControlDeskObserver subscriber : subscribers) {
-            subscriber.receiveControlDeskEvent(event);
-        }
+    Event createEvent() {
+        return new ControlDeskEvent(getPartyQueue());
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.Vector;
 /**
  * Class that represents control desk event
  */
-class ControlDeskEvent {
+class ControlDeskEvent implements Event {
 
     /**
      * A representation of the wait queue, containing party names

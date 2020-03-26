@@ -1,4 +1,4 @@
-class PinsetterEvent {
+class PinsetterEvent implements Event {
 
     private final boolean[] pinsStillStanding;
     private final boolean foulCommitted;
@@ -45,24 +45,7 @@ class PinsetterEvent {
         return pinsDownThisThrow;
     }
 
-    /**
-     * totalPinsDown()
-     *
-     * @return the total number of pins down for pinsetter that generated the event
-     */
-    final int totalPinsDown() {
-        int count = 0;
-
-        for (int i = 0; i < Pinsetter.PIN_COUNT; i++) {
-            if (isPinKnockedDown(i)) {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    final boolean isFirstThrow(){
+    final boolean isFirstThrow() {
         return throwNumber == 1;
     }
 

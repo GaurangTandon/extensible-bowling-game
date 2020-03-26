@@ -17,7 +17,7 @@ import java.util.Vector;
 /**
  * Constructs a prototype PinSetter GUI
  */
-public class PinSetterView implements PinsetterObserver {
+public class PinSetterView implements Observer {
 
 
     //This Vector will keep references to the pin labels to show
@@ -138,7 +138,8 @@ public class PinSetterView implements PinsetterObserver {
      */
 
 
-    public void receivePinsetterEvent(final PinsetterEvent pe) {
+    public void receiveEvent(final Event pev) {
+        final PinsetterEvent pe = (PinsetterEvent) pev;
         if (!(pe.isFoulCommitted())) {
             displayKnockedDownPins(pe);
         }
