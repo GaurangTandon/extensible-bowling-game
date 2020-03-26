@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
+public class LaneStatusView implements ActionListener, Observer {
 
     private final Widget.ButtonPanel buttonPanel;
     private final Widget.ContainerPanel gamePanel;
@@ -74,7 +74,8 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         }
     }
 
-    public final void receiveLaneEvent(final LaneEvent le) {
+    public final void receiveEvent(final Event lev) {
+        final LaneEvent le = (LaneEvent) lev;
         final String bowlerNick = le.getBowlerNick();
         currentBowler.setText(bowlerNick);
         if (le.isMechanicalProblem()) {
@@ -83,10 +84,8 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
         final boolean enabled = lane.isPartyAssigned();
         buttonPanel.get(BTN_VIEW_LANE).setEnabled(enabled);
         buttonPanel.get(BTN_VIEW_PINSETTER).setEnabled(enabled);
-    }
 
-    public final void receivePinsetterEvent(final PinsetterEvent pe) {
-        final int totalPinsDown = pe.totalPinsDown();
+        final int totalPinsDown = le.getTotalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());
     }
 }

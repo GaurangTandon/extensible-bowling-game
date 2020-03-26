@@ -1,17 +1,17 @@
 final class drive {
-	private drive() {
-	}
+    private drive() {
+    }
 
-	public static void main(final String[] args) {
+    public static void main(final String[] args) {
 
-		final int numLanes = 3;
-		final int maxPatronsPerParty=5;
+        final int numLanes = 3;
+        final int maxPatronsPerParty = 5;
 
-		final Alley a = new Alley( numLanes );
-		final ControlDesk controlDesk = a.getControlDesk();
+        final Alley a = new Alley(numLanes);
+        final ControlDesk controlDesk = a.getControlDesk();
 
-		final ControlDeskObserver cdv = new ControlDeskView( controlDesk, maxPatronsPerParty);
-		controlDesk.subscribe( cdv );
+        final Observer cdv = new ControlDeskView(controlDesk, maxPatronsPerParty);
+        controlDesk.subscribe(cdv);
 
-	}
+    }
 }

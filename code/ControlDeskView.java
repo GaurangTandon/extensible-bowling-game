@@ -22,7 +22,7 @@ import java.util.Vector;
 /**
  * Class for representation of the control desk
  */
-public class ControlDeskView implements ActionListener, ControlDeskObserver {
+public class ControlDeskView implements ActionListener, Observer {
 
     private final WindowFrame win;
     private final Widget.ButtonPanel controlsPanel;
@@ -35,7 +35,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
     private final ControlDeskInterface controlDesk;
 
     private static final String BTN_ADD_PARTY = "Add Party";
-    private static final String BTN_ASSIGN = "Assign";
+    private static final String BTN_ASSIGN = "Assign lanes";
     private static final String BTN_FINISHED = "Finished";
 
     private JPanel setupLaneStatusPanel(final int numLanes) {
@@ -48,7 +48,6 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
         for (final Lane curLane : lanes) {
             final LaneStatusView laneStat = new LaneStatusView(curLane, (laneCount + 1));
             curLane.subscribe(laneStat);
-            curLane.getPinsetter().subscribe(laneStat);
             final JPanel lanePanel = laneStat.showLane();
             lanePanel.setBorder(new TitledBorder("Lane " + laneCount));
             laneCount++;
@@ -136,7 +135,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
      * @param ce the ControlDeskEvent that triggered the handler
      */
 
-    public final void receiveControlDeskEvent(final ControlDeskEvent ce) {
-        partyList.setListData(ce.getPartyQueue());
+    public final void receiveEvent(final Event ce) {
+        partyList.setListData(((ControlDeskEvent) ce).getPartyQueue());
     }
 }

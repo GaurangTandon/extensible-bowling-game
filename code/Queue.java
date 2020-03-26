@@ -11,7 +11,7 @@
 import java.util.Vector;
 
 class Queue {
-	private final Vector<Party> v;
+	private final Vector<GeneralParty> v;
 	
 	/** Queue()
 	 * 
@@ -21,11 +21,11 @@ class Queue {
 		v = new Vector<>();
 	}
 
-	Party next() {
+	GeneralParty next() {
 		return v.remove(0);
 	}
 
-	public void add(final Party o) {
+	public void add(final GeneralParty o) {
 		v.addElement(o);
 	}
 
@@ -33,8 +33,8 @@ class Queue {
 		return !v.isEmpty();
 	}
 
-	Vector<Party> asVector() {
-		return (Vector<Party>) v.clone();
+	Vector<GeneralParty> asVector() {
+		return (Vector<GeneralParty>) v.clone();
 	}
 	
 }

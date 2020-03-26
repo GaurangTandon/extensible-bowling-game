@@ -7,7 +7,7 @@ class LaneScorer {
     public static final int MAX_GAMES = 128;
     private int[][] finalScores;
     private int partySize;
-    private Vector<Bowler> bowlers;
+    private Vector<GeneralBowler> bowlers;
     private BowlerScorer[] bowlerScorers;
 
     /**
@@ -25,11 +25,11 @@ class LaneScorer {
      * @pre the party has been assigned
      * @post scoring system is initialized
      */
-    final void resetScores(final Vector<Bowler> bowlers) {
+    final void resetScores(final Vector<GeneralBowler> bowlers) {
         resetScores(bowlers, true);
     }
 
-    private void resetScores(final Vector<Bowler> bowlers, final boolean resetFinalScores) {
+    private void resetScores(final Vector<GeneralBowler> bowlers, final boolean resetFinalScores) {
         this.bowlers = bowlers;
         partySize = bowlers.size();
 

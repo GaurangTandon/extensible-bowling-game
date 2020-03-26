@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-class LaneEvent {
+class LaneEvent implements Event {
 
     private final Vector<String> bowlerNicks;
     private final int partySize;
@@ -9,13 +9,16 @@ class LaneEvent {
     private final boolean mechanicalProblemExists;
     private final String bowlerNick;
     private final boolean shouldSetupGraphics;
+    private final int totalPinsDown;
 
     LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick,
               final int[][] theCumulativeScore, final int[][] byFramePartScores, final boolean mechanicalProblem,
-              final boolean ssGraphics) {
+              final boolean ssGraphics, final int pinsDown) {
         bowlerNicks = theBowlerNicks;
         partySize = thePartySize;
         shouldSetupGraphics = ssGraphics;
+        totalPinsDown = pinsDown;
+
 
         bowlerNick = theNick;
         cumulativeScore = theCumulativeScore;
@@ -53,6 +56,10 @@ class LaneEvent {
 
     final boolean isPartyEmpty() {
         return partySize == 0;
+    }
+
+    public int getTotalPinsDown() {
+        return totalPinsDown;
     }
 }
  

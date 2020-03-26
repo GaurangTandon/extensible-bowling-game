@@ -2,15 +2,14 @@ import java.io.IOException;
 import java.util.Vector;
 
 
-public class Lane extends Thread implements PinsetterObserver, LaneInterface {
+public class Lane extends Publisher implements Runnable, LaneInterface, Observer {
     static final int FRAME_COUNT = 10;
     // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
     static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
     static final int LAST_FRAME = FRAME_COUNT - 1;
 
-    private Party party;
+    private GeneralParty party;
     private final Pinsetter pinsetter;
-    private final Vector<LaneObserver> subscribers;
     private Game game;
 
     private final LaneScorer scorer;
@@ -25,13 +24,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     public Lane() {
         pinsetter = new Pinsetter();
-        subscribers = new Vector<>(0);
-
         scorer = new LaneScorer();
-
         pinsetter.subscribe(this);
-
-        start(); // coming from Thread class, TODO: figure out if needed Thread extension?
     }
 
     private void exitGame(final String partyName) {
@@ -39,7 +33,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
         final Vector<String> printVector = egr.getResult();
 
         int myIndex = 0;
-        for (final Bowler bowler : party.getMembers()) {
+        for (final GeneralBowler bowler : party.getMembers()) {
             final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), game.getNumber());
             myIndex++;
 
@@ -54,10 +48,8 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             }
         }
 
+        publish();
         party = null;
-
-        final LaneEvent event = lanePublish();
-        publish(event);
     }
 
     private void onGameFinish() {
@@ -115,7 +107,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
             // Since it is not guaranteed game is set
             // as soon as party got assigned, and this is
             // a multi-threaded environment
-            if(game != null) {
+            if (game != null) {
                 if (isPartyAssigned() && !game.isFinished()) {
                     waitWhilePaused();
 
@@ -143,14 +135,14 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @pre none
      * @post the event has been acted upon if desired
      */
-    public final void receivePinsetterEvent(final PinsetterEvent pe) {
+    public final void receiveEvent(final Event pev) {
+        final PinsetterEvent pe = (PinsetterEvent) pev;
         if (pe.isReset())
             return;
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         scorer.roll(game.currentBowler(), pinsDownOnThisThrow);
-        final LaneEvent event = lanePublish();
-        publish(event);
+        publish();
     }
 
     /**
@@ -162,11 +154,11 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      * @pre none
      * @post the party has been assigned to the lane
      */
-    final void assignParty(final Party theParty) {
+    final void assignParty(final GeneralParty theParty) {
         party = theParty;
         game = new Game(party.getPartySize());
 
-        final Vector<Bowler> members = party.getMembers();
+        final Vector<GeneralBowler> members = party.getMembers();
 
         scorer.resetScores(members);
     }
@@ -178,13 +170,14 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      *
      * @return The new lane event
      */
-    private LaneEvent lanePublish() {
+    Event createEvent() {
         final int bowlerIndex = game.currentBowler();
         final boolean shouldSetupGraphics = bowlerIndex == 0 && scorer.isFirstRoll(bowlerIndex);
+        final int pinsDown = pinsetter == null ? 0 : pinsetter.totalPinsDown();
 
         return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
                 scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), game.isHalted(),
-                shouldSetupGraphics);
+                shouldSetupGraphics, pinsDown);
     }
 
     /**
@@ -196,32 +189,6 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     final boolean isPartyAssigned() {
         return party != null;
-    }
-
-    /**
-     * subscribe
-     * <p>
-     * Method that will add a subscriber
-     *
-     * @param laneObserver Observer that is to be added
-     */
-
-    final void subscribe(final LaneObserver laneObserver) {
-        subscribers.add(laneObserver);
-    }
-
-    /**
-     * publish
-     * <p>
-     * Method that publishes an event to subscribers
-     *
-     * @param event Event that is to be published
-     */
-
-    private void publish(final LaneEvent event) {
-        for (final LaneObserver subscriber : subscribers) {
-            subscriber.receiveLaneEvent(event);
-        }
     }
 
     /**
@@ -239,7 +206,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     public final void pauseGame() {
         game.pause();
-        publish(lanePublish());
+        publish();
     }
 
     /**
@@ -247,7 +214,7 @@ public class Lane extends Thread implements PinsetterObserver, LaneInterface {
      */
     final void unPauseGame() {
         game.unpause();
-        publish(lanePublish());
+        publish();
     }
 
 }

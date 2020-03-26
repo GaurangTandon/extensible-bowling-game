@@ -15,7 +15,7 @@ import java.util.Vector;
  * TODO: LaneView probably does not need access to the entire score sheet all the time.
  * It can simply make do with the latest score received via lane-event
  */
-public class LaneView implements LaneObserver, ActionListener {
+public class LaneView implements ActionListener, Observer {
     private boolean initPending;
 
     private final JFrame frame;
@@ -86,8 +86,9 @@ public class LaneView implements LaneObserver, ActionListener {
             if (frameIdx == Lane.LAST_FRAME)
                 ballPanel.add(balls[2 * frameIdx + 2]);
 
-            final JPanel score = new JPanel();
             scoreLabel[bowlerIdx][frameIdx] = new JLabel("  ", SwingConstants.CENTER);
+
+            final JPanel score = new JPanel();
             score.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             score.setLayout(new GridLayout(0, 1));
             score.add(ballPanel, BorderLayout.EAST);
@@ -155,7 +156,8 @@ public class LaneView implements LaneObserver, ActionListener {
         }
     }
 
-    public final void receiveLaneEvent(final LaneEvent le) {
+    public final void receiveEvent(final Event lev) {
+        final LaneEvent le = (LaneEvent) lev;
         if (le.isPartyEmpty())
             return;
 

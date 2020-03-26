@@ -10,10 +10,9 @@ import java.util.Vector;
  * It is the duty of the BowlerScorer:
  * to decide when to reset the pinsetter and keep scoring
  */
-class Pinsetter {
+class Pinsetter extends Publisher implements GeneralPinsetter {
     private final Random rnd;
     static final int PIN_COUNT = 10;
-    private final Vector<PinsetterObserver> subscribers;
 
     private final boolean[] isPinStanding;
     /* 0-9
@@ -26,36 +25,16 @@ class Pinsetter {
     */
     private boolean foul;
     private int throwNumber;
+    private int pinsDownedOnThisThrow;
 
-    /**
-     * Pinsetter()
-     * <p>
-     * Constructs a new pinsetter
-     *
-     * @return Pinsetter object
-     * @pre none
-     * @post a new pinsetter is created
-     */
     Pinsetter() {
         isPinStanding = new boolean[PIN_COUNT];
         rnd = new Random();
-        subscribers = new Vector<>();
         resetState();
     }
 
-    /**
-     * sendEvent()
-     * <p>
-     * Sends pinsetter events to all subscribers
-     *
-     * @pre none
-     * @post all subscribers have received pinsetter event with updated state
-     */
-    private void sendEvent(final int pinsDownedOnThisThrow) {
-        for (final PinsetterObserver subscriber : subscribers) {
-            subscriber.receivePinsetterEvent(
-                    new PinsetterEvent(isPinStanding, foul, throwNumber, pinsDownedOnThisThrow));
-        }
+    Event createEvent() {
+        return new PinsetterEvent(isPinStanding, foul, throwNumber, pinsDownedOnThisThrow);
     }
 
     /**
@@ -66,8 +45,8 @@ class Pinsetter {
      * @pre none
      * @post pins may have been knocked down and the throwNumber has been incremented
      */
-    void ballThrown() {
-        int pinsDownedOnThisThrow = 0;
+    public void ballThrown() {
+        pinsDownedOnThisThrow = 0;
         foul = false;
         final double skill = rnd.nextDouble();
 
@@ -86,7 +65,7 @@ class Pinsetter {
         }
 
         Util.busyWait(500);
-        sendEvent(pinsDownedOnThisThrow);
+        publish();
         throwNumber++;
     }
 
@@ -98,12 +77,12 @@ class Pinsetter {
      * @pre none
      * @post pinsetters state is reset
      */
-    void resetState() {
+    public void resetState() {
         foul = false;
         throwNumber = 1;
         resetPins();
         Util.busyWait(1000);
-        sendEvent(-1);
+        pinsDownedOnThisThrow = -1;
     }
 
     /**
@@ -121,16 +100,20 @@ class Pinsetter {
     }
 
     /**
-     * subscribe()
-     * <p>
-     * subscribe objects to send events to
+     * totalPinsDown()
      *
-     * @pre none
-     * @post the subscriber object will receive events when their generated
+     * @return the total number of pins down for pinsetter that generated the event
      */
-    void subscribe(final PinsetterObserver subscriber) {
-        subscribers.add(subscriber);
-    }
+    final int totalPinsDown() {
+        int count = 0;
 
+        for (int i = 0; i < PIN_COUNT; i++) {
+            if (!isPinStanding[i]) {
+                count++;
+            }
+        }
+
+        return count;
+    }
 }
 

@@ -17,7 +17,7 @@ class ScoreReport {
 
     private String content;
 
-    ScoreReport(final Bowler bowler, final int[] scores, final int games) {
+    ScoreReport(final GeneralBowler bowler, final int[] scores, final int games) {
         final String nick = bowler.getNickName();
         final String full = bowler.getFullName();
         Vector<Score> v = null;

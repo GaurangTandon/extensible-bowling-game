@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * Class that represents control desk
  */
-class ControlDesk extends Thread implements ControlDeskInterface {
+class ControlDesk extends Publisher implements ControlDeskInterface, Runnable {
 
     private final HashSet<Lane> lanes;
 
@@ -18,12 +18,6 @@ class ControlDesk extends Thread implements ControlDeskInterface {
      * The number of lanes represented
      */
     private final int numLanes;
-
-    /**
-     * The collection of subscribers
-     */
-    private final Vector<ControlDeskObserver> subscribers;
-
     /**
      * Constructor for the ControlDesk class
      *
@@ -35,16 +29,11 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         lanes = new HashSet<>(numLanes);
         partyQueue = new Queue();
 
-        subscribers = new Vector<>();
-
         for (int i = 0; i < numLanes; i++) {
-            lanes.add(new Lane());
+            final Lane lane = new Lane();
+            lanes.add(lane);
+            new Thread(lane).start();
         }
-
-        // TODO: assert somewhere after this that the size of lanes stays constant
-
-        start();
-
     }
 
     /**
@@ -63,14 +52,13 @@ class ControlDesk extends Thread implements ControlDeskInterface {
      * Retrieves a matching Bowler from the bowler database.
      *
      * @param nickName The NickName of the Bowler
-     * @return a Bowler object.
+     * @return a GeneralBowler object.
      */
 
-    private Bowler registerPatron(final String nickName) {
-        Bowler patron = null;
+    private GeneralBowler registerPatron(final String nickName) {
+        GeneralBowler patron = null;
 
         try {
-            // only one patron / nick.... no dupes, no checks
             patron = BowlerFile.getBowlerInfo(nickName);
         } catch (final IOException e) {
             System.err.println("Error..." + e);
@@ -111,12 +99,12 @@ class ControlDesk extends Thread implements ControlDeskInterface {
      */
 
     public final void addPartyToQueue(final Vector<String> partyNicks) {
-        final Vector<Bowler> partyBowlers = new Vector<>();
+        final Vector<GeneralBowler> partyBowlers = new Vector<>();
         for (final String partyNick : partyNicks) {
-            final Bowler newBowler = registerPatron(partyNick);
+            final GeneralBowler newBowler = registerPatron(partyNick);
             partyBowlers.add(newBowler);
         }
-        final Party newParty = new Party(partyBowlers);
+        final GeneralParty newParty = new Party(partyBowlers);
         partyQueue.add(newParty);
         publish();
     }
@@ -129,9 +117,9 @@ class ControlDesk extends Thread implements ControlDeskInterface {
 
     private Vector<String> getPartyQueue() {
         final Vector<String> displayPartyQueue = new Vector<>();
-        final Vector<Party> pQueue = partyQueue.asVector();
+        final Vector<GeneralParty> pQueue = partyQueue.asVector();
 
-        for (final Party party : pQueue) {
+        for (final GeneralParty party : pQueue) {
             final String nextParty = party.getName();
             displayPartyQueue.addElement(nextParty);
         }
@@ -148,24 +136,8 @@ class ControlDesk extends Thread implements ControlDeskInterface {
         return numLanes;
     }
 
-    /**
-     * Allows objects to subscribe as observers
-     *
-     * @param controlDeskObserver the ControlDeskObserver that will be subscribed
-     */
-
-    void subscribe(final ControlDeskObserver controlDeskObserver) {
-        subscribers.add(controlDeskObserver);
-    }
-
-    /**
-     * Broadcast an event to subscribing objects.
-     */
-    private void publish() {
-        final ControlDeskEvent event = new ControlDeskEvent(getPartyQueue());
-        for (final ControlDeskObserver subscriber : subscribers) {
-            subscriber.receiveControlDeskEvent(event);
-        }
+    Event createEvent() {
+        return new ControlDeskEvent(getPartyQueue());
     }
 
     /**
