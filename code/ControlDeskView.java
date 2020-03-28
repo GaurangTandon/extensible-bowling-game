@@ -11,9 +11,6 @@
 import Widget.ButtonPanel;
 import Widget.WindowFrame;
 
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -37,29 +34,23 @@ public class ControlDeskView implements ActionListener, Observer {
     private static final String BTN_ASSIGN = "Assign lanes";
     private static final String BTN_FINISHED = "Finished";
 
-    private JPanel setupLaneStatusPanel(final int numLanes) {
-        final JPanel laneStatusPanel = new JPanel();
-        laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
-        laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
-
+    private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
+        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
+                numLanes, 1, "Lane Status");
         final HashSet<? extends Lane> lanes = controlDesk.getLanes();
-        int laneCount = 1;
+        int laneCount = 0;
         for (final Lane curLane : lanes) {
-            final LaneStatusView laneStat = new LaneStatusView(curLane, (laneCount + 1));
+            final LaneStatusView laneStat = new LaneStatusView(curLane, (++laneCount + 1));
             curLane.subscribe(laneStat);
-            final JPanel lanePanel = laneStat.showLane();
-            lanePanel.setBorder(new TitledBorder("Lane " + laneCount));
-            laneCount++;
-            laneStatusPanel.add(lanePanel);
+            laneStatusPanel.put(new Widget.ContainerPanel(
+                    laneStat.showLane(), "Lane " + laneCount));
         }
-
         return laneStatusPanel;
     }
 
     /**
      * Displays a GUI representation of the ControlDesk
      */
-
     ControlDeskView(final ControlDeskInterface controlDesk,
                     @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;
@@ -71,12 +62,10 @@ public class ControlDeskView implements ActionListener, Observer {
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
                 .put(BTN_FINISHED, this);
-
         final Vector<Object> empty = new Vector<>();
         empty.add("(Empty)");
         partyPanel = new Widget.ScrollablePanel<>(
                 "Party Queue", empty, 10);
-
         win = new WindowFrame(
                 "Control Desk",
                 new Widget.ContainerPanel()
@@ -91,7 +80,6 @@ public class ControlDeskView implements ActionListener, Observer {
      *
      * @param e the ActionEvent that triggered the handler
      */
-
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
@@ -110,7 +98,6 @@ public class ControlDeskView implements ActionListener, Observer {
      *
      * @param addPartyView the AddPartyView that is providing a new party
      */
-
     final void updateAddParty(final AddPartyView addPartyView) {
         controlDesk.addPartyToQueue(addPartyView.getParty());
     }
@@ -120,7 +107,6 @@ public class ControlDeskView implements ActionListener, Observer {
      *
      * @param ce the ControlDeskEvent that triggered the handler
      */
-
     public final void receiveEvent(final Event ce) {
         partyPanel.setListData(((ControlDeskEvent) ce).getPartyQueue());
     }
