@@ -29,6 +29,10 @@ abstract class GenericPanel {
         }
     }
 
+    GenericPanel(final JPanel fPanel) {
+        panel = fPanel;
+    }
+
     public Component getPanel() {
         return panel;
     }

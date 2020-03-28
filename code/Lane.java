@@ -84,11 +84,9 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         while (scorer.canRollAgain(game.currentBowler(), game.currentFrame())) {
             pinsetter.ballThrown();
         }
-
         if (game.isLastFrame()) {
             setFinalScoresOnGameEnd();
         }
-
         pinsetter.resetState();
     }
 

@@ -4,7 +4,6 @@
  */
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -16,44 +15,41 @@ import java.util.Vector;
  * It can simply make do with the latest score received via lane-event
  */
 public class LaneView implements ActionListener, Observer {
-    private boolean initPending;
+    private final String BTN_MAINTENANCE = "Maintenance Call";
 
-    private final JFrame frame;
-    private final Container cPanel;
-    private JButton maintenance;
-    private final LaneInterface lane;
+    private boolean initPending;
+    private Widget.ButtonPanel buttonPanel;
     private Vector<Widget.GridPanel> playerLanes;
+    private final Widget.ContainerPanel containerPanel;
+    private final JFrame frame;
+    private final LaneInterface lane;
 
     LaneView(final LaneInterface ln, final int laneNum) {
         lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
-        cPanel = frame.getContentPane();
-        cPanel.setLayout(new BorderLayout());
+        containerPanel = new Widget.ContainerPanel((JPanel) frame.getContentPane());
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(final WindowEvent e) {
                 frame.setVisible(false);
             }
         });
-        cPanel.add(new JPanel());
+        containerPanel.put(new JPanel());
     }
 
     final void setVisible(final boolean state) {
         frame.setVisible(state);
     }
 
-    private JPanel makeFrame(final Vector<String> bowlerNicks, final int numBowlers) {
+    private Widget.ContainerPanel makeFrame(final Vector<String> bowlerNicks, final int numBowlers) {
         initPending = true;
-
-        final JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 1));
-
         final int maxBalls = Lane.MAX_ROLLS + 2;
 
+        final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
         playerLanes = new Vector<>();
-        for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
-            final Widget.GridPanel pin = new Widget.GridPanel(maxBalls, Lane.FRAME_COUNT, bowlerNicks.get(bowlerIdx));
+        for (int bowler = 0; bowler < numBowlers; bowler++) {
+            final Widget.GridPanel pin = new Widget.GridPanel(maxBalls, Lane.FRAME_COUNT, bowlerNicks.get(bowler));
             playerLanes.add(pin);
-            panel.add(pin.getPanel());
+            panel.put(pin.getPanel());
         }
 
         initPending = false;
@@ -65,23 +61,13 @@ public class LaneView implements ActionListener, Observer {
         while (initPending) {
             Util.busyWait(1);
         }
-
         if (le.shouldSetupGraphics()) {
-            cPanel.removeAll();
-            cPanel.add(makeFrame(le.getBowlerNicks(), le.getPartySize()), "Center");
-
+            containerPanel.getPanel().removeAll();
+            containerPanel.put(makeFrame(le.getBowlerNicks(), le.getPartySize()).getPanel(), "Center");
             // Button Panel
-            final JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new FlowLayout());
-
-            maintenance = new JButton("Maintenance Call");
-            final JPanel maintenancePanel = new JPanel();
-            maintenancePanel.setLayout(new FlowLayout());
-            maintenance.addActionListener(this);
-            maintenancePanel.add(maintenance);
-
-            buttonPanel.add(maintenancePanel);
-            cPanel.add(buttonPanel, "South");
+            buttonPanel = new Widget.ButtonPanel("")
+                    .put(BTN_MAINTENANCE, this);
+            containerPanel.put(buttonPanel.getPanel(), "South");
             frame.pack();
         }
     }
@@ -139,7 +125,7 @@ public class LaneView implements ActionListener, Observer {
 
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        if (source.equals(maintenance)) {
+        if (source.equals(buttonPanel.get(BTN_MAINTENANCE))) {
             lane.pauseGame();
         }
     }

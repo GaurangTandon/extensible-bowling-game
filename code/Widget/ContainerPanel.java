@@ -1,10 +1,15 @@
 package Widget;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class ContainerPanel extends GenericPanel {
 
     public ContainerPanel() {
+    }
+
+    public ContainerPanel(final JPanel panel) {
+        super(panel);
     }
 
     public ContainerPanel(final String heading) {
@@ -35,7 +40,7 @@ public class ContainerPanel extends GenericPanel {
         return this;
     }
 
-    public Component getPanel() {
+    public JPanel getPanel() {
         return panel;
     }
 }
