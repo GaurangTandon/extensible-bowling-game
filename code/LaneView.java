@@ -51,7 +51,6 @@ public class LaneView implements ActionListener, Observer {
             playerLanes.add(pin);
             panel.put(pin.getPanel());
         }
-
         initPending = false;
         return panel;
     }

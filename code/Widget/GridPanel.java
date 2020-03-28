@@ -29,6 +29,7 @@ public class GridPanel extends GenericPanel {
                 blockPanel.add(new JLabel("  "), BorderLayout.EAST);
             blockPanel.add(itemPanel[2 * blockIdx], BorderLayout.EAST);
             blockPanel.add(itemPanel[2 * blockIdx + 1], BorderLayout.EAST);
+
             if (blockIdx == blockCount - 1)
                 blockPanel.add(itemPanel[2 * blockIdx + 2]);
             blockLabel[blockIdx] = new JLabel("  ", SwingConstants.CENTER);
