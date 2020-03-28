@@ -20,23 +20,20 @@ public class LaneView implements ActionListener, Observer {
 
     private final JFrame frame;
     private final Container cPanel;
-    private JLabel[][] ballLabel;
-    private JLabel[][] scoreLabel;
     private JButton maintenance;
     private final LaneInterface lane;
+    private Vector<Widget.GridPanel> playerLanes;
 
     LaneView(final LaneInterface ln, final int laneNum) {
         lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
         cPanel = frame.getContentPane();
         cPanel.setLayout(new BorderLayout());
-
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(final WindowEvent e) {
                 frame.setVisible(false);
             }
         });
-
         cPanel.add(new JPanel());
     }
 
@@ -51,52 +48,16 @@ public class LaneView implements ActionListener, Observer {
         panel.setLayout(new GridLayout(0, 1));
 
         final int maxBalls = Lane.MAX_ROLLS + 2;
-        ballLabel = new JLabel[numBowlers][maxBalls];
-        scoreLabel = new JLabel[numBowlers][Lane.FRAME_COUNT];
-        final JPanel[] balls = new JPanel[maxBalls]; // is reused per bowler
 
+        playerLanes = new Vector<>();
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
-            final JPanel pin = makeOneBowlerCellsRow(maxBalls, balls, bowlerIdx, bowlerNicks.get(bowlerIdx));
-            panel.add(pin);
+            final Widget.GridPanel pin = new Widget.GridPanel(maxBalls, Lane.FRAME_COUNT, bowlerNicks.get(bowlerIdx));
+            playerLanes.add(pin);
+            panel.add(pin.getPanel());
         }
 
         initPending = false;
         return panel;
-    }
-
-    private JPanel makeOneBowlerCellsRow(final int maxBalls, final JPanel[] balls, final int bowlerIdx, final String bowlerNick) {
-        final JPanel pin = new JPanel();
-        pin.setBorder(BorderFactory.createTitledBorder(bowlerNick));
-        pin.setLayout(new GridLayout(0, 10));
-
-        for (int j = 0; j < maxBalls; j++) {
-            ballLabel[bowlerIdx][j] = new JLabel(" ");
-            balls[j] = new JPanel();
-            balls[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            balls[j].add(ballLabel[bowlerIdx][j]);
-        }
-
-        for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
-            final JPanel ballPanel = new JPanel();
-            ballPanel.setLayout(new GridLayout(0, 3));
-            if (frameIdx != Lane.LAST_FRAME)
-                ballPanel.add(new JLabel("  "), BorderLayout.EAST);
-            ballPanel.add(balls[2 * frameIdx], BorderLayout.EAST);
-            ballPanel.add(balls[2 * frameIdx + 1], BorderLayout.EAST);
-            if (frameIdx == Lane.LAST_FRAME)
-                ballPanel.add(balls[2 * frameIdx + 2]);
-
-            scoreLabel[bowlerIdx][frameIdx] = new JLabel("  ", SwingConstants.CENTER);
-
-            final JPanel score = new JPanel();
-            score.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            score.setLayout(new GridLayout(0, 1));
-            score.add(ballPanel, BorderLayout.EAST);
-            score.add(scoreLabel[bowlerIdx][frameIdx], BorderLayout.SOUTH);
-            pin.add(score, BorderLayout.EAST);
-        }
-
-        return pin;
     }
 
 
@@ -112,8 +73,6 @@ public class LaneView implements ActionListener, Observer {
             // Button Panel
             final JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
-
-            new Insets(4, 4, 4, 4);
 
             maintenance = new JButton("Maintenance Call");
             final JPanel maintenancePanel = new JPanel();
@@ -149,7 +108,7 @@ public class LaneView implements ActionListener, Observer {
             // it means that the particular roll was skipped due to a strike
             if (bowlScore != -1) {
                 final String textToSet = getCharToShow(bowlScore);
-                final JLabel ballLabel = this.ballLabel[bowlerIdx][i];
+                final JLabel ballLabel = playerLanes.get(bowlerIdx).getItemLabel(i);
 
                 ballLabel.setText(textToSet);
             }
@@ -174,7 +133,7 @@ public class LaneView implements ActionListener, Observer {
     private void setScoreLabels(final int[] bowlerScores, final int bowlerIdx) {
         for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
             if (bowlerScores[frameIdx] != -1)
-                scoreLabel[bowlerIdx][frameIdx].setText(Integer.toString(bowlerScores[frameIdx]));
+                playerLanes.get(bowlerIdx).getBlockLabel(frameIdx).setText(Integer.toString(bowlerScores[frameIdx]));
         }
     }
 

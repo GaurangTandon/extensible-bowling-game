@@ -131,7 +131,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
      * <p>
      * receives the thrown event from the pinsetter
      *
-     * @param pe The pinsetter event that has been received.
+     * @param pev The pinsetter event that has been received.
      * @pre none
      * @post the event has been acted upon if desired
      */

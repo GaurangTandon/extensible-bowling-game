@@ -29,7 +29,7 @@ abstract class GenericPanel {
         }
     }
 
-    Component getPanel() {
+    public Component getPanel() {
         return panel;
     }
 }
