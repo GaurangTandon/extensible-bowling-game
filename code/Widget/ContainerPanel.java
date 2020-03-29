@@ -13,7 +13,7 @@ public class ContainerPanel extends GenericPanel {
     }
 
     public ContainerPanel(final JPanel panel, String heading) {
-        super(panel);
+        super(panel, heading);
     }
 
     public ContainerPanel(final String heading) {
