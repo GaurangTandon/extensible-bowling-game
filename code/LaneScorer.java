@@ -4,7 +4,7 @@ import java.util.Vector;
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class LaneScorer {
-    public static final int MAX_GAMES = 128;
+    private static final int MAX_GAMES = 128;
     private int[][] finalScores;
     private int partySize;
     private Vector<GeneralBowler> bowlers;

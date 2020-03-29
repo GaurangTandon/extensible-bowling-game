@@ -58,7 +58,7 @@ class LaneEvent implements Event {
         return partySize == 0;
     }
 
-    public int getTotalPinsDown() {
+    int getTotalPinsDown() {
         return totalPinsDown;
     }
 }
