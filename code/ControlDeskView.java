@@ -1,13 +1,3 @@
-/* ControlDeskView.java
- *
- *  Version:
- *			$Id$
- *
- *  Revisions:
- * 		$Log$
- *
- */
-
 import Widget.ButtonPanel;
 import Widget.WindowFrame;
 
@@ -16,17 +6,11 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Vector;
 
-/**
- * Class for representation of the control desk
- */
 public class ControlDeskView implements ActionListener, Observer {
 
     private final WindowFrame win;
     private final Widget.ButtonPanel controlsPanel;
 
-    /**
-     * The maximum  number of members in a party
-     */
     private final int maxMembers;
     private final ControlDeskInterface controlDesk;
     private final Widget.ScrollablePanel<Object> partyPanel;
@@ -35,9 +19,8 @@ public class ControlDeskView implements ActionListener, Observer {
     private static final String BTN_FINISHED = "Finished";
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
-        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
-                numLanes, 1, "Lane Status");
-        final HashSet<? extends Lane> lanes = controlDesk.getLanes();
+        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
+        final HashSet<Lane> lanes = controlDesk.getLanes();
         int laneCount = 0;
         for (final Lane curLane : lanes) {
             ++laneCount;
@@ -49,9 +32,6 @@ public class ControlDeskView implements ActionListener, Observer {
         return laneStatusPanel;
     }
 
-    /**
-     * Displays a GUI representation of the ControlDesk
-     */
     ControlDeskView(final ControlDeskInterface controlDesk,
                     @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;

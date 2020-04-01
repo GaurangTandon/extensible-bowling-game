@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ContainerPanel extends GenericPanel {
-
     public ContainerPanel() {
     }
 
@@ -35,13 +34,11 @@ public class ContainerPanel extends GenericPanel {
     }
 
     public ContainerPanel put(final GenericPanel subPanel) {
-        panel.add(subPanel.getPanel());
-        return this;
+        return put(subPanel.getPanel());
     }
 
     public ContainerPanel put(final GenericPanel subPanel, final String constraints) {
-        panel.add(subPanel.getPanel(), constraints);
-        return this;
+        return put(subPanel.getPanel(), constraints);
     }
 
     public JPanel getPanel() {

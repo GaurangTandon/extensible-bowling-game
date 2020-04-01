@@ -72,29 +72,29 @@ class BowlerScorer {
 
         while (roll < rollCount) {
             final int scoreOnThisFrame;
+            final int oldFrame = frame;
 
             if (frame == Lane.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
-                roll += 2;
+                roll += 3;
             } else {
                 if (isStrike(roll)) {
                     scoreOnThisFrame = Pinsetter.PIN_COUNT + strikeBonus(roll);
+                    roll++;
                 } else if (isSpare(roll)) {
                     scoreOnThisFrame = Pinsetter.PIN_COUNT + spareBonus(roll);
-                    roll++;
+                    roll += 2;
                 } else {
                     scoreOnThisFrame = getPinsDownOnThisFrame(roll);
-                    roll++;
+                    roll += 2;
                 }
+                frame++;
             }
-            // += so that case when frame=9 gets handled easily
-            cumulativeScore[frame] += scoreOnThisFrame;
-            frame = Math.min(frame + 1, Lane.LAST_FRAME);
-            roll++;
-        }
 
-        for (frame = 1; frame <= currFrame; frame++)
-            cumulativeScore[frame] += cumulativeScore[frame - 1];
+            cumulativeScore[oldFrame] += scoreOnThisFrame;
+            if(oldFrame > 0)
+                cumulativeScore[oldFrame] += cumulativeScore[oldFrame - 1];
+        }
 
         // don't display score for this frame
         // if it hasn't started yet
@@ -133,15 +133,24 @@ class BowlerScorer {
         // update the display
         final int updateIndex = 2 * currFrame + partIndex;
 
-        if (partIndex == 1 && isSpareRoll2(rollCount)) {
+        if (shouldDisplaySpare())
             perFramePartRes[updateIndex] = SPARE;
-        } else if ((partIndex == 0 || currFrame == Lane.LAST_FRAME) && isStrike(rollCount))
+        else if (shouldDisplayStrike())
             perFramePartRes[updateIndex] = STRIKE;
-        else perFramePartRes[updateIndex] = rolls[rollCount];
+        else
+            perFramePartRes[updateIndex] = rolls[rollCount];
 
         updateFrameAndPartIndex();
 
         rollCount++;
+    }
+
+    private boolean shouldDisplayStrike() {
+        return (partIndex == 0 || currFrame == Lane.LAST_FRAME) && isStrike(rollCount);
+    }
+
+    private boolean shouldDisplaySpare() {
+        return partIndex == 1 && isSpareRoll2(rollCount);
     }
 
     int[] getCumulativeScore() {
@@ -170,19 +179,32 @@ class BowlerScorer {
         // so i am basically checking that the bowler is still in the same frame
         // as he was in the last roll
 
+        Boolean frameValidation = validateCurrFrame(frameNumber);
+        if (frameValidation != null) return frameValidation;
+
+        Boolean partIndexValidation = validatePartIndex();
+        if (partIndexValidation != null) return partIndexValidation;
+
+        return true;
+    }
+
+    private Boolean validatePartIndex() {
+        if (partIndex == 3) return false;
+        // can only roll the third one in case of a spare or a strike
+        // in any previous two rolls
+        if (partIndex == 2)
+            return getPinsDownOnThisFrame(rollCount - 2) >= 10;
+        return null;
+    }
+
+    private Boolean validateCurrFrame(int frameNumber) {
         if (currFrame != frameNumber)
             return false;
 
         if (currFrame < Lane.LAST_FRAME)
             return true;
 
-        if (partIndex == 3) return false;
-        // can only roll the third one in case of a spare or a strike
-        // in any previous two rolls
-        if (partIndex == 2)
-            return (getPinsDownOnThisFrame(rollCount - 2) >= 10);
-
-        return true;
+        return null;
     }
 
     int getCurrFrame() {

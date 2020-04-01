@@ -19,7 +19,6 @@ class LaneEvent implements Event {
         shouldSetupGraphics = ssGraphics;
         totalPinsDown = pinsDown;
 
-
         bowlerNick = theNick;
         cumulativeScore = theCumulativeScore;
         score = byFramePartScores;

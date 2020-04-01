@@ -41,8 +41,8 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     public void valueChanged(final ListSelectionEvent e) {
-        selectedMember =
-                ((String) ((JList) e.getSource()).getSelectedValue());
+        final JList source = (JList) e.getSource();
+        selectedMember = (String) source.getSelectedValue();
     }
 
     public void actionPerformed(final ActionEvent e) {
@@ -54,13 +54,13 @@ class EndGameReport implements ActionListener, ListSelectionListener {
             win.setVisible(false);
             result = 1;
         }
-
     }
 
     Vector<String> getResult() {
         while (result == 0) {
             Util.busyWait(10);
         }
+
         return (Vector<String>) retVal.clone();
     }
 

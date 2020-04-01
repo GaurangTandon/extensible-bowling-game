@@ -1,27 +1,8 @@
-/*
- * PinSetterView/.java
- *
- * Version:
- *   $Id$
- *
- * Revision:
- *   $Log$
- */
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
 
-
-/**
- * Constructs a prototype PinSetter GUI
- */
 public class PinSetterView implements Observer {
-
-
-    //This Vector will keep references to the pin labels to show
-    //which ones have fallen.
     private final Vector<JLabel> pinVector = new Vector<>();
     private final JPanel secondRoll;
 
@@ -54,7 +35,6 @@ public class PinSetterView implements Observer {
 
         top.add(firstRoll, BorderLayout.WEST);
         top.add(secondRoll, BorderLayout.EAST);
-
 
         top.setBackground(Color.black);
         cPanel.add(top, BorderLayout.NORTH);
@@ -127,16 +107,12 @@ public class PinSetterView implements Observer {
         return panels;
     }
 
-    /**
-     * This method receives a pinsetter event.  The event is the current
-     * state of the PinSetter and the method changes how the GUI looks
-     * accordingly.  When pins are "knocked down" the corresponding label
-     * is grayed out.  When it is the second roll, it is indicated by the
-     * appearance of a second yellow box at the top.
-     *
-     * @param pe The state of the pinsetter is sent in this event.
-     */
-
+    public void resetColors() {
+        for (int i = 0; i < 10; i++) {
+            pinVector.get(i).setForeground(Color.black);
+        }
+        secondRoll.setBackground(Color.black);
+    }
 
     public void receiveEvent(final Event pev) {
         final PinsetterEvent pe = (PinsetterEvent) pev;
@@ -150,10 +126,7 @@ public class PinSetterView implements Observer {
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         if (pinsDownOnThisThrow == -1) {
-            for (int i = 0; i < 10; i++) {
-                pinVector.get(i).setForeground(Color.black);
-            }
-            secondRoll.setBackground(Color.black);
+            resetColors();
         }
     }
 
