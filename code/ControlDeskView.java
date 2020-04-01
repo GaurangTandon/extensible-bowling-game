@@ -40,7 +40,8 @@ public class ControlDeskView implements ActionListener, Observer {
         final HashSet<? extends Lane> lanes = controlDesk.getLanes();
         int laneCount = 0;
         for (final Lane curLane : lanes) {
-            final LaneStatusView laneStat = new LaneStatusView(curLane, (++laneCount + 1));
+            ++laneCount;
+            final LaneStatusView laneStat = new LaneStatusView(curLane, laneCount);
             curLane.subscribe(laneStat);
             laneStatusPanel.put(new Widget.ContainerPanel(
                     laneStat.showLane(), "Lane " + laneCount));

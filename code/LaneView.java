@@ -1,8 +1,3 @@
-/*
- *  constructs a prototype Lane View
- *
- */
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,10 +5,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Vector;
 
-/**
- * TODO: LaneView probably does not need access to the entire score sheet all the time.
- * It can simply make do with the latest score received via lane-event
- */
 public class LaneView implements ActionListener, Observer {
     private final String BTN_MAINTENANCE = "Maintenance Call";
 
@@ -54,7 +45,6 @@ public class LaneView implements ActionListener, Observer {
         initPending = false;
         return panel;
     }
-
 
     private void setupLaneGraphics(final LaneEvent le) {
         while (initPending) {
