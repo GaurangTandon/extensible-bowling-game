@@ -49,24 +49,12 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         }
     }
 
-    private void setFinalScoresOnGameEnd() {
-        final int finalScore = scorer.finalizeCurrentBowlersGameScore();
-
-        try {
-            final String dateString = Util.getDateString();
-            ScoreHistoryFile.addScore(getCurrentThrowerNick(), dateString, Integer.toString(finalScore));
-        } catch (final IOException e) {
-            System.err.println("Exception in addScore. " + e);
-        }
-    }
-
     private void bowlOneBowlerOneFrame() {
         while (scorer.canRollAgain()) {
             pinsetter.ballThrown();
         }
-        if (scorer.isLastFrame()) {
-            setFinalScoresOnGameEnd();
-        }
+
+        scorer.setFinalScoresOnGameEnd();
         pinsetter.resetState();
     }
 
@@ -77,9 +65,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            // Since it is not guaranteed game is set
-            // as soon as party got assigned, and this is
-            // a multi-threaded environment
             if (isPartyAssigned() && !scorer.isFinished()) {
                 waitWhilePaused();
 
@@ -129,8 +114,8 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         return party != null;
     }
 
-    final Pinsetter getPinsetter() {
-        return pinsetter;
+    final void subscribePinsetter(final PinSetterView psv) {
+        pinsetter.subscribe(psv);
     }
 
     public final void pauseGame() {

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -39,14 +40,6 @@ class LaneScorer {
         }
     }
 
-    /**
-     * resetScores()
-     * <p>
-     * resets the scoring mechanism, must be called before scoring starts
-     *
-     * @pre the party has been assigned
-     * @post scoring system is initialized
-     */
     final void resetScores(final Vector<GeneralBowler> bowlers) {
         resetScores(bowlers, true);
     }
@@ -81,9 +74,18 @@ class LaneScorer {
         return bowlerScorers[bowlerIndex].canRollAgain(frameNumber);
     }
 
-    final int finalizeCurrentBowlersGameScore() {
+    void setFinalScoresOnGameEnd() {
+        if (!isLastFrame()) return;
+
         finalScores[bowlerIndex][gameNumber] = getBowlersFinalScoreForCurrentGame(bowlerIndex);
-        return finalScores[bowlerIndex][gameNumber];
+        final String finalScore = Integer.toString(finalScores[bowlerIndex][gameNumber]);
+
+        try {
+            final String dateString = Util.getDateString();
+            ScoreHistoryFile.addScore(bowlers.get(bowlerIndex).getNickName(), dateString, finalScore);
+        } catch (final IOException e) {
+            System.err.println("Exception in addScore. " + e);
+        }
     }
 
     final int[] getFinalScores(final int bowler) {
