@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -31,34 +32,36 @@ public class LaneView implements ActionListener, Observer {
         frame.setVisible(state);
     }
 
-    private Widget.ContainerPanel makeFrame(final Vector<String> bowlerNicks, final int numBowlers) {
-        initPending = true;
+    private Component getPinPanel(final String bowlerNick) {
         final int maxBalls = Lane.MAX_ROLLS + 2;
+        final Widget.GridPanel pin = new Widget.GridPanel(maxBalls, Lane.FRAME_COUNT, bowlerNick);
+        playerLanes.add(pin);
+        return pin.getPanel();
+    }
+
+    private Widget.ContainerPanel makeFrame(final Vector<String> bowlerNicks) {
+        initPending = true;
 
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
         playerLanes = new Vector<>();
-        for (int bowler = 0; bowler < numBowlers; bowler++) {
-            final Widget.GridPanel pin = new Widget.GridPanel(maxBalls, Lane.FRAME_COUNT, bowlerNicks.get(bowler));
-            playerLanes.add(pin);
-            panel.put(pin.getPanel());
-        }
+
+        for (final String bowler : bowlerNicks)
+            panel.put(getPinPanel(bowler));
+
         initPending = false;
         return panel;
     }
 
+    private Component getButtonPanel() {
+        buttonPanel = new Widget.ButtonPanel("").put(BTN_MAINTENANCE, this);
+        return buttonPanel.getPanel();
+    }
+
     private void setupLaneGraphics(final LaneEvent le) {
-        while (initPending) {
-            Util.busyWait(1);
-        }
-        if (le.shouldSetupGraphics()) {
-            containerPanel.getPanel().removeAll();
-            containerPanel.put(makeFrame(le.getBowlerNicks(), le.getPartySize()).getPanel(), "Center");
-            // Button Panel
-            buttonPanel = new Widget.ButtonPanel("")
-                    .put(BTN_MAINTENANCE, this);
-            containerPanel.put(buttonPanel.getPanel(), "South");
-            frame.pack();
-        }
+        containerPanel.getPanel().removeAll();
+        containerPanel.put(makeFrame(le.getBowlerNicks()).getPanel(), "Center");
+        containerPanel.put(getButtonPanel(), "South");
+        frame.pack();
     }
 
     private static String getCharToShow(final int currScore) {
@@ -96,12 +99,23 @@ public class LaneView implements ActionListener, Observer {
             return;
 
         final int numBowlers = le.getPartySize();
-        setupLaneGraphics(le);
+
+        waitInitToFinish();
+
+        if (le.shouldSetupGraphics()) {
+            setupLaneGraphics(le);
+        }
 
         final int[][] leCumulativeScore = le.getCumulativeScore();
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
             setScoreLabels(leCumulativeScore[bowlerIdx], bowlerIdx);
             setBoxLabels(le.getScore(bowlerIdx), bowlerIdx);
+        }
+    }
+
+    private void waitInitToFinish() {
+        while (initPending) {
+            Util.busyWait(1);
         }
     }
 
