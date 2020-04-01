@@ -169,13 +169,18 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
      * @return The new lane event
      */
     Event createEvent() {
-        final int bowlerIndex = game.currentBowler();
-        final boolean shouldSetupGraphics = bowlerIndex == 0 && scorer.isFirstRoll(bowlerIndex);
-        final int pinsDown = pinsetter == null ? 0 : pinsetter.totalPinsDown();
-
         return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
                 scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), game.isHalted(),
-                shouldSetupGraphics, pinsDown);
+                shouldSetupGraphics(), getPinsDown());
+    }
+
+    private boolean shouldSetupGraphics() {
+        final int bowlerIndex = game.currentBowler();
+        return bowlerIndex == 0 && scorer.isFirstRoll(bowlerIndex);
+    }
+
+    private int getPinsDown() {
+        return pinsetter == null ? 0 : pinsetter.totalPinsDown();
     }
 
     /**
