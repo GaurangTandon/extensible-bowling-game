@@ -11,7 +11,7 @@ public class LaneView implements ActionListener, Observer {
 
     private boolean initPending;
     private Widget.ButtonPanel buttonPanel;
-    private Vector<Widget.GridPanel> playerLanes;
+    private Vector<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
     private final LaneInterface lane;
@@ -32,24 +32,20 @@ public class LaneView implements ActionListener, Observer {
         frame.setVisible(state);
     }
 
-    private Component getPinPanel(final String bowlerNick) {
-        final int maxBalls = Lane.MAX_ROLLS + 2;
-        final Widget.GridPanel pin = new Widget.GridPanel(maxBalls, Lane.FRAME_COUNT, bowlerNick);
-        playerLanes.add(pin);
-        return pin.getPanel();
-    }
-
-    private Widget.ContainerPanel makeFrame(final Vector<String> bowlerNicks) {
+    private Component makeFrame(final Vector<String> bowlerNicks) {
         initPending = true;
 
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
-        playerLanes = new Vector<>();
+        bsv = new Vector<>();
 
-        for (final String bowler : bowlerNicks)
-            panel.put(getPinPanel(bowler));
+        for (final String bowlerNick : bowlerNicks) {
+            final BowlerScoreView bs = new BowlerScoreView(bowlerNick);
+            bsv.add(bs);
+            panel.put(bs.getPanel());
+        }
 
         initPending = false;
-        return panel;
+        return panel.getPanel();
     }
 
     private Component getButtonPanel() {
@@ -59,38 +55,9 @@ public class LaneView implements ActionListener, Observer {
 
     private void setupLaneGraphics(final LaneEvent le) {
         containerPanel.getPanel().removeAll();
-        containerPanel.put(makeFrame(le.getBowlerNicks()).getPanel(), "Center");
+        containerPanel.put(makeFrame(le.getBowlerNicks()), "Center");
         containerPanel.put(getButtonPanel(), "South");
         frame.pack();
-    }
-
-    private static String getCharToShow(final int currScore) {
-        final String textToSet;
-        switch (currScore) {
-            case BowlerScorer.STRIKE:
-                textToSet = "X";
-                break;
-            case BowlerScorer.SPARE:
-                textToSet = "/";
-                break;
-            default:
-                textToSet = Integer.toString(currScore);
-        }
-        return textToSet;
-    }
-
-    private void setBoxLabels(final int[] scores, final int bowlerIdx) {
-        for (int i = 0; i < Lane.MAX_ROLLS; i++) {
-            final int bowlScore = scores[i];
-
-            // it means that the particular roll was skipped due to a strike
-            if (bowlScore != -1) {
-                final String textToSet = getCharToShow(bowlScore);
-                final JLabel ballLabel = playerLanes.get(bowlerIdx).getItemLabel(i);
-
-                ballLabel.setText(textToSet);
-            }
-        }
     }
 
     public final void receiveEvent(final Event lev) {
@@ -108,21 +75,13 @@ public class LaneView implements ActionListener, Observer {
 
         final int[][] leCumulativeScore = le.getCumulativeScore();
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
-            setScoreLabels(leCumulativeScore[bowlerIdx], bowlerIdx);
-            setBoxLabels(le.getScore(bowlerIdx), bowlerIdx);
+            bsv.get(bowlerIdx).update(leCumulativeScore[bowlerIdx], le.getScore(bowlerIdx));
         }
     }
 
     private void waitInitToFinish() {
         while (initPending) {
             Util.busyWait(1);
-        }
-    }
-
-    private void setScoreLabels(final int[] bowlerScores, final int bowlerIdx) {
-        for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
-            if (bowlerScores[frameIdx] != -1)
-                playerLanes.get(bowlerIdx).getBlockLabel(frameIdx).setText(Integer.toString(bowlerScores[frameIdx]));
         }
     }
 
