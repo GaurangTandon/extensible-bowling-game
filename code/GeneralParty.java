@@ -5,6 +5,8 @@ interface GeneralParty {
 
     int getPartySize();
 
+    void addBowler(final GeneralBowler bowler);
+
     Vector<String> getMemberNicks();
 
     String getName();

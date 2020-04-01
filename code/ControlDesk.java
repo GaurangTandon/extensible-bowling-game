@@ -1,9 +1,10 @@
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 class ControlDesk extends Publisher implements Runnable {
-    private final HashSet<Lane> lanes;
+    private final Set<Lane> lanes;
     private final Queue partyQueue;
     final int numLanes;
 
@@ -27,19 +28,7 @@ class ControlDesk extends Publisher implements Runnable {
         }
     }
 
-    private GeneralBowler getPatronDetails(final String nickName) {
-        GeneralBowler patron = null;
-
-        try {
-            patron = BowlerFile.getBowlerInfo(nickName);
-        } catch (final IOException e) {
-            System.err.println("Error..." + e);
-        }
-
-        return patron;
-    }
-
-    public final void assignLane() {
+    final void assignLane() {
         for (final Lane lane : lanes) {
             if (partyQueue.hasMoreElements()) {
                 if (!lane.isPartyAssigned()) {
@@ -51,13 +40,14 @@ class ControlDesk extends Publisher implements Runnable {
         publish();
     }
 
-    public void addPartyToQueue(final Iterable<String> partyNicks) {
-        final Vector<GeneralBowler> partyBowlers = new Vector<>();
+    void addPartyToQueue(final Iterable<String> partyNicks) {
+        final GeneralParty newParty = new Party();
+
         for (final String partyNick : partyNicks) {
-            final GeneralBowler newBowler = getPatronDetails(partyNick);
-            partyBowlers.add(newBowler);
+            final GeneralBowler newBowler = Util.getPatronDetails(partyNick);
+            newParty.addBowler(newBowler);
         }
-        final GeneralParty newParty = new Party(partyBowlers);
+
         partyQueue.add(newParty);
         publish();
     }
@@ -74,7 +64,7 @@ class ControlDesk extends Publisher implements Runnable {
         return new ControlDeskEvent(displayPartyQueue);
     }
 
-    public HashSet<Lane> getLanes() {
+    Iterable<Lane> getLanes() {
         return lanes;
     }
 }

@@ -4,22 +4,19 @@ import java.util.Vector;
  * Container that holds bowlers
  */
 class Party implements GeneralParty {
-
-    /**
-     * Vector of bowlers in this party
-     */
     private final Vector<GeneralBowler> bowlers;
-    private final String name;
+    private String name;
 
-    /**
-     * Constructor for a Party
-     *
-     * @param bowlers Vector of bowlers that are in this party
-     */
+    Party() {
+        bowlers = new Vector(0);
+        name = "";
+    }
 
-    Party(final Vector bowlers) {
-        this.bowlers = new Vector(bowlers);
-        name = this.bowlers.get(0).getNickName() + "'s Party";
+    public void addBowler(final GeneralBowler bowler) {
+        bowlers.add(bowler);
+        if (bowlers.size() == 1) {
+            name += bowler.getNickName() + "'s Party";
+        }
     }
 
     /**
