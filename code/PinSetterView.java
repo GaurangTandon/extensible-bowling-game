@@ -107,7 +107,7 @@ public class PinSetterView implements Observer {
         return panels;
     }
 
-    public void resetColors() {
+    private void resetColors() {
         for (int i = 0; i < 10; i++) {
             pinVector.get(i).setForeground(Color.black);
         }
@@ -131,9 +131,9 @@ public class PinSetterView implements Observer {
     }
 
     private void displayKnockedDownPins(final PinsetterEvent pe) {
-        for (int c = 0; c < Pinsetter.PIN_COUNT; c++) {
-            final boolean pinKnockedDown = pe.isPinKnockedDown(c);
-            final JLabel tempPin = pinVector.get(c);
+        for (int pinIndex = 0; pinIndex < Pinsetter.PIN_COUNT; pinIndex++) {
+            final boolean pinKnockedDown = pe.isPinKnockedDown(pinIndex);
+            final JLabel tempPin = pinVector.get(pinIndex);
             if (pinKnockedDown) {
                 tempPin.setForeground(Color.lightGray);
             }

@@ -3,7 +3,6 @@ import Widget.WindowFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
 import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, Observer {
@@ -20,7 +19,7 @@ public class ControlDeskView implements ActionListener, Observer {
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
         final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
-        final HashSet<Lane> lanes = controlDesk.getLanes();
+        final Iterable<Lane> lanes = controlDesk.getLanes();
         int laneCount = 0;
         for (final Lane curLane : lanes) {
             ++laneCount;

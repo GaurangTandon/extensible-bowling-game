@@ -18,6 +18,7 @@ class ControlDesk extends Publisher implements ControlDeskInterface, Runnable {
      * The number of lanes represented
      */
     private final int numLanes;
+
     /**
      * Constructor for the ControlDesk class
      *
@@ -98,7 +99,7 @@ class ControlDesk extends Publisher implements ControlDeskInterface, Runnable {
      * @param partyNicks A Vector of NickNames
      */
 
-    public final void addPartyToQueue(final Vector<String> partyNicks) {
+    public void addPartyToQueue(final Iterable<String> partyNicks) {
         final Vector<GeneralBowler> partyBowlers = new Vector<>();
         for (final String partyNick : partyNicks) {
             final GeneralBowler newBowler = registerPatron(partyNick);
@@ -117,7 +118,7 @@ class ControlDesk extends Publisher implements ControlDeskInterface, Runnable {
 
     private Vector<String> getPartyQueue() {
         final Vector<String> displayPartyQueue = new Vector<>();
-        final Vector<GeneralParty> pQueue = partyQueue.asVector();
+        final Iterable<GeneralParty> pQueue = partyQueue.asVector();
 
         for (final GeneralParty party : pQueue) {
             final String nextParty = party.getName();

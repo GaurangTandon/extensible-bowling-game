@@ -5,7 +5,8 @@ import java.awt.*;
 
 public class GridPanel extends GenericPanel {
 
-    private JLabel[] itemLabel, blockLabel;
+    private final JLabel[] itemLabel;
+    private final JLabel[] blockLabel;
 
     public GridPanel(int itemCount, int blockCount, String heading) {
         super(0, 10, heading);

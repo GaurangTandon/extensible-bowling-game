@@ -5,6 +5,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -12,7 +13,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
 
     private final Widget.WindowFrame win;
     private final Widget.ButtonPanel buttonPanel;
-    private final Vector<String> retVal;
+    private final List<String> retVal;
     private int result;
 
     private String selectedMember;
@@ -62,10 +63,4 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         }
         return Util.containsString(retVal, bowlerNick);
     }
-
-    @SuppressWarnings("unused")
-    public void destroy() {
-        win.setVisible(false);
-    }
-
 }

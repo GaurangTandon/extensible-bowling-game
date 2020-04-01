@@ -6,7 +6,6 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Vector;
 
 class ScoreReport {
     private String content;
@@ -14,7 +13,7 @@ class ScoreReport {
     ScoreReport(final GeneralBowler bowler, final int[] scores, final int games) {
         final String nick = bowler.getNickName();
         final String full = bowler.getFullName();
-        Vector<Score> v = null;
+        Iterable<Score> v = null;
         try {
             v = ScoreHistoryFile.getScores(nick);
         } catch (final Exception e) {
@@ -39,15 +38,15 @@ class ScoreReport {
         sendEmail(bowler.getEmail());
     }
 
-    void sendEmail(final String recipient) {
+    private void sendEmail(final String recipient) {
         try {
-            final Socket s = new Socket("osfmail.rit.edu", 25);
+            final Socket socket = new Socket("osfmail.rit.edu", 25);
             final BufferedReader in =
                     new BufferedReader(
-                            new InputStreamReader(s.getInputStream(), "8859_1"));
+                            new InputStreamReader(socket.getInputStream(), "8859_1"));
             final BufferedWriter out =
                     new BufferedWriter(
-                            new OutputStreamWriter(s.getOutputStream(), "8859_1"));
+                            new OutputStreamWriter(socket.getOutputStream(), "8859_1"));
 
             String linesToSend = "HELLO world\nMAIL FROM: <mda2376@rit.edu>\nRCPT TO: <" + recipient + ">\nDATA";
             sendLn(in, out, linesToSend);
@@ -56,7 +55,7 @@ class ScoreReport {
             sendLn(out, linesToSend);
 
             sendLn(in, out, ".\nQUIT");
-            s.close();
+            socket.close();
         } catch (final Exception e) {
             e.printStackTrace();
         }

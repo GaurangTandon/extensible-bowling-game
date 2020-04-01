@@ -126,7 +126,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         final String nickName = newPatron.getNickName();
         final Vector<Object> res = BowlerFile.putBowlerIfDidntExist(nickName, newPatron.getFull(), newPatron.getEmail());
         if (res != null) {
-            bowlerDB = new Vector<Object>(res);
+            bowlerDB = new Vector<>(res);
             bowlerPanel.setListData(bowlerDB);
             party.add(nickName);
             partyPanel.setListData(party);

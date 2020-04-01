@@ -53,7 +53,7 @@ public class LaneStatusView implements ActionListener, Observer {
     }
 
     final JPanel showLane() {
-        return (JPanel) gamePanel.getPanel();
+        return gamePanel.getPanel();
     }
 
     public final void actionPerformed(final ActionEvent e) {

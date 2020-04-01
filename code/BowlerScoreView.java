@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class BowlerScoreView {
-    private Component panel;
-    private Widget.GridPanel gridPanel;
+class BowlerScoreView {
+    private final Component panel;
+    private final Widget.GridPanel gridPanel;
 
     BowlerScoreView(final String bowlerNick){
         final int maxBalls = Lane.MAX_ROLLS + 2;
@@ -26,7 +26,7 @@ public class BowlerScoreView {
         return textToSet;
     }
 
-    void setBoxLabels(final int[] scores) {
+    private void setBoxLabels(final int[] scores) {
         for (int i = 0; i < Lane.MAX_ROLLS; i++) {
             final int bowlScore = scores[i];
 
@@ -40,7 +40,7 @@ public class BowlerScoreView {
         }
     }
 
-    void setScoreLabels(final int[] bowlerScores) {
+    private void setScoreLabels(final int[] bowlerScores) {
         for (int frameIdx = 0; frameIdx < Lane.FRAME_COUNT; frameIdx++) {
             if (bowlerScores[frameIdx] != -1)
                 gridPanel.getBlockLabel(frameIdx).setText(Integer.toString(bowlerScores[frameIdx]));

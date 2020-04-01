@@ -81,7 +81,7 @@ final class BowlerFile {
      * @param email    the E-mail Address of the Bowler
      */
 
-    static void putBowlerInfo(
+    private static void putBowlerInfo(
             final String nickName,
             final String fullName,
             final String email)

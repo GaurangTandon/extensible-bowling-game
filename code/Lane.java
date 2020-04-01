@@ -84,7 +84,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     }
 
     private String getCurrentThrowerNick() {
-        return party.getMemberNick(scorer.currentBowler());
+        return party.getMemberNick(scorer.getCurrentBowler());
     }
 
     /**

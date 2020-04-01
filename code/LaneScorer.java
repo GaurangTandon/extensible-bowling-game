@@ -15,24 +15,11 @@ class LaneScorer {
     private int frameNumber;
     private int gameNumber;
 
-    LaneScorer() {
-        bowlerIndex = 0;
-        gameNumber = 0;
-        finished = false;
-        halted = false;
-        frameNumber = 0;
-    }
-
     /**
      * This resets the scores for the same party
      */
-    final void resetScores() {
+    private void resetScores() {
         resetScores(bowlers, false);
-    }
-
-    final void restartGame() {
-        bowlerIndex = 0;
-        frameNumber = 0;
     }
 
     final void nextBowler() {
@@ -63,13 +50,20 @@ class LaneScorer {
         this.bowlers = bowlers;
         partySize = bowlers.size();
 
-        if (resetFinalScores)
+        if (resetFinalScores) {
             finalScores = new int[partySize][MAX_GAMES];
+            gameNumber = 0;
+        }
         bowlerScorers = new BowlerScorer[partySize];
 
         for (int bowler = 0; bowler < partySize; bowler++) {
             bowlerScorers[bowler] = new BowlerScorer();
         }
+
+        bowlerIndex = 0;
+        frameNumber = 0;
+        finished = false;
+        halted = false;
     }
 
     final void roll(final int pinsDowned) {
@@ -98,7 +92,7 @@ class LaneScorer {
         return cumulativeScores;
     }
 
-    final int getBowlersFinalScoreForCurrentGame(final int bowler) {
+    private int getBowlersFinalScoreForCurrentGame(final int bowler) {
         return bowlerScorers[bowler].getScore();
     }
 
@@ -112,7 +106,7 @@ class LaneScorer {
         return result;
     }
 
-    final boolean isBowlersFirstRoll() {
+    private boolean isBowlersFirstRoll() {
         return bowlerScorers[bowlerIndex].getRollCount() == 1;
     }
 
@@ -122,7 +116,6 @@ class LaneScorer {
 
     final void onGameFinish() {
         resetScores();
-        restartGame();
     }
 
     final void pause() {
@@ -141,7 +134,7 @@ class LaneScorer {
         return halted;
     }
 
-    public int currentBowler() {
+    public int getCurrentBowler() {
         return bowlerIndex;
     }
 

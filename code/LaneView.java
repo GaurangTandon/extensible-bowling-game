@@ -4,14 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.Vector;
 
 public class LaneView implements ActionListener, Observer {
-    private final String BTN_MAINTENANCE = "Maintenance Call";
+    private static final String BTN_MAINTENANCE = "Maintenance Call";
 
     private boolean initPending;
     private Widget.ButtonPanel buttonPanel;
-    private Vector<BowlerScoreView> bsv;
+    private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
     private final LaneInterface lane;
@@ -32,7 +33,7 @@ public class LaneView implements ActionListener, Observer {
         frame.setVisible(state);
     }
 
-    private Component makeFrame(final Vector<String> bowlerNicks) {
+    private Component makeFrame(final Iterable<String> bowlerNicks) {
         initPending = true;
 
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
