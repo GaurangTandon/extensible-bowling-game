@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Vector;
 
 public class LaneView implements ActionListener, Observer {
+    // TODO: to increase of cohesion, we could move this to a util class
     private static final String BTN_MAINTENANCE = "Maintenance Call";
 
-    private boolean initPending;
     private Widget.ButtonPanel buttonPanel;
     private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
@@ -34,8 +34,6 @@ public class LaneView implements ActionListener, Observer {
     }
 
     private Component makeFrame(final Iterable<String> bowlerNicks) {
-        initPending = true;
-
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
         bsv = new Vector<>();
 
@@ -45,7 +43,6 @@ public class LaneView implements ActionListener, Observer {
             panel.put(bs.getPanel());
         }
 
-        initPending = false;
         return panel.getPanel();
     }
 
@@ -69,20 +66,12 @@ public class LaneView implements ActionListener, Observer {
 
         final int numBowlers = le.getPartySize();
 
-        waitInitToFinish();
-
         if (le.shouldSetupGraphics()) {
             setupLaneGraphics(le.getBowlerNicks());
         }
 
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
             bsv.get(bowlerIdx).update(le.getCumulativeScore(bowlerIdx), le.getScore(bowlerIdx));
-        }
-    }
-
-    private void waitInitToFinish() {
-        while (initPending) {
-            Util.busyWait(1);
         }
     }
 

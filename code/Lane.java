@@ -3,23 +3,10 @@ import java.util.Vector;
 
 
 public class Lane extends Publisher implements Runnable, LaneInterface, Observer {
-    static final int FRAME_COUNT = 10;
-    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
-    static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
-    static final int LAST_FRAME = FRAME_COUNT - 1;
-
     private GeneralParty party;
     private final Pinsetter pinsetter;
     private final LaneScorer scorer;
 
-    /**
-     * Lane()
-     * <p>
-     * Constructs a new lane and starts its thread
-     *
-     * @pre none
-     * @post a new lane has been created and its thread is executing
-     */
     public Lane() {
         pinsetter = new Pinsetter();
         scorer = new LaneScorer();
@@ -87,11 +74,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         return party.getMemberNick(scorer.getCurrentBowler());
     }
 
-    /**
-     * run()
-     * <p>
-     * entry point for execution of this lane
-     */
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
@@ -115,15 +97,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         }
     }
 
-    /**
-     * receivePinsetterEvent()
-     * <p>
-     * receives the thrown event from the pinsetter
-     *
-     * @param pev The pinsetter event that has been received.
-     * @pre none
-     * @post the event has been acted upon if desired
-     */
     public final void receiveEvent(final Event pev) {
         final PinsetterEvent pe = (PinsetterEvent) pev;
         if (pe.isReset())
@@ -134,15 +107,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         publish();
     }
 
-    /**
-     * assignParty()
-     * <p>
-     * assigns a party to this lane
-     *
-     * @param theParty Party to be assigned
-     * @pre none
-     * @post the party has been assigned to the lane
-     */
     final void assignParty(final GeneralParty theParty) {
         party = theParty;
 
@@ -151,13 +115,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         scorer.resetScores(members);
     }
 
-    /**
-     * lanePublish()
-     * <p>
-     * Method that creates and returns a newly created laneEvent
-     *
-     * @return The new lane event
-     */
     Event createEvent() {
         return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
                 scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), scorer.isHalted(),
@@ -168,41 +125,21 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         return pinsetter == null ? 0 : pinsetter.totalPinsDown();
     }
 
-    /**
-     * isPartyAssigned()
-     * <p>
-     * checks if a party is assigned to this lane
-     *
-     * @return true if party assigned, false otherwise
-     */
     final boolean isPartyAssigned() {
         return party != null;
     }
-
-    /**
-     * Accessor to get this Lane's pinsetter
-     *
-     * @return A reference to this lane's pinsetter
-     */
 
     final Pinsetter getPinsetter() {
         return pinsetter;
     }
 
-    /**
-     * Pause the execution of this game
-     */
     public final void pauseGame() {
         scorer.pause();
         publish();
     }
 
-    /**
-     * Resume the execution of this game
-     */
     final void unPauseGame() {
         scorer.unpause();
         publish();
     }
-
 }

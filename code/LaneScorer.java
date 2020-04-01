@@ -4,6 +4,11 @@ import java.util.Vector;
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class LaneScorer {
+    static final int FRAME_COUNT = 10;
+    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
+    static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
+    static final int LAST_FRAME = FRAME_COUNT - 1;
+
     private static final int MAX_GAMES = 128;
     private int[][] finalScores;
     private int partySize;
@@ -27,7 +32,7 @@ class LaneScorer {
         if (bowlerIndex == partySize) {
             frameNumber++;
             bowlerIndex = 0;
-            if (frameNumber == Lane.FRAME_COUNT) {
+            if (frameNumber == FRAME_COUNT) {
                 finished = true;
                 gameNumber++;
             }
@@ -86,7 +91,7 @@ class LaneScorer {
     }
 
     final int[][] getCumulativeScores() {
-        final int[][] cumulativeScores = new int[partySize][Lane.FRAME_COUNT];
+        final int[][] cumulativeScores = new int[partySize][FRAME_COUNT];
         for (int bowler = 0; bowler < partySize; bowler++)
             cumulativeScores[bowler] = bowlerScorers[bowler].getCumulativeScore();
         return cumulativeScores;
@@ -98,7 +103,7 @@ class LaneScorer {
 
     final int[][] getByBowlerByFramePartResult() {
         // return a bowler x 21 matrix of scores
-        final int[][] result = new int[partySize][Lane.MAX_ROLLS];
+        final int[][] result = new int[partySize][MAX_ROLLS];
 
         for (int bowler = 0; bowler < partySize; bowler++) {
             result[bowler] = bowlerScorers[bowler].getByFramePartResult();
@@ -127,22 +132,22 @@ class LaneScorer {
     }
 
     final boolean isLastFrame() {
-        return frameNumber == Lane.LAST_FRAME;
+        return frameNumber == LAST_FRAME;
     }
 
-    public boolean isHalted() {
+    boolean isHalted() {
         return halted;
     }
 
-    public int getCurrentBowler() {
+    int getCurrentBowler() {
         return bowlerIndex;
     }
 
-    public int getGameNumber() {
+    int getGameNumber() {
         return gameNumber;
     }
 
-    public boolean isFinished() {
+    boolean isFinished() {
         return finished;
     }
 }

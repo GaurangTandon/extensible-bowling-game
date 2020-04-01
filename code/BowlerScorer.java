@@ -10,11 +10,11 @@ class BowlerScorer {
 
     BowlerScorer() {
         // extra 2 elements for safety from index out of bounds
-        rolls = new int[Lane.MAX_ROLLS + 2];
-        cumulativeScore = new int[Lane.FRAME_COUNT];
+        rolls = new int[LaneScorer.MAX_ROLLS + 2];
+        cumulativeScore = new int[LaneScorer.FRAME_COUNT];
         resetCumulativeScores();
-        perFramePartRes = new int[Lane.MAX_ROLLS];
-        for (int i = 0; i < Lane.MAX_ROLLS; i++) perFramePartRes[i] = -1;
+        perFramePartRes = new int[LaneScorer.MAX_ROLLS];
+        for (int i = 0; i < LaneScorer.MAX_ROLLS; i++) perFramePartRes[i] = -1;
 
         currFrame = 0;
         rollCount = 0;
@@ -55,7 +55,7 @@ class BowlerScorer {
     }
 
     private void resetCumulativeScores() {
-        for (int frame = 0; frame < Lane.FRAME_COUNT; frame++)
+        for (int frame = 0; frame < LaneScorer.FRAME_COUNT; frame++)
             cumulativeScore[frame] = -1;
     }
 
@@ -74,7 +74,7 @@ class BowlerScorer {
             final int scoreOnThisFrame;
             final int oldFrame = frame;
 
-            if (frame == Lane.LAST_FRAME) {
+            if (frame == LaneScorer.LAST_FRAME) {
                 scoreOnThisFrame = getPinsDownOnThisFrame(roll) + rolls[roll + 2];
                 roll += 3;
             } else {
@@ -111,7 +111,7 @@ class BowlerScorer {
         boolean transgressFrame;
         transgressFrame = isStrike(rollCount);
         transgressFrame |= (partIndex == 1);
-        transgressFrame &= currFrame < Lane.LAST_FRAME;
+        transgressFrame &= currFrame < LaneScorer.LAST_FRAME;
 
         if (transgressFrame) {
             currFrame++;
@@ -146,7 +146,7 @@ class BowlerScorer {
     }
 
     private boolean shouldDisplayStrike() {
-        return (partIndex == 0 || currFrame == Lane.LAST_FRAME) && isStrike(rollCount);
+        return (partIndex == 0 || currFrame == LaneScorer.LAST_FRAME) && isStrike(rollCount);
     }
 
     private boolean shouldDisplaySpare() {
@@ -201,7 +201,7 @@ class BowlerScorer {
         if (currFrame != frameNumber)
             return false;
 
-        if (currFrame < Lane.LAST_FRAME)
+        if (currFrame < LaneScorer.LAST_FRAME)
             return true;
 
         return null;
