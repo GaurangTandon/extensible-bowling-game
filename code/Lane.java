@@ -65,12 +65,14 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (isPartyAssigned() && !scorer.isFinished()) {
-                waitWhilePaused();
+            if (isPartyAssigned()) {
+                if (!scorer.isFinished()) {
+                    waitWhilePaused();
 
-                bowlOneBowlerOneFrame();
-                scorer.nextBowler();
-            } else if (isPartyAssigned()) onGameFinish();
+                    bowlOneBowlerOneFrame();
+                    scorer.nextBowler();
+                } else onGameFinish();
+            }
 
             Util.busyWait(10);
         }

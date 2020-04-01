@@ -17,7 +17,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final Widget.ButtonPanel buttonPanel;
     private final WindowFrame win;
     private final Widget.ScrollablePanel<String> partyPanel;
-    private final Widget.ScrollablePanel<Object> bowlerPanel;
+    private Widget.ScrollablePanel<Object> bowlerPanel;
 
     private final Vector<String> party;
     private final ControlDeskView controlDesk;
@@ -29,17 +29,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private static final String BTN_NEW_PATRON = "New Patron";
     private static final String BTN_FINISHED = "Finished";
 
-    AddPartyView(final ControlDeskView controlDesk, final int max) {
-        this.controlDesk = controlDesk;
-        maxSize = max;
-
-        // Party Panel
-        final Vector<String> empty = new Vector<>();
-        empty.add("(Empty)");
-        party = new Vector<>();
-        partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
-
-        // Bowlers Panel
+    private void buildBowlerPanel() {
         //noinspection ProhibitedExceptionCaught
         try {
             bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
@@ -50,9 +40,21 @@ class AddPartyView implements ActionListener, ListSelectionListener {
             System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
             bowlerDB = new Vector<>();
         }
-        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
 
-        // Button Panel
+        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
+    }
+
+    AddPartyView(final ControlDeskView controlDesk, final int max) {
+        this.controlDesk = controlDesk;
+        maxSize = max;
+
+        final Vector<String> empty = new Vector<>();
+        empty.add("(Empty)");
+        party = new Vector<>();
+        partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
+
+        buildBowlerPanel();
+
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
                 .put(BTN_ADD_PATRON, this)
                 .put(BTN_REM_PATRON, this)
