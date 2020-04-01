@@ -9,12 +9,42 @@ class LaneScorer {
     private int partySize;
     private Vector<GeneralBowler> bowlers;
     private BowlerScorer[] bowlerScorers;
+    private boolean halted;
+    private boolean finished;
+    private int bowlerIndex;
+    private int frameNumber;
+    private int gameNumber;
+
+    LaneScorer() {
+        bowlerIndex = 0;
+        gameNumber = 0;
+        finished = false;
+        halted = false;
+        frameNumber = 0;
+    }
 
     /**
      * This resets the scores for the same party
      */
     final void resetScores() {
         resetScores(bowlers, false);
+    }
+
+    final void restartGame() {
+        bowlerIndex = 0;
+        frameNumber = 0;
+    }
+
+    final void nextBowler() {
+        bowlerIndex++;
+        if (bowlerIndex == partySize) {
+            frameNumber++;
+            bowlerIndex = 0;
+            if (frameNumber == Lane.FRAME_COUNT) {
+                finished = true;
+                gameNumber++;
+            }
+        }
     }
 
     /**
@@ -42,18 +72,19 @@ class LaneScorer {
         }
     }
 
-    final void roll(final int currBowlerIndex, final int pinsDowned) {
-        final BowlerScorer bowlerScorer = bowlerScorers[currBowlerIndex];
+    final void roll(final int pinsDowned) {
+        final BowlerScorer bowlerScorer = bowlerScorers[bowlerIndex];
         bowlerScorer.roll(pinsDowned);
         bowlerScorer.updateCumulativeScores();
     }
 
-    final boolean canRollAgain(final int currBowlerIndex, final int frameNumber) {
-        return bowlerScorers[currBowlerIndex].canRollAgain(frameNumber);
+    final boolean canRollAgain() {
+        return bowlerScorers[bowlerIndex].canRollAgain(frameNumber);
     }
 
-    final void setFinalScores(final int bowlerIdx, final int gameNum, final int value) {
-        finalScores[bowlerIdx][gameNum] = value;
+    final int finalizeCurrentBowlersGameScore() {
+        finalScores[bowlerIndex][gameNumber] = getBowlersFinalScoreForCurrentGame(bowlerIndex);
+        return finalScores[bowlerIndex][gameNumber];
     }
 
     final int[] getFinalScores(final int bowler) {
@@ -81,7 +112,44 @@ class LaneScorer {
         return result;
     }
 
-    final boolean isFirstRoll(final int bowlerIndex) {
+    final boolean isBowlersFirstRoll() {
         return bowlerScorers[bowlerIndex].getRollCount() == 1;
+    }
+
+    final boolean shouldResetGraphics() {
+        return bowlerIndex == 0 && isBowlersFirstRoll();
+    }
+
+    final void onGameFinish() {
+        resetScores();
+        restartGame();
+    }
+
+    final void pause() {
+        halted = true;
+    }
+
+    final void unpause() {
+        halted = false;
+    }
+
+    final boolean isLastFrame() {
+        return frameNumber == Lane.LAST_FRAME;
+    }
+
+    public boolean isHalted() {
+        return halted;
+    }
+
+    public int currentBowler() {
+        return bowlerIndex;
+    }
+
+    public int getGameNumber() {
+        return gameNumber;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }

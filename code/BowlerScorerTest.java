@@ -17,11 +17,19 @@ final class BowlerScorerTest {
         bs.roll(1);
     }
 
+    // useful in case you forget to pass -enableassertions flag
+    private static void asserter(final boolean toCheck) {
+        if (!toCheck) {
+            System.out.println("failed!");
+            System.exit(1);
+        }
+    }
+
     private static void checkEquality(final int[] expScore) {
         bs.updateCumulativeScores();
         final int[] gotScore = bs.getCumulativeScore();
         for (int i = 0; i < bs.getCurrFrame(); i++)
-            assert gotScore[i] == expScore[i];
+            asserter(gotScore[i] == expScore[i]);
     }
 
     private static void testSpares() {

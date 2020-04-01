@@ -35,6 +35,8 @@ class ScoreReport {
             content = String.format("%s%s\n", content, "  " + score.getDate() + " - " + score.getScore());
         }
         content += "\n\nThank you for your continuing patronage.";
+
+        sendEmail(bowler.getEmail());
     }
 
     void sendEmail(final String recipient) {

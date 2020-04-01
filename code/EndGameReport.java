@@ -56,12 +56,11 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         }
     }
 
-    Vector<String> getResult() {
+    boolean shouldPrint(final String bowlerNick){
         while (result == 0) {
             Util.busyWait(10);
         }
-
-        return (Vector<String>) retVal.clone();
+        return Util.containsString(retVal, bowlerNick);
     }
 
     @SuppressWarnings("unused")
