@@ -54,10 +54,11 @@ public class LaneView implements ActionListener, Observer {
         return buttonPanel.getPanel();
     }
 
-    private void setupLaneGraphics(final LaneEvent le) {
-        containerPanel.getPanel().removeAll();
-        containerPanel.put(makeFrame(le.getBowlerNicks()), "Center");
-        containerPanel.put(getButtonPanel(), "South");
+    private void setupLaneGraphics(final Iterable<String> bowlerNicks) {
+        containerPanel
+                .clear()
+                .put(makeFrame(bowlerNicks), "Center")
+                .put(getButtonPanel(), "South");
         frame.pack();
     }
 
@@ -71,12 +72,11 @@ public class LaneView implements ActionListener, Observer {
         waitInitToFinish();
 
         if (le.shouldSetupGraphics()) {
-            setupLaneGraphics(le);
+            setupLaneGraphics(le.getBowlerNicks());
         }
 
-        final int[][] leCumulativeScore = le.getCumulativeScore();
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {
-            bsv.get(bowlerIdx).update(leCumulativeScore[bowlerIdx], le.getScore(bowlerIdx));
+            bsv.get(bowlerIdx).update(le.getCumulativeScore(bowlerIdx), le.getScore(bowlerIdx));
         }
     }
 

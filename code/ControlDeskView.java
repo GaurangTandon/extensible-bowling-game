@@ -11,7 +11,7 @@ public class ControlDeskView implements ActionListener, Observer {
     private final Widget.ButtonPanel controlsPanel;
 
     private final int maxMembers;
-    private final ControlDeskInterface controlDesk;
+    private final ControlDesk controlDesk;
     private final Widget.ScrollablePanel<Object> partyPanel;
     private static final String BTN_ADD_PARTY = "Add Party";
     private static final String BTN_ASSIGN = "Assign lanes";
@@ -31,11 +31,11 @@ public class ControlDeskView implements ActionListener, Observer {
         return laneStatusPanel;
     }
 
-    ControlDeskView(final ControlDeskInterface controlDesk,
+    ControlDeskView(final ControlDesk controlDesk,
                     @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
-        final int numLanes = controlDesk.getNumLanes();
+        final int numLanes = controlDesk.numLanes;
 
         final ButtonPanel controls = new ButtonPanel(3, 1, "Controls");
         controlsPanel = controls

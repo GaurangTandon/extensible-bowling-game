@@ -41,6 +41,11 @@ public class ContainerPanel extends GenericPanel {
         return put(subPanel.getPanel(), constraints);
     }
 
+    public ContainerPanel clear(){
+        panel.removeAll();
+        return this;
+    }
+
     public JPanel getPanel() {
         return panel;
     }
