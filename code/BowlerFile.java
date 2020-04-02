@@ -1,33 +1,9 @@
-/* BowlerFile.java
- *
- *  Version:
- *  		$Id$
- *
- *  Revisions:
- * 		$Log: BowlerFile.java,v $
- * 		Revision 1.5  2003/02/02 17:36:45  ???
- * 		Updated comments to match javadoc format.
- *
- * 		Revision 1.4  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
- *
- *
- */
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Vector;
 
-/**
- * Class for interfacing with Bowler database
- */
 final class BowlerFile {
-
-    /**
-     * The location of the bowler database
-     */
     private static final String BOWLER_DAT = "BOWLERS.DAT";
 
     private BowlerFile() {
@@ -47,8 +23,8 @@ final class BowlerFile {
         GeneralBowler foundBowler = null;
 
         while ((data = in.readLine()) != null && foundBowler == null) {
-            // File format is nick \t first_name \te-mail
-            final String[] bowler = data.split("\t");
+            // File format is nick,first_name,e-mail (csv)
+            final String[] bowler = data.split(",");
 
             if (nickName.equals(bowler[0])) {
                 foundBowler = new Bowler(bowler[0], bowler[1], bowler[2]);
@@ -99,13 +75,13 @@ final class BowlerFile {
     static Vector<String> getBowlers()
             throws IOException, ArrayIndexOutOfBoundsException {
 
-        final Vector<String> allBowlers = new Vector<String>();
+        final Vector<String> allBowlers = new Vector<>();
 
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
         while ((data = in.readLine()) != null) {
-            // File format is nick \t first_name \t e-mail
-            final String[] bowler = data.split("\t");
+            // File format is nick.first_name,e-mail
+            final String[] bowler = data.split(",");
             //"Nick: bowler[0] Full: bowler[1] email: bowler[2]
             allBowlers.add(bowler[0]);
         }

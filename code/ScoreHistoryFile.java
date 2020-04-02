@@ -17,7 +17,7 @@ final class ScoreHistoryFile {
 
     static void generateScoreHistoryString(final String nick, final String date, final String score, final String scoreHistoryDat)
             throws IOException {
-        final String data = nick + "\t" + date + "\t" + score + "\n";
+        final String data = nick + "," + date + "," + score + "\n";
         final RandomAccessFile out = new RandomAccessFile(scoreHistoryDat, "rw");
         out.skipBytes((int) out.length());
         out.writeBytes(data);
@@ -32,8 +32,7 @@ final class ScoreHistoryFile {
                 new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
         String data;
         while ((data = in.readLine()) != null) {
-            // File format is nick \t first_name \t e-mail
-            final String[] scoreData = data.split("\t");
+            final String[] scoreData = data.split(",");
             //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
             if (nick.equals(scoreData[0])) {
                 scores.add(new Score(scoreData[0], scoreData[1], scoreData[2]));
