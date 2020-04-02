@@ -15,12 +15,12 @@ class PrintableText implements Printable {
         text = t;
     }
 
-    public int print(final Graphics g, final PageFormat pageFormat, final int pageIndex) {
+    public int print(final Graphics graphics, final PageFormat pageFormat, final int pageIndex) {
         if (pageIndex > 0) {
             return NO_SUCH_PAGE;
         }
 
-        final Graphics2D g2d = (Graphics2D) g; // Allow use of Java 2 graphics on
+        final Graphics2D g2d = (Graphics2D) graphics; // Allow use of Java 2 graphics on
 
         g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
         g2d.setPaint(Color.black);

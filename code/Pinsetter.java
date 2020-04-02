@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Class to represent the pinsetter

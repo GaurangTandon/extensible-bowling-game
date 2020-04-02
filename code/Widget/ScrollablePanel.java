@@ -9,7 +9,7 @@ public class ScrollablePanel<T> extends GenericPanel {
 
     private final JList<T> dataList;
 
-    public ScrollablePanel(final String title, final Vector<T> data, final int visibleCount) {
+    public ScrollablePanel(final String title, final Vector<? extends T> data, final int visibleCount) {
         super(title);
         dataList = new JList<>(data);
         dataList.setFixedCellWidth(120);

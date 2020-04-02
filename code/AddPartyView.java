@@ -1,25 +1,3 @@
-/* AddPartyView.java
- *
- *  Version:
- * 		 $Id$
- *
- *  Revisions:
- * 		$Log: AddPartyView.java,v $
- * 		Revision 1.7  2003/02/20 02:05:53  ???
- * 		Fixed addPatron so that duplicates won't be created.
- *
- * 		Revision 1.6  2003/02/09 20:52:46  ???
- * 		Added comments.
- *
- * 		Revision 1.5  2003/02/02 17:42:09  ???
- * 		Made updates to migrate to observer model.
- *
- * 		Revision 1.4  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
- *
- *
- */
-
 import Widget.ContainerPanel;
 import Widget.WindowFrame;
 
@@ -31,11 +9,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Vector;
 
-/**
- * Class for GUI components need to add a party
- * Constructor for GUI used to Add Parties to the waiting party queue.
- */
-
 class AddPartyView implements ActionListener, ListSelectionListener {
 
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
@@ -44,7 +17,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final Widget.ButtonPanel buttonPanel;
     private final WindowFrame win;
     private final Widget.ScrollablePanel<String> partyPanel;
-    private final Widget.ScrollablePanel<Object> bowlerPanel;
+    private Widget.ScrollablePanel<Object> bowlerPanel;
 
     private final Vector<String> party;
     private final ControlDeskView controlDesk;
@@ -56,17 +29,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private static final String BTN_NEW_PATRON = "New Patron";
     private static final String BTN_FINISHED = "Finished";
 
-    AddPartyView(final ControlDeskView controlDesk, final int max) {
-        this.controlDesk = controlDesk;
-        maxSize = max;
-
-        // Party Panel
-        final Vector<String> empty = new Vector<>();
-        empty.add("(Empty)");
-        party = new Vector<>();
-        partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
-
-        // Bowlers Panel
+    private void buildBowlerPanel() {
         //noinspection ProhibitedExceptionCaught
         try {
             bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
@@ -77,9 +40,21 @@ class AddPartyView implements ActionListener, ListSelectionListener {
             System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
             bowlerDB = new Vector<>();
         }
-        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
 
-        // Button Panel
+        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
+    }
+
+    AddPartyView(final ControlDeskView controlDesk, final int max) {
+        this.controlDesk = controlDesk;
+        maxSize = max;
+
+        final Vector<String> empty = new Vector<>();
+        empty.add("(Empty)");
+        party = new Vector<>();
+        partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
+
+        buildBowlerPanel();
+
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
                 .put(BTN_ADD_PATRON, this)
                 .put(BTN_REM_PATRON, this)
@@ -137,12 +112,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         }
     }
 
-    /**
-     * Handler for List actions
-     *
-     * @param e the ListActionEvent that triggered the handler
-     */
-
     public void valueChanged(final ListSelectionEvent e) {
         final Object source = e.getSource();
         if (source.equals(bowlerPanel.getList())) {
@@ -155,17 +124,11 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         }
     }
 
-    /**
-     * Called by NewPatronView to notify AddPartyView to update
-     *
-     * @param newPatron the NewPatronView that called this method
-     */
-
     void updateNewPatron(final NewPatronView newPatron) {
         final String nickName = newPatron.getNickName();
         final Vector<Object> res = BowlerFile.putBowlerIfDidntExist(nickName, newPatron.getFull(), newPatron.getEmail());
         if (res != null) {
-            bowlerDB = new Vector<Object>(res);
+            bowlerDB = new Vector<>(res);
             bowlerPanel.setListData(bowlerDB);
             party.add(nickName);
             partyPanel.setListData(party);
@@ -173,10 +136,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
             System.err.println("A Bowler with that name already exists.");
         }
     }
-
-    /**
-     * Accessor for Party
-     */
 
     public Vector<String> getParty() {
         return (Vector<String>) party.clone();

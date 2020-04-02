@@ -19,7 +19,6 @@ class LaneEvent implements Event {
         shouldSetupGraphics = ssGraphics;
         totalPinsDown = pinsDown;
 
-
         bowlerNick = theNick;
         cumulativeScore = theCumulativeScore;
         score = byFramePartScores;
@@ -34,7 +33,7 @@ class LaneEvent implements Event {
         return shouldSetupGraphics;
     }
 
-    final Vector<String> getBowlerNicks() {
+    final Iterable<String> getBowlerNicks() {
         return bowlerNicks;
     }
 
@@ -50,8 +49,8 @@ class LaneEvent implements Event {
         return score[bowlerIdx];
     }
 
-    final int[][] getCumulativeScore() {
-        return cumulativeScore.clone();
+    final int[] getCumulativeScore(final int bowlerIdx) {
+        return cumulativeScore[bowlerIdx];
     }
 
     final boolean isPartyEmpty() {

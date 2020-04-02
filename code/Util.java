@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -33,5 +34,17 @@ final class Util {
                 return true;
         }
         return false;
+    }
+
+    static GeneralBowler getPatronDetails(final String nickName) {
+        GeneralBowler patron = null;
+
+        try {
+            patron = BowlerFile.getBowlerInfo(nickName);
+        } catch (final IOException e) {
+            System.err.println("Error..." + e);
+        }
+
+        return patron;
     }
 }

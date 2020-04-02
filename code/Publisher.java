@@ -1,7 +1,8 @@
+import java.util.List;
 import java.util.Vector;
 
 abstract class Publisher {
-    Vector<Observer> subscribers;
+    private final List<Observer> subscribers;
     Publisher(){
         subscribers = new Vector<>(0);
     }

@@ -1,46 +1,29 @@
-/* ControlDeskView.java
- *
- *  Version:
- *			$Id$
- *
- *  Revisions:
- * 		$Log$
- *
- */
-
 import Widget.ButtonPanel;
 import Widget.WindowFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
 import java.util.Vector;
 
-/**
- * Class for representation of the control desk
- */
 public class ControlDeskView implements ActionListener, Observer {
 
     private final WindowFrame win;
     private final Widget.ButtonPanel controlsPanel;
 
-    /**
-     * The maximum  number of members in a party
-     */
     private final int maxMembers;
-    private final ControlDeskInterface controlDesk;
+    private final ControlDesk controlDesk;
     private final Widget.ScrollablePanel<Object> partyPanel;
     private static final String BTN_ADD_PARTY = "Add Party";
     private static final String BTN_ASSIGN = "Assign lanes";
     private static final String BTN_FINISHED = "Finished";
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
-        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
-                numLanes, 1, "Lane Status");
-        final HashSet<? extends Lane> lanes = controlDesk.getLanes();
+        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
+        final Iterable<Lane> lanes = controlDesk.getLanes();
         int laneCount = 0;
         for (final Lane curLane : lanes) {
-            final LaneStatusView laneStat = new LaneStatusView(curLane, (++laneCount + 1));
+            ++laneCount;
+            final LaneStatusView laneStat = new LaneStatusView(curLane, laneCount);
             curLane.subscribe(laneStat);
             laneStatusPanel.put(new Widget.ContainerPanel(
                     laneStat.showLane(), "Lane " + laneCount));
@@ -48,14 +31,11 @@ public class ControlDeskView implements ActionListener, Observer {
         return laneStatusPanel;
     }
 
-    /**
-     * Displays a GUI representation of the ControlDesk
-     */
-    ControlDeskView(final ControlDeskInterface controlDesk,
+    ControlDeskView(final ControlDesk controlDesk,
                     @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
-        final int numLanes = controlDesk.getNumLanes();
+        final int numLanes = controlDesk.numLanes;
 
         final ButtonPanel controls = new ButtonPanel(3, 1, "Controls");
         controlsPanel = controls

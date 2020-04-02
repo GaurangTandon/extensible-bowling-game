@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.HashMap;
 
 abstract class FormPanel extends GenericPanel {
-
     HashMap<String, Component> components;
 
     FormPanel(final String heading) {

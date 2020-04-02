@@ -28,8 +28,7 @@ public class LaneStatusView implements ActionListener, Observer {
         psShowing = false;
 
         pinSetterView = new PinSetterView(laneNum);
-        final Pinsetter ps = lane.getPinsetter();
-        ps.subscribe(pinSetterView);
+        lane.subscribePinsetter(pinSetterView);
 
         laneView = new LaneView(lane, laneNum);
         lane.subscribe(laneView);
@@ -53,7 +52,7 @@ public class LaneStatusView implements ActionListener, Observer {
     }
 
     final JPanel showLane() {
-        return (JPanel) gamePanel.getPanel();
+        return gamePanel.getPanel();
     }
 
     public final void actionPerformed(final ActionEvent e) {
