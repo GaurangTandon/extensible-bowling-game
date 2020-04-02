@@ -1,0 +1,23 @@
+This document outlines the major responsibilities of each class.
+
+Some general terminology:
+
+\begin{itemize}
+    \item `XView.java` files are concerned with providing a GUI to the end user, and are mostly not concerned with implementing any logic. The logic is entirely contained in `X.java'. Both files communicate via an Observer pattern, where X is the Publisher and XView is the Observer.
+    \item Other general things go here\dots
+\end{itemize}
+
+AddPartyView: GUI for adding a new party to the control desk. This supports being able to add or remove patrons from a party, or enlist a new patron and then add him.
+
+Alley: represents an Alley, it's a stub class given it basically integrates ControlDesk and its View together, but given our requirements, this is fine.
+
+BowlerFile: manages the backend of persistently storing patron nickk names, emails, and full names. Has public methods for adding a new patron, searching for existing patron, etc.
+
+Bowler: stub class for a Bowler object, which contains a name, full name and its email.
+
+BowlerScorer: companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
+
+BowlerScorerTest: a test file to make sure scores are correctly updated in BowlerScorer.
+
+BowlerScoreView: GUI that renders a horizontal table of around 20 cells that update everytime that bowler makes a throw. It is unique for each bowler.
+
