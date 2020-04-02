@@ -2,6 +2,7 @@ package Widget;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class WindowFrame {
 
@@ -26,6 +27,11 @@ public class WindowFrame {
 
     public WindowFrame(final String title, final GenericPanel panel) {
         this(title, panel.getPanel());
+    }
+
+    public void destroy() {
+        // https://stackoverflow.com/a/1235994/2181238
+        win.dispatchEvent(new WindowEvent(win, WindowEvent.WINDOW_CLOSING));
     }
 
     public void setVisible(final boolean state) {
