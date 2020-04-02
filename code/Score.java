@@ -2,19 +2,25 @@ class Score {
 
     private final String nickname;
     private final String date;
-    private final String score;
+    private final Integer score;
 
     Score(final String nick, final String date, final String score) {
         nickname = nick;
         this.date = date;
-        this.score = score;
+        this.score = Integer.parseInt(score);
+    }
+
+    Score() {
+        nickname = "";
+        date = "";
+        score = 0;
     }
 
     final String getDate() {
         return date;
     }
 
-    final String getScore() {
+    final Integer getScore() {
         return score;
     }
 

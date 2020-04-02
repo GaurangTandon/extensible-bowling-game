@@ -15,6 +15,7 @@ public class ControlDeskView implements ActionListener, Observer {
     private final Widget.ScrollablePanel<Object> partyPanel;
     private static final String BTN_ADD_PARTY = "Add Party";
     private static final String BTN_ASSIGN = "Assign lanes";
+    private static final String BTN_ADHOC_QUERIES = "Adhoc queries";
     private static final String BTN_FINISHED = "Finished";
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
@@ -41,7 +42,9 @@ public class ControlDeskView implements ActionListener, Observer {
         controlsPanel = controls
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
-                .put(BTN_FINISHED, this);
+                .put(BTN_FINISHED, this)
+                .put(BTN_ADHOC_QUERIES, this);
+
         final Vector<Object> empty = new Vector<>();
         empty.add("(Empty)");
         partyPanel = new Widget.ScrollablePanel<>(
@@ -70,6 +73,8 @@ public class ControlDeskView implements ActionListener, Observer {
         } else if (source.equals(controlsPanel.get(BTN_FINISHED))) {
             win.setVisible(false);
             System.exit(0);
+        } else if (source.equals(controlsPanel.get(BTN_ADHOC_QUERIES))) {
+            new AdhocView();
         }
     }
 

@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Vector;
+import java.util.*;
 
 final class ScoreHistoryFile {
     private static final String SCORE_HISTORY_DAT = "SCORE_HISTORY.DAT";
@@ -41,4 +41,58 @@ final class ScoreHistoryFile {
         return scores;
     }
 
+    static Score getLeastScore() throws IOException {
+        Score best = new Score("", "", "10000");
+
+        final BufferedReader in =
+                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
+        String data;
+        while ((data = in.readLine()) != null) {
+            final String[] scoreData = data.split(",");
+            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
+            if (Integer.parseInt(scoreData[2]) < best.getScore()) {
+                best = new Score(scoreData[0], scoreData[1], scoreData[2]);
+            }
+        }
+        return best;
+    }
+
+    static Score getMaxCumulativeScore() throws IOException {
+        Map<String, Integer> scores = new HashMap<>(0);
+
+        final BufferedReader in =
+                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
+        String data;
+        while ((data = in.readLine()) != null) {
+            final String[] scoreData = data.split(",");
+            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
+            scores.put(scoreData[0], scores.getOrDefault(scoreData[0], 0) + Integer.parseInt(scoreData[2]));
+        }
+
+        Score best = new Score();
+
+        for (final String sc : scores.keySet()) {
+            if (best.getScore() < scores.get(sc)) {
+                best = new Score(sc, "", scores.get(sc) + "");
+            }
+        }
+
+        return best;
+    }
+
+    static Score getBestScore() throws IOException {
+        Score best = new Score();
+
+        final BufferedReader in =
+                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
+        String data;
+        while ((data = in.readLine()) != null) {
+            final String[] scoreData = data.split(",");
+            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
+            if (Integer.parseInt(scoreData[2]) > best.getScore()) {
+                best = new Score(scoreData[0], scoreData[1], scoreData[2]);
+            }
+        }
+        return best;
+    }
 }
