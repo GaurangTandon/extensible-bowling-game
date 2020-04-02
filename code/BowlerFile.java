@@ -17,6 +17,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Vector;
 
 /**
@@ -60,7 +61,7 @@ final class BowlerFile {
         return foundBowler;
     }
 
-    static Vector putBowlerIfDidntExist(final String nick, final String full, final String email) {
+    static Vector<String> putBowlerIfDidntExist(final String nick, final String full, final String email) {
         try {
             final GeneralBowler checkBowler = getBowlerInfo(nick);
             if (checkBowler == null) return null;
@@ -95,10 +96,10 @@ final class BowlerFile {
      * @return a Vector of Strings
      */
 
-    static Vector getBowlers()
+    static Vector<String> getBowlers()
             throws IOException, ArrayIndexOutOfBoundsException {
 
-        final Vector allBowlers = new Vector();
+        final Vector<String> allBowlers = new Vector<String>();
 
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
