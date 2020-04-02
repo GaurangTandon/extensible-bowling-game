@@ -28,4 +28,7 @@ class Score {
         return nickname + "\t" + date + "\t" + score;
     }
 
+    final String getNick() {
+        return nickname;
+    }
 }

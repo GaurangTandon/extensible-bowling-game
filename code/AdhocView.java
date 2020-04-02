@@ -2,6 +2,8 @@ import Widget.ButtonPanel;
 import Widget.ContainerPanel;
 import Widget.WindowFrame;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,6 +15,8 @@ class AdhocView implements ActionListener {
     private static final String BTN_FINISHED = "Finished";
     private final ButtonPanel buttonPanel;
     private final WindowFrame win;
+    private final ContainerPanel statDisplay;
+    private Score currScore;
 
     AdhocView() {
         buttonPanel = new ButtonPanel(4, 1, "")
@@ -21,37 +25,51 @@ class AdhocView implements ActionListener {
                 .put(BTN_BEST, this)
                 .put(BTN_FINISHED, this);
 
+        statDisplay = new ContainerPanel("Stat display");
+
         // Window
         win = new WindowFrame(
                 "Add Party",
                 new ContainerPanel(1, 3, "")
-                        .put(buttonPanel));
+                        .put(buttonPanel)
+                        .put(statDisplay)
+        );
+        currScore = new Score();
     }
 
-    void displayLowest() {
+    private void setDisplayLabel(final String pre) {
+        final String str = pre + " achieved by bowler " + currScore.getNick() + " with score " + currScore.getScore();
+        final JLabel jl = new JLabel(str);
+        statDisplay.clear();
+        statDisplay.put(jl);
+        statDisplay.getPanel().revalidate();
+    }
+
+    private void displayLowest() {
         try {
-            Score score = ScoreHistoryFile.getLeastScore();
+            currScore = ScoreHistoryFile.getLeastScore();
 
-
+            setDisplayLabel("Lowest score");
         } catch (final IOException e) {
             e.printStackTrace();
         }
     }
 
-    void displayHighest() {
+    private void displayHighest() {
         try {
-            Score score = ScoreHistoryFile.getBestScore();
+            currScore = ScoreHistoryFile.getBestScore();
 
-
+            setDisplayLabel("Highest score");
         } catch (final IOException e) {
             e.printStackTrace();
         }
     }
 
-    void displayBestPlayer() {
+    private void displayBestPlayer() {
         try {
-            Score score = ScoreHistoryFile.getMaxCumulativeScore();
+            currScore = ScoreHistoryFile.getMaxCumulativeScore();
 
+            setDisplayLabel("Highest overall games score");
         } catch (final IOException e) {
             e.printStackTrace();
         }
