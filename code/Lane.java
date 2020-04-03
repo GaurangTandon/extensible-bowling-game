@@ -35,6 +35,10 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         party = null;
     }
 
+    void setPauseState(boolean state) {
+        paused = state;
+    }
+
     private void onGameFinish() {
         final String partyName = party.getName();
 

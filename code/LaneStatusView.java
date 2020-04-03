@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,8 +25,8 @@ public class LaneStatusView implements ActionListener, Observer {
 
     private static final String BTN_VIEW_LANE = "View Lane";
     private static final String BTN_VIEW_PINSETTER = "Pinsetter";
-    private static final String BTN_VIEW_SAVE = "Pause";
-    private static final String BTN_VIEW_LOAD = "Resume";
+    private static final String BTN_PAUSE = "Pause";
+    private static final String BTN_RESUME = "Resume";
     private static final String BTN_MAINTENANCE = "     ";
     private final String saveFile;
 
@@ -44,11 +45,13 @@ public class LaneStatusView implements ActionListener, Observer {
                 .put(BTN_VIEW_LANE, this)
                 .put(BTN_VIEW_PINSETTER, this)
                 .put(BTN_MAINTENANCE, this)
-                .put(BTN_VIEW_SAVE, this)
-                .put(BTN_VIEW_LOAD, this);
+                .put(BTN_PAUSE, this)
+                .put(BTN_RESUME, this);
         buttonPanel.get(BTN_MAINTENANCE).setBackground(Color.GREEN);
         buttonPanel.get(BTN_VIEW_LANE).setEnabled(false);
         buttonPanel.get(BTN_VIEW_PINSETTER).setEnabled(false);
+        buttonPanel.get(BTN_PAUSE).setEnabled(false);
+        buttonPanel.get(BTN_RESUME).setEnabled(true);
 
         currentBowler = new JLabel("(no one)");
         pinsDown = new JLabel("0");
@@ -78,18 +81,25 @@ public class LaneStatusView implements ActionListener, Observer {
                 buttonPanel.get(BTN_MAINTENANCE).setBackground(Color.GREEN);
             }
         }
-        if (source.equals(buttonPanel.get(BTN_VIEW_LOAD))) {
-            saveState();
-            lane.unPauseGame();
-        } else if (source.equals(buttonPanel.get(BTN_VIEW_SAVE))) {
-            lane.pauseGame();
+        if (source.equals(buttonPanel.get(BTN_RESUME))) {
             loadState();
+            lane.setPauseState(false);
+        } else if (source.equals(buttonPanel.get(BTN_PAUSE))) {
+            lane.setPauseState(true);
+            buttonPanel.get(BTN_RESUME).setEnabled(true);
+            saveState();
         }
     }
 
     private void loadState() {
         try {
             FileReader f = new FileReader(saveFile);
+            BufferedReader bufferedReader = new BufferedReader(f);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+            }
+            f.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,8 +134,8 @@ public class LaneStatusView implements ActionListener, Observer {
         final boolean enabled = lane.isPartyAssigned();
         buttonPanel.get(BTN_VIEW_LANE).setEnabled(enabled);
         buttonPanel.get(BTN_VIEW_PINSETTER).setEnabled(enabled);
-        buttonPanel.get(BTN_VIEW_SAVE).setEnabled(enabled);
-        buttonPanel.get(BTN_VIEW_LOAD).setEnabled(!enabled);
+        buttonPanel.get(BTN_PAUSE).setEnabled(enabled);
+        buttonPanel.get(BTN_RESUME).setEnabled(!enabled);
 
         final int totalPinsDown = le.getTotalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());
