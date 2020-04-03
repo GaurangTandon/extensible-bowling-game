@@ -3,6 +3,7 @@ import Widget.WindowFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, Observer {
@@ -15,17 +16,15 @@ public class ControlDeskView implements ActionListener, Observer {
     private final Widget.ScrollablePanel<Object> partyPanel;
     private static final String BTN_ADD_PARTY = "Add Party";
     private static final String BTN_ASSIGN = "Assign lanes";
-    private static final String BTN_ADHOC_QUERIES = "Adhoc queries";
+    private static final String BTN_QUERIES = "Queries";
     private static final String BTN_FINISHED = "Finished";
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
         final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
-        final Iterable<Lane> lanes = controlDesk.getLanes();
-        int laneCount = 0;
-        for (final Lane curLane : lanes) {
-            ++laneCount;
-            final LaneStatusView laneStat = new LaneStatusView(curLane, laneCount);
-            curLane.subscribe(laneStat);
+        final List<Lane> lanes = controlDesk.getLanes();
+        for (int laneCount = 0; laneCount < lanes.size(); laneCount++) {
+            final LaneStatusView laneStat = new LaneStatusView(lanes.get(laneCount), laneCount + 1);
+            lanes.get(laneCount).subscribe(laneStat);
             laneStatusPanel.put(new Widget.ContainerPanel(
                     laneStat.showLane(), "Lane " + laneCount));
         }
@@ -43,7 +42,7 @@ public class ControlDeskView implements ActionListener, Observer {
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
                 .put(BTN_FINISHED, this)
-                .put(BTN_ADHOC_QUERIES, this);
+                .put(BTN_QUERIES, this);
 
         final Vector<Object> empty = new Vector<>();
         empty.add("(Empty)");
@@ -73,7 +72,7 @@ public class ControlDeskView implements ActionListener, Observer {
         } else if (source.equals(controlsPanel.get(BTN_FINISHED))) {
             win.setVisible(false);
             System.exit(0);
-        } else if (source.equals(controlsPanel.get(BTN_ADHOC_QUERIES))) {
+        } else if (source.equals(controlsPanel.get(BTN_QUERIES))) {
             new AdhocView();
         }
     }
