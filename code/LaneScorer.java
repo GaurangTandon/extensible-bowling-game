@@ -92,6 +92,10 @@ class LaneScorer {
         return finalScores[bowler];
     }
 
+    final int[][] getFinalScores() {
+        return finalScores;
+    }
+
     final int[][] getCumulativeScores() {
         final int[][] cumulativeScores = new int[partySize][FRAME_COUNT];
         for (int bowler = 0; bowler < partySize; bowler++)

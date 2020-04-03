@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 import java.util.*;
 
 final class ScoreHistoryFile {
-    private static final String SCORE_HISTORY_DAT = "SCORE_HISTORY.DAT";
+    private static final String SCORE_HISTORY_DAT = "Datastore/SCORE_HISTORY.DAT";
 
     private ScoreHistoryFile() {
     }

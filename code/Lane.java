@@ -6,6 +6,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     private GeneralParty party;
     private final Pinsetter pinsetter;
     private final LaneScorer scorer;
+    private boolean paused = false;
 
     public Lane() {
         pinsetter = new Pinsetter();
@@ -49,6 +50,10 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         }
     }
 
+    int[][] getScoresMatrix() {
+        return scorer.getFinalScores();
+    }
+
     private void bowlOneBowlerOneFrame() {
         while (scorer.canRollAgain()) {
             pinsetter.ballThrown();
@@ -65,7 +70,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (isPartyAssigned()) {
+            if (isPartyAssigned() && !paused) {
                 if (!scorer.isFinished()) {
                     waitWhilePaused();
 
