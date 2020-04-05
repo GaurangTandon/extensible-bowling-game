@@ -108,16 +108,7 @@ public class LaneStatusView implements ActionListener, Observer {
     private void saveState() {
         try {
             FileWriter f = new FileWriter(saveFile);
-            int[][] scores = lane.getScoresMatrix();
-            List<String> nicks = laneView.getBowlerNicks();
-            int len = scores.length;
-            for (int i = 0; i < len; i++) {
-                f.write(nicks.get(i) + ": ");
-                for (int score : scores[i]) {
-                    f.write(score + " ");
-                }
-                f.write("\n");
-            }
+            lane.saveState(f);
             f.close();
         } catch (IOException e) {
             e.printStackTrace();

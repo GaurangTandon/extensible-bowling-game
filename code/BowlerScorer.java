@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
 class BowlerScorer {
     private final int[] rolls;
 
@@ -20,6 +23,11 @@ class BowlerScorer {
         rollCount = 0;
         partIndex = 0;
         score = 0;
+    }
+
+    void saveState(FileWriter fw) throws IOException {
+        for (int roll : rolls)
+            fw.write(roll + " ");
     }
 
     static final int STRIKE = 11;

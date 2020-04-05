@@ -37,8 +37,7 @@ public class ControlDeskView implements ActionListener, Observer {
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.numLanes;
 
-        final ButtonPanel controls = new ButtonPanel(3, 1, "Controls");
-        controlsPanel = controls
+        controlsPanel = new ButtonPanel(4, 1, "Controls")
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
                 .put(BTN_FINISHED, this)

@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -35,6 +36,10 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         party = null;
     }
 
+    void saveState(FileWriter fw) throws IOException {
+        scorer.saveState(fw);
+    }
+
     void setPauseState(boolean state) {
         paused = state;
     }
@@ -52,10 +57,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         } else if (result == 2) {// no, dont want to play another game
             exitGame(partyName);
         }
-    }
-
-    int[][] getScoresMatrix() {
-        return scorer.getFinalScores();
     }
 
     private void bowlOneBowlerOneFrame() {

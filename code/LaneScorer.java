@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -24,6 +25,16 @@ class LaneScorer {
     /**
      * This resets the scores for the same party
      */
+
+    void saveState(FileWriter fw) throws IOException {
+        int numBowlers = bowlerScorers.length;
+        for (int i = 0; i < numBowlers; i++) {
+            fw.write(bowlers.get(i).getNickName() + ": ");
+            bowlerScorers[i].saveState(fw);
+            fw.write("\n");
+        }
+    }
+
     private void resetScores() {
         resetScores(bowlers, false);
     }
@@ -90,10 +101,6 @@ class LaneScorer {
 
     final int[] getFinalScores(final int bowler) {
         return finalScores[bowler];
-    }
-
-    final int[][] getFinalScores() {
-        return finalScores;
     }
 
     final int[][] getCumulativeScores() {
