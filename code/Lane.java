@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
@@ -37,7 +38,17 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     }
 
     void saveState(FileWriter fw) throws IOException {
+        party.saveState(fw);
         scorer.saveState(fw);
+    }
+
+    void loadState(BufferedReader fr) throws IOException {
+        paused = true;
+        party = new Party();
+        party.loadState(fr);
+        scorer.resetScores(party.getMembers());
+        scorer.loadState(fr);
+        paused = false;
     }
 
     void setPauseState(boolean state) {

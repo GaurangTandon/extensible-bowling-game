@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -26,8 +27,16 @@ class BowlerScorer {
     }
 
     void saveState(FileWriter fw) throws IOException {
-        for (int roll : rolls)
-            fw.write(roll + " ");
+        for (int i = 0; i < rollCount; i++)
+            fw.write(rolls[i] + " ");
+        fw.write("\n");
+    }
+
+    void loadState(BufferedReader fr) throws IOException {
+        String[] state = fr.readLine().split(" ");
+        for (String s : state) {
+            roll(Integer.parseInt(s));
+        }
     }
 
     static final int STRIKE = 11;

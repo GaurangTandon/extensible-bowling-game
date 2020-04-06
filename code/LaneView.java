@@ -48,10 +48,6 @@ public class LaneView implements ActionListener, Observer {
         return panel.getPanel();
     }
 
-    List<String> getBowlerNicks() {
-        return bowlerNicks;
-    }
-
     private Component getButtonPanel() {
         buttonPanel = new Widget.ButtonPanel("").put(BTN_MAINTENANCE, this);
         return buttonPanel.getPanel();

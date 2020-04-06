@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
@@ -27,11 +28,14 @@ class LaneScorer {
      */
 
     void saveState(FileWriter fw) throws IOException {
-        int numBowlers = bowlerScorers.length;
-        for (int i = 0; i < numBowlers; i++) {
-            fw.write(bowlers.get(i).getNickName() + ": ");
-            bowlerScorers[i].saveState(fw);
-            fw.write("\n");
+        for (BowlerScorer bowlerScorer : bowlerScorers) {
+            bowlerScorer.saveState(fw);
+        }
+    }
+
+    void loadState(BufferedReader fr) throws IOException {
+        for (BowlerScorer bowlerScorer : bowlerScorers) {
+            bowlerScorer.loadState(fr);
         }
     }
 
