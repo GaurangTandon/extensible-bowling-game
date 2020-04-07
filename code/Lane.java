@@ -3,7 +3,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
-
 public class Lane extends Publisher implements Runnable, LaneInterface, Observer {
     private GeneralParty party;
     private final Pinsetter pinsetter;
@@ -63,10 +62,9 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         final int result = egp.getResult();
         egp.destroy();
 
-        // TODO: send record of scores to control desk
-        if (result == 1) { // yes, want to play again TODO: make this an enum
+        if (result == 1) {
             scorer.onGameFinish();
-        } else if (result == 2) {// no, dont want to play another game
+        } else if (result == 2) {
             exitGame(partyName);
         }
     }

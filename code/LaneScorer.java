@@ -23,10 +23,6 @@ class LaneScorer {
     private int frameNumber;
     private int gameNumber;
 
-    /**
-     * This resets the scores for the same party
-     */
-
     void saveState(final FileWriter fw) throws IOException {
         for (final BowlerScorer bowlerScorer : bowlerScorers) {
             bowlerScorer.saveState(fw);
@@ -37,10 +33,6 @@ class LaneScorer {
         for (final BowlerScorer bowlerScorer : bowlerScorers) {
             bowlerScorer.loadState(fr);
         }
-    }
-
-    private void resetScores() {
-        resetScores(bowlers, false);
     }
 
     final void nextBowler() {
@@ -57,6 +49,10 @@ class LaneScorer {
 
     final void resetScores(final Vector<GeneralBowler> bowlers) {
         resetScores(bowlers, true);
+    }
+
+    private void resetScores() {
+        resetScores(bowlers, false);
     }
 
     private void resetScores(final Vector<GeneralBowler> bowlers, final boolean resetFinalScores) {
