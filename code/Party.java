@@ -8,7 +8,7 @@ import java.util.Vector;
  */
 class Party {
     private final Vector<Bowler> bowlers;
-    private String name;
+    String name;
 
     Party() {
         bowlers = new Vector(0);

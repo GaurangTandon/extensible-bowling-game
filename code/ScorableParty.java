@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * This class is supposed to handle all the scoring happening on a particular lane
@@ -15,7 +16,7 @@ class ScorableParty extends Party {
     private static final int MAX_GAMES = 128;
     private int[][] finalScores;
     private int partySize;
-    private ArrayList<ScorableBowler> bowlers;
+    private final ArrayList<ScorableBowler> bowlers;
     private boolean halted;
     private boolean finished;
     private int bowlerIndex;
@@ -23,10 +24,15 @@ class ScorableParty extends Party {
     private int gameNumber;
 
     ScorableParty() {
+        bowlers = new ArrayList<>(0);
     }
 
-    void addBowler(final ScorableBowler scb) {
-        bowlers.add(scb);
+    void addBowler(final ScorableBowler bowler) {
+        bowlers.add(bowler);
+
+        if (bowlers.size() == 1) {
+            name += bowler.getNickName() + "'s Party";
+        }
     }
 
     void saveState(final FileWriter fw) throws IOException {
@@ -45,6 +51,7 @@ class ScorableParty extends Party {
 
     final void nextBowler() {
         bowlerIndex++;
+
         if (bowlerIndex == partySize) {
             frameNumber++;
             bowlerIndex = 0;

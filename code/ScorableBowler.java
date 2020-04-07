@@ -11,8 +11,8 @@ class ScorableBowler extends Bowler {
     private int currFrame;
     private int score;
 
-    ScorableBowler(final String nick, final String full, final String mail) {
-        super(nick, full, mail);
+    ScorableBowler() {
+        super("", "", "");
         reset();
     }
 
