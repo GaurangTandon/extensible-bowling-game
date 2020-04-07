@@ -20,14 +20,6 @@ class ScorableParty extends Party {
     private int frameNumber;
     private int gameNumber;
 
-    void addBowler(final ScorableBowler bowler) {
-        bowlers.add(bowler);
-
-        if (bowlers.size() == 1) {
-            name += bowler.getNickName() + "'s Party";
-        }
-    }
-
     void saveState(final FileWriter fw) throws IOException {
         super.saveState(fw);
         for (final ScorableBowler bowlerScorer : bowlers) {
