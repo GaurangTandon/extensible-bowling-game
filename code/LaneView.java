@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -16,6 +17,7 @@ public class LaneView implements ActionListener, Observer {
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
     private final LaneInterface lane;
+    private List<String> bowlerNicks;
 
     LaneView(final LaneInterface ln, final int laneNum) {
         lane = ln;
@@ -27,15 +29,16 @@ public class LaneView implements ActionListener, Observer {
             }
         });
         containerPanel.put(new JPanel());
+        bowlerNicks = new ArrayList<>(0);
     }
 
     final void setVisible(final boolean state) {
         frame.setVisible(state);
     }
 
-    private Component makeFrame(final Iterable<String> bowlerNicks) {
+    private Component makeFrame() {
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
-        bsv = new Vector<>();
+        bsv = new Vector<>(0);
 
         for (final String bowlerNick : bowlerNicks) {
             final BowlerScoreView bs = new BowlerScoreView(bowlerNick);
@@ -51,10 +54,10 @@ public class LaneView implements ActionListener, Observer {
         return buttonPanel.getPanel();
     }
 
-    private void setupLaneGraphics(final Iterable<String> bowlerNicks) {
+    private void setupLaneGraphics() {
         containerPanel
                 .clear()
-                .put(makeFrame(bowlerNicks), "Center")
+                .put(makeFrame(), "Center")
                 .put(getButtonPanel(), "South");
         frame.pack();
     }
@@ -66,8 +69,10 @@ public class LaneView implements ActionListener, Observer {
 
         final int numBowlers = le.getPartySize();
 
-        if (bsv == null) {
-            setupLaneGraphics(le.getBowlerNicks());
+        final List<String> givenNicks = (List<String>) le.getBowlerNicks();
+        if (bsv == null || !bowlerNicks.equals(givenNicks)) {
+            bowlerNicks = givenNicks;
+            setupLaneGraphics();
         }
 
         for (int bowlerIdx = 0; bowlerIdx < numBowlers; bowlerIdx++) {

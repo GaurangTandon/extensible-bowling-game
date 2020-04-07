@@ -5,7 +5,7 @@ class BowlerScoreView {
     private final Component panel;
     private final Widget.GridPanel gridPanel;
 
-    BowlerScoreView(final String bowlerNick){
+    BowlerScoreView(final String bowlerNick) {
         final int maxBalls = LaneScorer.MAX_ROLLS + 2;
         gridPanel = new Widget.GridPanel(maxBalls, LaneScorer.FRAME_COUNT, bowlerNick);
         panel = gridPanel.getPanel();
@@ -29,21 +29,21 @@ class BowlerScoreView {
     private void setBoxLabels(final int[] scores) {
         for (int i = 0; i < LaneScorer.MAX_ROLLS; i++) {
             final int bowlScore = scores[i];
+            final JLabel ballLabel = gridPanel.getItemLabel(i);
 
             // it means that the particular roll was skipped due to a strike
-            if (bowlScore != -1) {
-                final String textToSet = getCharToShow(bowlScore);
-                final JLabel ballLabel = gridPanel.getItemLabel(i);
+            final String textToSet = bowlScore == -1 ? "" : getCharToShow(bowlScore);
 
-                ballLabel.setText(textToSet);
-            }
+            ballLabel.setText(textToSet);
         }
     }
 
     private void setScoreLabels(final int[] bowlerScores) {
         for (int frameIdx = 0; frameIdx < LaneScorer.FRAME_COUNT; frameIdx++) {
-            if (bowlerScores[frameIdx] != -1)
-                gridPanel.getBlockLabel(frameIdx).setText(Integer.toString(bowlerScores[frameIdx]));
+            final JLabel blockLabel = gridPanel.getBlockLabel(frameIdx);
+            final String textToSet = bowlerScores[frameIdx] == -1 ? "" : Integer.toString(bowlerScores[frameIdx]);
+
+            blockLabel.setText(textToSet);
         }
     }
 
@@ -52,7 +52,7 @@ class BowlerScoreView {
         setBoxLabels(scores);
     }
 
-    Component getPanel(){
+    Component getPanel() {
         //noinspection ReturnPrivateMutableField
         return panel;
     }
