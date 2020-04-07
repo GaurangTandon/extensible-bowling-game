@@ -6,8 +6,8 @@ import java.util.Vector;
 /**
  * Container that holds bowlers
  */
-class Party implements GeneralParty {
-    private final Vector<GeneralBowler> bowlers;
+class Party {
+    private final Vector<Bowler> bowlers;
     private String name;
 
     Party() {
@@ -15,21 +15,21 @@ class Party implements GeneralParty {
         name = "";
     }
 
-    public void addBowler(final GeneralBowler bowler) {
+    void addBowler(final Bowler bowler) {
         bowlers.add(bowler);
         if (bowlers.size() == 1) {
             name += bowler.getNickName() + "'s Party";
         }
     }
 
-    public void saveState(final FileWriter fw) throws IOException {
+    void saveState(final FileWriter fw) throws IOException {
         fw.write(bowlers.size() + "\n");
-        for (final GeneralBowler bowler : bowlers) {
+        for (final Bowler bowler : bowlers) {
             fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
         }
     }
 
-    public void loadState(final BufferedReader fr) throws IOException {
+    void loadState(final BufferedReader fr) throws IOException {
         final int size = Integer.parseInt(fr.readLine());
         bowlers.clear();
 
@@ -39,28 +39,24 @@ class Party implements GeneralParty {
         }
     }
 
-    public final Vector<GeneralBowler> getMembers() {
+    final Vector<Bowler> getMembers() {
         return bowlers;
     }
 
-    public final int getPartySize() {
+    final int getPartySize() {
         return bowlers.size();
     }
 
-    public final Vector<String> getMemberNicks() {
+    final Vector<String> getMemberNicks() {
         final Vector<String> nicks = new Vector<>(getPartySize());
 
-        for (final GeneralBowler bowler : bowlers) {
+        for (final Bowler bowler : bowlers) {
             nicks.add(bowler.getNickName());
         }
         return nicks;
     }
 
-    public final String getName() {
+    final String getName() {
         return name;
-    }
-
-    public final String getMemberNick(final int index) {
-        return bowlers.get(index).getNickName();
     }
 }

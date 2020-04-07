@@ -6,8 +6,8 @@ class BowlerScoreView {
     private final Widget.GridPanel gridPanel;
 
     BowlerScoreView(final String bowlerNick) {
-        final int maxBalls = LaneScorer.MAX_ROLLS + 2;
-        gridPanel = new Widget.GridPanel(maxBalls, LaneScorer.FRAME_COUNT, bowlerNick);
+        final int maxBalls = ScorableParty.MAX_ROLLS + 2;
+        gridPanel = new Widget.GridPanel(maxBalls, ScorableParty.FRAME_COUNT, bowlerNick);
         panel = gridPanel.getPanel();
     }
 
@@ -27,7 +27,7 @@ class BowlerScoreView {
     }
 
     private void setBoxLabels(final int[] scores) {
-        for (int i = 0; i < LaneScorer.MAX_ROLLS; i++) {
+        for (int i = 0; i < ScorableParty.MAX_ROLLS; i++) {
             final int bowlScore = scores[i];
             final JLabel ballLabel = gridPanel.getItemLabel(i);
 
@@ -39,7 +39,7 @@ class BowlerScoreView {
     }
 
     private void setScoreLabels(final int[] bowlerScores) {
-        for (int frameIdx = 0; frameIdx < LaneScorer.FRAME_COUNT; frameIdx++) {
+        for (int frameIdx = 0; frameIdx < ScorableParty.FRAME_COUNT; frameIdx++) {
             final JLabel blockLabel = gridPanel.getBlockLabel(frameIdx);
             final String textToSet = bowlerScores[frameIdx] == -1 ? "" : Integer.toString(bowlerScores[frameIdx]);
 

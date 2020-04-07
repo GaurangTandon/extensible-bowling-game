@@ -1,14 +1,15 @@
 import java.util.*;
+import java.util.LinkedList;
 
 class ControlDesk extends Publisher implements Runnable {
     private final List<Lane> lanes;
-    private final Queue partyQueue;
+    private final LinkedList<ScorableParty> partyQueue;
     final int numLanes;
 
     ControlDesk(final int numLanes) {
         this.numLanes = numLanes;
         lanes = new ArrayList<>(numLanes);
-        partyQueue = new Queue();
+        partyQueue = new LinkedList<>();
 
         for (int i = 0; i < numLanes; i++) {
             final Lane lane = new Lane();
@@ -28,9 +29,9 @@ class ControlDesk extends Publisher implements Runnable {
 
     final void assignLane() {
         for (final Lane lane : lanes) {
-            if (partyQueue.hasMoreElements()) {
+            if (!partyQueue.isEmpty()) {
                 if (!lane.isPartyAssigned()) {
-                    lane.assignParty(partyQueue.next());
+                    lane.assignParty(partyQueue.pollFirst());
                 }
             } else break;
         }
@@ -39,10 +40,10 @@ class ControlDesk extends Publisher implements Runnable {
     }
 
     void addPartyToQueue(final Iterable<String> partyNicks) {
-        final GeneralParty newParty = new Party();
+        final ScorableParty newParty = new ScorableParty();
 
         for (final String partyNick : partyNicks) {
-            final GeneralBowler newBowler = Util.getPatronDetails(partyNick);
+            final Bowler newBowler = Util.getPatronDetails(partyNick);
             newParty.addBowler(newBowler);
         }
 
@@ -51,12 +52,11 @@ class ControlDesk extends Publisher implements Runnable {
     }
 
     Event createEvent() {
-        final Vector<String> displayPartyQueue = new Vector<>();
-        final Iterable<GeneralParty> pQueue = partyQueue.asVector();
+        final ArrayList<String> displayPartyQueue = new ArrayList<>(0);
 
-        for (final GeneralParty party : pQueue) {
+        for (final ScorableParty party : partyQueue) {
             final String nextParty = party.getName();
-            displayPartyQueue.addElement(nextParty);
+            displayPartyQueue.add(nextParty);
         }
 
         return new ControlDeskEvent(displayPartyQueue);
