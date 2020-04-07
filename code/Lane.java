@@ -87,12 +87,13 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         //noinspection InfiniteLoopStatement
         while (true) {
             if (isPartyAssigned() && !paused) {
-                if (!scorer.isFinished()) {
+                if (scorer.isFinished()) onGameFinish();
+                else {
                     waitWhilePaused();
 
                     bowlOneBowlerOneFrame();
                     scorer.nextBowler();
-                } else onGameFinish();
+                }
             }
 
             Util.busyWait(10);
@@ -126,7 +127,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     Event createEvent() {
         return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
                 scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), scorer.isHalted(),
-                scorer.shouldResetGraphics(), getPinsDown());
+                getPinsDown());
     }
 
     private int getPinsDown() {

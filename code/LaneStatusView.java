@@ -103,9 +103,9 @@ public class LaneStatusView implements ActionListener, Observer {
 
     private void saveState() {
         try {
-            final FileWriter f = new FileWriter(saveFile);
-            lane.saveState(f);
-            f.close();
+            final FileWriter fileWriter = new FileWriter(saveFile);
+            lane.saveState(fileWriter);
+            fileWriter.close();
         } catch (final IOException e) {
             e.printStackTrace();
         }

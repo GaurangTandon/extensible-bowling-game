@@ -27,14 +27,14 @@ class LaneScorer {
      * This resets the scores for the same party
      */
 
-    void saveState(FileWriter fw) throws IOException {
-        for (BowlerScorer bowlerScorer : bowlerScorers) {
+    void saveState(final FileWriter fw) throws IOException {
+        for (final BowlerScorer bowlerScorer : bowlerScorers) {
             bowlerScorer.saveState(fw);
         }
     }
 
-    void loadState(BufferedReader fr) throws IOException {
-        for (BowlerScorer bowlerScorer : bowlerScorers) {
+    void loadState(final BufferedReader fr) throws IOException {
+        for (final BowlerScorer bowlerScorer : bowlerScorers) {
             bowlerScorer.loadState(fr);
         }
     }
@@ -132,10 +132,6 @@ class LaneScorer {
         return bowlerScorers[bowlerIndex].getRollCount() == 1;
     }
 
-    final boolean shouldResetGraphics() {
-        return bowlerIndex == 0 && isBowlersFirstRoll();
-    }
-
     final void onGameFinish() {
         resetScores();
     }
@@ -148,7 +144,7 @@ class LaneScorer {
         halted = false;
     }
 
-    final boolean isLastFrame() {
+    private boolean isLastFrame() {
         return frameNumber == LAST_FRAME;
     }
 
