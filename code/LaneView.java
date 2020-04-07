@@ -81,7 +81,7 @@ public class LaneView implements ActionListener, Observer {
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
         if (source.equals(buttonPanel.get(ButtonNames.BTN_MAINTENANCE))) {
-            lane.pauseGame();
+            lane.pauseGame(true);
         }
     }
 }

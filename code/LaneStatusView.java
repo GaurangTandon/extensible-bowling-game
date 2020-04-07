@@ -71,15 +71,15 @@ public class LaneStatusView implements ActionListener, Observer {
                 laneShowing = !laneShowing;
                 laneView.setVisible(laneShowing);
             } else if (source.equals(buttonPanel.get(ButtonNames.BTN_MAINTENANCE))) {
-                lane.unPauseGame();
+                lane.pauseGame(false);
                 buttonPanel.get(ButtonNames.BTN_MAINTENANCE).setBackground(Color.GREEN);
             }
         }
         if (source.equals(buttonPanel.get(ButtonNames.BTN_RESUME))) {
             loadState();
-            lane.setPauseState(false);
+            lane.pauseManual(false);
         } else if (source.equals(buttonPanel.get(ButtonNames.BTN_PAUSE))) {
-            lane.setPauseState(true);
+            lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
             saveState();
         }
