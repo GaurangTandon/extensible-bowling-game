@@ -1,29 +1,10 @@
-\documentclass{book}
+\documentclass{article}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{chemfig}
-\usepackage{mathtools}
 \usepackage{listings}
-\usepackage{wrapfig}
 \usepackage{color}
-\usepackage{float}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{multicol}
-\usepackage{paralist}
 \usepackage{tcolorbox}
-\usepackage{braket}
-\usepackage[framemethod=TikZ]{mdframed}
-\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
-\usepackage[colorinlistoftodos]{todonotes}
-\usepackage{esint}
-\usepackage{hyperref}
-
-\title{DASS Assignment 3}
-\date{2019-04-03}
-\author{Animesh Sinha; Avani Gupta; Gaurang Tandon; }
 
 \lstdefinestyle{shared}{
     belowcaptionskip=1\baselineskip,
@@ -171,31 +152,17 @@ frametitleaboveskip=\dimexpr-\ht\strutbox\relax
 
 \let\cleardoublepage\clearpage
 
+\title{DASS Assignment 3}
+\date{\today}
+\author{Animesh Sinha; Avani Gupta; Gaurang Tandon; }
 
 \begin{document}
 \pagenumbering{arabic}
 
+\maketitle
 
-\begin{titlepage}
-    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-    \center
-    \textsc{\LARGE International Institute of Information Technology, Hyderabad}\\[0.5cm]
- %   \includegraphics[scale=1]{img/iiit-logo.jpeg}\\[0.5cm]
-    \textsc{\Large DASS Assignment 3}\\[0.5cm]
-    \textsc{\large Animesh Sinha, Avani Gupta, Gaurang Tandon}\\[0.5cm] % Minor heading such as course title
-    \HRule \\[0.4cm]
-    { \huge \bfseries Final Report}\\[0.4cm]
-    \HRule \\[1.5cm]
-    \begin{minipage}{0.6\textwidth}
-    \begin{flushleft} \large
-
-    \end{flushleft}
-    \end{minipage}\\[2cm]
-    {\large \today}\\[2cm]
-    \vfill
-\end{titlepage}
-
-\input{metadata.tex}
-\input{metrics.tex}
+\input{metadata}
+\input{metrics}
+\input{narrative}
 
 \end{document}
