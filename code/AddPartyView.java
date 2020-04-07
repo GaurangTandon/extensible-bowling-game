@@ -25,11 +25,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private ArrayList<Object> bowlerDB;
     private String selectedNick, selectedMember;
 
-    private static final String BTN_ADD_PATRON = "Add to Party";
-    private static final String BTN_REM_PATRON = "Remove Member";
-    private static final String BTN_NEW_PATRON = "New Patron";
-    private static final String BTN_FINISHED = "Finished";
-
     private void buildBowlerPanel() {
         //noinspection ProhibitedExceptionCaught
         try {
@@ -57,10 +52,10 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         buildBowlerPanel();
 
         buttonPanel = new Widget.ButtonPanel(4, 1, "")
-                .put(BTN_ADD_PATRON, this)
-                .put(BTN_REM_PATRON, this)
-                .put(BTN_NEW_PATRON, this)
-                .put(BTN_FINISHED, this);
+                .put(ButtonNames.BTN_ADD_PATRON, this)
+                .put(ButtonNames.BTN_REM_PATRON, this)
+                .put(ButtonNames.BTN_NEW_PATRON, this)
+                .put(ButtonNames.BTN_FINISHED, this);
 
         // Window
         win = new WindowFrame(
@@ -99,16 +94,16 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        if (source.equals(buttonPanel.get(BTN_ADD_PATRON))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_ADD_PATRON))) {
             addPatron();
         }
-        if (source.equals(buttonPanel.get(BTN_REM_PATRON))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_REM_PATRON))) {
             removePatron();
         }
-        if (source.equals(buttonPanel.get(BTN_NEW_PATRON))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_NEW_PATRON))) {
             new NewPatronView(this);
         }
-        if (source.equals(buttonPanel.get(BTN_FINISHED))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_FINISHED))) {
             onPartyFinished();
         }
     }

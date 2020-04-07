@@ -8,15 +8,11 @@ import java.util.List;
 
 public class ControlDeskView implements ActionListener, Observer {
     private final WindowFrame win;
-    private final Widget.ButtonPanel controlsPanel;
+    private Widget.ButtonPanel controlsPanel;
 
     private final int maxMembers;
     private final ControlDesk controlDesk;
     private final Widget.ScrollablePanel<Object> partyPanel;
-    private static final String BTN_ADD_PARTY = "Add Party";
-    private static final String BTN_ASSIGN = "Assign lanes";
-    private static final String BTN_QUERIES = "Queries";
-    private static final String BTN_FINISHED = "Finished";
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
         final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
@@ -33,17 +29,22 @@ public class ControlDeskView implements ActionListener, Observer {
         return laneStatusPanel;
     }
 
+    void setupControlsPanel() {
+        controlsPanel = new ButtonPanel(4, 1, "Controls")
+                .put(ButtonNames.BTN_ADD_PARTY, this)
+                .put(ButtonNames.BTN_ASSIGN, this)
+                .put(ButtonNames.BTN_QUERIES, this)
+                .put(ButtonNames.BTN_FINISHED, this);
+    }
+
     ControlDeskView(final ControlDesk controlDesk,
                     @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.numLanes;
 
-        controlsPanel = new ButtonPanel(4, 1, "Controls")
-                .put(BTN_ADD_PARTY, this)
-                .put(BTN_ASSIGN, this)
-                .put(BTN_QUERIES, this)
-                .put(BTN_FINISHED, this);
+        setupControlsPanel();
+
 
         final ArrayList<Object> empty = new ArrayList<>(0);
         empty.add("(Empty)");
@@ -61,14 +62,14 @@ public class ControlDeskView implements ActionListener, Observer {
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-        if (source.equals(controlsPanel.get(BTN_ADD_PARTY))) {
+        if (source.equals(controlsPanel.get(ButtonNames.BTN_ADD_PARTY))) {
             new AddPartyView(this, maxMembers);
-        } else if (source.equals(controlsPanel.get(BTN_ASSIGN))) {
+        } else if (source.equals(controlsPanel.get(ButtonNames.BTN_ASSIGN))) {
             controlDesk.assignLane();
-        } else if (source.equals(controlsPanel.get(BTN_FINISHED))) {
+        } else if (source.equals(controlsPanel.get(ButtonNames.BTN_FINISHED))) {
             win.setVisible(false);
             System.exit(0);
-        } else if (source.equals(controlsPanel.get(BTN_QUERIES))) {
+        } else if (source.equals(controlsPanel.get(ButtonNames.BTN_QUERIES))) {
             new AdhocView();
         }
     }

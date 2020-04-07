@@ -116,5 +116,4 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     void setPauseState(final boolean state) {
         paused = state;
     }
-
 }

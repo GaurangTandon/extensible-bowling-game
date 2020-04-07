@@ -19,9 +19,6 @@ class EndGameReport implements ActionListener, ListSelectionListener {
 
     private String selectedMember;
 
-    private static final String BTN_PRINT = "Print Report";
-    private static final String BTN_FINISHED = "Finished";
-
     EndGameReport(final String partyName, final ArrayList<String> partyMemberNicks) {
         result = 0;
         retVal = new Vector<>(0);
@@ -32,8 +29,8 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         partyPanel.getPanel().add(partyPanel.getList()); // Can't understand why list is added again
 
         buttonPanel = new Widget.ButtonPanel(2, 1, "")
-                .put(BTN_PRINT, this)
-                .put(BTN_FINISHED, this);
+                .put(ButtonNames.BTN_PRINT, this)
+                .put(ButtonNames.BTN_FINISHED, this);
 
         win = new Widget.WindowFrame(
                 "End Game Report for " + partyName + "?",
@@ -69,9 +66,9 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     public void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-        if (source.equals(buttonPanel.get(BTN_PRINT))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_PRINT))) {
             retVal.add(selectedMember);
-        } else if (source.equals(buttonPanel.get(BTN_FINISHED))) {
+        } else if (source.equals(buttonPanel.get(ButtonNames.BTN_FINISHED))) {
             win.setVisible(false);
             result = 1;
         }

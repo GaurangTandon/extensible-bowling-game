@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Vector;
 
 public class LaneView implements ActionListener, Observer {
-    // TODO: to increase of cohesion, we could move this to a util class
-    private static final String BTN_MAINTENANCE = "Maintenance Call";
 
     private Widget.ButtonPanel buttonPanel;
     private List<BowlerScoreView> bsv;
@@ -50,7 +48,7 @@ public class LaneView implements ActionListener, Observer {
     }
 
     private Component getButtonPanel() {
-        buttonPanel = new Widget.ButtonPanel("").put(BTN_MAINTENANCE, this);
+        buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
         return buttonPanel.getPanel();
     }
 
@@ -82,7 +80,7 @@ public class LaneView implements ActionListener, Observer {
 
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
-        if (source.equals(buttonPanel.get(BTN_MAINTENANCE))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_MAINTENANCE))) {
             lane.pauseGame();
         }
     }

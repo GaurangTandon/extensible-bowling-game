@@ -8,9 +8,6 @@ class EndGamePrompt implements ActionListener {
     private final Widget.ButtonPanel buttonPanel;
     private int result;
 
-    private static final String BTN_YES = "Yes";
-    private static final String BTN_NO = "No";
-
     EndGamePrompt(final String partyName) {
         result = 0;
 
@@ -18,8 +15,8 @@ class EndGamePrompt implements ActionListener {
                 .put(new JLabel("Party " + partyName
                         + " has finished bowling.\nWould they like to bowl another game?"));
         buttonPanel = new Widget.ButtonPanel(1, 2, "")
-                .put(BTN_YES, this)
-                .put(BTN_NO, this);
+                .put(ButtonNames.BTN_YES, this)
+                .put(ButtonNames.BTN_NO, this);
 
         win = new Widget.WindowFrame(
                 "Another Game for " + partyName + "?",
@@ -32,10 +29,10 @@ class EndGamePrompt implements ActionListener {
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
-		if (source.equals(buttonPanel.get(BTN_YES))) {
+		if (source.equals(buttonPanel.get(ButtonNames.BTN_YES))) {
             result = 1;
         }
-        if (source.equals(buttonPanel.get(BTN_NO))) {
+        if (source.equals(buttonPanel.get(ButtonNames.BTN_NO))) {
             result = 2;
         }
 
