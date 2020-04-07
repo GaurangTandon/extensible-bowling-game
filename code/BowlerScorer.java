@@ -3,6 +3,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 class BowlerScorer {
+    private static final String DELIMITER = ",";
+
     private int[] rolls;
     private int[] cumulativeScore;
     private int[] perFramePartRes;
@@ -32,13 +34,13 @@ class BowlerScorer {
 
     void saveState(final FileWriter fw) throws IOException {
         for (int i = 0; i < rollCount; i++)
-            fw.write(rolls[i] + " ");
+            fw.write(rolls[i] + DELIMITER);
         fw.write("\n");
     }
 
     void loadState(final BufferedReader fr) throws IOException {
         resetState();
-        final String[] state = fr.readLine().split(" ");
+        final String[] state = fr.readLine().split(DELIMITER);
         for (final String s : state) {
             roll(Integer.parseInt(s));
         }
@@ -231,9 +233,5 @@ class BowlerScorer {
 
     int getCurrFrame() {
         return currFrame;
-    }
-
-    int getRollCount() {
-        return rollCount;
     }
 }

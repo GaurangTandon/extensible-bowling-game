@@ -128,10 +128,6 @@ class LaneScorer {
         return result;
     }
 
-    private boolean isBowlersFirstRoll() {
-        return bowlerScorers[bowlerIndex].getRollCount() == 1;
-    }
-
     final void onGameFinish() {
         resetScores();
     }
