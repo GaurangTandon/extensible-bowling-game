@@ -8,12 +8,13 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     private GeneralParty party;
     private final Pinsetter pinsetter;
     private final LaneScorer scorer;
-    private boolean paused = false;
+    private boolean paused;
 
     public Lane() {
         pinsetter = new Pinsetter();
         scorer = new LaneScorer();
         pinsetter.subscribe(this);
+        paused = false;
     }
 
     private void exitGame(final String partyName) {

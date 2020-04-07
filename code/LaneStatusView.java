@@ -95,6 +95,7 @@ public class LaneStatusView implements ActionListener, Observer {
             final FileReader fileReader = new FileReader(saveFile);
             final BufferedReader bufferedReader = new BufferedReader(fileReader);
             lane.loadState(bufferedReader);
+            bufferedReader.close();
             fileReader.close();
         } catch (final IOException e) {
             e.printStackTrace();
@@ -115,14 +116,16 @@ public class LaneStatusView implements ActionListener, Observer {
         final LaneEvent le = (LaneEvent) lev;
         final String bowlerNick = le.getBowlerNick();
         currentBowler.setText(bowlerNick);
+
         if (le.isMechanicalProblem()) {
             buttonPanel.get(BTN_MAINTENANCE).setBackground(Color.RED);
         }
-        final boolean enabled = lane.isPartyAssigned();
-        buttonPanel.get(BTN_VIEW_LANE).setEnabled(enabled);
-        buttonPanel.get(BTN_VIEW_PINSETTER).setEnabled(enabled);
-        buttonPanel.get(BTN_PAUSE).setEnabled(enabled);
-        buttonPanel.get(BTN_RESUME).setEnabled(!enabled);
+
+        final boolean isPartyAssigned = lane.isPartyAssigned();
+        buttonPanel.get(BTN_VIEW_LANE).setEnabled(isPartyAssigned);
+        buttonPanel.get(BTN_VIEW_PINSETTER).setEnabled(isPartyAssigned);
+        buttonPanel.get(BTN_PAUSE).setEnabled(isPartyAssigned);
+        buttonPanel.get(BTN_RESUME).setEnabled(!isPartyAssigned);
 
         final int totalPinsDown = le.getTotalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());

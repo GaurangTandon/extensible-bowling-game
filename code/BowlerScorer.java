@@ -15,10 +15,6 @@ class BowlerScorer {
     private int score;
 
     BowlerScorer() {
-        resetState();
-    }
-
-    private void resetState() {
         // extra 2 elements for safety from index out of bounds
         rolls = new int[LaneScorer.MAX_ROLLS + 2];
         cumulativeScore = new int[LaneScorer.FRAME_COUNT];
@@ -38,8 +34,8 @@ class BowlerScorer {
         fw.write("\n");
     }
 
+    // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        resetState();
         final String[] state = fr.readLine().split(DELIMITER);
         for (final String s : state) {
             roll(Integer.parseInt(s));

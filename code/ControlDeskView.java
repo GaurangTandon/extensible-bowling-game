@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, Observer {
-
     private final WindowFrame win;
     private final Widget.ButtonPanel controlsPanel;
 
@@ -43,10 +42,10 @@ public class ControlDeskView implements ActionListener, Observer {
         controlsPanel = new ButtonPanel(4, 1, "Controls")
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
-                .put(BTN_FINISHED, this)
-                .put(BTN_QUERIES, this);
+                .put(BTN_QUERIES, this)
+                .put(BTN_FINISHED, this);
 
-        final Vector<Object> empty = new Vector<>();
+        final Vector<Object> empty = new Vector<>(0);
         empty.add("(Empty)");
         partyPanel = new Widget.ScrollablePanel<>(
                 "Party Queue", empty, 10);
@@ -59,11 +58,6 @@ public class ControlDeskView implements ActionListener, Observer {
         );
     }
 
-    /**
-     * Handler for actionEvents
-     *
-     * @param e the ActionEvent that triggered the handler
-     */
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
@@ -79,20 +73,10 @@ public class ControlDeskView implements ActionListener, Observer {
         }
     }
 
-    /**
-     * Receive a new party from andPartyView.
-     *
-     * @param addPartyView the AddPartyView that is providing a new party
-     */
     final void updateAddParty(final AddPartyView addPartyView) {
         controlDesk.addPartyToQueue(addPartyView.getParty());
     }
 
-    /**
-     * Receive a broadcast from a ControlDesk
-     *
-     * @param ce the ControlDeskEvent that triggered the handler
-     */
     public final void receiveEvent(final Event ce) {
         partyPanel.setListData(((ControlDeskEvent) ce).getPartyQueue());
     }
