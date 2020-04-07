@@ -48,13 +48,13 @@ class Frame {
         return rollCount == 1 && rolls[rollCount - 1] == Pinsetter.PIN_COUNT;
     }
 
-    private boolean isSpare() {
+    boolean isSpare() {
         final int latestRoll = rolls[rollCount - 1];
         return rollCount == 2 && rolls[rollCount - 2] + latestRoll == Pinsetter.PIN_COUNT && latestRoll > 0;
     }
 
     // called to get display value for the latest roll
-    private int getDisplayValue() {
+    int getDisplayValue() {
         final int latestRoll = rolls[rollCount - 1];
 
         if (isStrike()) {

@@ -23,4 +23,15 @@ class LastFrame extends Frame {
 
         return sumRolls(rolls, rollIndex, rollCount);
     }
+
+    // called to get display value for the latest roll
+    int getDisplayValue() {
+        final int latestRoll = rolls[rollCount - 1];
+
+        if (isSpare()) {
+            return SPARE;
+        } else if (latestRoll == Pinsetter.PIN_COUNT) {
+            return STRIKE;
+        } else return latestRoll;
+    }
 }
