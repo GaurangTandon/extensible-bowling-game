@@ -16,20 +16,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
 
     private void exitGame(final String partyName) {
         final EndGameReport egr = new EndGameReport(partyName, scorer.getMemberNicks());
-
-        final int gameNumber = scorer.getGameNumber();
-        int myIndex = 0;
-
-        for (final Bowler bowler : scorer.getMembers()) {
-            final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), gameNumber);
-            myIndex++;
-
-            final String nick = bowler.getNickName();
-            if (egr.shouldPrint(nick)) {
-                System.out.println("Printing " + nick);
-                sr.sendPrintout();
-            }
-        }
+        egr.printer(scorer);
 
         publish();
         scorer = null;
@@ -44,10 +31,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         scorer = new ScorableParty();
         scorer.loadState(fr);
         paused = false;
-    }
-
-    void setPauseState(final boolean state) {
-        paused = state;
     }
 
     private void onGameFinish() {
@@ -79,19 +62,15 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
             if (isPartyAssigned() && !paused) {
                 if (scorer.isFinished()) onGameFinish();
                 else {
-                    waitWhilePaused();
+                    while (scorer.isHalted()) {
+                        Util.busyWait(10);
+                    }
 
                     bowlOneBowlerOneFrame();
                     scorer.nextBowler();
                 }
             }
 
-            Util.busyWait(10);
-        }
-    }
-
-    private void waitWhilePaused() {
-        while (scorer.isHalted()) {
             Util.busyWait(10);
         }
     }
@@ -112,11 +91,8 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     }
 
     Event createEvent() {
-        return new LaneEvent(scorer, getPinsDown());
-    }
-
-    private int getPinsDown() {
-        return pinsetter == null ? 0 : pinsetter.totalPinsDown();
+        final int pinsDown = pinsetter == null ? 0 : pinsetter.totalPinsDown();
+        return new LaneEvent(scorer, pinsDown);
     }
 
     final boolean isPartyAssigned() {
@@ -136,4 +112,9 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         scorer.unpause();
         publish();
     }
+
+    void setPauseState(final boolean state) {
+        paused = state;
+    }
+
 }

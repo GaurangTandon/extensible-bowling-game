@@ -40,6 +40,25 @@ class EndGameReport implements ActionListener, ListSelectionListener {
                 new ContainerPanel(1, 2, "")
                         .put(partyPanel)
                         .put(buttonPanel));
+
+    }
+
+    void printer(final ScorableParty scorer) {
+        final ArrayList<ScorableBowler> partyMembers = scorer.getMembers();
+        final int gameNumber = scorer.getGameNumber();
+
+        int myIndex = 0;
+
+        for (final Bowler bowler : partyMembers) {
+            final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), gameNumber);
+            myIndex++;
+
+            final String nick = bowler.getNickName();
+            if (shouldPrint(nick)) {
+                System.out.println("Printing " + nick);
+                sr.sendPrintout();
+            }
+        }
     }
 
     public void valueChanged(final ListSelectionEvent e) {
@@ -58,7 +77,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         }
     }
 
-    boolean shouldPrint(final String bowlerNick){
+    boolean shouldPrint(final String bowlerNick) {
         while (result == 0) {
             Util.busyWait(10);
         }
