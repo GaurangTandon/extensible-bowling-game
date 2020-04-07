@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 final class BowlerFile {
-    private static final String BOWLER_DAT = "BOWLERS.DAT";
+    private static final String BOWLER_DAT = "Datastore/BOWLERS.DAT";
 
     private BowlerFile() {
     }

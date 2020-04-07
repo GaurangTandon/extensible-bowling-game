@@ -1,8 +1,14 @@
-class BowlerScorer {
-    private final int[] rolls;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-    private final int[] cumulativeScore;
-    private final int[] perFramePartRes;
+class BowlerScorer {
+    private static final String DELIMITER = ",";
+
+    private int[] rolls;
+    private int[] cumulativeScore;
+    private int[] perFramePartRes;
+
     private int currFrame;
     private int partIndex;
     private int rollCount;
@@ -20,6 +26,20 @@ class BowlerScorer {
         rollCount = 0;
         partIndex = 0;
         score = 0;
+    }
+
+    void saveState(final FileWriter fw) throws IOException {
+        for (int i = 0; i < rollCount; i++)
+            fw.write(rolls[i] + DELIMITER);
+        fw.write("\n");
+    }
+
+    // assumes the global LaneScorer reset has been called
+    void loadState(final BufferedReader fr) throws IOException {
+        final String[] state = fr.readLine().split(DELIMITER);
+        for (final String s : state) {
+            roll(Integer.parseInt(s));
+        }
     }
 
     static final int STRIKE = 11;
@@ -92,7 +112,7 @@ class BowlerScorer {
             }
 
             cumulativeScore[oldFrame] += scoreOnThisFrame;
-            if(oldFrame > 0)
+            if (oldFrame > 0)
                 cumulativeScore[oldFrame] += cumulativeScore[oldFrame - 1];
         }
 
@@ -179,10 +199,10 @@ class BowlerScorer {
         // so i am basically checking that the bowler is still in the same frame
         // as he was in the last roll
 
-        Boolean frameValidation = validateCurrFrame(frameNumber);
+        final Boolean frameValidation = validateCurrFrame(frameNumber);
         if (frameValidation != null) return frameValidation;
 
-        Boolean partIndexValidation = validatePartIndex();
+        final Boolean partIndexValidation = validatePartIndex();
         if (partIndexValidation != null) return partIndexValidation;
 
         return true;
@@ -197,7 +217,7 @@ class BowlerScorer {
         return null;
     }
 
-    private Boolean validateCurrFrame(int frameNumber) {
+    private Boolean validateCurrFrame(final int frameNumber) {
         if (currFrame != frameNumber)
             return false;
 
@@ -209,9 +229,5 @@ class BowlerScorer {
 
     int getCurrFrame() {
         return currFrame;
-    }
-
-    int getRollCount() {
-        return rollCount;
     }
 }

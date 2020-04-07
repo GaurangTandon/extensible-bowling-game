@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -19,11 +22,22 @@ class Party implements GeneralParty {
         }
     }
 
-    /**
-     * Accessor for members in this party
-     *
-     * @return A vector of the bowlers in this party
-     */
+    public void saveState(final FileWriter fw) throws IOException {
+        fw.write(bowlers.size() + "\n");
+        for (final GeneralBowler bowler : bowlers) {
+            fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
+        }
+    }
+
+    public void loadState(final BufferedReader fr) throws IOException {
+        final int size = Integer.parseInt(fr.readLine());
+        bowlers.clear();
+
+        for (int i = 0; i < size; i++) {
+            final String[] bowler = fr.readLine().split("/");
+            bowlers.add(new Bowler(bowler[0], bowler[1], bowler[2]));
+        }
+    }
 
     public final Vector<GeneralBowler> getMembers() {
         return bowlers;

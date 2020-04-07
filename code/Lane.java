@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -6,11 +8,13 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     private GeneralParty party;
     private final Pinsetter pinsetter;
     private final LaneScorer scorer;
+    private boolean paused;
 
     public Lane() {
         pinsetter = new Pinsetter();
         scorer = new LaneScorer();
         pinsetter.subscribe(this);
+        paused = false;
     }
 
     private void exitGame(final String partyName) {
@@ -32,6 +36,24 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
 
         publish();
         party = null;
+    }
+
+    void saveState(final FileWriter fw) throws IOException {
+        party.saveState(fw);
+        scorer.saveState(fw);
+    }
+
+    void loadState(final BufferedReader fr) throws IOException {
+        paused = true;
+        party = new Party();
+        party.loadState(fr);
+        scorer.resetScores(party.getMembers());
+        scorer.loadState(fr);
+        paused = false;
+    }
+
+    void setPauseState(final boolean state) {
+        paused = state;
     }
 
     private void onGameFinish() {
@@ -65,13 +87,14 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (isPartyAssigned()) {
-                if (!scorer.isFinished()) {
+            if (isPartyAssigned() && !paused) {
+                if (scorer.isFinished()) onGameFinish();
+                else {
                     waitWhilePaused();
 
                     bowlOneBowlerOneFrame();
                     scorer.nextBowler();
-                } else onGameFinish();
+                }
             }
 
             Util.busyWait(10);
@@ -105,7 +128,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     Event createEvent() {
         return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
                 scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), scorer.isHalted(),
-                scorer.shouldResetGraphics(), getPinsDown());
+                getPinsDown());
     }
 
     private int getPinsDown() {

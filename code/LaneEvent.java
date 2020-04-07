@@ -8,15 +8,13 @@ class LaneEvent implements Event {
     private final int[][] score;
     private final boolean mechanicalProblemExists;
     private final String bowlerNick;
-    private final boolean shouldSetupGraphics;
     private final int totalPinsDown;
 
     LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick,
               final int[][] theCumulativeScore, final int[][] byFramePartScores, final boolean mechanicalProblem,
-              final boolean ssGraphics, final int pinsDown) {
+              final int pinsDown) {
         bowlerNicks = theBowlerNicks;
         partySize = thePartySize;
-        shouldSetupGraphics = ssGraphics;
         totalPinsDown = pinsDown;
 
         bowlerNick = theNick;
@@ -27,10 +25,6 @@ class LaneEvent implements Event {
 
     final String getBowlerNick() {
         return bowlerNick;
-    }
-
-    final boolean shouldSetupGraphics() {
-        return shouldSetupGraphics;
     }
 
     final Iterable<String> getBowlerNicks() {

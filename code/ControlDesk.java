@@ -1,16 +1,13 @@
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 class ControlDesk extends Publisher implements Runnable {
-    private final Set<Lane> lanes;
+    private final List<Lane> lanes;
     private final Queue partyQueue;
     final int numLanes;
 
     ControlDesk(final int numLanes) {
         this.numLanes = numLanes;
-        lanes = new HashSet<>(numLanes);
+        lanes = new ArrayList<>(numLanes);
         partyQueue = new Queue();
 
         for (int i = 0; i < numLanes; i++) {
@@ -21,6 +18,7 @@ class ControlDesk extends Publisher implements Runnable {
     }
 
     public void run() {
+        //noinspection InfiniteLoopStatement
         while (true) {
             assignLane();
 
@@ -64,7 +62,7 @@ class ControlDesk extends Publisher implements Runnable {
         return new ControlDeskEvent(displayPartyQueue);
     }
 
-    Iterable<Lane> getLanes() {
+    List<Lane> getLanes() {
         return lanes;
     }
 }

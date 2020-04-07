@@ -32,7 +32,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private void buildBowlerPanel() {
         //noinspection ProhibitedExceptionCaught
         try {
-            bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
+            bowlerDB = new Vector<>(BowlerFile.getBowlers());
         } catch (final IOException e) {
             System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
             bowlerDB = new Vector<>();

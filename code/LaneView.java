@@ -66,7 +66,7 @@ public class LaneView implements ActionListener, Observer {
 
         final int numBowlers = le.getPartySize();
 
-        if (le.shouldSetupGraphics()) {
+        if (bsv == null) {
             setupLaneGraphics(le.getBowlerNicks());
         }
 

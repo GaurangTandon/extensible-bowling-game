@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -24,6 +26,19 @@ class LaneScorer {
     /**
      * This resets the scores for the same party
      */
+
+    void saveState(final FileWriter fw) throws IOException {
+        for (final BowlerScorer bowlerScorer : bowlerScorers) {
+            bowlerScorer.saveState(fw);
+        }
+    }
+
+    void loadState(final BufferedReader fr) throws IOException {
+        for (final BowlerScorer bowlerScorer : bowlerScorers) {
+            bowlerScorer.loadState(fr);
+        }
+    }
+
     private void resetScores() {
         resetScores(bowlers, false);
     }
@@ -113,14 +128,6 @@ class LaneScorer {
         return result;
     }
 
-    private boolean isBowlersFirstRoll() {
-        return bowlerScorers[bowlerIndex].getRollCount() == 1;
-    }
-
-    final boolean shouldResetGraphics() {
-        return bowlerIndex == 0 && isBowlersFirstRoll();
-    }
-
     final void onGameFinish() {
         resetScores();
     }
@@ -133,7 +140,7 @@ class LaneScorer {
         halted = false;
     }
 
-    final boolean isLastFrame() {
+    private boolean isLastFrame() {
         return frameNumber == LAST_FRAME;
     }
 

@@ -3,10 +3,10 @@ import Widget.WindowFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, Observer {
-
     private final WindowFrame win;
     private final Widget.ButtonPanel controlsPanel;
 
@@ -15,19 +15,20 @@ public class ControlDeskView implements ActionListener, Observer {
     private final Widget.ScrollablePanel<Object> partyPanel;
     private static final String BTN_ADD_PARTY = "Add Party";
     private static final String BTN_ASSIGN = "Assign lanes";
-    private static final String BTN_ADHOC_QUERIES = "Adhoc queries";
+    private static final String BTN_QUERIES = "Queries";
     private static final String BTN_FINISHED = "Finished";
 
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
         final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
-        final Iterable<Lane> lanes = controlDesk.getLanes();
-        int laneCount = 0;
-        for (final Lane curLane : lanes) {
-            ++laneCount;
-            final LaneStatusView laneStat = new LaneStatusView(curLane, laneCount);
-            curLane.subscribe(laneStat);
+        final List<Lane> lanes = controlDesk.getLanes();
+        int laneCount = 1;
+
+        for (final Lane lane : lanes) {
+            final LaneStatusView laneStat = new LaneStatusView(lane, laneCount);
+            lane.subscribe(laneStat);
             laneStatusPanel.put(new Widget.ContainerPanel(
                     laneStat.showLane(), "Lane " + laneCount));
+            laneCount++;
         }
         return laneStatusPanel;
     }
@@ -38,14 +39,13 @@ public class ControlDeskView implements ActionListener, Observer {
         this.maxMembers = maxMembers;
         final int numLanes = controlDesk.numLanes;
 
-        final ButtonPanel controls = new ButtonPanel(3, 1, "Controls");
-        controlsPanel = controls
+        controlsPanel = new ButtonPanel(4, 1, "Controls")
                 .put(BTN_ADD_PARTY, this)
                 .put(BTN_ASSIGN, this)
-                .put(BTN_FINISHED, this)
-                .put(BTN_ADHOC_QUERIES, this);
+                .put(BTN_QUERIES, this)
+                .put(BTN_FINISHED, this);
 
-        final Vector<Object> empty = new Vector<>();
+        final Vector<Object> empty = new Vector<>(0);
         empty.add("(Empty)");
         partyPanel = new Widget.ScrollablePanel<>(
                 "Party Queue", empty, 10);
@@ -58,11 +58,6 @@ public class ControlDeskView implements ActionListener, Observer {
         );
     }
 
-    /**
-     * Handler for actionEvents
-     *
-     * @param e the ActionEvent that triggered the handler
-     */
     public final void actionPerformed(final ActionEvent e) {
         final Object source = e.getSource();
 
@@ -73,25 +68,15 @@ public class ControlDeskView implements ActionListener, Observer {
         } else if (source.equals(controlsPanel.get(BTN_FINISHED))) {
             win.setVisible(false);
             System.exit(0);
-        } else if (source.equals(controlsPanel.get(BTN_ADHOC_QUERIES))) {
+        } else if (source.equals(controlsPanel.get(BTN_QUERIES))) {
             new AdhocView();
         }
     }
 
-    /**
-     * Receive a new party from andPartyView.
-     *
-     * @param addPartyView the AddPartyView that is providing a new party
-     */
     final void updateAddParty(final AddPartyView addPartyView) {
         controlDesk.addPartyToQueue(addPartyView.getParty());
     }
 
-    /**
-     * Receive a broadcast from a ControlDesk
-     *
-     * @param ce the ControlDeskEvent that triggered the handler
-     */
     public final void receiveEvent(final Event ce) {
         partyPanel.setListData(((ControlDeskEvent) ce).getPartyQueue());
     }

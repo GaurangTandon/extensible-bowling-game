@@ -9,7 +9,7 @@ javac *.java
 and then run the application with 
 
 ```shell script
-java drive
+java BowlingAlleyDriver
 ```
 
-here `drive.class` is the main driver class that integrates and runs everything together.
+here `BowlingAlleyDriver.class` is the main driver class that integrates and runs everything together.

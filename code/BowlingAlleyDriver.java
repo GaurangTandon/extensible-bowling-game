@@ -1,5 +1,5 @@
-final class drive {
-    private drive() {
+final class BowlingAlleyDriver {
+    private BowlingAlleyDriver() {
     }
 
     public static void main(final String[] args) {
