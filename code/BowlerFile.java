@@ -32,15 +32,17 @@ final class BowlerFile {
             }
         }
 
-        if (foundBowler == null)
-            System.out.println("Nick not found...");
         return foundBowler;
     }
 
+    /**
+     * Returns null if bowler exists
+     * Returns entire list of new bowlers otherwise
+     */
     static Vector<String> putBowlerIfDidntExist(final String nick, final String full, final String email) {
         try {
             final GeneralBowler checkBowler = getBowlerInfo(nick);
-            if (checkBowler == null) return null;
+            if (checkBowler != null) return null;
 
             putBowlerInfo(nick, full, email);
             return getBowlers();
