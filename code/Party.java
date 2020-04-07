@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -13,13 +14,6 @@ class Party {
     Party() {
         bowlers = new Vector(0);
         name = "";
-    }
-
-    void addBowler(final Bowler bowler) {
-        bowlers.add(bowler);
-        if (bowlers.size() == 1) {
-            name += bowler.getNickName() + "'s Party";
-        }
     }
 
     void saveState(final FileWriter fw) throws IOException {
@@ -47,8 +41,8 @@ class Party {
         return bowlers.size();
     }
 
-    final Vector<String> getMemberNicks() {
-        final Vector<String> nicks = new Vector<>(getPartySize());
+    final ArrayList<String> getMemberNicks() {
+        final ArrayList<String> nicks = new ArrayList<>(getPartySize());
 
         for (final Bowler bowler : bowlers) {
             nicks.add(bowler.getNickName());

@@ -1,8 +1,8 @@
-import java.util.Vector;
+import java.util.ArrayList;
 
 class LaneEvent implements Event {
 
-    private final Vector<String> bowlerNicks;
+    private final ArrayList<String> bowlerNicks;
     private final int partySize;
     private final int[][] cumulativeScore;
     private final int[][] score;
@@ -10,7 +10,7 @@ class LaneEvent implements Event {
     private final String bowlerNick;
     private final int totalPinsDown;
 
-    LaneEvent(final Vector<String> theBowlerNicks, final int thePartySize, final String theNick,
+    LaneEvent(final ArrayList<String> theBowlerNicks, final int thePartySize, final String theNick,
               final int[][] theCumulativeScore, final int[][] byFramePartScores, final boolean mechanicalProblem,
               final int pinsDown) {
         bowlerNicks = theBowlerNicks;
