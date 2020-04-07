@@ -73,8 +73,8 @@ public class LaneStatusView implements ActionListener, Observer {
                 psShowing = !psShowing;
                 pinSetterView.setVisible(psShowing);
             } else if (source.equals(buttonPanel.get(BTN_VIEW_LANE))) {
-                laneView.setVisible(laneShowing);
                 laneShowing = !laneShowing;
+                laneView.setVisible(laneShowing);
             } else if (source.equals(buttonPanel.get(BTN_MAINTENANCE))) {
                 lane.unPauseGame();
                 buttonPanel.get(BTN_MAINTENANCE).setBackground(Color.GREEN);

@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This class is supposed to handle all the scoring happening on a particular lane
@@ -15,16 +14,11 @@ class ScorableParty extends Party {
     private static final int MAX_GAMES = 128;
     private int[][] finalScores;
     private int partySize;
-    private final ArrayList<ScorableBowler> bowlers;
     private boolean halted;
     private boolean finished;
     private int bowlerIndex;
     private int frameNumber;
     private int gameNumber;
-
-    ScorableParty() {
-        bowlers = new ArrayList<>(0);
-    }
 
     void addBowler(final ScorableBowler bowler) {
         bowlers.add(bowler);

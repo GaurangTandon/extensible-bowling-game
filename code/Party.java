@@ -8,7 +8,7 @@ import java.util.Vector;
  * Container that holds bowlers
  */
 class Party {
-    private final Vector<Bowler> bowlers;
+    final Vector<ScorableBowler> bowlers;
     String name;
 
     Party() {
@@ -29,11 +29,11 @@ class Party {
 
         for (int i = 0; i < size; i++) {
             final String[] bowler = fr.readLine().split("/");
-            bowlers.add(new Bowler(bowler[0], bowler[1], bowler[2]));
+            bowlers.add(new ScorableBowler(bowler[0], bowler[1], bowler[2]));
         }
     }
 
-    final Vector<Bowler> getMembers() {
+    final Vector<ScorableBowler> getMembers() {
         return bowlers;
     }
 
