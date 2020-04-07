@@ -30,10 +30,8 @@ class ControlDesk extends Publisher implements Runnable {
     final void assignLane() {
         for (final Lane lane : lanes) {
             if (partyQueue.isEmpty()) break;
-            else {
-                if (!lane.isPartyAssigned()) {
-                    lane.assignParty(partyQueue.pollFirst());
-                }
+            else if (!lane.isPartyAssigned()) {
+                lane.assignParty(partyQueue.pollFirst());
             }
         }
 
@@ -44,7 +42,8 @@ class ControlDesk extends Publisher implements Runnable {
         final ScorableParty newParty = new ScorableParty();
 
         for (final String partyNick : partyNicks) {
-            final ScorableBowler newBowler = (ScorableBowler) Util.getPatronDetails(partyNick);
+            final Bowler gotBowler = Util.getPatronDetails(partyNick);
+            final ScorableBowler newBowler = new ScorableBowler(gotBowler);
             newParty.addBowler(newBowler);
         }
 

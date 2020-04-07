@@ -9,7 +9,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
 
     Lane() {
         pinsetter = new Pinsetter();
-        scorer = new ScorableParty();
+        scorer = null;
         pinsetter.subscribe(this);
         paused = false;
     }

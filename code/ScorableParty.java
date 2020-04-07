@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * This class is supposed to handle all the scoring happening on a particular lane

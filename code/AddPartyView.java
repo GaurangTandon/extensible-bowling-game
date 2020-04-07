@@ -139,6 +139,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     }
 
     public Iterable<String> getParty() {
-        return (Vector<String>) party.clone();
+        return (ArrayList<String>) party.clone();
     }
 }
