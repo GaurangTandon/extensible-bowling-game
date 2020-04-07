@@ -112,9 +112,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     }
 
     Event createEvent() {
-        return new LaneEvent(scorer.getMemberNicks(), scorer.getPartySize(), scorer.getCurrentThrowerNick(),
-                scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), scorer.isHalted(),
-                getPinsDown());
+        return new LaneEvent(scorer, getPinsDown());
     }
 
     private int getPinsDown() {

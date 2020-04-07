@@ -30,7 +30,7 @@ final class Util {
     static boolean containsString(final Iterable<String> container, final String target) {
         if (target == null) return false;
         for (final String str : container) {
-            if (str.equals(target))
+            if (target.equals(str))
                 return true;
         }
         return false;

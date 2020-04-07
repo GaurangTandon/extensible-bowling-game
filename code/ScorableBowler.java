@@ -11,10 +11,12 @@ class ScorableBowler extends Bowler {
 
     private int currFrame;
     private int score;
+    private static final int MAX_GAMES = 128;
+    private int[] finalScores;
 
     ScorableBowler(final String nick, final String full, final String mail) {
         super(nick, full, mail);
-        reset();
+        resetHard();
     }
 
     ScorableBowler(final Bowler bowler) {
@@ -25,7 +27,12 @@ class ScorableBowler extends Bowler {
         this("", "", "");
     }
 
-    void reset() {
+    void resetHard(){
+        resetSoft();
+        finalScores = new int[MAX_GAMES];
+    }
+
+    void resetSoft() {
         frames = new Frame[ScorableParty.FRAME_COUNT];
         for (int i = 0; i < ScorableParty.FRAME_COUNT - 1; i++)
             frames[i] = new Frame(i);
@@ -43,10 +50,16 @@ class ScorableBowler extends Bowler {
     void saveState(final FileWriter fw) throws IOException {
         final ArrayList<Integer> rolls = getRolls();
 
-        for(int i = 0; i < rolls.size(); i++) {
-            if(i > 0) fw.write(DELIMITER);
+        for (int i = 0; i < rolls.size(); i++) {
+            if (i > 0) fw.write(DELIMITER);
             fw.write(String.valueOf(rolls.get(i)));
         }
+        fw.write("\n");
+        for (int i = 0; i < MAX_GAMES; i++) {
+            if (i > 0) fw.write(DELIMITER);
+            fw.write(String.valueOf(finalScores[i]));
+        }
+        ;
         fw.write("\n");
     }
 
@@ -55,6 +68,9 @@ class ScorableBowler extends Bowler {
         final String[] rolls = fr.readLine().split(DELIMITER);
         for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
         updateCumulativeScores();
+
+        final String[] scores = fr.readLine().split(DELIMITER);
+        for (int i = 0; i < MAX_GAMES; i++) finalScores[i] = Integer.parseInt(scores[i]);
     }
 
     private void resetCumulativeScores() {
@@ -77,7 +93,7 @@ class ScorableBowler extends Bowler {
 
         resetCumulativeScores();
 
-        for (int i = 0; i < currFrame; i++) {
+        for (int i = 0; i <= currFrame; i++) {
             final int contrib = frames[i].getContributionToScore(rolls, rollIndex);
             if (contrib == -1) break;
 
@@ -88,10 +104,6 @@ class ScorableBowler extends Bowler {
         }
 
         score = cumulativeScore[currFrame];
-    }
-
-    int getScore() {
-        return score;
     }
 
     /**
@@ -127,5 +139,21 @@ class ScorableBowler extends Bowler {
 
     int getCurrFrame() {
         return currFrame;
+    }
+
+    int[] getFinalScores() {
+        return finalScores;
+    }
+
+    void setFinalScoresOnGameEnd(final int gameNumber) {
+        finalScores[gameNumber] = score;
+        final String finalScore = Integer.toString(finalScores[gameNumber]);
+
+        try {
+            final String dateString = Util.getDateString();
+            ScoreHistoryFile.addScore(getNickName(), dateString, finalScore);
+        } catch (final IOException e) {
+            System.err.println("Exception in addScore. " + e);
+        }
     }
 }
