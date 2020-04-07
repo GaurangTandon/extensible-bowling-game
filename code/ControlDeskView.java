@@ -1,6 +1,7 @@
 import Widget.ButtonPanel;
 import Widget.WindowFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -59,17 +60,20 @@ public class ControlDeskView implements ActionListener, Observer {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-
-        if (source.equals(controlsPanel.get(ButtonNames.BTN_ADD_PARTY))) {
-            new AddPartyView(this, maxMembers);
-        } else if (source.equals(controlsPanel.get(ButtonNames.BTN_ASSIGN))) {
-            controlDesk.assignLane();
-        } else if (source.equals(controlsPanel.get(ButtonNames.BTN_FINISHED))) {
-            win.setVisible(false);
-            System.exit(0);
-        } else if (source.equals(controlsPanel.get(ButtonNames.BTN_QUERIES))) {
-            new AdhocView();
+        final String source = ((JButton) e.getSource()).getText();
+        switch (source) {
+            case ButtonNames.BTN_ADD_PARTY:
+                new AddPartyView(this, maxMembers);
+                break;
+            case ButtonNames.BTN_ASSIGN:
+                controlDesk.assignLane();
+                break;
+            case ButtonNames.BTN_FINISHED:
+                win.setVisible(false);
+                System.exit(0);
+            case ButtonNames.BTN_QUERIES:
+                new AdhocView();
+                break;
         }
     }
 

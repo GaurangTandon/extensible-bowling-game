@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 class EndGamePrompt implements ActionListener {
 
     private final Widget.WindowFrame win;
-    private final Widget.ButtonPanel buttonPanel;
     private int result;
 
     EndGamePrompt(final String partyName) {
@@ -14,7 +13,7 @@ class EndGamePrompt implements ActionListener {
         final Widget.ContainerPanel labelPanel = new Widget.ContainerPanel("")
                 .put(new JLabel("Party " + partyName
                         + " has finished bowling.\nWould they like to bowl another game?"));
-        buttonPanel = new Widget.ButtonPanel(1, 2, "")
+        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(1, 2, "")
                 .put(ButtonNames.BTN_YES, this)
                 .put(ButtonNames.BTN_NO, this);
 
@@ -27,12 +26,12 @@ class EndGamePrompt implements ActionListener {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
+        final String source = ((JButton) e.getSource()).getText();
 
-		if (source.equals(buttonPanel.get(ButtonNames.BTN_YES))) {
+        if (source.equals(ButtonNames.BTN_YES)) {
             result = 1;
         }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_NO))) {
+        if (source.equals(ButtonNames.BTN_NO)) {
             result = 2;
         }
 

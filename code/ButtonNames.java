@@ -25,4 +25,8 @@ class ButtonNames {
     static final String BTN_PAUSE = "Pause";
     static final String BTN_RESUME = "Resume";
     static final String BTN_MAINTENANCE_SPACE = "     ";
+
+    static final String BTN_PATRON_FINISHED = "Add Patron";
+    static final String BTN_PATRON_ABORT = "Abort";
+
 }

@@ -10,7 +10,6 @@ import java.util.Vector;
 
 public class LaneView implements ActionListener, Observer {
 
-    private Widget.ButtonPanel buttonPanel;
     private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
@@ -48,7 +47,7 @@ public class LaneView implements ActionListener, Observer {
     }
 
     private Component getButtonPanel() {
-        buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
+        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
         return buttonPanel.getPanel();
     }
 
@@ -79,8 +78,8 @@ public class LaneView implements ActionListener, Observer {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_MAINTENANCE))) {
+        final String source = ((JButton) e.getSource()).getText();
+        if (ButtonNames.BTN_MAINTENANCE.equals(source)) {
             lane.pauseGame(true);
         }
     }

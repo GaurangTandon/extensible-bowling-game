@@ -8,13 +8,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 class AdhocView implements ActionListener {
-    private final ButtonPanel buttonPanel;
     private final WindowFrame win;
     private final ContainerPanel statDisplay;
     private Score currScore;
 
     AdhocView() {
-        buttonPanel = new ButtonPanel(4, 1, "")
+        ButtonPanel buttonPanel = new ButtonPanel(4, 1, "")
                 .put(ButtonNames.BTN_HIGHEST, this)
                 .put(ButtonNames.BTN_LOWEST, this)
                 .put(ButtonNames.BTN_BEST, this)
@@ -71,19 +70,20 @@ class AdhocView implements ActionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_HIGHEST))) {
-            displayHighest();
-        }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_LOWEST))) {
-            displayLowest();
-        }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_FINISHED))) {
-            win.destroy();
-        }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_BEST))) {
-            displayBestPlayer();
+        final String source = ((JButton) e.getSource()).getText();
+        switch (source) {
+            case ButtonNames.BTN_HIGHEST:
+                displayHighest();
+                break;
+            case ButtonNames.BTN_LOWEST:
+                displayLowest();
+                break;
+            case ButtonNames.BTN_FINISHED:
+                win.destroy();
+                break;
+            case ButtonNames.BTN_BEST:
+                displayBestPlayer();
+                break;
         }
     }
 }

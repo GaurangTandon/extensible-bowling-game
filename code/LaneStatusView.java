@@ -41,7 +41,7 @@ public class LaneStatusView implements ActionListener, Observer {
                 .put(ButtonNames.BTN_MAINTENANCE_SPACE, this)
                 .put(ButtonNames.BTN_PAUSE, this)
                 .put(ButtonNames.BTN_RESUME, this);
-        buttonPanel.get(ButtonNames.BTN_MAINTENANCE).setBackground(Color.GREEN);
+        buttonPanel.get(ButtonNames.BTN_MAINTENANCE_SPACE).setBackground(Color.GREEN);
         buttonPanel.get(ButtonNames.BTN_VIEW_LANE).setEnabled(false);
         buttonPanel.get(ButtonNames.BTN_VIEW_PINSETTER).setEnabled(false);
         buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(false);
@@ -62,23 +62,27 @@ public class LaneStatusView implements ActionListener, Observer {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
+        final String source = ((JButton) e.getSource()).getText();
         if (lane.isPartyAssigned()) {
-            if (source.equals(buttonPanel.get(ButtonNames.BTN_VIEW_PINSETTER))) {
-                psShowing = !psShowing;
-                pinSetterView.setVisible(psShowing);
-            } else if (source.equals(buttonPanel.get(ButtonNames.BTN_VIEW_LANE))) {
-                laneShowing = !laneShowing;
-                laneView.setVisible(laneShowing);
-            } else if (source.equals(buttonPanel.get(ButtonNames.BTN_MAINTENANCE))) {
-                lane.pauseGame(false);
-                buttonPanel.get(ButtonNames.BTN_MAINTENANCE).setBackground(Color.GREEN);
+            switch (source) {
+                case ButtonNames.BTN_VIEW_PINSETTER:
+                    psShowing = !psShowing;
+                    pinSetterView.setVisible(psShowing);
+                    break;
+                case ButtonNames.BTN_VIEW_LANE:
+                    laneShowing = !laneShowing;
+                    laneView.setVisible(laneShowing);
+                    break;
+                case ButtonNames.BTN_MAINTENANCE:
+                    lane.pauseGame(false);
+                    buttonPanel.get(ButtonNames.BTN_MAINTENANCE).setBackground(Color.GREEN);
+                    break;
             }
         }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_RESUME))) {
+        if (source.equals(ButtonNames.BTN_RESUME)) {
             loadState();
             lane.pauseManual(false);
-        } else if (source.equals(buttonPanel.get(ButtonNames.BTN_PAUSE))) {
+        } else if (source.equals(ButtonNames.BTN_PAUSE)) {
             lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
             saveState();

@@ -13,7 +13,6 @@ import java.util.Vector;
 class EndGameReport implements ActionListener, ListSelectionListener {
 
     private final Widget.WindowFrame win;
-    private final Widget.ButtonPanel buttonPanel;
     private final List<String> retVal;
     private int result;
 
@@ -28,7 +27,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
                 "Party Members", partyMemberNicks, 5, this);
         partyPanel.getPanel().add(partyPanel.getList()); // Can't understand why list is added again
 
-        buttonPanel = new Widget.ButtonPanel(2, 1, "")
+        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(2, 1, "")
                 .put(ButtonNames.BTN_PRINT, this)
                 .put(ButtonNames.BTN_FINISHED, this);
 
@@ -64,17 +63,17 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
+        final Object source = ((JButton) e.getSource()).getText();
 
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_PRINT))) {
+        if (source.equals(ButtonNames.BTN_PRINT)) {
             retVal.add(selectedMember);
-        } else if (source.equals(buttonPanel.get(ButtonNames.BTN_FINISHED))) {
+        } else if (source.equals(ButtonNames.BTN_FINISHED)) {
             win.setVisible(false);
             result = 1;
         }
     }
 
-    boolean shouldPrint(final String bowlerNick) {
+    private boolean shouldPrint(final String bowlerNick) {
         while (result == 0) {
             Util.busyWait(10);
         }

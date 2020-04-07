@@ -15,7 +15,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
     private final int maxSize;
 
-    private final Widget.ButtonPanel buttonPanel;
     private final WindowFrame win;
     private final Widget.ScrollablePanel<String> partyPanel;
     private Widget.ScrollablePanel<Object> bowlerPanel;
@@ -51,7 +50,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
         buildBowlerPanel();
 
-        buttonPanel = new Widget.ButtonPanel(4, 1, "")
+        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
                 .put(ButtonNames.BTN_ADD_PATRON, this)
                 .put(ButtonNames.BTN_REM_PATRON, this)
                 .put(ButtonNames.BTN_NEW_PATRON, this)
@@ -93,18 +92,16 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_ADD_PATRON))) {
-            addPatron();
-        }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_REM_PATRON))) {
-            removePatron();
-        }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_NEW_PATRON))) {
-            new NewPatronView(this);
-        }
-        if (source.equals(buttonPanel.get(ButtonNames.BTN_FINISHED))) {
-            onPartyFinished();
+        final String source = ((JButton) e.getSource()).getText();
+        switch (source) {
+            case ButtonNames.BTN_ADD_PATRON:
+                addPatron();
+            case ButtonNames.BTN_REM_PATRON:
+                removePatron();
+            case ButtonNames.BTN_NEW_PATRON:
+                new NewPatronView(this);
+            case ButtonNames.BTN_FINISHED:
+                onPartyFinished();
         }
     }
 
