@@ -22,11 +22,14 @@ public class ControlDeskView implements ActionListener, Observer {
     private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
         final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
         final List<Lane> lanes = controlDesk.getLanes();
-        for (int laneCount = 0; laneCount < lanes.size(); laneCount++) {
-            final LaneStatusView laneStat = new LaneStatusView(lanes.get(laneCount), laneCount + 1);
-            lanes.get(laneCount).subscribe(laneStat);
+        int laneCount = 1;
+
+        for (final Lane lane : lanes) {
+            final LaneStatusView laneStat = new LaneStatusView(lane, laneCount);
+            lane.subscribe(laneStat);
             laneStatusPanel.put(new Widget.ContainerPanel(
                     laneStat.showLane(), "Lane " + laneCount));
+            laneCount++;
         }
         return laneStatusPanel;
     }

@@ -13,7 +13,6 @@ public class LaneView implements ActionListener, Observer {
 
     private Widget.ButtonPanel buttonPanel;
     private List<BowlerScoreView> bsv;
-    private List<String> bowlerNicks;
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
     private final LaneInterface lane;
@@ -35,7 +34,6 @@ public class LaneView implements ActionListener, Observer {
     }
 
     private Component makeFrame(final Iterable<String> bowlerNicks) {
-        this.bowlerNicks = (List) bowlerNicks;
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
         bsv = new Vector<>();
 

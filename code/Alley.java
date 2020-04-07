@@ -26,7 +26,7 @@
 
 class Alley {
     Alley(@SuppressWarnings("SameParameterValue") final int numLanes, final int maxPatronsPerParty) {
-        ControlDesk controldesk = new ControlDesk(numLanes);
+        final ControlDesk controldesk = new ControlDesk(numLanes);
         new Thread(controldesk).start();
 
         final Observer cdv = new ControlDeskView(controldesk, maxPatronsPerParty);
