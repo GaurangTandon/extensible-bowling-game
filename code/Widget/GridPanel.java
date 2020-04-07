@@ -7,7 +7,7 @@ public class GridPanel extends GenericPanel {
 
     private final JLabel[] itemLabel, blockLabel;
 
-    public GridPanel(int itemCount, int blockCount, String heading) {
+    public GridPanel(final int itemCount, final int blockCount, final String heading) {
         super(0, 10, heading);
         assert (itemCount == blockCount * 2 + 3);
 
@@ -43,11 +43,11 @@ public class GridPanel extends GenericPanel {
         }
     }
 
-    public JLabel getItemLabel(int i) {
+    public JLabel getItemLabel(final int i) {
         return itemLabel[i];
     }
 
-    public JLabel getBlockLabel(int i) {
+    public JLabel getBlockLabel(final int i) {
         return blockLabel[i];
     }
 }

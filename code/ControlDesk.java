@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.LinkedList;
 
 class ControlDesk extends Publisher implements Runnable {
     private final List<Lane> lanes;
