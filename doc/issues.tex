@@ -1,0 +1,16 @@
+\section{Issues with the Old Code}
+
+
+\subsection{Minor Issues across all Files}
+
+\subsubsection{Overly Broad access specifiers}
+
+Most of the classes and the methods were marked public without a reason. Since most of the code is contained in a package and only the driver (and some interfaces like Party, Scorer, etc. to make a new game from same source) should ever need to be called externally. Therefore these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
+
+\subsubsection{Repetition of Code}
+
+Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
+
+\subsubsection{Badly Written Loops and Conditionals}
+
+Many loops

@@ -1,23 +1,107 @@
+\section{Structure of the New Code}
+
+
 This document outlines the major responsibilities of each class.
 
-Some general terminology:
+\subsection{Overall Structure}
 
+Some basic File \subsubsection{Groups}
 \begin{itemize}
-    \item `XView.java` files are concerned with providing a GUI to the end user, and are mostly not concerned with implementing any logic. The logic is entirely contained in `X.java'. Both files communicate via an Observer pattern, where X is the Publisher and XView is the Observer.
-    \item Other general things go here\dots
+    \item `XView.java` files are concerned with providing a GUI to the end user, and do not implement any logic. They form the "View".
+          \begin{itemize}
+              \item AddPartyView (No controller)
+              \item AdhocView (No controller)
+              \item BowlerScorerView
+              \item ControlDeskView
+              \item LaneStatusView
+              \item LaneView
+              \item NewPatronView
+              \item PinsetterView
+              \item EndGamePrompt
+              \item EndGameReport
+          \end{itemize}
+    \item The logic is entirely contained in `X.java'. It is responsible for maintaining the state of the view and redrawing the view on any updates. This forms the "Controller" part.
+          \begin{itemize}
+              \item BowlerScorer
+              \item ControlDesk
+              \item Pinsetter
+              \item Lane
+          \end{itemize}
+    \item There are several other classes which help the controllers mentioned above maintain state and compute score-tables, etc. based on the rules of bowling by responding to the broadcasted events. These, in a loose sense form the data model.
+          \begin{itemize}
+              \item Queue (store by AddPartyView, retrieve by Lane)
+              \item LaneScorer (handles scoring, updates by Pinsetter, used by Lane and others)
+              \item BowlerScorer (sub-model to LaneScorer)
+              \item Bowler (Used by Party)
+              \item Party (Used by Lane)
+          \end{itemize}
+    \item The Events broadcasted as a part of the observer pattern are done through are done through the `XEvent.java' classes. It wraps all data needed by any other class from the generated event.
+          \begin{itemize}
+              \item LaneEvent
+              \item PinsetterEvent
+              \item ControlDeskEvent
+          \end{itemize}
+    \item In addition to the View classes, there are view Helpers in the Widget library, following is a \subsubsection{list}
+          \begin{itemize}
+              \item ButtonPanel
+              \item ConainerPanel
+              \item FormPanel
+              \item GridPanel
+              \item SrollablePanel
+              \item TextFieldPanel
+              \item Generic Panel (Abstract superclass)
+              \item WindowFrame
+          \end{itemize}
+    \item The Abstract Classes that layout the necessary functions for classes to implement and decouple our implementations from the requirements due to it's users.
+          \begin{itemize}
+              \item Observer
+              \item Publisher
+              \item Event
+              \item GeneralParty
+              \item GeneralBowler
+              \item GeneralPinsetter
+              \item LaneInterface
+          \end{itemize}
+    \item Other utility classes that help with things like Input/Output and maintaining data, often for specific classes.
+          \begin{itemize}
+              \item Util
+              \item PrintableText
+              \item BowlerFile
+              \item ScoreHistoryFile
+              \item ScoreReport
+          \end{itemize}
+    \item Finally, we have the main driver classes, which assign threads and run the entire code.
+          \begin{itemize}
+              \item Alley
+              \item driver (Contains `public static void main()')
+          \end{itemize}
+    \item And then there is a single Test file, to automate correctness checks. We have not added more as it's not an everchanging piece of code, most of the testing is done through asserts, and throwing errors under unexpected events.
+          \begin{itemize}
+              \item BowlerScorerTest
+          \end{itemize}
+    \item Other files
 \end{itemize}
 
-AddPartyView: GUI for adding a new party to the control desk. This supports being able to add or remove patrons from a party, or enlist a new patron and then add him.
 
-Alley: represents an Alley, it's a stub class given it basically integrates ControlDesk and its View together, but given our requirements, this is fine.
+\subsection{Describing Specific Classes}
 
-BowlerFile: manages the backend of persistently storing patron nickk names, emails, and full names. Has public methods for adding a new patron, searching for existing patron, etc.
+\subsubsection{AddPartyView}
+GUI for adding a new party to the control desk. This supports being able to add or remove patrons from a party, or enlist a new patron and then add him.
 
-Bowler: stub class for a Bowler object, which contains a name, full name and its email.
+\subsubsection{Alley}
+Represents an Alley, it's a stub class given it basically integrates ControlDesk and its View together, but given our requirements, this is fine.
 
-BowlerScorer: companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
+\subsubsection{BowlerFile}
+Manages the backend of persistently storing patron nickk names, emails, and full names. Has public methods for adding a new patron, searching for existing patron, etc.
 
-BowlerScorerTest: a test file to make sure scores are correctly updated in BowlerScorer.
+\subsubsection{Bowler}
+Stub class for a Bowler object, which contains a name, full name and its email.
 
-BowlerScoreView: GUI that renders a horizontal table of around 20 cells that update everytime that bowler makes a throw. It is unique for each bowler.
+\subsubsection{BowlerScorer}
+Companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
 
+\subsubsection{BowlerScorerTest}
+A test file to make sure scores are correctly updated in BowlerScorer.
+
+\subsubsection{BowlerScoreView}
+GUI that renders a horizontal table of around 20 cells that update everytime that bowler makes a throw. It is unique for each bowler.
