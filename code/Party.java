@@ -22,24 +22,19 @@ class Party implements GeneralParty {
         }
     }
 
-    /**
-     * Accessor for members in this party
-     *
-     * @return A vector of the bowlers in this party
-     */
-
-    public void saveState(FileWriter fw) throws IOException {
+    public void saveState(final FileWriter fw) throws IOException {
         fw.write(bowlers.size() + "\n");
-        for (GeneralBowler bowler : bowlers) {
+        for (final GeneralBowler bowler : bowlers) {
             fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
         }
     }
 
-    public void loadState(BufferedReader fr) throws IOException {
-        int size = Integer.parseInt(fr.readLine());
+    public void loadState(final BufferedReader fr) throws IOException {
+        final int size = Integer.parseInt(fr.readLine());
         bowlers.clear();
+
         for (int i = 0; i < size; i++) {
-            String[] bowler = fr.readLine().split("/");
+            final String[] bowler = fr.readLine().split("/");
             bowlers.add(new Bowler(bowler[0], bowler[1], bowler[2]));
         }
     }

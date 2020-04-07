@@ -92,10 +92,10 @@ public class LaneStatusView implements ActionListener, Observer {
 
     private void loadState() {
         try {
-            FileReader f = new FileReader(saveFile);
-            BufferedReader bufferedReader = new BufferedReader(f);
+            final FileReader fileReader = new FileReader(saveFile);
+            final BufferedReader bufferedReader = new BufferedReader(fileReader);
             lane.loadState(bufferedReader);
-            f.close();
+            fileReader.close();
         } catch (final IOException e) {
             e.printStackTrace();
         }

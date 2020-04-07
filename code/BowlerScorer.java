@@ -3,16 +3,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 class BowlerScorer {
-    private final int[] rolls;
+    private int[] rolls;
+    private int[] cumulativeScore;
+    private int[] perFramePartRes;
 
-    private final int[] cumulativeScore;
-    private final int[] perFramePartRes;
     private int currFrame;
     private int partIndex;
     private int rollCount;
     private int score;
 
     BowlerScorer() {
+        resetState();
+    }
+
+    private void resetState() {
         // extra 2 elements for safety from index out of bounds
         rolls = new int[LaneScorer.MAX_ROLLS + 2];
         cumulativeScore = new int[LaneScorer.FRAME_COUNT];
@@ -26,15 +30,16 @@ class BowlerScorer {
         score = 0;
     }
 
-    void saveState(FileWriter fw) throws IOException {
+    void saveState(final FileWriter fw) throws IOException {
         for (int i = 0; i < rollCount; i++)
             fw.write(rolls[i] + " ");
         fw.write("\n");
     }
 
-    void loadState(BufferedReader fr) throws IOException {
-        String[] state = fr.readLine().split(" ");
-        for (String s : state) {
+    void loadState(final BufferedReader fr) throws IOException {
+        resetState();
+        final String[] state = fr.readLine().split(" ");
+        for (final String s : state) {
             roll(Integer.parseInt(s));
         }
     }
@@ -109,7 +114,7 @@ class BowlerScorer {
             }
 
             cumulativeScore[oldFrame] += scoreOnThisFrame;
-            if(oldFrame > 0)
+            if (oldFrame > 0)
                 cumulativeScore[oldFrame] += cumulativeScore[oldFrame - 1];
         }
 
@@ -196,10 +201,10 @@ class BowlerScorer {
         // so i am basically checking that the bowler is still in the same frame
         // as he was in the last roll
 
-        Boolean frameValidation = validateCurrFrame(frameNumber);
+        final Boolean frameValidation = validateCurrFrame(frameNumber);
         if (frameValidation != null) return frameValidation;
 
-        Boolean partIndexValidation = validatePartIndex();
+        final Boolean partIndexValidation = validatePartIndex();
         if (partIndexValidation != null) return partIndexValidation;
 
         return true;
@@ -214,7 +219,7 @@ class BowlerScorer {
         return null;
     }
 
-    private Boolean validateCurrFrame(int frameNumber) {
+    private Boolean validateCurrFrame(final int frameNumber) {
         if (currFrame != frameNumber)
             return false;
 

@@ -37,12 +37,12 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         party = null;
     }
 
-    void saveState(FileWriter fw) throws IOException {
+    void saveState(final FileWriter fw) throws IOException {
         party.saveState(fw);
         scorer.saveState(fw);
     }
 
-    void loadState(BufferedReader fr) throws IOException {
+    void loadState(final BufferedReader fr) throws IOException {
         paused = true;
         party = new Party();
         party.loadState(fr);
@@ -51,7 +51,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         paused = false;
     }
 
-    void setPauseState(boolean state) {
+    void setPauseState(final boolean state) {
         paused = state;
     }
 
