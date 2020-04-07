@@ -42,7 +42,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     void loadState(final BufferedReader fr) throws IOException {
         paused = true;
         scorer = new ScorableParty();
-        scorer.resetScoresHard();
         scorer.loadState(fr);
         paused = false;
     }

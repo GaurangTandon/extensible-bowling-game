@@ -10,10 +10,10 @@ class ScorableParty extends Party {
     // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
     static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
     static final int LAST_FRAME = FRAME_COUNT - 1;
+    private static final String DELIMITER = ",";
 
     private static final int MAX_GAMES = 128;
     private int[][] finalScores;
-    private int partySize;
     private boolean halted;
     private boolean finished;
     private int bowlerIndex;
@@ -33,6 +33,14 @@ class ScorableParty extends Party {
         for (final ScorableBowler bowlerScorer : bowlers) {
             bowlerScorer.saveState(fw);
         }
+        fw.write(gameNumber + DELIMITER + frameNumber + DELIMITER + bowlerIndex + "\n");
+        for (final int[] finalScore : finalScores) {
+            for (int i = 0; i <= gameNumber; i++) {
+                if (i > 0) fw.write(DELIMITER);
+                fw.write(String.valueOf(finalScore[i]));
+            }
+            fw.write("\n");
+        }
     }
 
     void loadState(final BufferedReader fr) throws IOException {
@@ -40,12 +48,24 @@ class ScorableParty extends Party {
         for (final ScorableBowler bowlerScorer : bowlers) {
             bowlerScorer.loadState(fr);
         }
+        final String[] others = fr.readLine().split(DELIMITER);
+        gameNumber = Integer.parseInt(others[0]);
+        frameNumber = Integer.parseInt(others[1]);
+        bowlerIndex = Integer.parseInt(others[2]);
+        finalScores = new int[bowlers.size()][MAX_GAMES];
+
+        for (int i = 0; i < bowlers.size(); i++) {
+            final String[] scores = fr.readLine().split(DELIMITER);
+            for (int j = 0; j <= gameNumber; j++) {
+                finalScores[i][j] = Integer.parseInt(scores[j]);
+            }
+        }
     }
 
     final void nextBowler() {
         bowlerIndex++;
 
-        if (bowlerIndex == partySize) {
+        if (bowlerIndex == bowlers.size()) {
             frameNumber++;
             bowlerIndex = 0;
             if (frameNumber == FRAME_COUNT) {
@@ -64,10 +84,8 @@ class ScorableParty extends Party {
     }
 
     private void resetScores(final boolean resetFinalScores) {
-        partySize = bowlers.size();
-
         if (resetFinalScores) {
-            finalScores = new int[partySize][MAX_GAMES];
+            finalScores = new int[bowlers.size()][MAX_GAMES];
             gameNumber = 0;
         }
 
@@ -110,8 +128,8 @@ class ScorableParty extends Party {
     }
 
     final int[][] getCumulativeScores() {
-        final int[][] cumulativeScores = new int[partySize][FRAME_COUNT];
-        for (int bowler = 0; bowler < partySize; bowler++)
+        final int[][] cumulativeScores = new int[bowlers.size()][FRAME_COUNT];
+        for (int bowler = 0; bowler < bowlers.size(); bowler++)
             cumulativeScores[bowler] = bowlers.get(bowler).getCumulativeScore();
         return cumulativeScores;
     }
@@ -122,9 +140,9 @@ class ScorableParty extends Party {
 
     final int[][] getByBowlerByFramePartResult() {
         // return a bowler x 21 matrix of scores
-        final int[][] result = new int[partySize][MAX_ROLLS];
+        final int[][] result = new int[bowlers.size()][MAX_ROLLS];
 
-        for (int bowler = 0; bowler < partySize; bowler++) {
+        for (int bowler = 0; bowler < bowlers.size(); bowler++) {
             result[bowler] = bowlers.get(bowler).getByFramePartResult();
         }
         return result;

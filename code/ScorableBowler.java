@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class ScorableBowler extends Bowler {
+    private static final String DELIMITER = ",";
     private int[] cumulativeScore;
     private int[] perFramePartRes;
     private Frame[] frames;
@@ -11,12 +12,12 @@ class ScorableBowler extends Bowler {
     private int currFrame;
     private int score;
 
-    ScorableBowler(final String nick, final String full, final String mail){
+    ScorableBowler(final String nick, final String full, final String mail) {
         super(nick, full, mail);
         reset();
     }
 
-    ScorableBowler(final Bowler bowler){
+    ScorableBowler(final Bowler bowler) {
         this(bowler.getNickName(), bowler.getFullName(), bowler.getEmail());
     }
 
@@ -40,12 +41,20 @@ class ScorableBowler extends Bowler {
     }
 
     void saveState(final FileWriter fw) throws IOException {
-        for (final Frame frame : frames) frame.saveState(fw);
+        final ArrayList<Integer> rolls = getRolls();
+
+        for(int i = 0; i < rolls.size(); i++) {
+            if(i > 0) fw.write(DELIMITER);
+            fw.write(String.valueOf(rolls.get(i)));
+        }
+        fw.write("\n");
     }
 
     // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        for (final Frame frame : frames) frame.loadState(fr);
+        final String[] rolls = fr.readLine().split(DELIMITER);
+        for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
+        updateCumulativeScores();
     }
 
     private void resetCumulativeScores() {

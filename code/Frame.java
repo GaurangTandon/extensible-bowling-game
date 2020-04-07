@@ -1,11 +1,7 @@
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 class Frame {
-    private static final String DELIMITER = ",";
     static final int UNROLLED = -1;
     int[] rolls;
     int frameNumber;
@@ -24,21 +20,6 @@ class Frame {
         rolls = new int[2];
         rolls[0] = rolls[1] = UNROLLED;
         rollCount = 0;
-    }
-
-    void saveState(final FileWriter fw) throws IOException {
-        for (int i = 0; i < rolls.length; i++) {
-            if (i > 0) fw.write(DELIMITER);
-            fw.write(rolls[i]);
-        }
-        fw.write("\n");
-    }
-
-    void loadState(final BufferedReader br) throws IOException {
-        final String[] state = br.readLine().split(DELIMITER);
-        for (int i = 0; i < rolls.length; i++) {
-            rolls[i] = Integer.parseInt(state[i]);
-        }
     }
 
     static final int STRIKE = 11;
