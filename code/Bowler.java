@@ -17,11 +17,7 @@
  *
  */
 
-/**
- * Class that holds all bowler info
- */
-
-class Bowler implements GeneralBowler {
+class Bowler {
 
     private final String fullName;
     private final String nickName;
@@ -33,23 +29,19 @@ class Bowler implements GeneralBowler {
         email = mail;
     }
 
-
-    public final String getNickName() {
+    final String getNickName() {
         return nickName;
     }
 
-    public final String getFullName() {
+    final String getFullName() {
         return fullName;
     }
 
-    public final String getEmail() {
+    final String getEmail() {
         return email;
     }
 
-    public final void log() {
+    final void log() {
         System.out.println("Name " + nickName + " fullname " + fullName + " email " + email);
     }
-
-    // Log of deleted unused methods:
-    // equals(Bowler other)
 }

@@ -58,7 +58,7 @@ final class ScoreHistoryFile {
     }
 
     static Score getMaxCumulativeScore() throws IOException {
-        Map<String, Integer> scores = new HashMap<>(0);
+        final Map<String, Integer> scores = new HashMap<>(0);
 
         final BufferedReader in =
                 new BufferedReader(new FileReader(SCORE_HISTORY_DAT));

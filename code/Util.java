@@ -36,8 +36,8 @@ final class Util {
         return false;
     }
 
-    static GeneralBowler getPatronDetails(final String nickName) {
-        GeneralBowler patron = null;
+    static Bowler getPatronDetails(final String nickName) {
+        Bowler patron = null;
 
         try {
             patron = BowlerFile.getBowlerInfo(nickName);

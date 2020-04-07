@@ -5,6 +5,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -21,7 +22,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     private static final String BTN_PRINT = "Print Report";
     private static final String BTN_FINISHED = "Finished";
 
-    EndGameReport(final String partyName, final Vector<String> partyMemberNicks) {
+    EndGameReport(final String partyName, final ArrayList<String> partyMemberNicks) {
         result = 0;
         retVal = new Vector<>(0);
 

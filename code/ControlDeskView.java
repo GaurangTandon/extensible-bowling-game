@@ -3,8 +3,8 @@ import Widget.WindowFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, Observer {
     private final WindowFrame win;
@@ -45,7 +45,7 @@ public class ControlDeskView implements ActionListener, Observer {
                 .put(BTN_QUERIES, this)
                 .put(BTN_FINISHED, this);
 
-        final Vector<Object> empty = new Vector<>(0);
+        final ArrayList<Object> empty = new ArrayList<>(0);
         empty.add("(Empty)");
         partyPanel = new Widget.ScrollablePanel<>(
                 "Party Queue", empty, 10);

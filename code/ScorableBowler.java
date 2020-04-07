@@ -3,41 +3,62 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class BowlerScorer {
-
-    private final int[] cumulativeScore;
-    private final int[] perFramePartRes;
-    private final Frame[] frames;
+class ScorableBowler extends Bowler {
+    private static final String DELIMITER = ",";
+    private int[] cumulativeScore;
+    private int[] perFramePartRes;
+    private Frame[] frames;
 
     private int currFrame;
     private int score;
 
-    BowlerScorer() {
-        frames = new Frame[LaneScorer.FRAME_COUNT];
-        for (int i = 0; i < LaneScorer.FRAME_COUNT - 1; i++)
-            frames[i] = new Frame(i);
-        frames[LaneScorer.FRAME_COUNT - 1] = new LastFrame();
+    ScorableBowler(final String nick, final String full, final String mail) {
+        super(nick, full, mail);
+        reset();
+    }
 
-        cumulativeScore = new int[LaneScorer.FRAME_COUNT];
+    ScorableBowler(final Bowler bowler) {
+        this(bowler.getNickName(), bowler.getFullName(), bowler.getEmail());
+    }
+
+    ScorableBowler() {
+        this("", "", "");
+    }
+
+    void reset() {
+        frames = new Frame[ScorableParty.FRAME_COUNT];
+        for (int i = 0; i < ScorableParty.FRAME_COUNT - 1; i++)
+            frames[i] = new Frame(i);
+        frames[ScorableParty.FRAME_COUNT - 1] = new LastFrame();
+
+        cumulativeScore = new int[ScorableParty.FRAME_COUNT];
         resetCumulativeScores();
-        perFramePartRes = new int[LaneScorer.MAX_ROLLS];
-        for (int i = 0; i < LaneScorer.MAX_ROLLS; i++) perFramePartRes[i] = -1;
+        perFramePartRes = new int[ScorableParty.MAX_ROLLS];
+        for (int i = 0; i < ScorableParty.MAX_ROLLS; i++) perFramePartRes[i] = -1;
 
         currFrame = 0;
         score = 0;
     }
 
     void saveState(final FileWriter fw) throws IOException {
-        for (final Frame frame : frames) frame.saveState(fw);
+        final ArrayList<Integer> rolls = getRolls();
+
+        for(int i = 0; i < rolls.size(); i++) {
+            if(i > 0) fw.write(DELIMITER);
+            fw.write(String.valueOf(rolls.get(i)));
+        }
+        fw.write("\n");
     }
 
     // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        for (final Frame frame : frames) frame.loadState(fr);
+        final String[] rolls = fr.readLine().split(DELIMITER);
+        for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
+        updateCumulativeScores();
     }
 
     private void resetCumulativeScores() {
-        for (int frame = 0; frame < LaneScorer.FRAME_COUNT; frame++)
+        for (int frame = 0; frame < ScorableParty.FRAME_COUNT; frame++)
             cumulativeScore[frame] = -1;
     }
 
@@ -100,7 +121,7 @@ class BowlerScorer {
     }
 
     boolean canRollAgain(final int lanesFrameNumber) {
-        if(currFrame != lanesFrameNumber) return false;
+        if (currFrame != lanesFrameNumber) return false;
         return frames[currFrame].canRollAgain();
     }
 

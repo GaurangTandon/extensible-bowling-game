@@ -16,11 +16,11 @@ final class BowlerFile {
      * @return a Bowler object
      */
 
-    static GeneralBowler getBowlerInfo(final String nickName)
+    static Bowler getBowlerInfo(final String nickName)
             throws IOException {
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
-        GeneralBowler foundBowler = null;
+        Bowler foundBowler = null;
 
         while ((data = in.readLine()) != null && foundBowler == null) {
             // File format is nick,first_name,e-mail (csv)
@@ -41,7 +41,7 @@ final class BowlerFile {
      */
     static Vector<String> putBowlerIfDidntExist(final String nick, final String full, final String email) {
         try {
-            final GeneralBowler checkBowler = getBowlerInfo(nick);
+            final Bowler checkBowler = getBowlerInfo(nick);
             if (checkBowler != null) return null;
 
             putBowlerInfo(nick, full, email);

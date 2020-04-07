@@ -9,7 +9,7 @@
  */
 
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Class that represents control desk event
@@ -19,7 +19,7 @@ class ControlDeskEvent implements Event {
     /**
      * A representation of the wait queue, containing party names
      */
-    private final Vector partyQueue;
+    private final ArrayList<String> partyQueue;
 
     /**
      * Constructor for the ControlDeskEvent
@@ -27,7 +27,7 @@ class ControlDeskEvent implements Event {
      * @param partyQueue a Vector of Strings containing the names of the parties in the wait queue
      */
 
-    ControlDeskEvent(final Vector partyQueue) {
+    ControlDeskEvent(final ArrayList<String> partyQueue) {
         this.partyQueue = partyQueue;
     }
 
@@ -37,8 +37,7 @@ class ControlDeskEvent implements Event {
      * @return a Vector of Strings representing the names of the parties in the wait queue
      */
 
-    final Vector getPartyQueue() {
+    final ArrayList<String> getPartyQueue() {
         return partyQueue;
     }
-
 }
