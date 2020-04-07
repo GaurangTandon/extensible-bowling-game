@@ -3,7 +3,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
-
 public class Lane extends Publisher implements Runnable, LaneInterface, Observer {
     private GeneralParty party;
     private final Pinsetter pinsetter;

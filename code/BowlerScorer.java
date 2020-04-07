@@ -5,9 +5,9 @@ import java.io.IOException;
 class BowlerScorer {
     private static final String DELIMITER = ",";
 
-    private int[] rolls;
-    private int[] cumulativeScore;
-    private int[] perFramePartRes;
+    private final int[] rolls;
+    private final int[] cumulativeScore;
+    private final int[] perFramePartRes;
 
     private int currFrame;
     private int partIndex;
