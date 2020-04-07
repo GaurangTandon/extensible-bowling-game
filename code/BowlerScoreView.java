@@ -14,10 +14,10 @@ class BowlerScoreView {
     private static String getCharToShow(final int currScore) {
         final String textToSet;
         switch (currScore) {
-            case BowlerScorer.STRIKE:
+            case Frame.STRIKE:
                 textToSet = "X";
                 break;
-            case BowlerScorer.SPARE:
+            case Frame.SPARE:
                 textToSet = "/";
                 break;
             default:
