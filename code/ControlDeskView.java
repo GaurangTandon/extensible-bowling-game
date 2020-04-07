@@ -29,7 +29,7 @@ public class ControlDeskView implements ActionListener, Observer {
         return laneStatusPanel;
     }
 
-    void setupControlsPanel() {
+    private void setupControlsPanel() {
         controlsPanel = new ButtonPanel(4, 1, "Controls")
                 .put(ButtonNames.BTN_ADD_PARTY, this)
                 .put(ButtonNames.BTN_ASSIGN, this)
@@ -44,7 +44,6 @@ public class ControlDeskView implements ActionListener, Observer {
         final int numLanes = controlDesk.numLanes;
 
         setupControlsPanel();
-
 
         final ArrayList<Object> empty = new ArrayList<>(0);
         empty.add("(Empty)");
