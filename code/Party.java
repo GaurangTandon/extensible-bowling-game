@@ -17,7 +17,7 @@ class Party {
 
     void saveState(final FileWriter fw) throws IOException {
         fw.write(bowlers.size() + "\n");
-        for (final Bowler bowler : bowlers) {
+        for (final BowlerInfo bowler : bowlers) {
             fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
         }
     }
@@ -43,7 +43,7 @@ class Party {
     final ArrayList<String> getMemberNicks() {
         final ArrayList<String> nicks = new ArrayList<>(getPartySize());
 
-        for (final Bowler bowler : bowlers) {
+        for (final BowlerInfo bowler : bowlers) {
             nicks.add(bowler.getNickName());
         }
         return nicks;

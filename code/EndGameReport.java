@@ -45,7 +45,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
 
         int myIndex = 0;
 
-        for (final Bowler bowler : partyMembers) {
+        for (final BowlerInfo bowler : partyMembers) {
             final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), gameNumber);
             myIndex++;
 

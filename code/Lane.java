@@ -31,10 +31,10 @@ public class Lane extends LaneWithPinsetter implements Runnable {
 
     void loadState(final String fileName) {
         paused = true;
-        scorer = new ScorableParty();
         try {
             final FileReader fr = new FileReader(fileName);
             final BufferedReader bufferedReader = new BufferedReader(fr);
+            scorer = new ScorableParty();
             scorer.loadState(bufferedReader);
             bufferedReader.close();
             fr.close();

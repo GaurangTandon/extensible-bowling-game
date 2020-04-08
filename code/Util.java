@@ -38,8 +38,8 @@ final class Util {
         return false;
     }
 
-    static Bowler getPatronDetails(final String nickName) {
-        Bowler patron = null;
+    static BowlerInfo getPatronDetails(final String nickName) {
+        BowlerInfo patron = null;
 
         try {
             patron = BowlerFile.getBowlerInfo(nickName);

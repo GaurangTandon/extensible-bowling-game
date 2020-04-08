@@ -41,7 +41,7 @@ class ControlDesk extends Publisher implements Runnable {
         final ScorableParty newParty = new ScorableParty();
 
         for (final String partyNick : partyNicks) {
-            final Bowler gotBowler = Util.getPatronDetails(partyNick);
+            final BowlerInfo gotBowler = Util.getPatronDetails(partyNick);
             final ScorableBowler newBowler = new ScorableBowler(gotBowler);
             newParty.addBowler(newBowler);
         }
