@@ -2,23 +2,22 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Container that holds bowlers
  */
 class Party {
-    final Vector<ScorableBowler> bowlers;
-    String name;
+    final ArrayList<ScorableBowler> bowlers;
+    private String name;
 
     Party() {
-        bowlers = new Vector(0);
+        bowlers = new ArrayList<>(0);
         name = "";
     }
 
     void saveState(final FileWriter fw) throws IOException {
         fw.write(bowlers.size() + "\n");
-        for (final Bowler bowler : bowlers) {
+        for (final BowlerInfo bowler : bowlers) {
             fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
         }
     }
@@ -33,7 +32,7 @@ class Party {
         }
     }
 
-    final Vector<ScorableBowler> getMembers() {
+    final ArrayList<ScorableBowler> getMembers() {
         return bowlers;
     }
 
@@ -44,10 +43,18 @@ class Party {
     final ArrayList<String> getMemberNicks() {
         final ArrayList<String> nicks = new ArrayList<>(getPartySize());
 
-        for (final Bowler bowler : bowlers) {
+        for (final BowlerInfo bowler : bowlers) {
             nicks.add(bowler.getNickName());
         }
         return nicks;
+    }
+
+    void addBowler(final ScorableBowler bowler) {
+        bowlers.add(bowler);
+
+        if (bowlers.size() == 1) {
+            name += bowler.getNickName() + "'s Party";
+        }
     }
 
     final String getName() {

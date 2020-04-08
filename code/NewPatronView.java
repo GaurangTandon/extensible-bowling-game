@@ -14,6 +14,7 @@
 import Widget.TextFieldPanel;
 import Widget.WindowFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,7 +23,6 @@ import java.awt.event.ActionListener;
  */
 class NewPatronView implements ActionListener {
 
-    private final Widget.ButtonPanel buttonPanel;
     private final TextFieldPanel patronPanel;
     private final WindowFrame window;
     private String nick, full, email;
@@ -32,8 +32,6 @@ class NewPatronView implements ActionListener {
     private static final String TXT_NICK_FIELD = "Nick Name";
     private static final String TXT_FULL_FIELD = "Full Name";
     private static final String TXT_EMAIL_FIELD = "E-Mail";
-    private static final String BTN_FINISHED = "Add Patron";
-    private static final String BTN_ABORT = "Abort";
 
     NewPatronView(final AddPartyView v) {
         addParty = v;
@@ -42,9 +40,9 @@ class NewPatronView implements ActionListener {
                 .put(TXT_NICK_FIELD)
                 .put(TXT_FULL_FIELD)
                 .put(TXT_EMAIL_FIELD);
-        buttonPanel = new Widget.ButtonPanel(4, 1, "")
-                .put(BTN_FINISHED, this)
-                .put(BTN_ABORT, this);
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
+                .put(ButtonNames.BTN_PATRON_FINISHED, this)
+                .put(ButtonNames.BTN_PATRON_ABORT, this);
 
         window = new WindowFrame(
                 "Add Patron",
@@ -55,9 +53,9 @@ class NewPatronView implements ActionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-        final boolean aborted = source.equals(buttonPanel.get(BTN_ABORT));
-        final boolean finished = source.equals(buttonPanel.get(BTN_FINISHED));
+        final Object source = ((AbstractButton) e.getSource()).getText();
+        final boolean aborted = source.equals(ButtonNames.BTN_PATRON_ABORT);
+        final boolean finished = source.equals(ButtonNames.BTN_PATRON_FINISHED);
 
         if (finished) {
             nick = patronPanel.getText(TXT_NICK_FIELD);

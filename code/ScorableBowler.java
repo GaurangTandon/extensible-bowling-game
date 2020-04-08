@@ -1,131 +1,62 @@
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
-class ScorableBowler extends Bowler {
-    private static final String DELIMITER = ",";
-    private int[] cumulativeScore;
-    private int[] perFramePartRes;
-    private Frame[] frames;
-
-    private int currFrame;
-    private int score;
+public class ScorableBowler extends Bowler {
+    private int[] gameScores;
+    private static final int MAX_GAMES = 128;
 
     ScorableBowler(final String nick, final String full, final String mail) {
         super(nick, full, mail);
-        reset();
+        resetHard();
     }
 
-    ScorableBowler(final Bowler bowler) {
+    ScorableBowler(final BowlerInfo bowler) {
         this(bowler.getNickName(), bowler.getFullName(), bowler.getEmail());
     }
 
-    ScorableBowler() {
-        this("", "", "");
+    int[] getFinalScores() {
+        return gameScores.clone();
     }
 
-    void reset() {
-        frames = new Frame[ScorableParty.FRAME_COUNT];
-        for (int i = 0; i < ScorableParty.FRAME_COUNT - 1; i++)
-            frames[i] = new Frame(i);
-        frames[ScorableParty.FRAME_COUNT - 1] = new LastFrame();
-
-        cumulativeScore = new int[ScorableParty.FRAME_COUNT];
-        resetCumulativeScores();
-        perFramePartRes = new int[ScorableParty.MAX_ROLLS];
-        for (int i = 0; i < ScorableParty.MAX_ROLLS; i++) perFramePartRes[i] = -1;
-
-        currFrame = 0;
-        score = 0;
+    void resetHard() {
+        resetSoft();
+        gameScores = new int[MAX_GAMES];
     }
 
     void saveState(final FileWriter fw) throws IOException {
-        final ArrayList<Integer> rolls = getRolls();
+        final List<Integer> rolls = getRolls();
 
-        for(int i = 0; i < rolls.size(); i++) {
-            if(i > 0) fw.write(DELIMITER);
+        for (int i = 0; i < rolls.size(); i++) {
+            if (i > 0) fw.write(Util.DELIMITER);
             fw.write(String.valueOf(rolls.get(i)));
+        }
+        fw.write("\n");
+        for (int i = 0; i < MAX_GAMES; i++) {
+            if (i > 0) fw.write(Util.DELIMITER);
+            fw.write(String.valueOf(gameScores[i]));
         }
         fw.write("\n");
     }
 
     // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        final String[] rolls = fr.readLine().split(DELIMITER);
+        final String[] rolls = fr.readLine().split(Util.DELIMITER);
         for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
-        updateCumulativeScores();
+
+        final String[] scores = fr.readLine().split(Util.DELIMITER);
+        for (int i = 0; i < MAX_GAMES; i++) gameScores[i] = Integer.parseInt(scores[i]);
     }
 
-    private void resetCumulativeScores() {
-        for (int frame = 0; frame < ScorableParty.FRAME_COUNT; frame++)
-            cumulativeScore[frame] = -1;
-    }
+    void setGameScoresOnGameEnd(final int gameNumber) {
+        gameScores[gameNumber] = getCumulativeScore()[Frame.LAST_FRAME];
+        final String finalScore = Integer.toString(gameScores[gameNumber]);
 
-    private ArrayList<Integer> getRolls() {
-        final ArrayList<Integer> rollList = new ArrayList<>(0);
-        for (final Frame frame : frames) {
-            frame.addRolls(rollList);
+        try {
+            ScoreHistoryFile.addScore(getNickName(), finalScore);
+        } catch (final IOException e) {
+            System.err.println("Exception in addScore. " + e);
         }
-
-        return rollList;
-    }
-
-    void updateCumulativeScores() {
-        final ArrayList<Integer> rolls = getRolls();
-        int rollIndex = 0;
-
-        resetCumulativeScores();
-
-        for (int i = 0; i < currFrame; i++) {
-            final int contrib = frames[i].getContributionToScore(rolls, rollIndex);
-            if (contrib == -1) break;
-
-            cumulativeScore[i] = contrib;
-            if (i > 0) cumulativeScore[i] += cumulativeScore[i - 1];
-
-            rollIndex += frames[i].rollCount;
-        }
-
-        score = cumulativeScore[currFrame];
-    }
-
-    int getScore() {
-        return score;
-    }
-
-    /**
-     * Add this roll to the array
-     * and also update frame and part index accordingly
-     *
-     * @param pinsDown The number of pins hit in the strike
-     */
-    void roll(final int pinsDown) {
-        final Frame frame = frames[currFrame];
-        frame.roll(pinsDown, perFramePartRes);
-
-        currFrame += frame.getIncrement();
-    }
-
-    int[] getCumulativeScore() {
-        return cumulativeScore.clone();
-    }
-
-    /**
-     * Used in LaneView to display the entire row of cells for a bowler
-     *
-     * @return integer array, result per frame part
-     */
-    int[] getByFramePartResult() {
-        return perFramePartRes.clone();
-    }
-
-    boolean canRollAgain(final int lanesFrameNumber) {
-        if (currFrame != lanesFrameNumber) return false;
-        return frames[currFrame].canRollAgain();
-    }
-
-    int getCurrFrame() {
-        return currFrame;
     }
 }

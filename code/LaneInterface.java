@@ -1,3 +1,0 @@
-interface LaneInterface {
-    void pauseGame();
-}

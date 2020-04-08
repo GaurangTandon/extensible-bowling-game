@@ -143,4 +143,8 @@ public class PinSetterView implements Observer {
     void setVisible(final boolean state) {
         frame.setVisible(state);
     }
+
+    void toggleVisible() {
+        frame.setVisible(!frame.isVisible());
+    }
 }

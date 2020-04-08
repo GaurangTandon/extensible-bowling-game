@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
  * just one-line function calls of Util.
  */
 final class Util {
+    static final String DELIMITER = ",";
+
     private Util() {
     }
 
@@ -30,14 +32,14 @@ final class Util {
     static boolean containsString(final Iterable<String> container, final String target) {
         if (target == null) return false;
         for (final String str : container) {
-            if (str.equals(target))
+            if (target.equals(str))
                 return true;
         }
         return false;
     }
 
-    static Bowler getPatronDetails(final String nickName) {
-        Bowler patron = null;
+    static BowlerInfo getPatronDetails(final String nickName) {
+        BowlerInfo patron = null;
 
         try {
             patron = BowlerFile.getBowlerInfo(nickName);

@@ -10,7 +10,7 @@ import java.net.Socket;
 class ScoreReport {
     private String content;
 
-    ScoreReport(final Bowler bowler, final int[] scores, final int games) {
+    ScoreReport(final BowlerInfo bowler, final int[] scores, final int games) {
         final String nick = bowler.getNickName();
         final String full = bowler.getFullName();
         Iterable<Score> v = null;

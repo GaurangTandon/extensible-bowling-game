@@ -10,9 +10,10 @@ final class ScoreHistoryFile {
     private ScoreHistoryFile() {
     }
 
-    static void addScore(final String nick, final String date, final String score)
+    static void addScore(final String nick, final String score)
             throws IOException {
-        generateScoreHistoryString(nick, date, score, SCORE_HISTORY_DAT);
+        final String dateString = Util.getDateString();
+        generateScoreHistoryString(nick, dateString, score, SCORE_HISTORY_DAT);
     }
 
     static void generateScoreHistoryString(final String nick, final String date, final String score, final String scoreHistoryDat)
@@ -24,9 +25,9 @@ final class ScoreHistoryFile {
         out.close();
     }
 
-    static Vector<Score> getScores(final String nick)
+    static ArrayList<Score> getScores(final String nick)
             throws IOException {
-        final Vector<Score> scores = new Vector<>();
+        final ArrayList<Score> scores = new ArrayList<>();
 
         final BufferedReader in =
                 new BufferedReader(new FileReader(SCORE_HISTORY_DAT));

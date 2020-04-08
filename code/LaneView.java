@@ -1,44 +1,39 @@
+import Widget.WindowFrame;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class LaneView implements ActionListener, Observer {
-    // TODO: to increase of cohesion, we could move this to a util class
-    private static final String BTN_MAINTENANCE = "Maintenance Call";
-
-    private Widget.ButtonPanel buttonPanel;
     private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
-    private final JFrame frame;
-    private final LaneInterface lane;
+    private final WindowFrame win;
+    private final LaneWithPinsetter lane;
     private List<String> bowlerNicks;
 
-    LaneView(final LaneInterface ln, final int laneNum) {
+    LaneView(final LaneWithPinsetter ln, final int laneNum) {
         lane = ln;
-        frame = new JFrame("Lane " + laneNum + ":");
-        containerPanel = new Widget.ContainerPanel((JPanel) frame.getContentPane());
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(final WindowEvent e) {
-                frame.setVisible(false);
-            }
-        });
+        win = new WindowFrame("Lane " + laneNum + ":");
+        containerPanel = win.getContainer();
         containerPanel.put(new JPanel());
         bowlerNicks = new ArrayList<>(0);
     }
 
     final void setVisible(final boolean state) {
-        frame.setVisible(state);
+        win.setVisible(state);
     }
 
-    private Component makeFrame() {
+    void toggleVisible() {
+        win.toggleVisible();
+    }
+
+    private void setupLaneGraphics() {
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("")
+                .put(ButtonNames.BTN_MAINTENANCE, this);
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
-        bsv = new Vector<>(0);
+        bsv = new ArrayList<>(0);
 
         for (final String bowlerNick : bowlerNicks) {
             final BowlerScoreView bs = new BowlerScoreView(bowlerNick);
@@ -46,20 +41,11 @@ public class LaneView implements ActionListener, Observer {
             panel.put(bs.getPanel());
         }
 
-        return panel.getPanel();
-    }
-
-    private Component getButtonPanel() {
-        buttonPanel = new Widget.ButtonPanel("").put(BTN_MAINTENANCE, this);
-        return buttonPanel.getPanel();
-    }
-
-    private void setupLaneGraphics() {
         containerPanel
                 .clear()
-                .put(makeFrame(), "Center")
-                .put(getButtonPanel(), "South");
-        frame.pack();
+                .put(panel.getPanel(), "Center")
+                .put(buttonPanel.getPanel(), "South");
+        win.pack();
     }
 
     public final void receiveEvent(final Event lev) {
@@ -81,9 +67,9 @@ public class LaneView implements ActionListener, Observer {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-        if (source.equals(buttonPanel.get(BTN_MAINTENANCE))) {
-            lane.pauseGame();
+        final String source = ((AbstractButton) e.getSource()).getText();
+        if (ButtonNames.BTN_MAINTENANCE.equals(source)) {
+            lane.pauseGame(true);
         }
     }
 }

@@ -8,21 +8,16 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 class AdhocView implements ActionListener {
-    private static final String BTN_HIGHEST = "Highest score";
-    private static final String BTN_LOWEST = "Lowest score";
-    private static final String BTN_BEST = "Best player";
-    private static final String BTN_FINISHED = "Finished";
-    private final ButtonPanel buttonPanel;
     private final WindowFrame win;
     private final ContainerPanel statDisplay;
     private Score currScore;
 
     AdhocView() {
-        buttonPanel = new ButtonPanel(4, 1, "")
-                .put(BTN_HIGHEST, this)
-                .put(BTN_LOWEST, this)
-                .put(BTN_BEST, this)
-                .put(BTN_FINISHED, this);
+        final ButtonPanel buttonPanel = new ButtonPanel(4, 1, "")
+                .put(ButtonNames.BTN_HIGHEST, this)
+                .put(ButtonNames.BTN_LOWEST, this)
+                .put(ButtonNames.BTN_BEST, this)
+                .put(ButtonNames.BTN_FINISHED, this);
 
         statDisplay = new ContainerPanel("Stat display");
 
@@ -75,19 +70,20 @@ class AdhocView implements ActionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-
-        if (source.equals(buttonPanel.get(BTN_HIGHEST))) {
-            displayHighest();
-        }
-        if (source.equals(buttonPanel.get(BTN_LOWEST))) {
-            displayLowest();
-        }
-        if (source.equals(buttonPanel.get(BTN_FINISHED))) {
-            win.destroy();
-        }
-        if (source.equals(buttonPanel.get(BTN_BEST))) {
-            displayBestPlayer();
+        final String source = ((AbstractButton) e.getSource()).getText();
+        switch (source) {
+            case ButtonNames.BTN_HIGHEST:
+                displayHighest();
+                break;
+            case ButtonNames.BTN_LOWEST:
+                displayLowest();
+                break;
+            case ButtonNames.BTN_FINISHED:
+                win.destroy();
+                break;
+            case ButtonNames.BTN_BEST:
+                displayBestPlayer();
+                break;
         }
     }
 }
