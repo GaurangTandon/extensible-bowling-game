@@ -78,7 +78,7 @@ public class LaneView implements ActionListener, Observer {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final String source = ((JButton) e.getSource()).getText();
+        final String source = ((AbstractButton) e.getSource()).getText();
         if (ButtonNames.BTN_MAINTENANCE.equals(source)) {
             lane.pauseGame(true);
         }

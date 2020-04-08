@@ -49,7 +49,8 @@ public class Lane extends LaneInterface implements Runnable {
             if (isPartyAssigned() && !paused) {
                 if (scorer.isFinished()) onGameFinish();
                 else {
-                    Util.busyWait(scorer.isHalted());
+                    while (scorer.isHalted()) Util.busyWait(10);
+
                     while (scorer.canRollAgain()) pinsetter.ballThrown();
                     scorer.setFinalScoresOnGameEnd();
                     pinsetter.resetState();

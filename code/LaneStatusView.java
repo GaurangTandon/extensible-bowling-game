@@ -62,7 +62,7 @@ public class LaneStatusView implements ActionListener, Observer {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final String source = ((JButton) e.getSource()).getText();
+        final String source = ((AbstractButton) e.getSource()).getText();
         if (lane.isPartyAssigned()) {
             switch (source) {
                 case ButtonNames.BTN_VIEW_PINSETTER:
@@ -73,9 +73,9 @@ public class LaneStatusView implements ActionListener, Observer {
                     laneShowing = !laneShowing;
                     laneView.setVisible(laneShowing);
                     break;
-                case ButtonNames.BTN_MAINTENANCE:
+                case ButtonNames.BTN_MAINTENANCE_SPACE:
                     lane.pauseGame(false);
-                    buttonPanel.get(ButtonNames.BTN_MAINTENANCE).setBackground(Color.GREEN);
+                    buttonPanel.get(ButtonNames.BTN_MAINTENANCE_SPACE).setBackground(Color.GREEN);
                     break;
             }
         }
@@ -117,7 +117,7 @@ public class LaneStatusView implements ActionListener, Observer {
         currentBowler.setText(bowlerNick);
 
         if (le.isMechanicalProblem()) {
-            buttonPanel.get(ButtonNames.BTN_MAINTENANCE).setBackground(Color.RED);
+            buttonPanel.get(ButtonNames.BTN_MAINTENANCE_SPACE).setBackground(Color.RED);
         }
 
         final boolean isPartyAssigned = lane.isPartyAssigned();

@@ -53,7 +53,7 @@ class NewPatronView implements ActionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = ((JButton) e.getSource()).getText();
+        final Object source = ((AbstractButton) e.getSource()).getText();
         final boolean aborted = source.equals(ButtonNames.BTN_PATRON_ABORT);
         final boolean finished = source.equals(ButtonNames.BTN_PATRON_FINISHED);
 

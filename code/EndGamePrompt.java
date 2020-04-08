@@ -26,7 +26,7 @@ class EndGamePrompt implements ActionListener {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final String source = ((JButton) e.getSource()).getText();
+        final String source = ((AbstractButton) e.getSource()).getText();
 
         if (source.equals(ButtonNames.BTN_YES)) {
             result = 1;

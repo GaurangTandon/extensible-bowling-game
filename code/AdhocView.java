@@ -70,7 +70,7 @@ class AdhocView implements ActionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final String source = ((JButton) e.getSource()).getText();
+        final String source = ((AbstractButton) e.getSource()).getText();
         switch (source) {
             case ButtonNames.BTN_HIGHEST:
                 displayHighest();

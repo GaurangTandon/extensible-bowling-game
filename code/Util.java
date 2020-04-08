@@ -21,13 +21,6 @@ final class Util {
         }
     }
 
-    static boolean busyWait(final boolean condition) {
-        if (!condition) {
-            busyWait(10);
-        }
-        return condition;
-    }
-
     static String getDateString() {
         final LocalDateTime now = LocalDateTime.now();
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm MM/dd/yyyy");

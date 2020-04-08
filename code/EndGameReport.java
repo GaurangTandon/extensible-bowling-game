@@ -63,7 +63,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     public void actionPerformed(final ActionEvent e) {
-        final Object source = ((JButton) e.getSource()).getText();
+        final Object source = ((AbstractButton) e.getSource()).getText();
 
         if (source.equals(ButtonNames.BTN_PRINT)) {
             retVal.add(selectedMember);

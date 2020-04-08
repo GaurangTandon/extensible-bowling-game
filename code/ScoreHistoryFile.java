@@ -24,9 +24,9 @@ final class ScoreHistoryFile {
         out.close();
     }
 
-    static Vector<Score> getScores(final String nick)
+    static ArrayList<Score> getScores(final String nick)
             throws IOException {
-        final Vector<Score> scores = new Vector<>();
+        final ArrayList<Score> scores = new ArrayList<>();
 
         final BufferedReader in =
                 new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
