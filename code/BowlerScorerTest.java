@@ -30,7 +30,6 @@ final class BowlerScorerTest {
     }
 
     private static void checkEquality(final int[] expScore) {
-        // FIXME: bs.updateCumulativeScores();
         final int[] gotScore = bs.getCumulativeScore();
         for (int i = 0; i < bs.getCurrFrame(); i++)
             asserter(gotScore[i] == expScore[i]);
