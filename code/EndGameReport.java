@@ -23,7 +23,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
         retVal = new Vector<>(0);
 
         // Member Panel
-        final Widget.ScrollablePanel<String> partyPanel = new Widget.ScrollablePanel<>(
+        final Widget.ScrollablePanel partyPanel = new Widget.ScrollablePanel(
                 "Party Members", partyMemberNicks, 5, this);
         partyPanel.getPanel().add(partyPanel.getList()); // Can't understand why list is added again
 

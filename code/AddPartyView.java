@@ -1,69 +1,50 @@
 import Widget.ContainerPanel;
 import Widget.WindowFrame;
+import Widget.WindowView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-class AddPartyView implements ActionListener, ListSelectionListener {
+class AddPartyView extends WindowView implements ListSelectionListener {
 
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
     private final int maxSize;
 
-    private final WindowFrame win;
-    private final Widget.ScrollablePanel<String> partyPanel;
-    private Widget.ScrollablePanel<Object> bowlerPanel;
+    private final Widget.ScrollablePanel partyPanel;
+    private Widget.ScrollablePanel bowlerPanel;
 
     private final ArrayList<String> party;
     private final ControlDeskView controlDesk;
-    private ArrayList<Object> bowlerDB;
+    private ArrayList<String> bowlerDB;
     private String selectedNick, selectedMember;
 
     private void buildBowlerPanel() {
-        //noinspection ProhibitedExceptionCaught
         try {
             bowlerDB = new ArrayList<>(BowlerFile.getBowlers());
         } catch (final IOException e) {
             System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
             bowlerDB = new ArrayList<>(0);
-        } catch (final ArrayIndexOutOfBoundsException e) {
-            System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
-            bowlerDB = new ArrayList<>(0);
         }
-
-        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
+        bowlerPanel = new Widget.ScrollablePanel("Bowler Database", bowlerDB, 8, this);
     }
 
-    AddPartyView(final ControlDeskView controlDesk, final int max) {
-        this.controlDesk = controlDesk;
-        maxSize = max;
-
-        final ArrayList<String> empty = new ArrayList<>(0);
-        empty.add("(Empty)");
+    AddPartyView(final ControlDeskView controlDeskView, final int max) {
         party = new ArrayList<>(0);
-        partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
-
+        controlDesk = controlDeskView;
+        maxSize = max;
+        partyPanel = generateScrollablePanel("(Empty)", "Your Party", 5);
+        partyPanel.attachListener(this);
         buildBowlerPanel();
-
-        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
-                .put(ButtonNames.BTN_ADD_PATRON, this)
-                .put(ButtonNames.BTN_REM_PATRON, this)
-                .put(ButtonNames.BTN_NEW_PATRON, this)
-                .put(ButtonNames.BTN_FINISHED, this);
-
-        // Window
-        win = new WindowFrame(
-                "Add Party",
-                new ContainerPanel(1, 3, "")
+        String[] buttons = {ButtonNames.BTN_ADD_PATRON, ButtonNames.BTN_REM_PATRON,
+                ButtonNames.BTN_NEW_PATRON, ButtonNames.BTN_FINISHED};
+        win = new WindowFrame("Add Party", new ContainerPanel(1, 3, "")
                         .put(partyPanel)
                         .put(bowlerPanel)
-                        .put(buttonPanel)
-        );
+                .put(generateButtonPanel(buttons, "")));
     }
 
     private void addPatron() {
@@ -88,11 +69,10 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         if (party != null && !party.isEmpty()) {
             controlDesk.updateAddParty(this);
         }
-        win.setVisible(false);
+        setVisible(false);
     }
 
-    public void actionPerformed(final ActionEvent e) {
-        final String source = ((AbstractButton) e.getSource()).getText();
+    public void buttonHandler(String source) {
         switch (source) {
             case ButtonNames.BTN_ADD_PATRON:
                 addPatron();
@@ -113,8 +93,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         if (source.equals(bowlerPanel.getList())) {
             selectedNick =
                     ((String) ((JList) source).getSelectedValue());
-        }
-        if (source.equals(partyPanel.getList())) {
+        } else if (source.equals(partyPanel.getList())) {
             selectedMember =
                     ((String) ((JList) source).getSelectedValue());
         }
