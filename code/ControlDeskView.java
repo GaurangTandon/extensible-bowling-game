@@ -1,67 +1,51 @@
 import Widget.ButtonPanel;
-import Widget.WindowFrame;
+import Widget.WindowView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ControlDeskView implements ActionListener, Observer {
-    private final WindowFrame win;
-    private Widget.ButtonPanel controlsPanel;
+public class ControlDeskView extends WindowView implements ActionListener, Observer {
 
     private final int maxMembers;
     private final ControlDesk controlDesk;
     private final Widget.ScrollablePanel<Object> partyPanel;
 
-    private Widget.ContainerPanel setupLaneStatusPanel(final int numLanes) {
-        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(numLanes, 1, "Lane Status");
-        final List<Lane> lanes = controlDesk.getLanes();
-        int laneCount = 1;
-
-        for (final Lane lane : lanes) {
-            final LaneStatusView laneStat = new LaneStatusView(lane, laneCount);
-            lane.subscribe(laneStat);
-            laneStatusPanel.put(new Widget.ContainerPanel(
-                    laneStat.showLane(), "Lane " + laneCount));
-            laneCount++;
-        }
-        return laneStatusPanel;
-    }
-
-    private void setupControlsPanel() {
-        controlsPanel = new ButtonPanel(4, 1, "Controls")
+    ControlDeskView(final ControlDesk controlDesk,
+                    @SuppressWarnings("SameParameterValue") final int maxMembers) {
+        super("Control Desk");
+        this.controlDesk = controlDesk;
+        this.maxMembers = maxMembers;
+        // Button Panel
+        final Widget.ButtonPanel controlsPanel = new ButtonPanel(4, 1, "Controls")
                 .put(ButtonNames.BTN_ADD_PARTY, this)
                 .put(ButtonNames.BTN_ASSIGN, this)
                 .put(ButtonNames.BTN_QUERIES, this)
                 .put(ButtonNames.BTN_FINISHED, this);
-    }
-
-    ControlDeskView(final ControlDesk controlDesk,
-                    @SuppressWarnings("SameParameterValue") final int maxMembers) {
-        this.controlDesk = controlDesk;
-        this.maxMembers = maxMembers;
-        final int numLanes = controlDesk.numLanes;
-
-        setupControlsPanel();
-
+        // Container Panel
+        final Widget.ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
+                controlDesk.numLanes, 1, "Lane Status");
+        for (int i = 1; i <= controlDesk.numLanes; i++) {
+            final LaneStatusView laneStat = new LaneStatusView(controlDesk.getLane(i - 1), i);
+            controlDesk.getLane(i - 1).subscribe(laneStat);
+            laneStatusPanel.put(new Widget.ContainerPanel(
+                    laneStat.showLane(), "Lane " + i));
+        }
+        // Party Queue
         final ArrayList<Object> empty = new ArrayList<>(0);
         empty.add("(Empty)");
         partyPanel = new Widget.ScrollablePanel<>(
                 "Party Queue", empty, 10);
-        win = new WindowFrame(
-                "Control Desk",
-                new Widget.ContainerPanel()
-                        .put(controlsPanel, "East")
-                        .put(setupLaneStatusPanel(numLanes), "Center")
-                        .put(partyPanel, "West")
-        );
+        // Put all together
+        container
+                .put(controlsPanel, "East")
+                .put(laneStatusPanel, "Center")
+                .put(partyPanel, "West");
     }
 
     public final void actionPerformed(final ActionEvent e) {
         final String source = ((AbstractButton) e.getSource()).getText();
-
         switch (source) {
             case ButtonNames.BTN_ADD_PARTY:
                 new AddPartyView(this, maxMembers);

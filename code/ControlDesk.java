@@ -61,7 +61,7 @@ class ControlDesk extends Publisher implements Runnable {
         return new ControlDeskEvent(displayPartyQueue);
     }
 
-    List<Lane> getLanes() {
-        return lanes;
+    Lane getLane(int i) {
+        return lanes.get(i);
     }
 }
