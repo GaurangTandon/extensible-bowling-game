@@ -21,14 +21,49 @@ Apart from the glaring errors in code redundancy spanning all classes that were 
 
 \subsection{Misplaced Observer pattern logic}
 
+\begin{itemize}
+
+\item Each of the three Controller classes implemented their subscriber logic by using their own \code{subsriber} vector and their own \code{subscribe} method. This was \textbf{duplicated} across all three controllers.
+\item Moreover, placing Observer pattern logic in the Controller class was a \textbf{semantically poor design choice}, as a Controller's sole purpose is to control observers, and implementing barebone's of Observer goes against this. It is like writing \code{pop} and \code{push} functions of a stack just so that you can use a stack.
+\item We fixed this by introduing a general \code{Publisher} class.
+
+\end{itemize}
+
+\subsection{Reinventing the wheel}
+
+\begin{itemize}
+\item The original code wrote its own implementation of a Queue class in Queue.java
+\item This was completely useless as Java built-in modules already provide several different implementations of a queue.
+\item Not only that, the original Queue.java was not even \textbf{generified}, instead, it was tied down to a Party class. That meant, the Queue \textbf{wasn't even reusable} for other data types if we wanted to reuse it.
+\item At first, we generified it, but later we ended up deleting and replacing with a built-in \code{java.util.LinkedList} without any loss of functionality.
+\end{itemize}
+
 \subsection{Minor issues}
+
+There were other minor issues plaguing the codebase, the most common ones being:
+
 \subsubsection{Overly Broad access specifiers}
 
-Most of the classes and the methods were marked public without a reason. Since most of the code is contained in a package and only the driver (and some interfaces like Party, Scorer, etc. to make a new game from same source) should ever need to be called externally. Therefore these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
+\begin{itemize}
+
+\item Many methods and properties \textbf{marked public} without a reason, or if not that, had overly broad access specifiers (package-private instead of private).
+\item Since most of the code is contained in a package and only the driver should ever need to be called externally, these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
+\end{itemize}
 
 \subsubsection{Badly Written Loops and Conditionals}
 
-Many loops
+\begin{itemize}
+\item Many loops used iterators to iterate over vectors. We replaced them with the new for-in loop in Java.
+\item It has this syntax: \code{for(int value : array)}, which is \textbf{succint and clear} as opposed to the verbose iterator syntax.
+\end{itemize}
+
+\subsubsection{Outdated Vector collection used}
+
+\begin{itemize}
+   \item \code{Vector} had been used throughout the code base to maintain dynamically sized collections of object.
+   \item It is widely known that vectors used synchronous blocking operations and therefore are very slow as compared to their array/\code{ArrayList} counterparts.
+   \item Therefore, we replaced them with ArrayList throughout.
+\end{itemize}
 
 \subsubsection{Comment-based version control}
 
@@ -38,6 +73,33 @@ As we already know, such a version control is completely useless when compared t
 
 \subsubsection{Useless comments}
 
+Many classes and methods carried useless comments with them. A few actual examples:
+
+\begin{verbatim}
+/**
+ * Class to represent the pinsetter
+ */
+
+class Pinsetter{ ... }
+\end{verbatim}
+
+or this gold comment:
+
+\begin{verbatim}
+	/** Pinsetter()
+	 *
+	 * Constructs a new pinsetter
+	 *
+	 * @pre none
+	 * @post a new pinsetter is created
+	 * @return Pinsetter object
+	 */
+	public Pinsetter() {
+\end{verbatim}
+
+While it can surely be agreed that the comment is correct, it is widely recognized that \textbf{comments suffer from aging}. For example, if the Pinsetter class was renamed, or the constructor was simply moved from its current position in the file to somewhere else, someone may forget to change the comment. Later in time, the comment will definitely not be helpful.
+
+Moreover, it is widely accepted that \textbf{Writing comments is good, but not having to write comments is better.} (\hyperlink{https://softwareengineering.stackexchange.com/a/335513/131646}{read} and \hyperlink{https://www.freecodecamp.org/news/code-comments-the-good-the-bad-and-the-ugly-be9cc65fbf83/}{read}). In general, throughout the codebase, we have removed such useless comments where possible, and retained useful comments where required.
 
 \subsubsection{Bad identifier names}
 
