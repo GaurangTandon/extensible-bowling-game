@@ -6,11 +6,9 @@ import java.util.ArrayList;
 class ScorableBowler extends Bowler {
     private static final String DELIMITER = ",";
     private int[] cumulativeScore;
-    private int[] perFramePartRes;
     private Frame[] frames;
 
     private int currFrame;
-    private int score;
     private static final int MAX_GAMES = 128;
     private int[] finalScores;
 
@@ -27,7 +25,7 @@ class ScorableBowler extends Bowler {
         this("", "", "");
     }
 
-    void resetHard(){
+    void resetHard() {
         resetSoft();
         finalScores = new int[MAX_GAMES];
     }
@@ -40,11 +38,8 @@ class ScorableBowler extends Bowler {
 
         cumulativeScore = new int[Frame.FRAME_COUNT];
         resetCumulativeScores();
-        perFramePartRes = new int[Frame.MAX_ROLLS];
-        for (int i = 0; i < Frame.MAX_ROLLS; i++) perFramePartRes[i] = -1;
 
         currFrame = 0;
-        score = 0;
     }
 
     void saveState(final FileWriter fw) throws IOException {
@@ -101,8 +96,6 @@ class ScorableBowler extends Bowler {
 
             rollIndex += frames[i].rollCount;
         }
-
-        score = cumulativeScore[currFrame];
     }
 
     /**
@@ -113,7 +106,7 @@ class ScorableBowler extends Bowler {
      */
     void roll(final int pinsDown) {
         final Frame frame = frames[currFrame];
-        frame.roll(pinsDown, perFramePartRes);
+        frame.roll(pinsDown);
 
         currFrame += frame.getIncrement();
     }
@@ -128,12 +121,18 @@ class ScorableBowler extends Bowler {
      * @return integer array, result per frame part
      */
     int[] getByFramePartResult() {
-        return perFramePartRes.clone();
+        final int[] perFramePartRes = new int[Frame.MAX_ROLLS];
+        for (int i = 0; i < Frame.MAX_ROLLS; i++) perFramePartRes[i] = -1;
+
+        for (int frame = 0; frame < Frame.LAST_FRAME; frame++) {
+            frames[frame].setDisplayValue(perFramePartRes, 2 * frame);
+        }
+
+        return perFramePartRes;
     }
 
     boolean canRollAgain(final int lanesFrameNumber) {
-        if (currFrame != lanesFrameNumber) return false;
-        return frames[currFrame].canRollAgain();
+        return currFrame == lanesFrameNumber && frames[currFrame].canRollAgain();
     }
 
     int getCurrFrame() {
@@ -145,7 +144,7 @@ class ScorableBowler extends Bowler {
     }
 
     void setFinalScoresOnGameEnd(final int gameNumber) {
-        finalScores[gameNumber] = score;
+        finalScores[gameNumber] = cumulativeScore[Frame.LAST_FRAME];
         final String finalScore = Integer.toString(finalScores[gameNumber]);
 
         try {

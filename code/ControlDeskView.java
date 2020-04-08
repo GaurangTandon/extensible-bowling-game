@@ -61,6 +61,7 @@ public class ControlDeskView implements ActionListener, Observer {
 
     public final void actionPerformed(final ActionEvent e) {
         final String source = ((AbstractButton) e.getSource()).getText();
+
         switch (source) {
             case ButtonNames.BTN_ADD_PARTY:
                 new AddPartyView(this, maxMembers);
