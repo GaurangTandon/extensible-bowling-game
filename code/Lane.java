@@ -50,7 +50,6 @@ public class Lane extends LaneWithPinsetter implements Runnable {
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();
-        egp.destroy();
 
         if (result == 1) {
             scorer.onGameFinish();
@@ -101,7 +100,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
         return scorer != null;
     }
 
-    public final void pauseGame(final boolean state) {
+    final void pauseGame(final boolean state) {
         halted = state;
         publish();
     }

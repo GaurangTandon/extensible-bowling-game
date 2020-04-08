@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 class LaneEvent implements Event {
 
@@ -25,7 +26,7 @@ class LaneEvent implements Event {
     }
 
     final Iterable<String> getBowlerNicks() {
-        return bowlerNicks;
+        return Collections.unmodifiableList(bowlerNicks);
     }
 
     final boolean isMechanicalProblem() {

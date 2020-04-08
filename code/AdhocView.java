@@ -40,33 +40,21 @@ class AdhocView implements ActionListener {
     }
 
     private void displayLowest() {
-        try {
-            currScore = ScoreHistoryFile.getLeastScore();
+        currScore = ScoreHistoryFile.getLeastScore();
 
-            setDisplayLabel("Lowest score");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        setDisplayLabel(ButtonNames.BTN_LOWEST);
     }
 
     private void displayHighest() {
-        try {
-            currScore = ScoreHistoryFile.getBestScore();
+        currScore = ScoreHistoryFile.getBestScore();
 
-            setDisplayLabel("Highest score");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        setDisplayLabel(ButtonNames.BTN_HIGHEST);
     }
 
     private void displayBestPlayer() {
-        try {
-            currScore = ScoreHistoryFile.getMaxCumulativeScore();
+        currScore = ScoreHistoryFile.getMaxCumulativeScore();
 
-            setDisplayLabel("Highest overall games score");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        setDisplayLabel("Highest overall games score");
     }
 
     public void actionPerformed(final ActionEvent e) {

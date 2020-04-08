@@ -9,17 +9,17 @@ public abstract class WindowView implements ActionListener {
     protected WindowFrame win;
     protected ContainerPanel container;
 
-    public WindowView() {
+    protected WindowView() {
         win = null;
         container = null;
     }
 
-    public WindowView(String title) {
+    public WindowView(final String title) {
         win = new WindowFrame(title);
         container = win.getContainer();
     }
 
-    protected void setVisible(boolean state) {
+    protected void setVisible(final boolean state) {
         win.setVisible(state);
     }
 
@@ -35,21 +35,21 @@ public abstract class WindowView implements ActionListener {
 
     protected abstract void buttonHandler(String source);
 
-    protected ButtonPanel generateButtonPanel(String[] list, String title) {
+    protected ButtonPanel generateButtonPanel(final String[] list, final String title) {
         final ButtonPanel controlsPanel = new ButtonPanel(list.length, 1, title);
-        for (String s : list) {
+        for (final String s : list) {
             controlsPanel.put(s, this);
         }
         return controlsPanel;
     }
 
-    protected ScrollablePanel drawScrollable(String firstElement, String heading, int visibleCount) {
+    protected ScrollablePanel drawScrollable(@SuppressWarnings("SameParameterValue") final String firstElement, final String heading, final int visibleCount) {
         final ArrayList<String> empty = new ArrayList<>(0);
         empty.add(firstElement);
         return new ScrollablePanel(heading, empty, visibleCount);
     }
 
-    protected ScrollablePanel drawScrollable(ArrayList<String> list, String heading, int visibleCount) {
+    protected ScrollablePanel drawScrollable(final ArrayList<String> list, @SuppressWarnings("SameParameterValue") final String heading, @SuppressWarnings("SameParameterValue") final int visibleCount) {
         return new ScrollablePanel(heading, list, visibleCount);
     }
 }
