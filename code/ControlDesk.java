@@ -1,3 +1,6 @@
+import Widget.ContainerPanel;
+
+import javax.swing.*;
 import java.util.*;
 
 class ControlDesk extends Publisher implements Runnable {
@@ -61,7 +64,18 @@ class ControlDesk extends Publisher implements Runnable {
         return new ControlDeskEvent(displayPartyQueue);
     }
 
-    Lane getLane(int i) {
-        return lanes.get(i);
+    ContainerPanel generateLaneStatusPanel() {
+        final ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
+                numLanes, 1, "Lane Status");
+        for (int i = 0; i < numLanes; i++) {
+            laneStatusPanel.put(new Widget.ContainerPanel(renderLane(i), "Lane " + (i + 1)));
+        }
+        return laneStatusPanel;
+    }
+
+    JPanel renderLane(int i) {
+        final LaneStatusView laneStat = new LaneStatusView(lanes.get(i), i + 1);
+        lanes.get(i).subscribe(laneStat);
+        return laneStat.showLane();
     }
 }

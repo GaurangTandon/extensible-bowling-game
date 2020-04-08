@@ -13,25 +13,13 @@ public class ControlDeskView extends WindowView implements Observer {
                     @SuppressWarnings("SameParameterValue") final int maxMembers) {
         this.controlDesk = controlDesk;
         this.maxMembers = maxMembers;
-        String[] buttons = {
-                ButtonNames.BTN_ADD_PARTY, ButtonNames.BTN_ASSIGN, ButtonNames.BTN_QUERIES, ButtonNames.BTN_FINISHED};
+        String[] buttons = {ButtonNames.BTN_ADD_PARTY, ButtonNames.BTN_ASSIGN,
+                ButtonNames.BTN_QUERIES, ButtonNames.BTN_FINISHED};
         partyPanel = generateScrollablePanel("(Empty)", "Party Queue", 10);
         win = new WindowFrame("Control Desk", new ContainerPanel()
                 .put(generateButtonPanel(buttons, "Controls"), "East")
-                .put(generateLaneStatusPanel(), "Center")
+                .put(controlDesk.generateLaneStatusPanel(), "Center")
                 .put(partyPanel, "West"));
-    }
-
-    private ContainerPanel generateLaneStatusPanel() {
-        final ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
-                controlDesk.numLanes, 1, "Lane Status");
-        for (int i = 1; i <= controlDesk.numLanes; i++) {
-            final LaneStatusView laneStat = new LaneStatusView(controlDesk.getLane(i - 1), i);
-            controlDesk.getLane(i - 1).subscribe(laneStat);
-            laneStatusPanel.put(new Widget.ContainerPanel(
-                    laneStat.showLane(), "Lane " + i));
-        }
-        return laneStatusPanel;
     }
 
     protected void buttonHandler(String source) {
