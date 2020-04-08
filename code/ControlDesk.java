@@ -73,7 +73,7 @@ class ControlDesk extends Publisher implements Runnable {
         return laneStatusPanel;
     }
 
-    JPanel renderLane(int i) {
+    private JPanel renderLane(int i) {
         final LaneStatusView laneStat = new LaneStatusView(lanes.get(i), i + 1);
         lanes.get(i).subscribe(laneStat);
         return laneStat.showLane();

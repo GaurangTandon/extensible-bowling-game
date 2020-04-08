@@ -5,17 +5,14 @@ import Widget.WindowView;
 
 public class ControlDeskView extends WindowView implements Observer {
 
-    private final int maxMembers;
     private final ControlDesk controlDesk;
     private final ScrollablePanel partyPanel;
 
-    ControlDeskView(final ControlDesk controlDesk,
-                    @SuppressWarnings("SameParameterValue") final int maxMembers) {
+    ControlDeskView(final ControlDesk controlDesk) {
         this.controlDesk = controlDesk;
-        this.maxMembers = maxMembers;
         String[] buttons = {ButtonNames.BTN_ADD_PARTY, ButtonNames.BTN_ASSIGN,
                 ButtonNames.BTN_QUERIES, ButtonNames.BTN_FINISHED};
-        partyPanel = generateScrollablePanel("(Empty)", "Party Queue", 10);
+        partyPanel = drawScrollable("(Empty)", "Party Queue", 10);
         win = new WindowFrame("Control Desk", new ContainerPanel()
                 .put(generateButtonPanel(buttons, "Controls"), "East")
                 .put(controlDesk.generateLaneStatusPanel(), "Center")
@@ -25,7 +22,7 @@ public class ControlDeskView extends WindowView implements Observer {
     protected void buttonHandler(String source) {
         switch (source) {
             case ButtonNames.BTN_ADD_PARTY:
-                new AddPartyView(this, maxMembers);
+                new AddPartyView(this);
                 break;
             case ButtonNames.BTN_ASSIGN:
                 controlDesk.assignLane();

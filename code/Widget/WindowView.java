@@ -23,10 +23,6 @@ public abstract class WindowView implements ActionListener {
         win.setVisible(state);
     }
 
-    protected void toggleVisible() {
-        win.toggleVisible();
-    }
-
     protected void close() {
         win.setVisible(false);
         System.exit(0);
@@ -47,9 +43,13 @@ public abstract class WindowView implements ActionListener {
         return controlsPanel;
     }
 
-    protected ScrollablePanel generateScrollablePanel(String firstElement, String heading, int visibleCount) {
+    protected ScrollablePanel drawScrollable(String firstElement, String heading, int visibleCount) {
         final ArrayList<String> empty = new ArrayList<>(0);
         empty.add(firstElement);
         return new ScrollablePanel(heading, empty, visibleCount);
+    }
+
+    protected ScrollablePanel drawScrollable(ArrayList<String> list, String heading, int visibleCount) {
+        return new ScrollablePanel(heading, list, visibleCount);
     }
 }

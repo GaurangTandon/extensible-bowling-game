@@ -28,8 +28,9 @@ public class ScrollablePanel extends GenericPanel {
         dataList.addListSelectionListener(listener);
     }
 
-    public void attachListener(final ListSelectionListener listener) {
+    public ScrollablePanel attachListener(final ListSelectionListener listener) {
         dataList.addListSelectionListener(listener);
+        return this;
     }
 
     public void setListData(final ArrayList<String> data) {
