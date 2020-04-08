@@ -1,15 +1,46 @@
 \section{Issues with the Old Code}
 
-\subsection{Minor Issues across all Files}
+\subsection{LANE - the "God class"}
 
+The single biggest problem with the original code is the existence of a "God class" - Lane.java. God classes are notorious for violating the foundational principle of software desisn - Single Responsibility Class: whereby each class is supposed to perform only one task in the context of the application, and delegate sub-tasks to other helper classes.
+
+Expectedly enough, when we ran \textrm{cloc} (a CLI utility to count lines of code) on the source code, we found that out of 1814 lines of code (excluding comments), 294 were alone in Lane.java (nearly 17\% of entire project), the maximum among all other classes.
+
+\subsection{Code repeated throughout codebase}
+
+Quite a lot of code was duplicated line by line through many classes in the codebase, especially in the UI, for example:
+
+\begin{itemize}
+\item Window centering logic in View class constructors.
+\item List view scrollable pane, attaching listener, etc.
+\end{itemize}
+
+\subsection{Repetition of Code}
+
+Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
+
+\subsection{Minor issues}
 \subsubsection{Overly Broad access specifiers}
 
 Most of the classes and the methods were marked public without a reason. Since most of the code is contained in a package and only the driver (and some interfaces like Party, Scorer, etc. to make a new game from same source) should ever need to be called externally. Therefore these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
 
-\subsubsection{Repetition of Code}
-
-Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
-
 \subsubsection{Badly Written Loops and Conditionals}
 
 Many loops
+
+\subsubsection{Comment-based version control}
+
+The files were using a unique approach to version control, namely, putting edit-log comments at the top of each file, timestamped, with "useful" messages like \textit{"Added things"} and \textit{"Works beautifully"} (\textrm{Lane.java}) This comment log sometimes grew to a sprawling size of more than 100 lines (Lane.java: 130+ lines)
+
+As we already know, such a version control is completely useless when compared to Git.
+
+\subsubsection{Useless comments}
+
+
+\subsubsection{Bad identifier names}
+
+
+\subsubsection{IntelliJ ne jo bhi bola}
+
+
+\subsubsection{Misplaced Observer pattern logic}
