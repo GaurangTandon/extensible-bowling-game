@@ -3,7 +3,7 @@ import java.util.ArrayList;
 class LastFrame extends Frame {
     LastFrame() {
         rolls = new int[3];
-        frameNumber = ScorableParty.LAST_FRAME;
+        frameNumber = Frame.LAST_FRAME;
         rolls[0] = rolls[1] = rolls[2] = UNROLLED;
     }
 

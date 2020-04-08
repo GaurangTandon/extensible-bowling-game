@@ -33,15 +33,15 @@ class ScorableBowler extends Bowler {
     }
 
     void resetSoft() {
-        frames = new Frame[ScorableParty.FRAME_COUNT];
-        for (int i = 0; i < ScorableParty.FRAME_COUNT - 1; i++)
+        frames = new Frame[Frame.FRAME_COUNT];
+        for (int i = 0; i < Frame.LAST_FRAME; i++)
             frames[i] = new Frame(i);
-        frames[ScorableParty.FRAME_COUNT - 1] = new LastFrame();
+        frames[Frame.LAST_FRAME] = new LastFrame();
 
-        cumulativeScore = new int[ScorableParty.FRAME_COUNT];
+        cumulativeScore = new int[Frame.FRAME_COUNT];
         resetCumulativeScores();
-        perFramePartRes = new int[ScorableParty.MAX_ROLLS];
-        for (int i = 0; i < ScorableParty.MAX_ROLLS; i++) perFramePartRes[i] = -1;
+        perFramePartRes = new int[Frame.MAX_ROLLS];
+        for (int i = 0; i < Frame.MAX_ROLLS; i++) perFramePartRes[i] = -1;
 
         currFrame = 0;
         score = 0;
@@ -73,7 +73,7 @@ class ScorableBowler extends Bowler {
     }
 
     private void resetCumulativeScores() {
-        for (int frame = 0; frame < ScorableParty.FRAME_COUNT; frame++)
+        for (int frame = 0; frame < Frame.FRAME_COUNT; frame++)
             cumulativeScore[frame] = -1;
     }
 

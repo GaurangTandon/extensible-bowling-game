@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 class Frame {
+    static final int FRAME_COUNT = 10;
+    static final int LAST_FRAME = FRAME_COUNT - 1;
+    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
+    static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
+
+
     static final int UNROLLED = -1;
     int[] rolls;
     int frameNumber;

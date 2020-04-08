@@ -40,7 +40,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     void printer(final ScorableParty scorer) {
-        final ArrayList<ScorableBowler> partyMembers = scorer.getMembers();
+        final Iterable<ScorableBowler> partyMembers = scorer.getMembers();
         final int gameNumber = scorer.getGameNumber();
 
         int myIndex = 0;
