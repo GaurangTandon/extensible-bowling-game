@@ -2,9 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * This class is supposed to handle all the scoring happening on a particular lane
- */
 class ScorableParty extends Party {
     private boolean halted;
     private boolean finished;

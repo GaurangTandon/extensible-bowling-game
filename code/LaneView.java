@@ -1,15 +1,12 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class LaneView implements ActionListener, Observer {
-
     private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
@@ -33,9 +30,11 @@ public class LaneView implements ActionListener, Observer {
         frame.setVisible(state);
     }
 
-    private Component makeFrame() {
+    private void setupLaneGraphics() {
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
+
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
-        bsv = new Vector<>(0);
+        bsv = new ArrayList<>(0);
 
         for (final String bowlerNick : bowlerNicks) {
             final BowlerScoreView bs = new BowlerScoreView(bowlerNick);
@@ -43,19 +42,10 @@ public class LaneView implements ActionListener, Observer {
             panel.put(bs.getPanel());
         }
 
-        return panel.getPanel();
-    }
-
-    private Component getButtonPanel() {
-        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
-        return buttonPanel.getPanel();
-    }
-
-    private void setupLaneGraphics() {
         containerPanel
                 .clear()
-                .put(makeFrame(), "Center")
-                .put(getButtonPanel(), "South");
+                .put(panel.getPanel(), "Center")
+                .put(buttonPanel.getPanel(), "South");
         frame.pack();
     }
 

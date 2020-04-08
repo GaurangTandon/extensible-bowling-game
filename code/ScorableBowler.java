@@ -6,7 +6,6 @@ import java.util.List;
 
 class ScorableBowler extends Bowler {
     private Frame[] frames;
-
     private int currFrame;
     private static final int MAX_GAMES = 128;
     private int[] finalScores;
