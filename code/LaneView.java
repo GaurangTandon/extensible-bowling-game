@@ -1,38 +1,37 @@
+import Widget.WindowFrame;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LaneView implements ActionListener, Observer {
     private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
-    private final JFrame frame;
+    private final WindowFrame win;
     private final LaneWithPinsetter lane;
     private List<String> bowlerNicks;
 
     LaneView(final LaneWithPinsetter ln, final int laneNum) {
         lane = ln;
-        frame = new JFrame("Lane " + laneNum + ":");
-        containerPanel = new Widget.ContainerPanel((JPanel) frame.getContentPane());
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(final WindowEvent e) {
-                frame.setVisible(false);
-            }
-        });
+        win = new WindowFrame("Lane " + laneNum + ":");
+        containerPanel = win.getContainer();
         containerPanel.put(new JPanel());
         bowlerNicks = new ArrayList<>(0);
     }
 
     final void setVisible(final boolean state) {
-        frame.setVisible(state);
+        win.setVisible(state);
+    }
+
+    void toggleVisible() {
+        win.toggleVisible();
     }
 
     private void setupLaneGraphics() {
-        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
-
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("")
+                .put(ButtonNames.BTN_MAINTENANCE, this);
         final Widget.ContainerPanel panel = new Widget.ContainerPanel(0, 1, "");
         bsv = new ArrayList<>(0);
 
@@ -46,7 +45,7 @@ public class LaneView implements ActionListener, Observer {
                 .clear()
                 .put(panel.getPanel(), "Center")
                 .put(buttonPanel.getPanel(), "South");
-        frame.pack();
+        win.pack();
     }
 
     public final void receiveEvent(final Event lev) {

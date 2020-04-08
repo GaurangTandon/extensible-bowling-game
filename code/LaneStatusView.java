@@ -19,15 +19,10 @@ public class LaneStatusView implements ActionListener, Observer {
     private final LaneView laneView;
     private final Lane lane;
 
-    private boolean laneShowing;
-    private boolean psShowing;
-
     private final String saveFile;
 
     LaneStatusView(final Lane lane, final int laneNum) {
         this.lane = lane;
-        laneShowing = false;
-        psShowing = false;
         saveFile = "Datastore/SAVED_" + laneNum + ".DAT";
         pinSetterView = new PinSetterView(laneNum);
         lane.subscribePinsetter(pinSetterView);
@@ -66,12 +61,10 @@ public class LaneStatusView implements ActionListener, Observer {
         if (lane.isPartyAssigned()) {
             switch (source) {
                 case ButtonNames.BTN_VIEW_PINSETTER:
-                    psShowing = !psShowing;
-                    pinSetterView.setVisible(psShowing);
+                    pinSetterView.toggleVisible();
                     break;
                 case ButtonNames.BTN_VIEW_LANE:
-                    laneShowing = !laneShowing;
-                    laneView.setVisible(laneShowing);
+                    laneView.toggleVisible();
                     break;
                 case ButtonNames.BTN_MAINTENANCE_SPACE:
                     lane.pauseGame(false);
@@ -80,34 +73,12 @@ public class LaneStatusView implements ActionListener, Observer {
             }
         }
         if (source.equals(ButtonNames.BTN_RESUME)) {
-            loadState();
+            lane.loadState(saveFile);
             lane.pauseManual(false);
         } else if (source.equals(ButtonNames.BTN_PAUSE)) {
             lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
-            saveState();
-        }
-    }
-
-    private void loadState() {
-        try {
-            final FileReader fileReader = new FileReader(saveFile);
-            final BufferedReader bufferedReader = new BufferedReader(fileReader);
-            lane.loadState(bufferedReader);
-            bufferedReader.close();
-            fileReader.close();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveState() {
-        try {
-            final FileWriter fileWriter = new FileWriter(saveFile);
-            lane.saveState(fileWriter);
-            fileWriter.close();
-        } catch (final IOException e) {
-            e.printStackTrace();
+            lane.saveState(saveFile);
         }
     }
 

@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -18,14 +19,28 @@ public class Lane extends LaneWithPinsetter implements Runnable {
         scorer = null;
     }
 
-    void saveState(final FileWriter fw) throws IOException {
-        scorer.saveState(fw);
+    void saveState(final String fileName) {
+        try {
+            final FileWriter fw = new FileWriter(fileName);
+            scorer.saveState(fw);
+            fw.close();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    void loadState(final BufferedReader fr) throws IOException {
+    void loadState(final String fileName) {
         paused = true;
         scorer = new ScorableParty();
-        scorer.loadState(fr);
+        try {
+            final FileReader fr = new FileReader(fileName);
+            final BufferedReader bufferedReader = new BufferedReader(fr);
+            scorer.loadState(bufferedReader);
+            bufferedReader.close();
+            fr.close();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
         paused = false;
     }
 

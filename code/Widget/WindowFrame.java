@@ -2,11 +2,22 @@ package Widget;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class WindowFrame {
 
     private final JFrame win;
+
+    public WindowFrame(final String title) {
+        win = new JFrame(title);
+
+        win.addWindowListener(new WindowAdapter() {
+            public void windowClosing(final WindowEvent e) {
+                win.setVisible(false);
+            }
+        });
+    }
 
     private WindowFrame(final String title, final Component container) {
         win = new JFrame(title);
@@ -36,5 +47,17 @@ public class WindowFrame {
 
     public void setVisible(final boolean state) {
         win.setVisible(state);
+    }
+
+    public void toggleVisible() {
+        win.setVisible(!win.isVisible());
+    }
+
+    public ContainerPanel getContainer() {
+        return new Widget.ContainerPanel((JPanel) win.getContentPane());
+    }
+
+    public void pack() {
+        win.pack();
     }
 }
