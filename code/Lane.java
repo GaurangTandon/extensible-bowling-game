@@ -6,6 +6,7 @@ import java.io.IOException;
 public class Lane extends LaneWithPinsetter implements Runnable {
     private ScorableParty scorer;
     private boolean paused;
+    private boolean halted;
 
     Lane() {
         scorer = null;
@@ -64,7 +65,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
             if (isPartyAssigned() && !paused) {
                 if (scorer.isFinished()) onGameFinish();
                 else {
-                    while (scorer.isHalted()) Util.busyWait(10);
+                    while (halted) Util.busyWait(10);
 
                     while (scorer.canRollAgain()) rollBall();
                     resetPinsetter();
@@ -93,7 +94,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
     }
 
     Event createEvent() {
-        return new LaneEvent(scorer, getPinsDown());
+        return new LaneEvent(scorer, getPinsDown(), halted);
     }
 
     final boolean isPartyAssigned() {
@@ -101,7 +102,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
     }
 
     public final void pauseGame(final boolean state) {
-        scorer.setHalted(state);
+        halted = state;
         publish();
     }
 

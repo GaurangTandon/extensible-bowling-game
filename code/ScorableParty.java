@@ -3,8 +3,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 class ScorableParty extends Party {
-    private boolean halted;
-    private boolean finished;
     private int bowlerIndex;
     private int frameNumber;
     private int gameNumber;
@@ -35,7 +33,6 @@ class ScorableParty extends Party {
             frameNumber++;
             bowlerIndex = 0;
             if (frameNumber == Frame.FRAME_COUNT) {
-                finished = true;
                 gameNumber++;
             }
         }
@@ -51,8 +48,6 @@ class ScorableParty extends Party {
     private void resetScores() {
         bowlerIndex = 0;
         frameNumber = 0;
-        finished = false;
-        halted = false;
     }
 
     final void roll(final int pinsDowned) {
@@ -65,7 +60,7 @@ class ScorableParty extends Party {
     }
 
     void setFinalScoresOnGameEnd() {
-        if (!isLastFrame()) return;
+        if (frameNumber != Frame.LAST_FRAME) return;
 
         bowlers.get(bowlerIndex).setFinalScoresOnGameEnd(gameNumber);
     }
@@ -98,18 +93,6 @@ class ScorableParty extends Party {
         resetScores();
     }
 
-    final void setHalted(final boolean state) {
-        halted = state;
-    }
-
-    private boolean isLastFrame() {
-        return frameNumber == Frame.LAST_FRAME;
-    }
-
-    boolean isHalted() {
-        return halted;
-    }
-
     String getCurrentThrowerNick() {
         return bowlers.get(bowlerIndex).getNickName();
     }
@@ -119,6 +102,6 @@ class ScorableParty extends Party {
     }
 
     boolean isFinished() {
-        return finished;
+        return frameNumber == Frame.FRAME_COUNT;
     }
 }

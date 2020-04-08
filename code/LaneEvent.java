@@ -10,14 +10,14 @@ class LaneEvent implements Event {
     private final String bowlerNick;
     private final int totalPinsDown;
 
-    LaneEvent(final ScorableParty scorer, final int pinsDown) {
+    LaneEvent(final ScorableParty scorer, final int pinsDown, final boolean isHalted) {
         bowlerNicks = scorer.getMemberNicks();
         partySize = scorer.getPartySize();
         totalPinsDown = pinsDown;
         bowlerNick = scorer.getCurrentThrowerNick();
         cumulativeScore = scorer.getCumulativeScores();
         score = scorer.getByBowlerByFramePartResult();
-        mechanicalProblemExists = scorer.isHalted();
+        mechanicalProblemExists = isHalted;
     }
 
     final String getBowlerNick() {

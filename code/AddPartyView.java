@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 class AddPartyView extends WindowView implements ListSelectionListener {
-
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
     private final int maxSize;
 
