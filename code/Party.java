@@ -1,52 +1,56 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
  * Container that holds bowlers
  */
-class Party implements GeneralParty {
-    private final Vector<GeneralBowler> bowlers;
-    private String name;
+class Party {
+    final Vector<ScorableBowler> bowlers;
+    String name;
 
     Party() {
         bowlers = new Vector(0);
         name = "";
     }
 
-    public void addBowler(final GeneralBowler bowler) {
-        bowlers.add(bowler);
-        if (bowlers.size() == 1) {
-            name += bowler.getNickName() + "'s Party";
+    void saveState(final FileWriter fw) throws IOException {
+        fw.write(bowlers.size() + "\n");
+        for (final Bowler bowler : bowlers) {
+            fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
         }
     }
 
-    /**
-     * Accessor for members in this party
-     *
-     * @return A vector of the bowlers in this party
-     */
+    void loadState(final BufferedReader fr) throws IOException {
+        final int size = Integer.parseInt(fr.readLine());
+        bowlers.clear();
 
-    public final Vector<GeneralBowler> getMembers() {
+        for (int i = 0; i < size; i++) {
+            final String[] bowler = fr.readLine().split("/");
+            bowlers.add(new ScorableBowler(bowler[0], bowler[1], bowler[2]));
+        }
+    }
+
+    final Vector<ScorableBowler> getMembers() {
         return bowlers;
     }
 
-    public final int getPartySize() {
+    final int getPartySize() {
         return bowlers.size();
     }
 
-    public final Vector<String> getMemberNicks() {
-        final Vector<String> nicks = new Vector<>(getPartySize());
+    final ArrayList<String> getMemberNicks() {
+        final ArrayList<String> nicks = new ArrayList<>(getPartySize());
 
-        for (final GeneralBowler bowler : bowlers) {
+        for (final Bowler bowler : bowlers) {
             nicks.add(bowler.getNickName());
         }
         return nicks;
     }
 
-    public final String getName() {
+    final String getName() {
         return name;
-    }
-
-    public final String getMemberNick(final int index) {
-        return bowlers.get(index).getNickName();
     }
 }

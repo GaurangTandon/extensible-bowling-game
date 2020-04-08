@@ -33,7 +33,7 @@ abstract class GenericPanel {
         panel = fPanel;
     }
 
-    GenericPanel(final JPanel fPanel, String heading) {
+    GenericPanel(final JPanel fPanel, final String heading) {
         this(fPanel);
         if (!heading.isEmpty()) {
             panel.setBorder(new TitledBorder(heading));

@@ -1,6 +1,6 @@
 @SuppressWarnings("StaticVariableMayNotBeInitialized")
 final class BowlerScorerTest {
-    private static BowlerScorer bs;
+    private static ScorableBowler bs;
 
     private BowlerScorerTest() {
     }
@@ -33,11 +33,11 @@ final class BowlerScorerTest {
     }
 
     private static void testSpares() {
-        bs = new BowlerScorer();
+        bs = new ScorableBowler();
         rollSpare();
         rollSpare();
         bs.roll(5);
-        final int[] expScore = new int[LaneScorer.FRAME_COUNT];
+        final int[] expScore = new int[ScorableParty.FRAME_COUNT];
         expScore[0] = Pinsetter.PIN_COUNT + Pinsetter.PIN_COUNT - 1;
         expScore[1] = expScore[0] + Pinsetter.PIN_COUNT + 5;
         expScore[2] = expScore[1] + 5;
@@ -46,10 +46,10 @@ final class BowlerScorerTest {
     }
 
     private static void testAllOnes() {
-        bs = new BowlerScorer();
-        rollMany(1, LaneScorer.FRAME_COUNT * 2);
-        final int[] expScore = new int[LaneScorer.FRAME_COUNT];
-        for (int i = 0; i < LaneScorer.FRAME_COUNT; i++) {
+        bs = new ScorableBowler();
+        rollMany(1, ScorableParty.FRAME_COUNT * 2);
+        final int[] expScore = new int[ScorableParty.FRAME_COUNT];
+        for (int i = 0; i < ScorableParty.FRAME_COUNT; i++) {
             expScore[i] = 2 * (i + 1);
         }
         checkEquality(expScore);
@@ -57,10 +57,10 @@ final class BowlerScorerTest {
 
 
     private static void testGutters() {
-        bs = new BowlerScorer();
-        rollMany(0, LaneScorer.FRAME_COUNT * 2);
-        final int[] expScore = new int[LaneScorer.FRAME_COUNT];
-        for (int i = 0; i < LaneScorer.FRAME_COUNT; i++) {
+        bs = new ScorableBowler();
+        rollMany(0, ScorableParty.FRAME_COUNT * 2);
+        final int[] expScore = new int[ScorableParty.FRAME_COUNT];
+        for (int i = 0; i < ScorableParty.FRAME_COUNT; i++) {
             expScore[i] = 0;
         }
         checkEquality(expScore);
@@ -68,11 +68,11 @@ final class BowlerScorerTest {
 
 
     private static void testBest() {
-        bs = new BowlerScorer();
-        rollMany(Pinsetter.PIN_COUNT, LaneScorer.FRAME_COUNT + 2);
-        final int[] expScore = new int[LaneScorer.FRAME_COUNT];
+        bs = new ScorableBowler();
+        rollMany(Pinsetter.PIN_COUNT, ScorableParty.FRAME_COUNT + 2);
+        final int[] expScore = new int[ScorableParty.FRAME_COUNT];
         final int perFrameScore = 30;
-        for (int i = 0; i < LaneScorer.FRAME_COUNT; i++) {
+        for (int i = 0; i < ScorableParty.FRAME_COUNT; i++) {
             expScore[i] = perFrameScore * (i + 1);
         }
         checkEquality(expScore);

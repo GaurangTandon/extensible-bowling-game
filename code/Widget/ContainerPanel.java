@@ -11,7 +11,7 @@ public class ContainerPanel extends GenericPanel {
         super(panel);
     }
 
-    public ContainerPanel(final JPanel panel, String heading) {
+    public ContainerPanel(final JPanel panel, final String heading) {
         super(panel, heading);
     }
 

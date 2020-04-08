@@ -1,25 +1,26 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Vector;
-
 
 public class Lane extends Publisher implements Runnable, LaneInterface, Observer {
-    private GeneralParty party;
     private final Pinsetter pinsetter;
-    private final LaneScorer scorer;
+    private ScorableParty scorer;
+    private boolean paused;
 
-    public Lane() {
+    Lane() {
         pinsetter = new Pinsetter();
-        scorer = new LaneScorer();
+        scorer = null;
         pinsetter.subscribe(this);
+        paused = false;
     }
 
     private void exitGame(final String partyName) {
-        final EndGameReport egr = new EndGameReport(partyName, party.getMemberNicks());
+        final EndGameReport egr = new EndGameReport(partyName, scorer.getMemberNicks());
 
         final int gameNumber = scorer.getGameNumber();
         int myIndex = 0;
 
-        for (final GeneralBowler bowler : party.getMembers()) {
+        for (final Bowler bowler : scorer.getMembers()) {
             final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), gameNumber);
             myIndex++;
 
@@ -31,20 +32,34 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         }
 
         publish();
-        party = null;
+        scorer = null;
+    }
+
+    void saveState(final FileWriter fw) throws IOException {
+        scorer.saveState(fw);
+    }
+
+    void loadState(final BufferedReader fr) throws IOException {
+        paused = true;
+        scorer = new ScorableParty();
+        scorer.loadState(fr);
+        paused = false;
+    }
+
+    void setPauseState(final boolean state) {
+        paused = state;
     }
 
     private void onGameFinish() {
-        final String partyName = party.getName();
+        final String partyName = scorer.getName();
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();
         egp.destroy();
 
-        // TODO: send record of scores to control desk
-        if (result == 1) { // yes, want to play again TODO: make this an enum
+        if (result == 1) {
             scorer.onGameFinish();
-        } else if (result == 2) {// no, dont want to play another game
+        } else if (result == 2) {
             exitGame(partyName);
         }
     }
@@ -58,20 +73,17 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         pinsetter.resetState();
     }
 
-    private String getCurrentThrowerNick() {
-        return party.getMemberNick(scorer.getCurrentBowler());
-    }
-
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
-            if (isPartyAssigned()) {
-                if (!scorer.isFinished()) {
+            if (isPartyAssigned() && !paused) {
+                if (scorer.isFinished()) onGameFinish();
+                else {
                     waitWhilePaused();
 
                     bowlOneBowlerOneFrame();
                     scorer.nextBowler();
-                } else onGameFinish();
+                }
             }
 
             Util.busyWait(10);
@@ -94,18 +106,15 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         publish();
     }
 
-    final void assignParty(final GeneralParty theParty) {
-        party = theParty;
-
-        final Vector<GeneralBowler> members = party.getMembers();
-
-        scorer.resetScores(members);
+    final void assignParty(final ScorableParty theParty) {
+        scorer = theParty;
+        scorer.resetScoresHard();
     }
 
     Event createEvent() {
-        return new LaneEvent(party.getMemberNicks(), party.getPartySize(), getCurrentThrowerNick(),
+        return new LaneEvent(scorer.getMemberNicks(), scorer.getPartySize(), scorer.getCurrentThrowerNick(),
                 scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), scorer.isHalted(),
-                scorer.shouldResetGraphics(), getPinsDown());
+                getPinsDown());
     }
 
     private int getPinsDown() {
@@ -113,7 +122,7 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     }
 
     final boolean isPartyAssigned() {
-        return party != null;
+        return scorer != null;
     }
 
     final void subscribePinsetter(final PinSetterView psv) {

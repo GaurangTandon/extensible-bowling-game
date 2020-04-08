@@ -9,7 +9,7 @@ import java.util.Random;
  * It is the duty of the BowlerScorer:
  * to decide when to reset the pinsetter and keep scoring
  */
-class Pinsetter extends Publisher implements GeneralPinsetter {
+class Pinsetter extends Publisher {
     private final Random rnd;
     static final int PIN_COUNT = 10;
 
@@ -44,7 +44,7 @@ class Pinsetter extends Publisher implements GeneralPinsetter {
      * @pre none
      * @post pins may have been knocked down and the throwNumber has been incremented
      */
-    public void ballThrown() {
+    void ballThrown() {
         pinsDownedOnThisThrow = 0;
         foul = false;
         final double skill = rnd.nextDouble();
@@ -76,7 +76,7 @@ class Pinsetter extends Publisher implements GeneralPinsetter {
      * @pre none
      * @post pinsetters state is reset
      */
-    public void resetState() {
+    void resetState() {
         foul = false;
         throwNumber = 1;
         resetPins();

@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 class AddPartyView implements ActionListener, ListSelectionListener {
@@ -19,9 +20,9 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private final Widget.ScrollablePanel<String> partyPanel;
     private Widget.ScrollablePanel<Object> bowlerPanel;
 
-    private final Vector<String> party;
+    private final ArrayList<String> party;
     private final ControlDeskView controlDesk;
-    private Vector<Object> bowlerDB;
+    private ArrayList<Object> bowlerDB;
     private String selectedNick, selectedMember;
 
     private static final String BTN_ADD_PATRON = "Add to Party";
@@ -32,13 +33,13 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     private void buildBowlerPanel() {
         //noinspection ProhibitedExceptionCaught
         try {
-            bowlerDB = new Vector<Object>(BowlerFile.getBowlers());
+            bowlerDB = new ArrayList<>(BowlerFile.getBowlers());
         } catch (final IOException e) {
             System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
-            bowlerDB = new Vector<>();
+            bowlerDB = new ArrayList<>();
         } catch (final ArrayIndexOutOfBoundsException e) {
             System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
-            bowlerDB = new Vector<>();
+            bowlerDB = new ArrayList<>();
         }
 
         bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
@@ -48,9 +49,9 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         this.controlDesk = controlDesk;
         maxSize = max;
 
-        final Vector<String> empty = new Vector<>();
+        final ArrayList<String> empty = new ArrayList<>();
         empty.add("(Empty)");
-        party = new Vector<>();
+        party = new ArrayList<>(0);
         partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
 
         buildBowlerPanel();
@@ -84,7 +85,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     private void removePatron() {
         if (selectedMember != null) {
-            party.removeElement(selectedMember);
+            party.remove(selectedMember);
             partyPanel.setListData(party);
         }
     }
@@ -128,7 +129,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         final String nickName = newPatron.getNickName();
         final Vector<String> res = BowlerFile.putBowlerIfDidntExist(nickName, newPatron.getFull(), newPatron.getEmail());
         if (res != null) {
-            bowlerDB = new Vector<>(res);
+            bowlerDB = new ArrayList<>(res);
             bowlerPanel.setListData(bowlerDB);
             party.add(nickName);
             partyPanel.setListData(party);
@@ -138,6 +139,6 @@ class AddPartyView implements ActionListener, ListSelectionListener {
     }
 
     public Iterable<String> getParty() {
-        return (Vector<String>) party.clone();
+        return (ArrayList<String>) party.clone();
     }
 }
