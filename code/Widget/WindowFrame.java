@@ -19,25 +19,32 @@ public class WindowFrame {
         });
     }
 
+    public WindowFrame(final String title, final GenericPanel panel) {
+        this(title, panel.getPanel());
+    }
+
     private WindowFrame(final String title, final Component container) {
         win = new JFrame(title);
+        addContainer(container);
+        center();
+    }
+
+    public WindowFrame addContainer(final Component container) {
         win.getContentPane().setLayout(new BorderLayout());
         ((JComponent) win.getContentPane()).setOpaque(false);
-
         win.getContentPane().add("Center", container);
         win.pack();
+        return this;
+    }
 
-        // Center WindowFrame on Screen
+    public WindowFrame center() {
         final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
         final Dimension size = win.getSize();
         win.setLocation(
                 ((screenSize.width) / 2) - ((size.width) / 2),
                 ((screenSize.height) / 2) - ((size.height) / 2));
         win.setVisible(true);
-    }
-
-    public WindowFrame(final String title, final GenericPanel panel) {
-        this(title, panel.getPanel());
+        return this;
     }
 
     public void destroy() {

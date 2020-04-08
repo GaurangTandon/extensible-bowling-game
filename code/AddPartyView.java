@@ -1,5 +1,4 @@
 import Widget.ContainerPanel;
-import Widget.WindowFrame;
 import Widget.WindowView;
 
 import javax.swing.*;
@@ -11,23 +10,29 @@ class AddPartyView extends WindowView implements ListSelectionListener {
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
 
     private final Widget.ScrollablePanel partyPanel;
-    private Widget.ScrollablePanel bowlerPanel;
+    private final Widget.ScrollablePanel bowlerPanel;
 
     private final ArrayList<String> party;
     private final ControlDeskView controlDesk;
     private String selectedNick, selectedMember;
 
     AddPartyView(final ControlDeskView controlDeskView) {
+        super("Add Party");
         party = new ArrayList<>(0);
         controlDesk = controlDeskView;
-        partyPanel = drawScrollable("(Empty)", "Your Party", 5).attachListener(this);
-        bowlerPanel = drawScrollable(BowlerFile.getBowlers(), "Bowler Database", 8).attachListener(this);
+
+        partyPanel = drawScrollable("(Empty)", "Your Party", 5)
+                .attachListener(this);
+        bowlerPanel = drawScrollable(BowlerFile.getBowlers(), "Bowler Database", 8)
+                .attachListener(this);
         String[] buttons = {ButtonNames.BTN_ADD_PATRON, ButtonNames.BTN_REM_PATRON,
                 ButtonNames.BTN_NEW_PATRON, ButtonNames.BTN_FINISHED};
-        win = new WindowFrame("Add Party", new ContainerPanel(1, 3, "")
+
+        container = new ContainerPanel(1, 3, "")
                         .put(partyPanel)
                         .put(bowlerPanel)
-                        .put(generateButtonPanel(buttons, "")));
+                        .put(generateButtonPanel(buttons, ""));
+        win.addContainer(container.getPanel()).center();
     }
 
     private void addPatron() {
