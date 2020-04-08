@@ -30,10 +30,10 @@ class AddPartyView implements ActionListener, ListSelectionListener {
             bowlerDB = new ArrayList<>(BowlerFile.getBowlers());
         } catch (final IOException e) {
             System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
-            bowlerDB = new ArrayList<>();
+            bowlerDB = new ArrayList<>(0);
         } catch (final ArrayIndexOutOfBoundsException e) {
             System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
-            bowlerDB = new ArrayList<>();
+            bowlerDB = new ArrayList<>(0);
         }
 
         bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
@@ -43,14 +43,14 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         this.controlDesk = controlDesk;
         maxSize = max;
 
-        final ArrayList<String> empty = new ArrayList<>();
+        final ArrayList<String> empty = new ArrayList<>(0);
         empty.add("(Empty)");
         party = new ArrayList<>(0);
         partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
 
         buildBowlerPanel();
 
-        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
                 .put(ButtonNames.BTN_ADD_PATRON, this)
                 .put(ButtonNames.BTN_REM_PATRON, this)
                 .put(ButtonNames.BTN_NEW_PATRON, this)
@@ -96,10 +96,13 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         switch (source) {
             case ButtonNames.BTN_ADD_PATRON:
                 addPatron();
+                break;
             case ButtonNames.BTN_REM_PATRON:
                 removePatron();
+                break;
             case ButtonNames.BTN_NEW_PATRON:
                 new NewPatronView(this);
+                break;
             case ButtonNames.BTN_FINISHED:
                 onPartyFinished();
         }

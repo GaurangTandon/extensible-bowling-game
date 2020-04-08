@@ -13,7 +13,7 @@ class EndGamePrompt implements ActionListener {
         final Widget.ContainerPanel labelPanel = new Widget.ContainerPanel("")
                 .put(new JLabel("Party " + partyName
                         + " has finished bowling.\nWould they like to bowl another game?"));
-        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(1, 2, "")
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(1, 2, "")
                 .put(ButtonNames.BTN_YES, this)
                 .put(ButtonNames.BTN_NO, this);
 

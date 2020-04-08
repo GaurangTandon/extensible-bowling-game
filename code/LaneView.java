@@ -47,7 +47,7 @@ public class LaneView implements ActionListener, Observer {
     }
 
     private Component getButtonPanel() {
-        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel("").put(ButtonNames.BTN_MAINTENANCE, this);
         return buttonPanel.getPanel();
     }
 

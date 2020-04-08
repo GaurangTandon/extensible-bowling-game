@@ -40,7 +40,7 @@ class NewPatronView implements ActionListener {
                 .put(TXT_NICK_FIELD)
                 .put(TXT_FULL_FIELD)
                 .put(TXT_EMAIL_FIELD);
-        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(4, 1, "")
                 .put(ButtonNames.BTN_PATRON_FINISHED, this)
                 .put(ButtonNames.BTN_PATRON_ABORT, this);
 

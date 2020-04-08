@@ -21,7 +21,7 @@ final class Util {
         }
     }
 
-    static boolean busyWait(boolean condition) {
+    static boolean busyWait(final boolean condition) {
         if (!condition) {
             busyWait(10);
         }

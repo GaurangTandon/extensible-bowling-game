@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 class Party {
     final ArrayList<ScorableBowler> bowlers;
-    String name;
+    private String name;
 
     Party() {
         bowlers = new ArrayList<>(0);

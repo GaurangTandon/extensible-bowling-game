@@ -1,4 +1,4 @@
-class ButtonNames {
+final class ButtonNames {
 
     static final String BTN_ADD_PATRON = "Add to Party";
     static final String BTN_REM_PATRON = "Remove Member";
@@ -29,4 +29,6 @@ class ButtonNames {
     static final String BTN_PATRON_FINISHED = "Add Patron";
     static final String BTN_PATRON_ABORT = "Abort";
 
+    private ButtonNames() {
+    }
 }

@@ -59,7 +59,6 @@ class ScorableBowler extends Bowler {
             if (i > 0) fw.write(DELIMITER);
             fw.write(String.valueOf(finalScores[i]));
         }
-        ;
         fw.write("\n");
     }
 

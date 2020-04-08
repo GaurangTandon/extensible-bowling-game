@@ -13,7 +13,7 @@ class AdhocView implements ActionListener {
     private Score currScore;
 
     AdhocView() {
-        ButtonPanel buttonPanel = new ButtonPanel(4, 1, "")
+        final ButtonPanel buttonPanel = new ButtonPanel(4, 1, "")
                 .put(ButtonNames.BTN_HIGHEST, this)
                 .put(ButtonNames.BTN_LOWEST, this)
                 .put(ButtonNames.BTN_BEST, this)

@@ -84,7 +84,7 @@ public class Lane extends LaneInterface implements Runnable {
         return scorer != null;
     }
 
-    public final void pauseGame(boolean state) {
+    public final void pauseGame(final boolean state) {
         if (state) {
             scorer.pause();
         } else {

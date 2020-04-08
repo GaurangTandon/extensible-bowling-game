@@ -27,7 +27,7 @@ class EndGameReport implements ActionListener, ListSelectionListener {
                 "Party Members", partyMemberNicks, 5, this);
         partyPanel.getPanel().add(partyPanel.getList()); // Can't understand why list is added again
 
-        Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(2, 1, "")
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(2, 1, "")
                 .put(ButtonNames.BTN_PRINT, this)
                 .put(ButtonNames.BTN_FINISHED, this);
 

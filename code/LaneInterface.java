@@ -1,6 +1,6 @@
 abstract class LaneInterface extends Publisher implements Observer {
 
-    protected final Pinsetter pinsetter;
+    final Pinsetter pinsetter;
 
     abstract void pauseGame(boolean state);
 
