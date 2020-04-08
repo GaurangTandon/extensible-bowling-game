@@ -14,7 +14,7 @@ class ScorableBowler extends Bowler {
 
     ScorableBowler(final String nick, final String full, final String mail) {
         super(nick, full, mail);
-        reset();
+        ghhhreset();
     }
 
     ScorableBowler(final Bowler bowler) {
