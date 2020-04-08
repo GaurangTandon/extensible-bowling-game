@@ -3,7 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class ScorableBowler extends Bowler {
+class ScorableBowler extends Bowler {
     private int[] gameScores;
     private static final int MAX_GAMES = 128;
 
@@ -51,10 +51,9 @@ public class ScorableBowler extends Bowler {
 
     void setGameScoresOnGameEnd(final int gameNumber) {
         gameScores[gameNumber] = getCumulativeScore()[Frame.LAST_FRAME];
-        final String finalScore = Integer.toString(gameScores[gameNumber]);
 
         try {
-            ScoreHistoryFile.addScore(getNickName(), finalScore);
+            ScoreHistoryFile.addScore(getNickName(), gameScores[gameNumber]);
         } catch (final IOException e) {
             System.err.println("Exception in addScore. " + e);
         }
