@@ -1,13 +1,17 @@
 \section{Structure of the New Code}
 
-
-This document outlines the major responsibilities of each class.
+This document outlines the major groups of classes in our code.
 
 \subsection{Overall Structure}
 
-Some basic File \subsubsection{Groups}
 \begin{itemize}
-    \item `XView.java` files are concerned with providing a GUI to the end user, and do not implement any logic. They form the "View".
+    \item \textbf{Controllers} implement the core logic of the application. They are responsible for maintaining the state of the view and redrawing the view on any updates. They utilize necessary helper classes to ensure their aim.
+          \begin{itemize}
+              \item ControlDesk
+              \item Pinsetter
+              \item Lane
+          \end{itemize}
+    \item \textbf{Views} are concerned with providing a GUI to the end user, and do not implement any logic. They receive instructions from Controller clases via Observer pattern.
           \begin{itemize}
               \item AddPartyView (No controller)
               \item AdhocView (No controller)
@@ -20,28 +24,18 @@ Some basic File \subsubsection{Groups}
               \item EndGamePrompt
               \item EndGameReport
           \end{itemize}
-    \item The logic is entirely contained in `X.java'. It is responsible for maintaining the state of the view and redrawing the view on any updates. This forms the "Controller" part.
+    \item \textbf{Controller helpers} classes provide necessary abstracted help to the main controller classes, as the following, and both are described later in detail.
           \begin{itemize}
-              \item BowlerScorer
-              \item ControlDesk
-              \item Pinsetter
-              \item Lane
+            \item ScorableParty
+            \item ScorableBowler
           \end{itemize}
-    \item There are several other classes which help the controllers mentioned above maintain state and compute score-tables, etc. based on the rules of bowling by responding to the broadcasted events. These, in a loose sense form the data model.
-          \begin{itemize}
-              \item Queue (store by AddPartyView, retrieve by Lane)
-              \item LaneScorer (handles scoring, updates by Pinsetter, used by Lane and others)
-              \item BowlerScorer (sub-model to LaneScorer)
-              \item Bowler (Used by Party)
-              \item Party (Used by Lane)
-          \end{itemize}
-    \item The Events broadcasted as a part of the observer pattern are done through are done through the `XEvent.java' classes. It wraps all data needed by any other class from the generated event.
+    \item The Events broadcasted as a part of the observer pattern are done through are done through the `XEvent.java' classes. It wraps all data needed by the observers from the publisher.
           \begin{itemize}
               \item LaneEvent
               \item PinsetterEvent
               \item ControlDeskEvent
           \end{itemize}
-    \item In addition to the View classes, there are view Helpers in the Widget library, following is a \subsubsection{list}
+    \item \textbf{View helper} classes that help the main View classes in displaying certain specific window components, like a panel of buttons or a grid panel, etc.
           \begin{itemize}
               \item ButtonPanel
               \item ConainerPanel
@@ -52,17 +46,14 @@ Some basic File \subsubsection{Groups}
               \item Generic Panel (Abstract superclass)
               \item WindowFrame
           \end{itemize}
-    \item The Abstract Classes that layout the necessary functions for classes to implement and decouple our implementations from the requirements due to it's users.
+    \item \textbf{Abstract classes} that layout the necessary functions for classes to implement and decouple our implementations from the requirements due to it's users.
           \begin{itemize}
               \item Observer
               \item Publisher
               \item Event
-              \item GeneralParty
-              \item GeneralBowler
-              \item GeneralPinsetter
-              \item LaneInterface
+              \item LaneWithPinsetter
           \end{itemize}
-    \item Other utility classes that help with things like Input/Output and maintaining data, often for specific classes.
+    \item \textbf{Utility classes} that help with Input/Output and maintaining data, often for specific classes.
           \begin{itemize}
               \item Util
               \item PrintableText
@@ -70,16 +61,14 @@ Some basic File \subsubsection{Groups}
               \item ScoreHistoryFile
               \item ScoreReport
           \end{itemize}
-    \item Finally, we have the main driver classes, which assign threads and run the entire code.
+    \item Finally, we have the \textbf{driver class}, which initializes an Alley with the corrrect parameters and lets it run:
           \begin{itemize}
-              \item Alley
-              \item driver (Contains `public static void main()')
+              \item BowlingAlleyDriver
           \end{itemize}
-    \item And then there is a single Test file, to automate correctness checks. We have not added more as it's not an everchanging piece of code, most of the testing is done through asserts, and throwing errors under unexpected events.
+    \item Lastly, there is a single Test file, to automate correctness checks of the lane scoring mechanism. We have not added more as it's not an everchanging piece of code, most of the testing is done through asserts, and throwing errors under unexpected events.
           \begin{itemize}
               \item BowlerScorerTest
           \end{itemize}
-    \item Other files
 \end{itemize}
 
 

@@ -101,3 +101,12 @@ fabric.properties
 .idea/**/markdown-navigator/
 
 # End of https://www.gitignore.io/api/jetbrains
+
+# latex related
+*.aux
+*.log
+*.fls
+main.pdf
+*.synctex.gz
+*.fdb_latexmk
+__*
