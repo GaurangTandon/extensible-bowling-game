@@ -7,7 +7,7 @@ public class ScorableBowler extends Bowler {
     private int[] gameScores;
     private static final int MAX_GAMES = 128;
 
-    ScorableBowler(final String nick, final String full, final String mail){
+    ScorableBowler(final String nick, final String full, final String mail) {
         super(nick, full, mail);
         resetHard();
     }
@@ -16,12 +16,8 @@ public class ScorableBowler extends Bowler {
         this(bowler.getNickName(), bowler.getFullName(), bowler.getEmail());
     }
 
-    ScorableBowler() {
-        this("", "", "");
-    }
-
     int[] getFinalScores() {
-        return gameScores;
+        return gameScores.clone();
     }
 
     void resetHard() {
@@ -53,13 +49,12 @@ public class ScorableBowler extends Bowler {
         for (int i = 0; i < MAX_GAMES; i++) gameScores[i] = Integer.parseInt(scores[i]);
     }
 
-    void setFinalScoresOnGameEnd(final int gameNumber) {
+    void setGameScoresOnGameEnd(final int gameNumber) {
         gameScores[gameNumber] = getCumulativeScore()[Frame.LAST_FRAME];
         final String finalScore = Integer.toString(gameScores[gameNumber]);
 
         try {
-            final String dateString = Util.getDateString();
-            ScoreHistoryFile.addScore(getNickName(), dateString, finalScore);
+            ScoreHistoryFile.addScore(getNickName(), finalScore);
         } catch (final IOException e) {
             System.err.println("Exception in addScore. " + e);
         }

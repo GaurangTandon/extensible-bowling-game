@@ -62,7 +62,7 @@ class ScorableParty extends Party {
     void setFinalScoresOnGameEnd() {
         if (frameNumber != Frame.LAST_FRAME) return;
 
-        bowlers.get(bowlerIndex).setFinalScoresOnGameEnd(gameNumber);
+        bowlers.get(bowlerIndex).setGameScoresOnGameEnd(gameNumber);
     }
 
     final int[] getFinalScores(final int bowler) {

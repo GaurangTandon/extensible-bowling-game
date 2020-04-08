@@ -5,6 +5,10 @@ final class BowlerScorerTest {
     private BowlerScorerTest() {
     }
 
+    private static void genBowler() {
+        bs = new ScorableBowler("", "", "");
+    }
+
     private static void rollMany(final int val, final int count) {
         for (int i = 0; i < count; i++) {
             bs.roll(val);
@@ -33,7 +37,7 @@ final class BowlerScorerTest {
     }
 
     private static void testSpares() {
-        bs = new ScorableBowler();
+        genBowler();
         rollSpare();
         rollSpare();
         bs.roll(5);
@@ -46,7 +50,7 @@ final class BowlerScorerTest {
     }
 
     private static void testAllOnes() {
-        bs = new ScorableBowler();
+        genBowler();
         rollMany(1, Frame.FRAME_COUNT * 2);
         final int[] expScore = new int[Frame.FRAME_COUNT];
         for (int i = 0; i < Frame.FRAME_COUNT; i++) {
@@ -57,7 +61,7 @@ final class BowlerScorerTest {
 
 
     private static void testGutters() {
-        bs = new ScorableBowler();
+        genBowler();
         rollMany(0, Frame.FRAME_COUNT * 2);
         final int[] expScore = new int[Frame.FRAME_COUNT];
         for (int i = 0; i < Frame.FRAME_COUNT; i++) {
@@ -68,7 +72,7 @@ final class BowlerScorerTest {
 
 
     private static void testBest() {
-        bs = new ScorableBowler();
+        genBowler();
         rollMany(Pinsetter.PIN_COUNT, Frame.FRAME_COUNT + 2);
         final int[] expScore = new int[Frame.FRAME_COUNT];
         final int perFrameScore = 30;
