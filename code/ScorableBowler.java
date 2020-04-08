@@ -2,9 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 class ScorableBowler extends Bowler {
-    private int[] cumulativeScore;
     private Frame[] frames;
 
     private int currFrame;
@@ -35,14 +35,11 @@ class ScorableBowler extends Bowler {
             frames[i] = new Frame(i);
         frames[Frame.LAST_FRAME] = new LastFrame();
 
-        cumulativeScore = new int[Frame.FRAME_COUNT];
-        resetCumulativeScores();
-
         currFrame = 0;
     }
 
     void saveState(final FileWriter fw) throws IOException {
-        final ArrayList<Integer> rolls = getRolls();
+        final List<Integer> rolls = getRolls();
 
         for (int i = 0; i < rolls.size(); i++) {
             if (i > 0) fw.write(Util.DELIMITER);
@@ -60,15 +57,9 @@ class ScorableBowler extends Bowler {
     void loadState(final BufferedReader fr) throws IOException {
         final String[] rolls = fr.readLine().split(Util.DELIMITER);
         for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
-        updateCumulativeScores();
 
         final String[] scores = fr.readLine().split(Util.DELIMITER);
         for (int i = 0; i < MAX_GAMES; i++) finalScores[i] = Integer.parseInt(scores[i]);
-    }
-
-    private void resetCumulativeScores() {
-        for (int frame = 0; frame < Frame.FRAME_COUNT; frame++)
-            cumulativeScore[frame] = -1;
     }
 
     private ArrayList<Integer> getRolls() {
@@ -78,23 +69,6 @@ class ScorableBowler extends Bowler {
         }
 
         return rollList;
-    }
-
-    void updateCumulativeScores() {
-        final ArrayList<Integer> rolls = getRolls();
-        int rollIndex = 0;
-
-        resetCumulativeScores();
-
-        for (int i = 0; i <= currFrame; i++) {
-            final int contrib = frames[i].getContributionToScore(rolls, rollIndex);
-            if (contrib == -1) break;
-
-            cumulativeScore[i] = contrib;
-            if (i > 0) cumulativeScore[i] += cumulativeScore[i - 1];
-
-            rollIndex += frames[i].rollCount;
-        }
     }
 
     /**
@@ -111,7 +85,25 @@ class ScorableBowler extends Bowler {
     }
 
     int[] getCumulativeScore() {
-        return cumulativeScore.clone();
+        final int[] cumulativeScore = new int[Frame.FRAME_COUNT];
+
+        for (int frame = 0; frame < Frame.FRAME_COUNT; frame++)
+            cumulativeScore[frame] = -1;
+
+        final ArrayList<Integer> rolls = getRolls();
+        int rollIndex = 0;
+
+        for (int i = 0; i <= currFrame; i++) {
+            final int contrib = frames[i].getContributionToScore(rolls, rollIndex);
+            if (contrib == -1) break;
+
+            cumulativeScore[i] = contrib;
+            if (i > 0) cumulativeScore[i] += cumulativeScore[i - 1];
+
+            rollIndex += frames[i].rollCount;
+        }
+
+        return cumulativeScore;
     }
 
     /**
@@ -143,7 +135,7 @@ class ScorableBowler extends Bowler {
     }
 
     void setFinalScoresOnGameEnd(final int gameNumber) {
-        finalScores[gameNumber] = cumulativeScore[Frame.LAST_FRAME];
+        finalScores[gameNumber] = getCumulativeScore()[Frame.LAST_FRAME];
         final String finalScore = Integer.toString(finalScores[gameNumber]);
 
         try {

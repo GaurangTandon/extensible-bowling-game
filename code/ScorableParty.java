@@ -61,7 +61,6 @@ class ScorableParty extends Party {
     final void roll(final int pinsDowned) {
         final ScorableBowler bowlerScorer = bowlers.get(bowlerIndex);
         bowlerScorer.roll(pinsDowned);
-        bowlerScorer.updateCumulativeScores();
     }
 
     final boolean canRollAgain() {
