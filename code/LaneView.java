@@ -13,10 +13,10 @@ public class LaneView implements ActionListener, Observer {
     private List<BowlerScoreView> bsv;
     private final Widget.ContainerPanel containerPanel;
     private final JFrame frame;
-    private final LaneInterface lane;
+    private final LaneWithPinsetter lane;
     private List<String> bowlerNicks;
 
-    LaneView(final LaneInterface ln, final int laneNum) {
+    LaneView(final LaneWithPinsetter ln, final int laneNum) {
         lane = ln;
         frame = new JFrame("Lane " + laneNum + ":");
         containerPanel = new Widget.ContainerPanel((JPanel) frame.getContentPane());

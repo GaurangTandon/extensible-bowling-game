@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class ScorableBowler extends Bowler {
-    private static final String DELIMITER = ",";
     private int[] cumulativeScore;
     private Frame[] frames;
 
@@ -46,12 +45,12 @@ class ScorableBowler extends Bowler {
         final ArrayList<Integer> rolls = getRolls();
 
         for (int i = 0; i < rolls.size(); i++) {
-            if (i > 0) fw.write(DELIMITER);
+            if (i > 0) fw.write(Util.DELIMITER);
             fw.write(String.valueOf(rolls.get(i)));
         }
         fw.write("\n");
         for (int i = 0; i < MAX_GAMES; i++) {
-            if (i > 0) fw.write(DELIMITER);
+            if (i > 0) fw.write(Util.DELIMITER);
             fw.write(String.valueOf(finalScores[i]));
         }
         fw.write("\n");
@@ -59,11 +58,11 @@ class ScorableBowler extends Bowler {
 
     // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        final String[] rolls = fr.readLine().split(DELIMITER);
+        final String[] rolls = fr.readLine().split(Util.DELIMITER);
         for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
         updateCumulativeScores();
 
-        final String[] scores = fr.readLine().split(DELIMITER);
+        final String[] scores = fr.readLine().split(Util.DELIMITER);
         for (int i = 0; i < MAX_GAMES; i++) finalScores[i] = Integer.parseInt(scores[i]);
     }
 

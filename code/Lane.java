@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Lane extends LaneInterface implements Runnable {
+public class Lane extends LaneWithPinsetter implements Runnable {
     private ScorableParty scorer;
     private boolean paused;
 
@@ -51,9 +51,10 @@ public class Lane extends LaneInterface implements Runnable {
                 else {
                     while (scorer.isHalted()) Util.busyWait(10);
 
-                    while (scorer.canRollAgain()) pinsetter.ballThrown();
+                    while (scorer.canRollAgain()) rollBall();
+                    resetPinsetter();
+
                     scorer.setFinalScoresOnGameEnd();
-                    pinsetter.resetState();
                     scorer.nextBowler();
                 }
             }
@@ -77,8 +78,7 @@ public class Lane extends LaneInterface implements Runnable {
     }
 
     Event createEvent() {
-        final int pinsDown = pinsetter == null ? 0 : pinsetter.totalPinsDown();
-        return new LaneEvent(scorer, pinsDown);
+        return new LaneEvent(scorer, getPinsDown());
     }
 
     final boolean isPartyAssigned() {

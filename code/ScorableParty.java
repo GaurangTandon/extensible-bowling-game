@@ -6,8 +6,6 @@ import java.io.IOException;
  * This class is supposed to handle all the scoring happening on a particular lane
  */
 class ScorableParty extends Party {
-    private static final String DELIMITER = ",";
-
     private boolean halted;
     private boolean finished;
     private int bowlerIndex;
@@ -19,7 +17,7 @@ class ScorableParty extends Party {
         for (final ScorableBowler bowlerScorer : bowlers) {
             bowlerScorer.saveState(fw);
         }
-        fw.write(gameNumber + DELIMITER + frameNumber + DELIMITER + bowlerIndex + "\n");
+        fw.write(gameNumber + Util.DELIMITER + frameNumber + Util.DELIMITER + bowlerIndex + "\n");
     }
 
     void loadState(final BufferedReader fr) throws IOException {
@@ -27,7 +25,7 @@ class ScorableParty extends Party {
         for (final ScorableBowler bowlerScorer : bowlers) {
             bowlerScorer.loadState(fr);
         }
-        final String[] others = fr.readLine().split(DELIMITER);
+        final String[] others = fr.readLine().split(Util.DELIMITER);
         gameNumber = Integer.parseInt(others[0]);
         frameNumber = Integer.parseInt(others[1]);
         bowlerIndex = Integer.parseInt(others[2]);

@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
  * just one-line function calls of Util.
  */
 final class Util {
+    static final String DELIMITER = ",";
+
     private Util() {
     }
 
