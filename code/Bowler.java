@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 class Bowler extends BowlerInfo {
@@ -9,7 +12,7 @@ class Bowler extends BowlerInfo {
         resetSoft();
     }
 
-    void saveState(final FileWriter fw){
+    void saveState(final FileWriter fw) throws IOException {
         final ArrayList<Integer> rolls = getRolls();
 
         for (int i = 0; i < rolls.size(); i++) {
@@ -19,7 +22,7 @@ class Bowler extends BowlerInfo {
         fw.write("\n");
     }
 
-    void loadState(final BufferedReader fr){
+    void loadState(final BufferedReader fr) throws IOException {
         try{
             final String[] rolls = fr.readLine().split(Util.DELIMITER);
             for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
