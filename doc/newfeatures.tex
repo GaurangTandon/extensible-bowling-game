@@ -1,15 +1,15 @@
 \section{New features}
 
-\subsection{Maximum player}
+\subsection{Maximum players in an Alley}
 
 This was simple to implement. We only changed the number of maximum members in Alley.
 
 \subsection{Ad-hoc queries on user data}
 
 \begin{itemize}
-\item We have provided a queries button in the UI of the main panel, using which user can invoke a panel which allows for three types of queries: (1) Best scorer (2) Worst scorer (3) Highest cumulative score so far
+\item We have provided a queries button in the UI of the main panel, using which user can invoke a panel which allows for three types of queries: (1) Best scorer (2) Worst scorer (3) Highest cumulative score so far (4) Top 5 career best scores of a bowler
 \item This was made possible by using the Score history DAT file, which already logs all the previous scores.
-\item New classes implemented:
+\item Classes implementing this functionality:
     \begin{itemize}
         \item AdhocView.java: for managing the View of the queries
         \item ScoreHistoryFile.java: for managing the backend of the actual queries.
@@ -23,4 +23,5 @@ This was simple to implement. We only changed the number of maximum members in A
 \item Every time the lane is paused, first the ScorableParty calls saveState on each ScorableBowler it has. Each bowler then saves its own state in order. Finally, the party then saves certain specific information. Load state proceeds in a similar fashion.
 \item As you can see, all the three \code{saveState} calls are \textbf{decoupled} from each other. We can happily change the logic in one class, and it would not affect the other classes in any way.
 \item As for the frontend, we have provided two extra buttons in LaneStatusView.java that lets the users pause and resume the game.
+\item By design and logically, paues button is only enabled when the party is playing, and resume button is enabled only when party is paused or is not playing.
 \end{itemize}
