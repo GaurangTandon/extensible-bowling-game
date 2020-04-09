@@ -1,0 +1,118 @@
+% this file is statistical
+% will contain all final metric data
+
+\section{Code Metrics}
+
+\subsection{Plots of CodeMR}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width = \textwidth]{img/stats_pre.png}
+        \caption{Before the Refactor}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width = \textwidth]{img/stats_post.png}
+        \caption{After the Refactor}
+    \end{subfigure}
+    \caption{Code Metrics}
+\end{figure}
+
+\subsection{Metric analysis}
+
+We investigated metrics in multiple ways: one through the CodeMR plugin for IntelliJ and the other through Metrics2 1.38 plugin for Eclipse.
+
+\subsection{Refactoring timeline}
+
+We present to you here the timeline of events that become the cornerstone of starting our refactoring:
+
+\begin{itemize}
+
+    \item Immediately, after launching metrics analyzer on the codebase, we noticed the following key components being broken: McCabe cyclomatic complexity and Nested Block Depth, with both being in Lane.java.
+    \item We open Lane.java and notice it's 700 lines mammoth shape with overly complex methods. We take a guess that it's a "God class" but we're not sure.
+    \item To confirm our suspicion, we look at such metrics:
+
+          \begin{itemize}
+              \item \textbf{Lack of cohesion}: it has the third highest lack of cohesion among all files.
+              \item \textbf{Number of attributes}: it has the most number of attributes (18!) in a class. To be honest, 18 is a very large number and an indication that Lane.java is trying to do much.
+              \item \textbf{Number of methods}: this was the killing blow. Lane.java has 17 methods, the most among all classes (the second place has only 11)
+          \end{itemize}
+
+    \item We thus concluded that Lane.java is trying to do much, and is indeed a God class.
+    \item In such a system, it is ideal to start by:
+          \begin{itemize}
+              \item understanding all the functionality implemented in the God class
+              \item marking out several sets of cohesive functionality
+              \item extracting those sets out in several other classes
+          \end{itemize}
+
+    \item We then chalked out the following cohesive sets:
+          \begin{itemize}
+              \item Scoring functionality: \code{markScore, getScore, resetScores, isGameFinished, resetBowlerIterator}
+              \item Interacting with a pinsetter: \code{getPinsetter, receivePSEvent, run}
+              \item Controlling the external UI and Maintaining a observer model: \code{lanePublish, subscribe, unsubscribe, publish}
+              \item Actually running the game for a party: \code{run, assignParty, isPartyAssigned}
+          \end{itemize}
+
+    \item These parts were then systematically split out into separate classes, namely, \code{ScorableParty, LaneWithPinsetter, Publisher, Lane}
+    \item Once we had separate parts getting compiled, we were already ready to start ironing out complexity and redundancy issues. For quite a lot of time, we worked on these.
+    \item In parallel, we also worked to ensure coupling was as low as possible.
+    \item Once all was done, in the final stages, we made sure that cohesion scores were as high as possible. For classes that had lower cohesion, we grouped their properties and further increased cohesion.
+    \item That was pretty much all :)
+\end{itemize}
+
+\subsection{Metric values analysis}
+
+We have collected and analyzed the following key metrics, showing the before and after change in them as well.
+
+\subsubsection{Lack of cohesion}
+
+\textbf{Before:} 0.375 mean with 0.374 std.
+\textbf{After:}
+
+\subsubsection{Coupling}
+\textbf{Before:}
+\textbf{After:}
+
+\subsubsection{Nested block depth}
+\textbf{Before:} 1.511 mean with 1.177 stdev
+\textbf{After:} 1.356 mean with 0.624 stdev
+
+Moreover, the largest offender Lane.java (2.176 mean with 2.065 stdev) was reduced to a mere 1.5 with 0.866.
+
+\subsubsection{Instability}
+
+\textbf{Before:} 2.319 mean with 4.062 stdev
+\textbf{After:} 1.662 mean with 1.085 stdev
+
+
+\subsubsection{McCabe cyclomatic complexity}
+
+\textbf{Before:} 2.319 mean with 4.062 stdev
+\textbf{After:} 1.662 mean with 1.085 stdev
+
+Moreover, the maximum cyclomatic complexity is down significantly. These were the top four cyclomatic complexities previously:
+
+\begin{tabular}{ |c|c|c|c| }
+    \hline
+    \textbf{File}       & \textbf{Mean} & \textbf{Std. Dev} & \textbf{Maximum} \\
+    \hline
+    Lane.java           & 5.118         & 9.498             & 38               \\
+    LaneView.java       & 5.167         & 6.543             & 19               \\
+    LaneStatusView.java & 3.4           & 3.878             & 11               \\
+    AddPartyView.java   & 3.5           & 3.452             & 11               \\
+    \hline
+\end{tabular}
+
+and these are the top four now:
+
+\begin{tabular}{ |c|c|c|c| }
+    \hline
+    \textbf{File}       & \textbf{Mean} & \textbf{Std. Dev} & \textbf{Maximum} \\
+    \hline
+    LaneStatusView.java & 2.75          & 2.487             & 7                \\
+    Lane.java           & 1.917         & 1.656             & 7                \\
+    LaneView.java       & 2             & 1.414             & 5                \\
+    AddPartyView.java   & 2.625         & 1.317             & 5                \\
+    \hline
+\end{tabular}

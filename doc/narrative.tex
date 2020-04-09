@@ -1,0 +1,35 @@
+\section{Refactoring Narrative}
+
+\subsection{}
+
+This describes the balancing done in refactored files. Our first aim was to solely reduce the cyclomatic complexity present in different methods across files. This usually meant
+
+\begin{itemize}
+    \item Understanding what the method is actually doing
+    \item Break it down into its core parts,
+    \item Extract those core parts into new methods
+    \item Reuse those new methods across the codebase
+\end{itemize}
+
+Splitting up each method usually meant that large top level methods were now very easy to understand (as they only called a set of related helper methods sequentially), and the helper methods themselves had narrow work, which meant they could be reused across the codebase for different top level methods.
+
+However, this usually meant that the cohesion in a class decreased considerably, since now there existed several methods, with each method not using all of the properties. This was now the time for us to split the class into many more classes. For example, this is the precise technique we employed with Lane.java, the behemoth monster in this codebase.
+
+We first split it out into a LaneScorer, that was supposed to handle the entire scoring logic in the Lane. Too soon, we realized that the scoring logic per bowler is being duplicated a lot. So, we split it into a BowlerScorer, which handles scoring logic for just one bowler. BowlerScorer is now used in LaneScorer, which is used in Lane. The segregation of logic is now very clear
+
+\begin{itemize}
+    \item Scoring for one bowler: BowlerScorer
+    \item Scoring for an entire lane (multiple bowlers): LaneScorer
+    \item Administering facilities for an entire lane: Lane
+    \item GUI for one bowler's score sheet: BowlerScoreView
+    \item GUI for scores of all bowlers: LaneView
+\end{itemize}
+
+(provide more detail on more splitups)
+
+Now, we looked at duplicated code across the codebase. One feature that really stood out was the extreme disregard for redundancy in the `XView` classes, as each of them shared a series of crucial logic duplicated. For example, the logic for centering a window, or adding a button, and more. We quickly realized this and extracted out a general set of `Widget.X` classes, whose main purposes is to provide a consistent UI throughtout the codebase. This is reused throughout the codebase, and helped us creating the UI for the newer features with minimal effort.
+
+Since our Widget.X classes were built upon the Builder pattern, we ran into the issue of Law of Demeters...
+
+However, now we had too many classes and had to deal with too much coupling....
+

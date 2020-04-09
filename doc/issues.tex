@@ -1,0 +1,119 @@
+\section{Issues with the Old Code}
+
+\subsection{LANE - the "God class"}
+
+The single biggest problem with the original code is the existence of a "God class" - Lane.java. God classes are notorious for violating the foundational principle of software desisn - Single Responsibility Class: whereby each class is supposed to perform only one task in the context of the application, and delegate sub-tasks to other helper classes.
+
+Expectedly enough, when we ran \textrm{cloc} (a CLI utility to count lines of code) on the source code, we found that out of 1814 lines of code (excluding comments), 294 were alone in Lane.java (nearly 17\% of entire project), the maximum among all other classes.
+
+\subsection{Code repeated throughout codebase}
+
+Quite a lot of code was duplicated line by line through many classes in the codebase, especially in the UI, for example:
+
+\begin{itemize}
+	\item Window centering logic in View class constructors.
+	\item List view scrollable pane, attaching listener, etc.
+	\item Setting up Button Panels inside of Flow and Grid Layouts.
+	\item Getting Date Strings, Waiting for an event, and many more.
+\end{itemize}
+
+Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
+
+\subsection{Misplaced Observer pattern logic}
+
+\begin{itemize}
+
+	\item Each of the three Controller classes implemented their subscriber logic by using their own \code{subsriber} vector and their own \code{subscribe} method. This was \textbf{duplicated} across all three controllers.
+	\item Moreover, placing Observer pattern logic in the Controller class was a \textbf{semantically poor design choice}, as a Controller's sole purpose is to control observers, and implementing barebone's of Observer goes against this. It is like writing \code{pop} and \code{push} functions of a stack just so that you can use a stack.
+	\item We fixed this by introduing a general \code{Publisher} class.
+
+\end{itemize}
+
+\subsection{Reinventing the wheel}
+
+\begin{itemize}
+	\item The original code wrote its own implementation of a Queue class in Queue.java
+	\item This was completely useless as Java built-in modules already provide several different implementations of a queue.
+	\item Not only that, the original Queue.java was not even \textbf{generified}, instead, it was tied down to a Party class. That meant, the Queue \textbf{wasn't even reusable} for other data types if we wanted to reuse it.
+	\item At first, we generified it, but later we ended up deleting and replacing with a built-in \code{java.util.LinkedList} without any loss of functionality.
+\end{itemize}
+
+\subsection{Minor issues}
+
+There were other minor issues plaguing the codebase, the most common ones being:
+
+\subsubsection{Overly Broad access specifiers}
+
+\begin{itemize}
+
+	\item Many methods and properties \textbf{marked public} without a reason, or if not that, had overly broad access specifiers (package-private instead of private).
+	\item Since most of the code is contained in a package and only the driver should ever need to be called externally, these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
+\end{itemize}
+
+\subsubsection{Badly Written Loops and Conditionals}
+
+\begin{itemize}
+	\item Many loops used iterators to iterate over vectors. We replaced them with the new for-in loop in Java.
+	\item It has this syntax: \code{for(int value : array)}, which is \textbf{succint and clear} as opposed to the verbose iterator syntax.
+\end{itemize}
+
+\subsubsection{Outdated Vector collection used}
+
+\begin{itemize}
+	\item \code{Vector} had been used throughout the code base to maintain dynamically sized collections of object.
+	\item It is widely known that vectors used synchronous blocking operations and therefore are very slow as compared to their array/\code{ArrayList} counterparts.
+	\item Therefore, we replaced them with ArrayList throughout.
+\end{itemize}
+
+\subsubsection{Comment-based version control}
+
+The files were using a unique approach to version control, namely, putting edit-log comments at the top of each file, timestamped, with "useful" messages like \textit{"Added things"} and \textit{"Works beautifully"} (\textrm{Lane.java}) This comment log sometimes grew to a sprawling size of more than 100 lines (Lane.java: 130+ lines)
+
+As we already know, such a version control is completely useless when compared to Git.
+
+\subsubsection{Useless comments}
+
+Many classes and methods carried useless comments with them. A few actual examples:
+
+\begin{verbatim}
+/**
+ * Class to represent the pinsetter
+ */
+
+class Pinsetter{ ... }
+\end{verbatim}
+
+or this gold comment:
+
+\begin{verbatim}
+	/** Pinsetter()
+	 *
+	 * Constructs a new pinsetter
+	 *
+	 * @pre none
+	 * @post a new pinsetter is created
+	 * @return Pinsetter object
+	 */
+	public Pinsetter() {
+\end{verbatim}
+
+While it can surely be agreed that the comment is correct, it is widely recognized that \textbf{comments suffer from aging}. For example, if the Pinsetter class was renamed, or the constructor was simply moved from its current position in the file to somewhere else, someone may forget to change the comment. Later in time, the comment will definitely not be helpful.
+
+Moreover, it is widely accepted that \textbf{Writing comments is good, but not having to write comments is better.} (\hyperlink{https://softwareengineering.stackexchange.com/a/335513/131646}{read} and \hyperlink{https://www.freecodecamp.org/news/code-comments-the-good-the-bad-and-the-ugly-be9cc65fbf83/}{read}). In general, throughout the codebase, we have removed such useless comments where possible, and retained useful comments where required.
+
+\subsubsection{Bad identifier names}
+
+There were several identifier names that both violated the Camel Case naming format and often used 1 letter names like i. All that has been changed to semantically useful names, then number of these parameters has been drastically reduced, and subsumed in the inheritance heirarchy.
+
+\subsubsection{Auto-Fixes using the IntelliJ linter}
+
+There are massive fixed using the intelliJ linter primarilty on bad access specifiers, lack of defensive copy, etc. All of that has been fixed. A full report of these fixed is attached in the Code Quality violations segment.
+
+TODO: once minor issues are done, move some of them to a table as required in assignment
+% https://www.overleaf.com/learn/latex/tables
+\begin{tabular}{ |c|c|c| }
+	\hline
+	Bad identifier names &       \\
+	c                    & c & c \\
+	\hline
+\end{tabular}

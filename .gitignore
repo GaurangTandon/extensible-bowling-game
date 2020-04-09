@@ -8,6 +8,9 @@ out/
 JArchitect/
 .classpath
 .project
+code/codemr
+code/Datastore
+
 
 # Created by https://www.gitignore.io/api/jetbrains
 # Edit at https://www.gitignore.io/?templates=jetbrains
@@ -101,3 +104,13 @@ fabric.properties
 .idea/**/markdown-navigator/
 
 # End of https://www.gitignore.io/api/jetbrains
+
+# latex related
+*.aux
+*.log
+*.fls
+main.pdf
+*.synctex.gz
+*.fdb_latexmk
+__*
+doc/main.out
