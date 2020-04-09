@@ -39,13 +39,13 @@ title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
   
 
   namespace  {
-    class BowlerScorer {
+    class BowlerScorerTest {
     }
   }
   
 
   namespace  {
-    class BowlerScorerTest {
+    class BowlingAlleyDriver {
     }
   }
   
@@ -87,19 +87,7 @@ title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
   
 
   namespace  {
-    interface GeneralBowler {
-    }
-  }
-  
-
-  namespace  {
-    interface GeneralParty {
-    }
-  }
-  
-
-  namespace  {
-    interface GeneralPinsetter {
+    class Frame {
     }
   }
   
@@ -123,12 +111,6 @@ title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
   
 
   namespace  {
-    class LaneScorer {
-    }
-  }
-  
-
-  namespace  {
     class LaneStatusView {
     }
   }
@@ -136,6 +118,12 @@ title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
 
   namespace  {
     class LaneView {
+    }
+  }
+  
+
+  namespace  {
+    class LastFrame {
     }
   }
   
@@ -189,7 +177,13 @@ title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
   
 
   namespace  {
-    class Queue {
+    class ScorableBowler {
+    }
+  }
+  
+
+  namespace  {
+    class ScorableParty {
     }
   }
   
@@ -282,37 +276,69 @@ title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
   }
   
 
-  namespace  {
-    class drive {
-    }
-  }
-  
-
-  AddPartyView .up.|> ActionListener
-  AddPartyView .up.|> ListSelectionListener
-  AdhocView .up.|> ActionListener
-  Bowler .up.|> GeneralBowler
-  ControlDesk .up.|> Runnable
+  AddPartyView .up.|> java.awt.event.ActionListener
+  AddPartyView .up.|> javax.swing.event.ListSelectionListener
+  AddPartyView o-- Widget.ButtonPanel : buttonPanel
+  AddPartyView o-- ControlDeskView : controlDesk
+  AddPartyView o-- Widget.WindowFrame : win
+  AdhocView .up.|> java.awt.event.ActionListener
+  AdhocView o-- Widget.ButtonPanel : buttonPanel
+  AdhocView o-- Score : currScore
+  AdhocView o-- Widget.ContainerPanel : statDisplay
+  AdhocView o-- Widget.WindowFrame : win
+  BowlerScoreView o-- Widget.GridPanel : gridPanel
+  ControlDesk .up.|> java.lang.Runnable
+  ControlDesk -up-|> Publisher
   ControlDeskEvent .up.|> Event
-  ControlDeskView .up.|> ActionListener
   ControlDeskView .up.|> Observer
-  EndGamePrompt .up.|> ActionListener
-  EndGameReport .up.|> ActionListener
-  EndGameReport .up.|> ListSelectionListener
+  ControlDeskView .up.|> java.awt.event.ActionListener
+  ControlDeskView o-- ControlDesk : controlDesk
+  ControlDeskView o-- Widget.ButtonPanel : controlsPanel
+  ControlDeskView o-- Widget.WindowFrame : win
+  EndGamePrompt .up.|> java.awt.event.ActionListener
+  EndGamePrompt o-- Widget.ButtonPanel : buttonPanel
+  EndGamePrompt o-- Widget.WindowFrame : win
+  EndGameReport .up.|> java.awt.event.ActionListener
+  EndGameReport .up.|> javax.swing.event.ListSelectionListener
+  EndGameReport o-- Widget.ButtonPanel : buttonPanel
+  EndGameReport o-- Widget.WindowFrame : win
   Lane .up.|> LaneInterface
   Lane .up.|> Observer
-  Lane .up.|> Runnable
+  Lane .up.|> java.lang.Runnable
+  Lane -up-|> Publisher
+  Lane o-- Pinsetter : pinsetter
+  Lane o-- ScorableParty : scorer
   LaneEvent .up.|> Event
-  LaneStatusView .up.|> ActionListener
   LaneStatusView .up.|> Observer
-  LaneView .up.|> ActionListener
+  LaneStatusView .up.|> java.awt.event.ActionListener
+  LaneStatusView o-- Widget.ButtonPanel : buttonPanel
+  LaneStatusView o-- Widget.ContainerPanel : gamePanel
+  LaneStatusView o-- Lane : lane
+  LaneStatusView o-- LaneView : laneView
+  LaneStatusView o-- PinSetterView : pinSetterView
   LaneView .up.|> Observer
-  NewPatronView .up.|> ActionListener
-  Party .up.|> GeneralParty
+  LaneView .up.|> java.awt.event.ActionListener
+  LaneView o-- Widget.ButtonPanel : buttonPanel
+  LaneView o-- Widget.ContainerPanel : containerPanel
+  LaneView o-- LaneInterface : lane
+  LastFrame -up-|> Frame
+  NewPatronView .up.|> java.awt.event.ActionListener
+  NewPatronView o-- AddPartyView : addParty
+  NewPatronView o-- Widget.ButtonPanel : buttonPanel
+  NewPatronView o-- Widget.TextFieldPanel : patronPanel
+  NewPatronView o-- Widget.WindowFrame : window
   PinSetterView .up.|> Observer
-  Pinsetter .up.|> GeneralPinsetter
+  Pinsetter -up-|> Publisher
   PinsetterEvent .up.|> Event
-  PrintableText .up.|> Printable
+  PrintableText .up.|> java.awt.print.Printable
+  ScorableBowler -up-|> Bowler
+  ScorableParty -up-|> Party
+  Widget.ButtonPanel -up-|> Widget.FormPanel
+  Widget.ContainerPanel -up-|> Widget.GenericPanel
+  Widget.FormPanel -up-|> Widget.GenericPanel
+  Widget.GridPanel -up-|> Widget.GenericPanel
+  Widget.ScrollablePanel -up-|> Widget.GenericPanel
+  Widget.TextFieldPanel -up-|> Widget.FormPanel
 
 
 right footer
