@@ -24,9 +24,6 @@ public class ControlDeskView extends WindowView implements Observer {
             case ButtonNames.BTN_ADD_PARTY:
                 new AddPartyView(this);
                 break;
-            case ButtonNames.BTN_ASSIGN:
-                controlDesk.assignLane();
-                break;
             case ButtonNames.BTN_FINISHED:
                 close();
                 break;
