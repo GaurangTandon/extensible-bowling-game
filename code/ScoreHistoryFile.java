@@ -77,7 +77,6 @@ final class ScoreHistoryFile {
             final int oldScore = mappedScores.getOrDefault(nick, 0);
             mappedScores.put(nick, oldScore + score.getScore());
         }
-
         Score best = new Score();
 
         for (final Map.Entry<String, Integer> entry : mappedScores.entrySet()) {
@@ -88,6 +87,22 @@ final class ScoreHistoryFile {
 
         return best;
     }
+
+    static ArrayList<Score> getCareerHighlights(final String player) {
+        final ArrayList<Score> scores = getAllScores();
+        final ArrayList<Score> bestScores = new ArrayList<>(0);
+
+        for (final Score score : scores) {
+            if (!score.getNick().equals(player)) continue;
+            bestScores.add(score);
+        }
+
+        Collections.sort(bestScores);
+        Collections.reverse(bestScores);
+
+        return (ArrayList<Score>) bestScores.subList(0, 5);
+    }
+
 
     static Score getBestScore() {
         final ArrayList<Score> scores = getAllScores();

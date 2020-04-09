@@ -46,6 +46,17 @@ public class WindowFrame {
         return this;
     }
 
+    public void widen(float multiplier, boolean center) {
+        Dimension size = win.getSize();
+        size.width *= multiplier;
+        win.setSize(size);
+        if (!center) return;
+        final Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
+        win.setLocation(
+                ((screenSize.width) / 2) - ((size.width) / 2),
+                ((screenSize.height) / 2) - ((size.height) / 2));
+    }
+
     public void destroy() {
         // https://stackoverflow.com/a/1235994/2181238
         win.dispatchEvent(new WindowEvent(win, WindowEvent.WINDOW_CLOSING));

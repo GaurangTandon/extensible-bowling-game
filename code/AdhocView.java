@@ -1,64 +1,74 @@
-import Widget.ButtonPanel;
-import Widget.ContainerPanel;
-import Widget.WindowFrame;
+import Widget.*;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
-class AdhocView implements ActionListener {
+class AdhocView extends WindowView implements ActionListener, ListSelectionListener {
     private final WindowFrame win;
-    private final ContainerPanel statDisplay;
-    private Score currScore;
+    private JLabel statDisplay;
+    private String selectedBowler;
 
     AdhocView() {
         final ButtonPanel buttonPanel = new ButtonPanel(4, 1, "")
                 .put(ButtonNames.BTN_HIGHEST, this)
                 .put(ButtonNames.BTN_LOWEST, this)
                 .put(ButtonNames.BTN_BEST, this)
-                .put(ButtonNames.BTN_FINISHED, this);
+                .put(ButtonNames.BTN_FINISHED, this)
+                .put(ButtonNames.BTN_HIGHLIGHTS, this);
 
-        statDisplay = new ContainerPanel("Stat display");
+        statDisplay = new JLabel();
+        new ContainerPanel("Stat display").put(statDisplay);
+        final ArrayList<String> bowlersList = BowlerFile.getBowlers();
+        final ScrollablePanel bowlerPanel = drawScrollable(bowlersList, "Bowlers List", 8)
+                .attachListener(this);
+        selectedBowler = bowlersList.get(0);
 
-        // Window
         win = new WindowFrame(
                 "Add Party",
                 new ContainerPanel(1, 3, "")
                         .put(buttonPanel)
+                        .put(bowlerPanel)
                         .put(statDisplay)
         );
-        currScore = new Score();
-    }
-
-    private void setDisplayLabel(final String pre) {
-        final String str = pre + " achieved by bowler " + currScore.getNick() + " with score " + currScore.getScore();
-        final JLabel jl = new JLabel(str);
-        statDisplay.clear();
-        statDisplay.put(jl);
-        statDisplay.getPanel().revalidate();
     }
 
     private void displayLowest() {
-        currScore = ScoreHistoryFile.getLeastScore();
-
-        setDisplayLabel(ButtonNames.BTN_LOWEST);
+        final Score currScore = ScoreHistoryFile.getLeastScore();
+        final String str = "<html>Lowest Score achieved by bowler:<br/>" + currScore.getNick()
+                + "<br/>with score " + currScore.getScore() + "</html>";
+        statDisplay.setText(str);
     }
 
     private void displayHighest() {
-        currScore = ScoreHistoryFile.getBestScore();
-
-        setDisplayLabel(ButtonNames.BTN_HIGHEST);
+        final Score currScore = ScoreHistoryFile.getBestScore();
+        final String str = "<html>Highest Score achieved by bowler:<br/>" + currScore.getNick()
+                + "<br/>with score " + currScore.getScore() + "</html>";
+        statDisplay.setText(str);
     }
 
     private void displayBestPlayer() {
-        currScore = ScoreHistoryFile.getMaxCumulativeScore();
-
-        setDisplayLabel("Highest overall games score");
+        final Score currScore = ScoreHistoryFile.getMaxCumulativeScore();
+        final String str = "<html>Highest Overall Game Scores:<br/>" + currScore.getNick()
+                + "<br/>with score " + currScore.getScore() + "</html>";
+        statDisplay.setText(str);
     }
 
-    public void actionPerformed(final ActionEvent e) {
-        final String source = ((AbstractButton) e.getSource()).getText();
+    private void displayTopGames() {
+        final StringBuilder stringBuilder = new StringBuilder("<html>Highest Overall Game Scores:<br/>");
+        final ArrayList<Score> scores = ScoreHistoryFile.getCareerHighlights(selectedBowler);
+        for (final Score score : scores) {
+            stringBuilder.append("&nbsp;").append(score.getScore()).append(" on ").append(score.getDate()).append("<br/>");
+        }
+        stringBuilder.append("</html>");
+        statDisplay.setText(stringBuilder.toString());
+    }
+
+    public void buttonHandler(final String source) {
         switch (source) {
             case ButtonNames.BTN_HIGHEST:
                 displayHighest();
@@ -72,6 +82,14 @@ class AdhocView implements ActionListener {
             case ButtonNames.BTN_BEST:
                 displayBestPlayer();
                 break;
+            case ButtonNames.BTN_HIGHLIGHTS:
+                displayTopGames();
+                break;
         }
+    }
+
+    @Override
+    public void valueChanged(final ListSelectionEvent e) {
+        selectedBowler = ((String) ((JList) e.getSource()).getSelectedValue());
     }
 }
