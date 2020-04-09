@@ -50,6 +50,10 @@ There were other minor issues plaguing the codebase, the most common ones being:
 	\item Since most of the code is contained in a package and only the driver should ever need to be called externally, these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
 \end{itemize}
 
+\subsubsection{Local values stored as class properties}
+
+This pattern is common across files, especially in LaneView.java. Many of the 2D JPanel arrays are not required to be class properties, and could be simply moved to local variables. This corresponds to the principle of \textbf{information hiding}, where only as little information is exposed outside a method as is really necessary.
+
 \subsubsection{Badly Written Loops and Conditionals}
 
 \begin{itemize}
@@ -104,6 +108,25 @@ Moreover, it is widely accepted that \textbf{Writing comments is good, but not h
 \subsubsection{Bad identifier names}
 
 There were several identifier names that both violated the Camel Case naming format and often used 1 letter names like i. All that has been changed to semantically useful names, then number of these parameters has been drastically reduced, and subsumed in the inheritance heirarchy.
+
+\subsubsection{Magic constants}
+
+Many many magic constants exist throughout the codebase. We can look at makeFrame method in LaneView.java:
+
+\begin{verbatim}
+balls = new JPanel[numBowlers][23];
+ballLabel = new JLabel[numBowlers][23];
+scores = new JPanel[numBowlers][10];
+scoreLabel = new JLabel[numBowlers][10];
+\end{verbatim}
+
+or even at this gold comment in Lane.java:
+
+\begin{verbatim}
+finalScores = new int[party.getMembers().size()][128]; //Hardcoding a max of 128 games, bite me.
+\end{verbatim}
+
+As we know well, magic constants are discouraged throughout industry as they hamper \textbf{reusability} as well as make the codebase \textbf{hard to understand}. We do not know if repeated magic constants refer to the same thing or meant something else. They make things messy, so to speak.
 
 \subsubsection{Auto-Fixes using the IntelliJ linter}
 
