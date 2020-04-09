@@ -72,6 +72,10 @@ Apart from the glaring errors in code redundancy spanning all classes that were 
 
 Whoever wrote this code was surely a magician, otherwise as it is simply impossible for humans to write a method which has dozens of if-elses and magic constants spread all over it. You may look at \code{private int getScore} in Lane.java if you do not believe us. We shall not reproduce its code here, but rest assured that by looking at, your eyes shall bleed and you shall never be unsee the tyranny of harmless looking if-elses.
 
+We ended up having to rewrite that method from scratch since there was simply no way to determine how it was calculating the score.
+
+This isn't the only method though, you may also look at \code{Lane.run} or \code{Lane.receivePinSetterEvent} or \code{LaneView.receiveLaneEvent}. There are more, but a consistent pattern across them is \textbf{deep nesting of if-elses inside loops or more if-elses}, which evidently increases the complexity manifold.
+
 \subsection{Minor issues}
 
 There were other minor issues plaguing the codebase, the most common ones being:
@@ -169,6 +173,13 @@ As you can read on \hyperlink{https://stackoverflow.com/questions/541487/impleme
 \subsubsection{Dependent variables}
 
 There were a handful of instances where two class properties were \textbf{tightly coupled} to each other, such that if you changed any one and forgot to change the other, the entire logic would break. An example would be \code{isPartyAssigned} property in Lane.java, which was always true when \code{party != null} and false otherwise. We had fixed this by replacing the single usage of isPartyAssigned with the above conditonal.
+
+\subsubsection{Incorrect task distribution between classes}
+
+It was quite often the case that some work, that ideally should have been done by one file, was done by another. For example: there are three occurrences of \code{.getNickName() + "'s Party"} throughout the codebase. It's supposed to generate a party's name. Not only is it duplicated, moreover, it is not present inside Party.java. \textbf{The name of the party is being decided by classes other than the Party itself!}
+
+We fixed this by providing a \code{Party.getName()} method, as any sane and logical coder would have done.
+
 
 \subsubsection{Auto-Fixes using the IntelliJ linter}
 
