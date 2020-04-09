@@ -201,16 +201,12 @@ We fixed this by providing a \code{Party.getName()} method, as any sane and logi
 
 There are massive fixed using the intelliJ linter primarilty on bad access specifiers, lack of defensive copy, etc. All of that has been fixed. A list of some of them is as follows:
 
-\begin{tabular}{ |c|c|c|c| }
-    \hline
-    \textbf{Issue}   & \textbf{Description} & \textbf{File} \\
-    \hline
-	'size() == 0' replaceable with 'isEmpty()' & Using correct API where possible & \code{Lane.publish, AddPartyView.actionPerformed} \\
-	Field may be 'final' & 	Final fields increase readability of code as we are then sure that the field will not change & almost every file \\
-	Pointless boolean expression & Simplificatiotn where possible & \textbf{ControlDesk.assignLane}, etc. \\
-	Unused declaration & Surprisingly many unused variable declarations exist in the original codebase & \code{AddPartyView.actionPerformed.newPatron}, etc. \\
-	Declaration access can be weaker & It helps makes sure that the semantic meaning of the classes is clear. Moreover, it helps prevent unintended access of other classes fields, ensuring security as well & Almost every file, everything is public for no reason \\
-	Call to simple getter from within class & Why even do that?! & Bowler.equals \\
-	Method may be 'static' & Helps clarify what methods need properties and which don't, increases cohesion & ControlDesk.registerPatron \\
-    \hline
-\end{tabular}
+\textbf{'size() == 0' replaceable with 'isEmpty()'}: Using correct API where possible, found in \code{Lane.publish, AddPartyView.actionPerformed}
+
+\textbf{Field may be 'final'}: 	Final fields increase readability of code as we are then sure that the field will not change, found in almost every file
+\textbf{Pointless boolean expression}: Simplificatiotn where possible, found in \code{ControlDesk.assignLane}, etc.
+\textbf{Unused declaration}: Surprisingly many unused variable declarations exist in the original codebase, found in \code{AddPartyView.actionPerformed.newPatron}, etc.
+\textbf{Declaration access can be weaker}: It helps makes sure that the semantic meaning of the classes is clear. Moreover, it helps prevent unintended access of other classes fields, ensuring security as well, found in Almost every file, and everything is public for no reason
+\textbf{Call to simple getter from within class}: Why even do that?!, found in Bowler.equals
+
+\textbf{Method may be 'static'}: Helps clarify what methods need properties and which don't, increases cohesion, found in \code{ControlDesk.registerPatron}
