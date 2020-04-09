@@ -2,274 +2,274 @@
 
 title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
 
-  namespace  {
+  namespace BowlingGame {
     class AddPartyView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class AdhocView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Alley {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Bowler {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlerFile {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlerScoreView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlerScorerTest {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlingAlleyDriver {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ControlDesk {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ControlDeskEvent {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ControlDeskView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class EndGamePrompt {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class EndGameReport {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     interface Event {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Frame {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Lane {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LaneEvent {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     interface LaneInterface {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LaneStatusView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LaneView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LastFrame {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class NewPatronView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     interface Observer {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Party {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class PinSetterView {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Pinsetter {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class PinsetterEvent {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class PrintableText {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     abstract class Publisher {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScorableBowler {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScorableParty {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Score {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScoreHistoryFile {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScoreReport {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Util {
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.ButtonPanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.ContainerPanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       abstract class Widget.FormPanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       abstract class Widget.GenericPanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.GridPanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.ScrollablePanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.TextFieldPanel {
       }
     }
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.WindowFrame {
       }
     }
