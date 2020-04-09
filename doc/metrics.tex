@@ -22,7 +22,7 @@
 
 We investigated metrics in multiple ways: one through the CodeMR plugin for IntelliJ and the other through Metrics2 1.38 plugin for Eclipse.
 
-\subsubsection{Metric based enlightenment}
+\subsection{Refactoring timeline}
 
 We present to you here the timeline of events that become the cornerstone of starting our refactoring:
 
@@ -50,12 +50,19 @@ We present to you here the timeline of events that become the cornerstone of sta
           \begin{itemize}
               \item Scoring functionality: \code{markScore, getScore, resetScores, isGameFinished, resetBowlerIterator}
               \item Interacting with a pinsetter: \code{getPinsetter, receivePSEvent, run}
-              \item Controlling the external UI: lanePublish
-              \item Maintaining a observer model: subscribe, unsubscribe, publish
-              \item Actually running the game for a party: run, assignParty, isPartyAssigned
+              \item Controlling the external UI and Maintaining a observer model: \code{lanePublish, subscribe, unsubscribe, publish}
+              \item Actually running the game for a party: \code{run, assignParty, isPartyAssigned}
           \end{itemize}
 
+    \item These parts were then systematically split out into separate classes, namely, \code{ScorableParty, LaneWithPinsetter, Publisher, Lane}
+    \item Once we had separate parts getting compiled, we were already ready to start ironing out complexity and redundancy issues. For quite a lot of time, we worked on these.
+    \item In parallel, we also worked to ensure coupling was as low as possible.
+    \item Once all was done, in the final stages, we made sure that cohesion scores were as high as possible. For classes that had lower cohesion, we grouped their properties and further increased cohesion.
+    \item That was pretty much all :)
 \end{itemize}
+
+\subsection{Metric values analysis}
+
 We have collected and analyzed the following key metrics, showing the before and after change in them as well.
 
 \subsubsection{Lack of cohesion}
