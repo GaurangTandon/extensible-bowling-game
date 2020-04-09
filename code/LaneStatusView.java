@@ -19,11 +19,11 @@ public class LaneStatusView implements ActionListener, Observer {
     private final LaneView laneView;
     private final Lane lane;
 
-    private final String saveFile;
+    private final int laneNumber;
 
     LaneStatusView(final Lane lane, final int laneNum) {
         this.lane = lane;
-        saveFile = "Datastore/SAVED_" + laneNum + ".DAT";
+        laneNumber = laneNum;
         pinSetterView = new PinSetterView(laneNum);
         lane.subscribePinsetter(pinSetterView);
 
@@ -73,13 +73,14 @@ public class LaneStatusView implements ActionListener, Observer {
             }
         }
         if (source.equals(ButtonNames.BTN_RESUME)) {
-            lane.loadState(saveFile);
+            String fileName = Util.getFileName(gamePanel.getPanel());
+            lane.loadState(fileName);
             lane.pauseManual(false);
         } else if (source.equals(ButtonNames.BTN_PAUSE)) {
             lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
             buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(false);
-            lane.saveState(saveFile);
+            lane.saveState("Datastore/lane" + laneNumber + "_on_" + Util.getDateIdentifier() + ".dat");
         }
     }
 
