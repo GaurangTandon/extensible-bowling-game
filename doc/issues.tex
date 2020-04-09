@@ -68,6 +68,10 @@ Apart from the glaring errors in code redundancy spanning all classes that were 
 	\item At first, we generified it, but later we ended up deleting and replacing with a built-in \code{java.util.LinkedList} without any loss of functionality.
 \end{itemize}
 
+\subsection{Excessively high cyclomatic complexity}
+
+Whoever wrote this code was surely a magician, otherwise as it is simply impossible for humans to write a method which has dozens of if-elses and magic constants spread all over it. You may look at \code{private int getScore} in Lane.java if you do not believe us. We shall not reproduce its code here, but rest assured that by looking at, your eyes shall bleed and you shall never be unsee the tyranny of harmless looking if-elses.
+
 \subsection{Minor issues}
 
 There were other minor issues plaguing the codebase, the most common ones being:
