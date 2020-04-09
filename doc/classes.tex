@@ -98,13 +98,25 @@ Represents an Alley, it's a stub class given it basically integrates ControlDesk
 Manages the backend of persistently storing patron nickk names, emails, and full names. Has public methods for adding a new patron, searching for existing patron, etc.
 
 \subsubsection{Bowler}
-Stub class for a Bowler object, which contains a name, full name and its email.
+Bowler which can roll balls and keep track of its own frame.
 
-\subsubsection{BowlerScorer}
-Companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
+\subsubsection{BowlerFile}
+Bowler that keeps track of all the patrons in a file.
+
+\subsubsection{BowlerFile}
+Stub class that tracks a bowler's metadata - name, email, and fullname.
 
 \subsubsection{BowlerScorerTest}
-A test file to make sure scores are correctly updated in BowlerScorer.
+Testing file for the scoring mechanism in bowling. Does different types of rolls and matches the expected cumulativbe score.
 
 \subsubsection{BowlerScoreView}
 GUI that renders a horizontal table of around 20 cells that update everytime that bowler makes a throw. It is unique for each bowler.
+
+\subsubsection{ButtonNames}
+Utility class for all the different buttons names on all different modals.
+
+\subsubsection{ControlDesk}
+
+
+\subsubsection{ScorableBowler}
+Companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
