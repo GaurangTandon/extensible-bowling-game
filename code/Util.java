@@ -41,6 +41,7 @@ final class Util {
     static String getFileName(Component parent) {
         JFileChooser fc = new JFileChooser();
         String filepath;
+        fc.setCurrentDirectory(new File("./Datastore"));
         int i = fc.showOpenDialog(parent);
         if (i == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
