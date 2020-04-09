@@ -1,0 +1,90 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Short overview}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Contributions}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Product overview}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Product screenshots}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Our dedication to software engineering principles}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{Code Metrics}{}% 7
+\BOOKMARK [2][-]{subsection.3.1}{Plots of CodeMR}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.2}{Metric analysis}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.3}{Refactoring narrative}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.4}{Metric values analysis}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Lack of cohesion}{subsection.3.4}% 12
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Nested block depth}{subsection.3.4}% 13
+\BOOKMARK [3][-]{subsubsection.3.4.3}{Instability}{subsection.3.4}% 14
+\BOOKMARK [3][-]{subsubsection.3.4.4}{McCabe cyclomatic complexity}{subsection.3.4}% 15
+\BOOKMARK [3][-]{subsubsection.3.4.5}{Attribute count}{subsection.3.4}% 16
+\BOOKMARK [2][-]{subsection.3.5}{Using Metrics as a Guide}{section.3}% 17
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Cyclomatic Complexity}{subsection.3.5}% 18
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Cohesion and Coupling}{subsection.3.5}% 19
+\BOOKMARK [2][-]{subsection.3.6}{Nesting Depth and Complexity}{section.3}% 20
+\BOOKMARK [2][-]{subsection.3.7}{A Final View at the Scores}{section.3}% 21
+\BOOKMARK [1][-]{section.4}{Structure of the New Code}{}% 22
+\BOOKMARK [2][-]{subsection.4.1}{Overall Structure}{section.4}% 23
+\BOOKMARK [2][-]{subsection.4.2}{Responsibilities of each major class}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.3}{Control Flow}{section.4}% 25
+\BOOKMARK [3][-]{subsubsection.4.3.1}{The Control Desk}{subsection.4.3}% 26
+\BOOKMARK [3][-]{subsubsection.4.3.2}{The Lane}{subsection.4.3}% 27
+\BOOKMARK [3][-]{subsubsection.4.3.3}{The Scoring}{subsection.4.3}% 28
+\BOOKMARK [3][-]{subsubsection.4.3.4}{Others}{subsection.4.3}% 29
+\BOOKMARK [2][-]{subsection.4.4}{Describing Specific Classes}{section.4}% 30
+\BOOKMARK [3][-]{subsubsection.4.4.1}{AddPartyView}{subsection.4.4}% 31
+\BOOKMARK [3][-]{subsubsection.4.4.2}{Alley}{subsection.4.4}% 32
+\BOOKMARK [3][-]{subsubsection.4.4.3}{BowlerFile}{subsection.4.4}% 33
+\BOOKMARK [3][-]{subsubsection.4.4.4}{Bowler}{subsection.4.4}% 34
+\BOOKMARK [3][-]{subsubsection.4.4.5}{BowlerFile}{subsection.4.4}% 35
+\BOOKMARK [3][-]{subsubsection.4.4.6}{BowlerFile}{subsection.4.4}% 36
+\BOOKMARK [3][-]{subsubsection.4.4.7}{BowlerScorerTest}{subsection.4.4}% 37
+\BOOKMARK [3][-]{subsubsection.4.4.8}{BowlerScoreView}{subsection.4.4}% 38
+\BOOKMARK [3][-]{subsubsection.4.4.9}{ButtonNames}{subsection.4.4}% 39
+\BOOKMARK [3][-]{subsubsection.4.4.10}{ControlDesk}{subsection.4.4}% 40
+\BOOKMARK [3][-]{subsubsection.4.4.11}{ControlDeskEvent}{subsection.4.4}% 41
+\BOOKMARK [3][-]{subsubsection.4.4.12}{ControlDeskView}{subsection.4.4}% 42
+\BOOKMARK [3][-]{subsubsection.4.4.13}{EndGamePrompt}{subsection.4.4}% 43
+\BOOKMARK [3][-]{subsubsection.4.4.14}{EndGameReport}{subsection.4.4}% 44
+\BOOKMARK [3][-]{subsubsection.4.4.15}{Event}{subsection.4.4}% 45
+\BOOKMARK [3][-]{subsubsection.4.4.16}{Frame}{subsection.4.4}% 46
+\BOOKMARK [3][-]{subsubsection.4.4.17}{Lane}{subsection.4.4}% 47
+\BOOKMARK [3][-]{subsubsection.4.4.18}{LaneEvent}{subsection.4.4}% 48
+\BOOKMARK [3][-]{subsubsection.4.4.19}{LaneStatusView}{subsection.4.4}% 49
+\BOOKMARK [3][-]{subsubsection.4.4.20}{LaneView}{subsection.4.4}% 50
+\BOOKMARK [3][-]{subsubsection.4.4.21}{LaneWithPinsetter}{subsection.4.4}% 51
+\BOOKMARK [3][-]{subsubsection.4.4.22}{LastFrame}{subsection.4.4}% 52
+\BOOKMARK [3][-]{subsubsection.4.4.23}{NewPatronView}{subsection.4.4}% 53
+\BOOKMARK [3][-]{subsubsection.4.4.24}{Observer}{subsection.4.4}% 54
+\BOOKMARK [3][-]{subsubsection.4.4.25}{Party}{subsection.4.4}% 55
+\BOOKMARK [3][-]{subsubsection.4.4.26}{PinsetterEvent}{subsection.4.4}% 56
+\BOOKMARK [3][-]{subsubsection.4.4.27}{PinsetterView}{subsection.4.4}% 57
+\BOOKMARK [3][-]{subsubsection.4.4.28}{PrintableText}{subsection.4.4}% 58
+\BOOKMARK [3][-]{subsubsection.4.4.29}{Publisher}{subsection.4.4}% 59
+\BOOKMARK [3][-]{subsubsection.4.4.30}{ScorableBowler}{subsection.4.4}% 60
+\BOOKMARK [3][-]{subsubsection.4.4.31}{ScorableParty}{subsection.4.4}% 61
+\BOOKMARK [3][-]{subsubsection.4.4.32}{Score}{subsection.4.4}% 62
+\BOOKMARK [3][-]{subsubsection.4.4.33}{ScoreHistoryFile}{subsection.4.4}% 63
+\BOOKMARK [3][-]{subsubsection.4.4.34}{ScoreReport}{subsection.4.4}% 64
+\BOOKMARK [3][-]{subsubsection.4.4.35}{Util}{subsection.4.4}% 65
+\BOOKMARK [1][-]{section.5}{Issues with the Old Code}{}% 66
+\BOOKMARK [2][-]{subsection.5.1}{LANE - the "God class"}{section.5}% 67
+\BOOKMARK [2][-]{subsection.5.2}{Classes with too many fields}{section.5}% 68
+\BOOKMARK [2][-]{subsection.5.3}{Code repeated throughout codebase}{section.5}% 69
+\BOOKMARK [2][-]{subsection.5.4}{Misplaced Observer pattern logic}{section.5}% 70
+\BOOKMARK [2][-]{subsection.5.5}{Reinventing the wheel}{section.5}% 71
+\BOOKMARK [2][-]{subsection.5.6}{Excessively high cyclomatic complexity}{section.5}% 72
+\BOOKMARK [2][-]{subsection.5.7}{Feature envy}{section.5}% 73
+\BOOKMARK [2][-]{subsection.5.8}{Minor issues}{section.5}% 74
+\BOOKMARK [3][-]{subsubsection.5.8.1}{Overly Broad access specifiers}{subsection.5.8}% 75
+\BOOKMARK [3][-]{subsubsection.5.8.2}{Local values stored as class properties}{subsection.5.8}% 76
+\BOOKMARK [3][-]{subsubsection.5.8.3}{Badly Written Loops and Conditionals}{subsection.5.8}% 77
+\BOOKMARK [3][-]{subsubsection.5.8.4}{Outdated Vector collection used}{subsection.5.8}% 78
+\BOOKMARK [3][-]{subsubsection.5.8.5}{Comment-based version control}{subsection.5.8}% 79
+\BOOKMARK [3][-]{subsubsection.5.8.6}{Useless comments}{subsection.5.8}% 80
+\BOOKMARK [3][-]{subsubsection.5.8.7}{Bad identifier names}{subsection.5.8}% 81
+\BOOKMARK [3][-]{subsubsection.5.8.8}{Magic constants}{subsection.5.8}% 82
+\BOOKMARK [3][-]{subsubsection.5.8.9}{Semantically incorrect subclassing}{subsection.5.8}% 83
+\BOOKMARK [3][-]{subsubsection.5.8.10}{Dependent variables}{subsection.5.8}% 84
+\BOOKMARK [3][-]{subsubsection.5.8.11}{Incorrect task distribution between classes}{subsection.5.8}% 85
+\BOOKMARK [3][-]{subsubsection.5.8.12}{Auto-Fixes using the IntelliJ linter}{subsection.5.8}% 86
+\BOOKMARK [1][-]{section.6}{New features}{}% 87
+\BOOKMARK [2][-]{subsection.6.1}{Maximum players in an Alley}{section.6}% 88
+\BOOKMARK [2][-]{subsection.6.2}{Ad-hoc queries on user data}{section.6}% 89
+\BOOKMARK [2][-]{subsection.6.3}{Pause and resume games on a Lane}{section.6}% 90
