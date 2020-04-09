@@ -2,8 +2,8 @@
 
 title __WIDGET's Class Diagram__\n
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.ButtonPanel {
           + ButtonPanel()
           + ButtonPanel()
@@ -13,8 +13,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.ContainerPanel {
           + ContainerPanel()
           + ContainerPanel()
@@ -32,8 +32,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       abstract class Widget.FormPanel {
           ~ components : HashMap<String, Component>
           + get()
@@ -45,8 +45,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       abstract class Widget.GenericPanel {
           ~ panel : JPanel
           + getPanel()
@@ -60,8 +60,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.GridPanel {
           - blockLabel : JLabel[]
           - itemLabel : JLabel[]
@@ -73,8 +73,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.ScrollablePanel {
           - dataList : JList<T>
           + ScrollablePanel()
@@ -87,8 +87,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.TextFieldPanel {
           + TextFieldPanel()
           + getText()
@@ -98,8 +98,8 @@ title __WIDGET's Class Diagram__\n
   }
   
 
-  namespace  {
-    namespace idget {
+  namespace BowlingGame {
+    namespace Widget {
       class Widget.WindowFrame {
           - win : JFrame
           + WindowFrame()

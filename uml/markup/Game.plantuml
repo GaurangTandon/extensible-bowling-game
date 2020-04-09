@@ -2,7 +2,7 @@
 
 title __CODE's Class Diagram__\n
 
-  namespace  {
+  namespace BowlingGame {
     class AddPartyView {
         {static} - BTN_ADD_PATRON : String
         {static} - BTN_FINISHED : String
@@ -29,7 +29,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class AdhocView {
         {static} - BTN_BEST : String
         {static} - BTN_FINISHED : String
@@ -45,14 +45,14 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Alley {
         ~ Alley()
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Bowler {
         - email : String
         - fullName : String
@@ -66,7 +66,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlerFile {
         {static} - BOWLER_DAT : String
         {static} ~ getBowlerInfo()
@@ -78,7 +78,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlerScoreView {
         - panel : Component
         ~ BowlerScoreView()
@@ -91,7 +91,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlerScorerTest {
         {static} - bs : ScorableBowler
         {static} + main()
@@ -108,7 +108,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class BowlingAlleyDriver {
         {static} + main()
         - BowlingAlleyDriver()
@@ -116,7 +116,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ControlDesk {
         ~ numLanes : int
         - lanes : List<Lane>
@@ -131,7 +131,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ControlDeskEvent {
         - partyQueue : ArrayList<String>
         ~ ControlDeskEvent()
@@ -140,7 +140,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ControlDeskView {
         {static} - BTN_ADD_PARTY : String
         {static} - BTN_ASSIGN : String
@@ -157,7 +157,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class EndGamePrompt {
         {static} - BTN_NO : String
         {static} - BTN_YES : String
@@ -170,7 +170,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class EndGameReport {
         {static} - BTN_FINISHED : String
         {static} - BTN_PRINT : String
@@ -185,13 +185,13 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     interface Event {
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Frame {
         {static} ~ SPARE : int
         {static} ~ STRIKE : int
@@ -215,7 +215,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Lane {
         - paused : boolean
         + pauseGame()
@@ -239,7 +239,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LaneEvent {
         - bowlerNick : String
         - bowlerNicks : ArrayList<String>
@@ -261,14 +261,14 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     interface LaneInterface {
         {abstract} + pauseGame()
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LaneStatusView {
         {static} - BTN_MAINTENANCE : String
         {static} - BTN_PAUSE : String
@@ -290,7 +290,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LaneView {
         {static} - BTN_MAINTENANCE : String
         - bowlerNicks : List<String>
@@ -307,7 +307,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class LastFrame {
         ~ LastFrame()
         ~ canRollAgain()
@@ -318,7 +318,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class NewPatronView {
         {static} - BTN_ABORT : String
         {static} - BTN_FINISHED : String
@@ -337,14 +337,14 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     interface Observer {
         {abstract} + receiveEvent()
     }
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Party {
         ~ bowlers : Vector<ScorableBowler>
         ~ name : String
@@ -359,7 +359,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class PinSetterView {
         - frame : JFrame
         - pinVector : Vector<JLabel>
@@ -380,7 +380,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Pinsetter {
         {static} ~ PIN_COUNT : int
         - foul : boolean
@@ -398,7 +398,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class PinsetterEvent {
         - foulCommitted : boolean
         - isReset : boolean
@@ -415,7 +415,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class PrintableText {
         - POINTS_PER_INCH : int
         - text : String
@@ -425,7 +425,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     abstract class Publisher {
         - subscribers : List<Observer>
         ~ Publisher()
@@ -436,7 +436,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScorableBowler {
         {static} - DELIMITER : String
         - cumulativeScore : int[]
@@ -463,7 +463,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScorableParty {
         {static} ~ FRAME_COUNT : int
         {static} ~ LAST_FRAME : int
@@ -502,7 +502,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Score {
         - date : String
         - nickname : String
@@ -517,7 +517,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScoreHistoryFile {
         {static} - SCORE_HISTORY_DAT : String
         {static} ~ addScore()
@@ -531,7 +531,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class ScoreReport {
         - content : String
         ~ ScoreReport()
@@ -543,7 +543,7 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
+  namespace BowlingGame {
     class Util {
         {static} ~ busyWait()
         {static} ~ containsString()
