@@ -98,13 +98,97 @@ Represents an Alley, it's a stub class given it basically integrates ControlDesk
 Manages the backend of persistently storing patron nickk names, emails, and full names. Has public methods for adding a new patron, searching for existing patron, etc.
 
 \subsubsection{Bowler}
-Stub class for a Bowler object, which contains a name, full name and its email.
+Bowler which can roll balls and keep track of its own frame.
 
-\subsubsection{BowlerScorer}
-Companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
+\subsubsection{BowlerFile}
+Bowler that keeps track of all the patrons in a file.
+
+\subsubsection{BowlerFile}
+Stub class that tracks a bowler's metadata - name, email, and fullname.
 
 \subsubsection{BowlerScorerTest}
-A test file to make sure scores are correctly updated in BowlerScorer.
+Testing file for the scoring mechanism in bowling. Does different types of rolls and matches the expected cumulativbe score.
 
 \subsubsection{BowlerScoreView}
 GUI that renders a horizontal table of around 20 cells that update everytime that bowler makes a throw. It is unique for each bowler.
+
+\subsubsection{ButtonNames}
+Utility class for all the different buttons names on all different modals.
+
+\subsubsection{ControlDesk}
+Manages the setting up of all the lanes and the buttons and the party queue.
+
+\subsubsection{ControlDeskEvent}
+Event that is supplied to control desk's observers
+
+\subsubsection{ControlDeskView}
+The view for the control desk (figure 1 in section 2)
+
+\subsubsection{EndGamePrompt}
+The prompt that asks a party whether to replay a game or whether to exit the alley.
+
+\subsubsection{EndGameReport}
+A modal asking user to print report or not, and then exit the alley.
+
+\subsubsection{Event}
+A marker interface for the different events.
+
+\subsubsection{Frame}
+A single frame in the bowler's scoring. Each frame handles its own rolls and score contribution.
+
+\subsubsection{Lane}
+Major class managing the party in a lane, cycling through its bowlers, sending events to views, asking for prompts on game end.
+
+\subsubsection{LaneEvent}
+Helpful information for observers of lane contained here.
+
+\subsubsection{LaneStatusView}
+Displayed in control desk in figure 1 for each lane.
+
+\subsubsection{LaneView}
+The dynamic tabular view of a lane in a new window.
+
+\subsubsection{LaneWithPinsetter}
+A simple lane class that manages all the interactions of a lane with the pinsetter. This is a non-scorable lane, it does not handle scoring, which is handled by lane.
+
+\subsubsection{LastFrame}
+A specialization of the Frame class to handle certain special scoring conditions in the last frame since it has three possible rolls.
+
+\subsubsection{NewPatronView}
+Figure 3b in the pdf, adding new patron to a party.
+
+\subsubsection{Observer}
+General interface that helps us implement an observer pattern in our code.
+
+\subsubsection{Party}
+A stub class that keeps information of its bowlers.
+
+\subsubsection{PinsetterEvent}
+Event published by a pinsetter everytime pins fall in it.
+
+\subsubsection{PinsetterView}
+The view for the pinsetter where it displays fallen pins.
+
+\subsubsection{PrintableText}
+Utility class for printing text to screen.
+
+\subsubsection{Publisher}
+Abstract class for implementing the observer pattern, keeps track of subscribers of a class.
+
+\subsubsection{ScorableBowler}
+A bowler specialization that can also keep track of its scoring, specifically its final scores after every game end
+
+\subsubsection{ScorableParty}
+A party specialization with added scope for scoring wherein all the bowlers keep track of their final scores.
+
+\subsubsection{Score}
+Stub class to keep information about the score on a particular date by a particular bowler.
+
+\subsubsection{ScoreHistoryFile}
+Utility class for writing scores to a dedicated file, retrieving scores from that file, and answering ad-hoc queries.
+
+\subsubsection{ScoreReport}
+Utility class to write scores and send them in an email
+
+\subsubsection{Util}
+Other common utility methods used consistently by other classes.

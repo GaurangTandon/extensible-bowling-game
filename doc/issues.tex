@@ -17,6 +17,36 @@ Quite a lot of code was duplicated line by line through many classes in the code
 	\item Getting Date Strings, Waiting for an event, and many more.
 \end{itemize}
 
+Here's a real example form AddPartyView.java:
+
+\begin{verbatim}
+addPatron = new JButton("Add to Party");
+JPanel addPatronPanel = new JPanel();
+addPatronPanel.setLayout(new FlowLayout());
+addPatron.addActionListener(this);
+addPatronPanel.add(addPatron);
+
+remPatron = new JButton("Remove Member");
+JPanel remPatronPanel = new JPanel();
+remPatronPanel.setLayout(new FlowLayout());
+remPatron.addActionListener(this);
+remPatronPanel.add(remPatron);
+
+newPatron = new JButton("New Patron");
+JPanel newPatronPanel = new JPanel();
+newPatronPanel.setLayout(new FlowLayout());
+newPatron.addActionListener(this);
+newPatronPanel.add(newPatron);
+
+finished = new JButton("Finished");
+JPanel finishedPanel = new JPanel();
+finishedPanel.setLayout(new FlowLayout());
+finished.addActionListener(this);
+finishedPanel.add(finished);
+\end{verbatim}
+
+As you can see it is clearly duplicated a lot of times.
+
 Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
 
 \subsection{Misplaced Observer pattern logic}
@@ -38,6 +68,14 @@ Apart from the glaring errors in code redundancy spanning all classes that were 
 	\item At first, we generified it, but later we ended up deleting and replacing with a built-in \code{java.util.LinkedList} without any loss of functionality.
 \end{itemize}
 
+\subsection{Excessively high cyclomatic complexity}
+
+Whoever wrote this code was surely a magician, otherwise as it is simply impossible for humans to write a method which has dozens of if-elses and magic constants spread all over it. You may look at \code{private int getScore} in Lane.java if you do not believe us. We shall not reproduce its code here, but rest assured that by looking at, your eyes shall bleed and you shall never be unsee the tyranny of harmless looking if-elses.
+
+We ended up having to rewrite that method from scratch since there was simply no way to determine how it was calculating the score.
+
+This isn't the only method though, you may also look at \code{Lane.run} or \code{Lane.receivePinSetterEvent} or \code{LaneView.receiveLaneEvent}. There are more, but a consistent pattern across them is \textbf{deep nesting of if-elses inside loops or more if-elses}, which evidently increases the complexity manifold.
+
 \subsection{Minor issues}
 
 There were other minor issues plaguing the codebase, the most common ones being:
@@ -49,6 +87,10 @@ There were other minor issues plaguing the codebase, the most common ones being:
 	\item Many methods and properties \textbf{marked public} without a reason, or if not that, had overly broad access specifiers (package-private instead of private).
 	\item Since most of the code is contained in a package and only the driver should ever need to be called externally, these access specifiers have been changed to \textbf{private where possible}, package-private otherwise, and protected in very few cases (where inheritance from Widget is required).
 \end{itemize}
+
+\subsubsection{Local values stored as class properties}
+
+This pattern is common across files, especially in LaneView.java. Many of the 2D JPanel arrays are not required to be class properties, and could be simply moved to local variables. This corresponds to the principle of \textbf{information hiding}, where only as little information is exposed outside a method as is really necessary.
 
 \subsubsection{Badly Written Loops and Conditionals}
 
@@ -105,15 +147,40 @@ Moreover, it is widely accepted that \textbf{Writing comments is good, but not h
 
 There were several identifier names that both violated the Camel Case naming format and often used 1 letter names like i. All that has been changed to semantically useful names, then number of these parameters has been drastically reduced, and subsumed in the inheritance heirarchy.
 
+\subsubsection{Magic constants}
+
+Many many magic constants exist throughout the codebase. We can look at makeFrame method in LaneView.java:
+
+\begin{verbatim}
+balls = new JPanel[numBowlers][23];
+ballLabel = new JLabel[numBowlers][23];
+scores = new JPanel[numBowlers][10];
+scoreLabel = new JLabel[numBowlers][10];
+\end{verbatim}
+
+or even at this gold comment in Lane.java:
+
+\begin{verbatim}
+finalScores = new int[party.getMembers().size()][128]; //Hardcoding a max of 128 games, bite me.
+\end{verbatim}
+
+As we know well, magic constants are discouraged throughout industry as they hamper \textbf{reusability} as well as make the codebase \textbf{hard to understand}. We do not know if repeated magic constants refer to the same thing or meant something else. They make things messy, so to speak.
+
+\subsubsection{Semantically incorrect subclassing}
+
+As you can read on \hyperlink{https://stackoverflow.com/questions/541487/implements-runnable-vs-extends-thread-in-java}{Stackoverflow}, since the Lane class is not really specializing any of Thread's behavior by extending it, the original code had two instances of semantically incorrect \code{extends Thread} - ControlDesk and Lane.
+
+\subsubsection{Dependent variables}
+
+There were a handful of instances where two class properties were \textbf{tightly coupled} to each other, such that if you changed any one and forgot to change the other, the entire logic would break. An example would be \code{isPartyAssigned} property in Lane.java, which was always true when \code{party != null} and false otherwise. We had fixed this by replacing the single usage of isPartyAssigned with the above conditonal.
+
+\subsubsection{Incorrect task distribution between classes}
+
+It was quite often the case that some work, that ideally should have been done by one file, was done by another. For example: there are three occurrences of \code{.getNickName() + "'s Party"} throughout the codebase. It's supposed to generate a party's name. Not only is it duplicated, moreover, it is not present inside Party.java. \textbf{The name of the party is being decided by classes other than the Party itself!}
+
+We fixed this by providing a \code{Party.getName()} method, as any sane and logical coder would have done.
+
+
 \subsubsection{Auto-Fixes using the IntelliJ linter}
 
 There are massive fixed using the intelliJ linter primarilty on bad access specifiers, lack of defensive copy, etc. All of that has been fixed. A full report of these fixed is attached in the Code Quality violations segment.
-
-TODO: once minor issues are done, move some of them to a table as required in assignment
-% https://www.overleaf.com/learn/latex/tables
-\begin{tabular}{ |c|c|c| }
-	\hline
-	Bad identifier names &       \\
-	c                    & c & c \\
-	\hline
-\end{tabular}

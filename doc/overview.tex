@@ -8,6 +8,56 @@ In the refactored product, we were also asked to implement additional features, 
 
 We now also support ad-hoc queries on the user data. Each player can view their best and worst score statistics, as well as their career top five scores.
 
+\subsection{Product screenshots}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width = \textwidth]{img/controldesk.png}
+        \caption{The main control desk, where we can create parties, assign them to lanes, or ask for ad-hoc queries.}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width = \textwidth]{img/laneRunning.png}
+        \caption{When a party is playing on the first two lanes.}
+    \end{subfigure}
+    \caption{Control Desk}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width = \textwidth]{img/lanestatus.png}
+        \caption{Dynamically updated scoresheet of players in a party as they bowl.}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width = 0.4\textwidth]{img/pinsetter.png}
+        \caption{Dynamically updated pinsetter, shows pins standing as dark black, and fallen as light grey}
+    \end{subfigure}
+    \caption{Dynamic lane view elements}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width = 0.8\textwidth]{img/addpatron.png}
+        \caption{Add patron modal}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width = 0.8\textwidth]{img/addparty.png}
+        \caption{Add party modal}
+    \end{subfigure}
+    \caption{The data update modals}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{img/queries.png}
+    \caption{Ad-hoc queries modal, dynamically fetches statistics from the storage}
+\end{figure}
+
 \subsection{Our dedication to software engineering principles}
 
 Throughout our refactoring, we have consistently upholded major principles of software design. The first is obviously \textbf{DRY} - Don't Repeat Yourself. This is a common principle, wherein we make sure that the same functionality is not duplicated in more than one place. In our project, we have ensured that even the simplest of logics, like checking whether a strike occurred or not (\code{pinsDown == 10}) has been carefully placed in a dedicated method so as to not duplicate it across mutliple places.
