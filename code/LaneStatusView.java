@@ -50,7 +50,7 @@ public class LaneStatusView implements ActionListener, Observer {
         buttonPanel.get(BTN_VIEW_LANE).setEnabled(false);
         buttonPanel.get(BTN_VIEW_PINSETTER).setEnabled(false);
         buttonPanel.get(BTN_PAUSE).setEnabled(false);
-        buttonPanel.get(BTN_RESUME).setEnabled(true);
+        buttonPanel.get(BTN_RESUME).setEnabled(false);
 
         currentBowler = new JLabel("(no one)");
         pinsDown = new JLabel("0");

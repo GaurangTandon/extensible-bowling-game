@@ -9,10 +9,10 @@ title __CODE's Class Diagram__\n
         {static} - BTN_NEW_PATRON : String
         {static} - BTN_REM_PATRON : String
         {static} - ERR_MEMBER_EXISTS : String
-        - bowlerDB : Vector<Object>
+        - bowlerDB : ArrayList<Object>
         - bowlerPanel : ScrollablePanel<Object>
         - maxSize : int
-        - party : Vector<String>
+        - party : ArrayList<String>
         - partyPanel : ScrollablePanel<String>
         - selectedMember : String
         - selectedNick : String
@@ -57,11 +57,11 @@ title __CODE's Class Diagram__\n
         - email : String
         - fullName : String
         - nickName : String
-        + getEmail()
-        + getFullName()
-        + getNickName()
-        + log()
         ~ Bowler()
+        ~ getEmail()
+        ~ getFullName()
+        ~ getNickName()
+        ~ log()
     }
   }
   
@@ -92,45 +92,8 @@ title __CODE's Class Diagram__\n
   
 
   namespace  {
-    class BowlerScorer {
-        {static} ~ SPARE : int
-        {static} ~ STRIKE : int
-        - cumulativeScore : int[]
-        - currFrame : int
-        - partIndex : int
-        - perFramePartRes : int[]
-        - rollCount : int
-        - rolls : int[]
-        - score : int
-        ~ BowlerScorer()
-        ~ canRollAgain()
-        ~ getByFramePartResult()
-        ~ getCumulativeScore()
-        ~ getCurrFrame()
-        ~ getRollCount()
-        ~ getScore()
-        ~ roll()
-        ~ updateCumulativeScores()
-        - getPinsDownOnThisFrame()
-        - isSpare()
-        - isSpareRoll2()
-        - isStrike()
-        - resetCumulativeScores()
-        - resetCumulativeScores()
-        - shouldDisplaySpare()
-        - shouldDisplayStrike()
-        - spareBonus()
-        - strikeBonus()
-        - updateFrameAndPartIndex()
-        - validateCurrFrame()
-        - validatePartIndex()
-    }
-  }
-  
-
-  namespace  {
     class BowlerScorerTest {
-        {static} - bs : BowlerScorer
+        {static} - bs : ScorableBowler
         {static} + main()
         - BowlerScorerTest()
         {static} - asserter()
@@ -146,9 +109,18 @@ title __CODE's Class Diagram__\n
   
 
   namespace  {
+    class BowlingAlleyDriver {
+        {static} + main()
+        - BowlingAlleyDriver()
+    }
+  }
+  
+
+  namespace  {
     class ControlDesk {
         ~ numLanes : int
-        - lanes : Set<Lane>
+        - lanes : List<Lane>
+        - partyQueue : LinkedList<ScorableParty>
         + run()
         ~ ControlDesk()
         ~ addPartyToQueue()
@@ -161,7 +133,7 @@ title __CODE's Class Diagram__\n
 
   namespace  {
     class ControlDeskEvent {
-        - partyQueue : Vector
+        - partyQueue : ArrayList<String>
         ~ ControlDeskEvent()
         ~ getPartyQueue()
     }
@@ -171,9 +143,9 @@ title __CODE's Class Diagram__\n
   namespace  {
     class ControlDeskView {
         {static} - BTN_ADD_PARTY : String
-        {static} - BTN_ADHOC_QUERIES : String
         {static} - BTN_ASSIGN : String
         {static} - BTN_FINISHED : String
+        {static} - BTN_QUERIES : String
         - maxMembers : int
         - partyPanel : ScrollablePanel<Object>
         + actionPerformed()
@@ -220,49 +192,46 @@ title __CODE's Class Diagram__\n
   
 
   namespace  {
-    interface GeneralBowler {
-        {abstract} + getEmail()
-        {abstract} + getFullName()
-        {abstract} + getNickName()
-        {abstract} + log()
-    }
-  }
-  
-
-  namespace  {
-    interface GeneralParty {
-        {abstract} + addBowler()
-        {abstract} + getMemberNick()
-        {abstract} + getMemberNicks()
-        {abstract} + getMembers()
-        {abstract} + getName()
-        {abstract} + getPartySize()
-    }
-  }
-  
-
-  namespace  {
-    interface GeneralPinsetter {
-        {abstract} + ballThrown()
-        {abstract} + resetState()
+    class Frame {
+        {static} ~ SPARE : int
+        {static} ~ STRIKE : int
+        {static} ~ UNROLLED : int
+        ~ frameNumber : int
+        ~ rollCount : int
+        ~ rolls : int[]
+        ~ Frame()
+        ~ Frame()
+        ~ addRolls()
+        ~ canRollAgain()
+        ~ getContributionToScore()
+        ~ getDisplayValue()
+        ~ getIncrement()
+        ~ isSpare()
+        ~ roll()
+        {static} ~ sumRolls()
+        - isStrike()
+        - reset()
     }
   }
   
 
   namespace  {
     class Lane {
-        + Lane()
+        - paused : boolean
         + pauseGame()
         + receiveEvent()
         + run()
+        ~ Lane()
         ~ assignParty()
         ~ createEvent()
         ~ isPartyAssigned()
+        ~ loadState()
+        ~ saveState()
+        ~ setPauseState()
         ~ subscribePinsetter()
         ~ unPauseGame()
         - bowlOneBowlerOneFrame()
         - exitGame()
-        - getCurrentThrowerNick()
         - getPinsDown()
         - onGameFinish()
         - waitWhilePaused()
@@ -273,12 +242,11 @@ title __CODE's Class Diagram__\n
   namespace  {
     class LaneEvent {
         - bowlerNick : String
-        - bowlerNicks : Vector<String>
+        - bowlerNicks : ArrayList<String>
         - cumulativeScore : int[][]
         - mechanicalProblemExists : boolean
         - partySize : int
         - score : int[][]
-        - shouldSetupGraphics : boolean
         - totalPinsDown : int
         ~ LaneEvent()
         ~ getBowlerNick()
@@ -289,7 +257,6 @@ title __CODE's Class Diagram__\n
         ~ getTotalPinsDown()
         ~ isMechanicalProblem()
         ~ isPartyEmpty()
-        ~ shouldSetupGraphics()
     }
   }
   
@@ -302,58 +269,23 @@ title __CODE's Class Diagram__\n
   
 
   namespace  {
-    class LaneScorer {
-        {static} ~ FRAME_COUNT : int
-        {static} ~ LAST_FRAME : int
-        {static} ~ MAX_ROLLS : int
-        {static} - MAX_GAMES : int
-        - bowlerIndex : int
-        - bowlerScorers : BowlerScorer[]
-        - bowlers : Vector<GeneralBowler>
-        - finalScores : int[][]
-        - finished : boolean
-        - frameNumber : int
-        - gameNumber : int
-        - halted : boolean
-        - partySize : int
-        ~ canRollAgain()
-        ~ getByBowlerByFramePartResult()
-        ~ getCumulativeScores()
-        ~ getCurrentBowler()
-        ~ getFinalScores()
-        ~ getGameNumber()
-        ~ isFinished()
-        ~ isHalted()
-        ~ isLastFrame()
-        ~ nextBowler()
-        ~ onGameFinish()
-        ~ pause()
-        ~ resetScores()
-        ~ roll()
-        ~ setFinalScoresOnGameEnd()
-        ~ shouldResetGraphics()
-        ~ unpause()
-        - getBowlersFinalScoreForCurrentGame()
-        - isBowlersFirstRoll()
-        - resetScores()
-        - resetScores()
-    }
-  }
-  
-
-  namespace  {
     class LaneStatusView {
         {static} - BTN_MAINTENANCE : String
+        {static} - BTN_PAUSE : String
+        {static} - BTN_RESUME : String
         {static} - BTN_VIEW_LANE : String
         {static} - BTN_VIEW_PINSETTER : String
         - currentBowler : JLabel
         - laneShowing : boolean
         - pinsDown : JLabel
         - psShowing : boolean
+        - saveFile : String
         + actionPerformed()
         + receiveEvent()
         ~ LaneStatusView()
         ~ showLane()
+        - loadState()
+        - saveState()
     }
   }
   
@@ -361,6 +293,7 @@ title __CODE's Class Diagram__\n
   namespace  {
     class LaneView {
         {static} - BTN_MAINTENANCE : String
+        - bowlerNicks : List<String>
         - bsv : List<BowlerScoreView>
         - frame : JFrame
         + actionPerformed()
@@ -370,6 +303,17 @@ title __CODE's Class Diagram__\n
         - getButtonPanel()
         - makeFrame()
         - setupLaneGraphics()
+    }
+  }
+  
+
+  namespace  {
+    class LastFrame {
+        ~ LastFrame()
+        ~ canRollAgain()
+        ~ getContributionToScore()
+        ~ getDisplayValue()
+        ~ getIncrement()
     }
   }
   
@@ -402,15 +346,15 @@ title __CODE's Class Diagram__\n
 
   namespace  {
     class Party {
-        - bowlers : Vector<GeneralBowler>
-        - name : String
-        + addBowler()
-        + getMemberNick()
-        + getMemberNicks()
-        + getMembers()
-        + getName()
-        + getPartySize()
+        ~ bowlers : Vector<ScorableBowler>
+        ~ name : String
         ~ Party()
+        ~ getMemberNicks()
+        ~ getMembers()
+        ~ getName()
+        ~ getPartySize()
+        ~ loadState()
+        ~ saveState()
     }
   }
   
@@ -444,10 +388,10 @@ title __CODE's Class Diagram__\n
         - pinsDownedOnThisThrow : int
         - rnd : Random
         - throwNumber : int
-        + ballThrown()
-        + resetState()
         ~ Pinsetter()
+        ~ ballThrown()
         ~ createEvent()
+        ~ resetState()
         ~ totalPinsDown()
         - resetPins()
     }
@@ -493,13 +437,67 @@ title __CODE's Class Diagram__\n
   
 
   namespace  {
-    class Queue {
-        - v : Vector<GeneralParty>
-        + add()
-        ~ Queue()
-        ~ asVector()
-        ~ hasMoreElements()
-        ~ next()
+    class ScorableBowler {
+        {static} - DELIMITER : String
+        - cumulativeScore : int[]
+        - currFrame : int
+        - frames : Frame[]
+        - perFramePartRes : int[]
+        - score : int
+        ~ ScorableBowler()
+        ~ ScorableBowler()
+        ~ ScorableBowler()
+        ~ canRollAgain()
+        ~ getByFramePartResult()
+        ~ getCumulativeScore()
+        ~ getCurrFrame()
+        ~ getScore()
+        ~ loadState()
+        ~ reset()
+        ~ roll()
+        ~ saveState()
+        ~ updateCumulativeScores()
+        - getRolls()
+        - resetCumulativeScores()
+    }
+  }
+  
+
+  namespace  {
+    class ScorableParty {
+        {static} ~ FRAME_COUNT : int
+        {static} ~ LAST_FRAME : int
+        {static} ~ MAX_ROLLS : int
+        {static} - DELIMITER : String
+        {static} - MAX_GAMES : int
+        - bowlerIndex : int
+        - finalScores : int[][]
+        - finished : boolean
+        - frameNumber : int
+        - gameNumber : int
+        - halted : boolean
+        ~ addBowler()
+        ~ canRollAgain()
+        ~ getByBowlerByFramePartResult()
+        ~ getCumulativeScores()
+        ~ getCurrentThrowerNick()
+        ~ getFinalScores()
+        ~ getGameNumber()
+        ~ isFinished()
+        ~ isHalted()
+        ~ loadState()
+        ~ nextBowler()
+        ~ onGameFinish()
+        ~ pause()
+        ~ resetScoresHard()
+        ~ roll()
+        ~ saveState()
+        ~ setFinalScoresOnGameEnd()
+        ~ unpause()
+        - getBowlersFinalScoreForCurrentGame()
+        - isLastFrame()
+        - resetScores()
+        - resetScores()
     }
   }
   
@@ -556,14 +554,6 @@ title __CODE's Class Diagram__\n
   }
   
 
-  namespace  {
-    class drive {
-        {static} + main()
-        - drive()
-    }
-  }
-  
-
   AddPartyView .up.|> java.awt.event.ActionListener
   AddPartyView .up.|> javax.swing.event.ListSelectionListener
   AddPartyView o-- Widget.ButtonPanel : buttonPanel
@@ -574,11 +564,9 @@ title __CODE's Class Diagram__\n
   AdhocView o-- Score : currScore
   AdhocView o-- Widget.ContainerPanel : statDisplay
   AdhocView o-- Widget.WindowFrame : win
-  Bowler .up.|> GeneralBowler
   BowlerScoreView o-- Widget.GridPanel : gridPanel
   ControlDesk .up.|> java.lang.Runnable
   ControlDesk -up-|> Publisher
-  ControlDesk o-- Queue : partyQueue
   ControlDeskEvent .up.|> Event
   ControlDeskView .up.|> Observer
   ControlDeskView .up.|> java.awt.event.ActionListener
@@ -596,9 +584,8 @@ title __CODE's Class Diagram__\n
   Lane .up.|> Observer
   Lane .up.|> java.lang.Runnable
   Lane -up-|> Publisher
-  Lane o-- GeneralParty : party
   Lane o-- Pinsetter : pinsetter
-  Lane o-- LaneScorer : scorer
+  Lane o-- ScorableParty : scorer
   LaneEvent .up.|> Event
   LaneStatusView .up.|> Observer
   LaneStatusView .up.|> java.awt.event.ActionListener
@@ -612,17 +599,18 @@ title __CODE's Class Diagram__\n
   LaneView o-- Widget.ButtonPanel : buttonPanel
   LaneView o-- Widget.ContainerPanel : containerPanel
   LaneView o-- LaneInterface : lane
+  LastFrame -up-|> Frame
   NewPatronView .up.|> java.awt.event.ActionListener
   NewPatronView o-- AddPartyView : addParty
   NewPatronView o-- Widget.ButtonPanel : buttonPanel
   NewPatronView o-- Widget.TextFieldPanel : patronPanel
   NewPatronView o-- Widget.WindowFrame : window
-  Party .up.|> GeneralParty
   PinSetterView .up.|> Observer
-  Pinsetter .up.|> GeneralPinsetter
   Pinsetter -up-|> Publisher
   PinsetterEvent .up.|> Event
   PrintableText .up.|> java.awt.print.Printable
+  ScorableBowler -up-|> Bowler
+  ScorableParty -up-|> Party
 
 
 right footer
