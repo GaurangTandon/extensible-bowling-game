@@ -22,7 +22,7 @@
 
 We investigated metrics in multiple ways: one through the CodeMR plugin for IntelliJ and the other through Metrics2 1.38 plugin for Eclipse.
 
-\subsection{Refactoring timeline}
+\subsection{Refactoring narrative}
 
 We present to you here the timeline of events that become the cornerstone of starting our refactoring:
 
@@ -56,7 +56,15 @@ We present to you here the timeline of events that become the cornerstone of sta
 
     \item These parts were then systematically split out into separate classes, namely, \code{ScorableParty, LaneWithPinsetter, Publisher, Lane}
     \item Once we had separate parts getting compiled, we were already ready to start ironing out complexity and redundancy issues. For quite a lot of time, we worked on these.
-    \item In parallel, we also worked to ensure coupling was as low as possible.
+    \item Reducing a method for its cyclomatic complexity usually meant:
+        \begin{itemize}
+            \item Understanding what the method is actually doing
+            \item Break it down into its core parts,
+            \item Extract those core parts into new methods
+            \item Reuse those new methods across the codebase
+        \end{itemize}
+    \item For code duplication, one thing that really stood out was the extreme disregard for redundancy in the `XView` classes, as each of them shared a series of crucial logic duplicated. For example, the logic for centering a window, or adding a button, and more. We quickly realized this and extracted out a general set of `Widget.X` classes, whose main purposes is to provide a consistent UI throughtout the codebase. This is reused throughout the codebase, and helped us creating the UI for the newer features with minimal effort.
+    \item Now that we had so many classes, we ran into issues of coupling. We had to be careful when fixing those since there wasn't a general fix-all medicine for this.
     \item Once all was done, in the final stages, we made sure that cohesion scores were as high as possible. For classes that had lower cohesion, we grouped their properties and further increased cohesion.
     \item That was pretty much all :)
 \end{itemize}
