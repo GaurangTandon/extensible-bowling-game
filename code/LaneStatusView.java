@@ -80,7 +80,10 @@ public class LaneStatusView implements ActionListener, Observer {
             lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
             buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(false);
-            lane.saveState("Datastore/lane" + laneNumber + "_on_" + Util.getDateIdentifier() + ".dat");
+            final String saveFile  = "Datastore/lane" + laneNumber + "_on_" + Util.getDateIdentifier() + ".dat";
+            lane.saveState(saveFile);
+
+            JOptionPane.showMessageDialog(null, "Lane data saved as " + saveFile);
         }
     }
 
