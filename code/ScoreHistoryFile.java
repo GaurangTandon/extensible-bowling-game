@@ -61,7 +61,7 @@ final class ScoreHistoryFile {
         Score best = new Score("", "", "10000");
 
         for (final Score score : scores) {
-            if (best.getScore() < score.getScore()) {
+            if (best.getScore() > score.getScore()) {
                 best = score;
             }
         }
@@ -89,18 +89,16 @@ final class ScoreHistoryFile {
     }
 
     static ArrayList<Score> getCareerHighlights(final String player) {
-        final ArrayList<Score> scores = getAllScores();
-        final ArrayList<Score> bestScores = new ArrayList<>(0);
+        final ArrayList<Score> scores = getScores(player);
 
-        for (final Score score : scores) {
-            if (!score.getNick().equals(player)) continue;
-            bestScores.add(score);
-        }
+        Collections.sort(scores);
+        Collections.reverse(scores);
+        final ArrayList<Score> retScores = new ArrayList<>(0);
 
-        Collections.sort(bestScores);
-        Collections.reverse(bestScores);
+        for (int i = 0, lim = Math.min(scores.size(), 5); i < lim; i++)
+            retScores.add(scores.get(i));
 
-        return (ArrayList<Score>) bestScores.subList(0, 5);
+        return retScores;
     }
 
 

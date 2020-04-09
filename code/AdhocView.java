@@ -3,9 +3,7 @@ import Widget.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 class AdhocView extends WindowView implements ActionListener, ListSelectionListener {
@@ -26,7 +24,7 @@ class AdhocView extends WindowView implements ActionListener, ListSelectionListe
         final ArrayList<String> bowlersList = BowlerFile.getBowlers();
         final ScrollablePanel bowlerPanel = drawScrollable(bowlersList, "Bowlers List", 8)
                 .attachListener(this);
-        selectedBowler = bowlersList.get(0);
+        selectedBowler = "";
 
         win = new WindowFrame(
                 "Add Party",
@@ -59,7 +57,12 @@ class AdhocView extends WindowView implements ActionListener, ListSelectionListe
     }
 
     private void displayTopGames() {
-        final StringBuilder stringBuilder = new StringBuilder("<html>Highest Overall Game Scores:<br/>");
+        if (selectedBowler.isEmpty()) {
+            statDisplay.setText("No bowler selected!");
+            return;
+        }
+
+        final StringBuilder stringBuilder = new StringBuilder("<html>Highest Overall Game Scores:<br/>by " + selectedBowler + " are:<br/>");
         final ArrayList<Score> scores = ScoreHistoryFile.getCareerHighlights(selectedBowler);
         for (final Score score : scores) {
             stringBuilder.append("&nbsp;").append(score.getScore()).append(" on ").append(score.getDate()).append("<br/>");
