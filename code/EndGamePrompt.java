@@ -30,8 +30,7 @@ class EndGamePrompt implements ActionListener {
 
         if (source.equals(ButtonNames.BTN_YES)) {
             result = 1;
-        }
-        if (source.equals(ButtonNames.BTN_NO)) {
+        } else if (source.equals(ButtonNames.BTN_NO)) {
             result = 2;
         }
 
@@ -41,11 +40,8 @@ class EndGamePrompt implements ActionListener {
         while (result == 0) {
             Util.busyWait(10);
         }
-        return result;
-    }
-
-    final void destroy() {
         win.setVisible(false);
+        return result;
     }
 
 }

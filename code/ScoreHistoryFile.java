@@ -10,10 +10,10 @@ final class ScoreHistoryFile {
     private ScoreHistoryFile() {
     }
 
-    static void addScore(final String nick, final String score)
+    static void addScore(final String nick, final int score)
             throws IOException {
         final String dateString = Util.getDateString();
-        generateScoreHistoryString(nick, dateString, score, SCORE_HISTORY_DAT);
+        generateScoreHistoryString(nick, dateString, Integer.toString(score), SCORE_HISTORY_DAT);
     }
 
     static void generateScoreHistoryString(final String nick, final String date, final String score, final String scoreHistoryDat)
@@ -25,75 +25,93 @@ final class ScoreHistoryFile {
         out.close();
     }
 
-    static ArrayList<Score> getScores(final String nick)
-            throws IOException {
-        final ArrayList<Score> scores = new ArrayList<>();
+    private static ArrayList<Score> getAllScores() {
+        final ArrayList<Score> scores = new ArrayList<>(0);
 
-        final BufferedReader in =
-                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
-        String data;
-        while ((data = in.readLine()) != null) {
-            final String[] scoreData = data.split(",");
-            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
-            if (nick.equals(scoreData[0])) {
+        try {
+            final BufferedReader in =
+                    new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
+            String data;
+            while ((data = in.readLine()) != null) {
+                final String[] scoreData = data.split(Util.DELIMITER);
+                //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
                 scores.add(new Score(scoreData[0], scoreData[1], scoreData[2]));
             }
+        } catch (final Exception error) {
+            error.printStackTrace();
         }
         return scores;
     }
 
-    static Score getLeastScore() throws IOException {
+    static ArrayList<Score> getScores(final String nick) {
+        final ArrayList<Score> scores = getAllScores();
+        final ArrayList<Score> retScores = new ArrayList<>(0);
+
+        for (final Score score : scores) {
+            if (nick.equals(score.getNick())) {
+                retScores.add(score);
+            }
+        }
+
+        return retScores;
+    }
+
+    static Score getLeastScore() {
+        final ArrayList<Score> scores = getAllScores();
         Score best = new Score("", "", "10000");
 
-        final BufferedReader in =
-                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
-        String data;
-        while ((data = in.readLine()) != null) {
-            final String[] scoreData = data.split(",");
-            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
-            if (Integer.parseInt(scoreData[2]) < best.getScore()) {
-                best = new Score(scoreData[0], scoreData[1], scoreData[2]);
-            }
-        }
-        return best;
-    }
-
-    static Score getMaxCumulativeScore() throws IOException {
-        final Map<String, Integer> scores = new HashMap<>(0);
-
-        final BufferedReader in =
-                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
-        String data;
-        while ((data = in.readLine()) != null) {
-            final String[] scoreData = data.split(",");
-            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
-            scores.put(scoreData[0], scores.getOrDefault(scoreData[0], 0) + Integer.parseInt(scoreData[2]));
-        }
-
-        Score best = new Score();
-
-        for (final String sc : scores.keySet()) {
-            if (best.getScore() < scores.get(sc)) {
-                best = new Score(sc, "", scores.get(sc) + "");
+        for (final Score score : scores) {
+            if (best.getScore() > score.getScore()) {
+                best = score;
             }
         }
 
         return best;
     }
 
-    static Score getBestScore() throws IOException {
+    static Score getMaxCumulativeScore() {
+        final ArrayList<Score> scores = getAllScores();
+        final Map<String, Integer> mappedScores = new HashMap<>(0);
+        for (final Score score : scores) {
+            final String nick = score.getNick();
+            final int oldScore = mappedScores.getOrDefault(nick, 0);
+            mappedScores.put(nick, oldScore + score.getScore());
+        }
         Score best = new Score();
 
-        final BufferedReader in =
-                new BufferedReader(new FileReader(SCORE_HISTORY_DAT));
-        String data;
-        while ((data = in.readLine()) != null) {
-            final String[] scoreData = data.split(",");
-            //"Nick: scoreData[0] Date: scoreData[1] Score: scoreData[2]
-            if (Integer.parseInt(scoreData[2]) > best.getScore()) {
-                best = new Score(scoreData[0], scoreData[1], scoreData[2]);
+        for (final Map.Entry<String, Integer> entry : mappedScores.entrySet()) {
+            if (best.getScore() < entry.getValue()) {
+                best = new Score(entry.getKey(), "", entry.getValue() + "");
             }
         }
+
+        return best;
+    }
+
+    static ArrayList<Score> getCareerHighlights(final String player) {
+        final ArrayList<Score> scores = getScores(player);
+
+        Collections.sort(scores);
+        Collections.reverse(scores);
+        final ArrayList<Score> retScores = new ArrayList<>(0);
+
+        for (int i = 0, lim = Math.min(scores.size(), 5); i < lim; i++)
+            retScores.add(scores.get(i));
+
+        return retScores;
+    }
+
+
+    static Score getBestScore() {
+        final ArrayList<Score> scores = getAllScores();
+        Score best = new Score();
+
+        for (final Score score : scores) {
+            if (best.getScore() < score.getScore()) {
+                best = score;
+            }
+        }
+
         return best;
     }
 }

@@ -6,7 +6,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class WindowFrame {
-
     private final JFrame win;
 
     public WindowFrame(final String title) {

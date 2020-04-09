@@ -1,4 +1,4 @@
-class Score {
+class Score implements Comparable<Score> {
 
     private final String nickname;
     private final String date;
@@ -30,5 +30,10 @@ class Score {
 
     final String getNick() {
         return nickname;
+    }
+
+    @Override
+    public int compareTo(final Score o) {
+        return score - o.score;
     }
 }

@@ -19,11 +19,11 @@ public class LaneStatusView implements ActionListener, Observer {
     private final LaneView laneView;
     private final Lane lane;
 
-    private final String saveFile;
+    private final int laneNumber;
 
     LaneStatusView(final Lane lane, final int laneNum) {
         this.lane = lane;
-        saveFile = "Datastore/SAVED_" + laneNum + ".DAT";
+        laneNumber = laneNum;
         pinSetterView = new PinSetterView(laneNum);
         lane.subscribePinsetter(pinSetterView);
 
@@ -73,12 +73,17 @@ public class LaneStatusView implements ActionListener, Observer {
             }
         }
         if (source.equals(ButtonNames.BTN_RESUME)) {
-            lane.loadState(saveFile);
+            String fileName = Util.getFileName(gamePanel.getPanel());
+            lane.loadState(fileName);
             lane.pauseManual(false);
         } else if (source.equals(ButtonNames.BTN_PAUSE)) {
             lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
+            buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(false);
+            final String saveFile  = "Datastore/lane" + laneNumber + "_on_" + Util.getDateIdentifier() + ".dat";
             lane.saveState(saveFile);
+
+            JOptionPane.showMessageDialog(null, "Lane data saved as " + saveFile);
         }
     }
 
@@ -94,8 +99,10 @@ public class LaneStatusView implements ActionListener, Observer {
         final boolean isPartyAssigned = lane.isPartyAssigned();
         buttonPanel.get(ButtonNames.BTN_VIEW_LANE).setEnabled(isPartyAssigned);
         buttonPanel.get(ButtonNames.BTN_VIEW_PINSETTER).setEnabled(isPartyAssigned);
-        buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(isPartyAssigned);
-        buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(!isPartyAssigned);
+
+        final boolean isPaused = lane.isPaused();
+        buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(!isPaused && isPartyAssigned);
+        buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(isPaused || !isPartyAssigned);
 
         final int totalPinsDown = le.getTotalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());

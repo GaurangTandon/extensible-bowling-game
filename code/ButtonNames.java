@@ -17,6 +17,7 @@ final class ButtonNames {
     static final String BTN_HIGHEST = "Highest score";
     static final String BTN_LOWEST = "Lowest score";
     static final String BTN_BEST = "Best player";
+    static final String BTN_HIGHLIGHTS = "Top 5 Games";
 
     static final String BTN_MAINTENANCE = "Maintenance Call";
 

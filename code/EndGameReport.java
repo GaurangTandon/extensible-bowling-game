@@ -40,6 +40,10 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     void printer(final ScorableParty scorer) {
+        while (result == 0) {
+            Util.busyWait(10);
+        }
+
         final Iterable<ScorableBowler> partyMembers = scorer.getMembers();
         final int gameNumber = scorer.getGameNumber();
 
@@ -74,9 +78,6 @@ class EndGameReport implements ActionListener, ListSelectionListener {
     }
 
     private boolean shouldPrint(final String bowlerNick) {
-        while (result == 0) {
-            Util.busyWait(10);
-        }
         return Util.containsString(retVal, bowlerNick);
     }
 }

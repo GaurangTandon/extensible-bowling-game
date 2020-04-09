@@ -13,6 +13,7 @@ class ScoreReport {
     ScoreReport(final BowlerInfo bowler, final int[] scores, final int games) {
         final String nick = bowler.getNickName();
         final String full = bowler.getFullName();
+
         Iterable<Score> v = null;
         try {
             v = ScoreHistoryFile.getScores(nick);
