@@ -75,15 +75,11 @@ This document outlines the major groups of classes in our code.
 
 \begin{enumerate}
     \item \code{Lane}: Manages an entire party and its scoring on a lane. It makes sure bowlers get to bowl one after the other, are able to play multiple games one after another, and in the end can exit the lane while knowing their scores.
-    \begin{itemize}
-        \item To achieve its purpose it utilizes several helper classes:
-    \end{itemize}
     \item \code{ControlDesk}: Allows parties to be added to the alley, wait in the queue to be assigned a lane, and then assign them to a free lane.
-    \begin{itemize}
-        \item To achieve its purpose it utilizes several helper classes:
-    \end{itemize}
-    \item \code{ScorableParty}:
-    \item \code{ScorableBowler}:
+    \item \code{ScorableParty}: a specialization of a party, maintains a list of bowlers, and also manages final cumulative scores and per game scores. Acts as a \textbf{mediator} between Lane and a collection of ScorableBowler.
+    \item \code{ScorableBowler}: a specialization of a Bowler, in addition to being able to bowl balls down an alley, it can also keep track of its per game score.
+    \item \code{Widget} package: maintains several (abstract) classes that \textbf{significantly simplify} the setting up of Views in our project.
+    \item \code{Pinsetter}: maintains the state of a pinsetter per lane, and ensures a valid number of pins fall down every time a bowler rolls.
 \end{enumerate}
 
 \subsection{Describing Specific Classes}
