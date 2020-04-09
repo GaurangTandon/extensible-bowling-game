@@ -9,6 +9,25 @@ class Bowler extends BowlerInfo {
         resetSoft();
     }
 
+    void saveState(final FileWriter fw){
+        final ArrayList<Integer> rolls = getRolls();
+
+        for (int i = 0; i < rolls.size(); i++) {
+            if (i > 0) fw.write(Util.DELIMITER);
+            fw.write(String.valueOf(rolls.get(i)));
+        }
+        fw.write("\n");
+    }
+
+    void loadState(final BufferedReader fr){
+        try{
+            final String[] rolls = fr.readLine().split(Util.DELIMITER);
+            for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
+        }catch(final Exception e){
+            throw new IOException();
+        }
+    }
+
     void resetSoft() {
         frames = new Frame[Frame.FRAME_COUNT];
         for (int i = 0; i < Frame.LAST_FRAME; i++)

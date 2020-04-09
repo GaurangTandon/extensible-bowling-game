@@ -16,7 +16,7 @@ class ScorableParty extends Party {
     }
 
     void loadState(final BufferedReader fr) throws IOException {
-        try {
+        try{
             super.loadState(fr);
             for (final ScorableBowler bowlerScorer : bowlers) {
                 bowlerScorer.loadState(fr);
