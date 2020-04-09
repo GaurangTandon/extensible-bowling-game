@@ -116,7 +116,7 @@ public class PinSetterView implements Observer {
 
     public void receiveEvent(final Event pev) {
         final PinsetterEvent pe = (PinsetterEvent) pev;
-        if (!(pe.isFoulCommitted())) {
+        if (!pe.isFoulCommitted()) {
             displayKnockedDownPins(pe);
         }
 
@@ -134,14 +134,9 @@ public class PinSetterView implements Observer {
         for (int pinIndex = 0; pinIndex < Pinsetter.PIN_COUNT; pinIndex++) {
             final boolean pinKnockedDown = pe.isPinKnockedDown(pinIndex);
             final JLabel tempPin = pinVector.get(pinIndex);
-            if (pinKnockedDown) {
-                tempPin.setForeground(Color.lightGray);
-            }
+            final Color color = pinKnockedDown ? Color.lightGray : Color.black;
+            tempPin.setForeground(color);
         }
-    }
-
-    void setVisible(final boolean state) {
-        frame.setVisible(state);
     }
 
     void toggleVisible() {
