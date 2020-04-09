@@ -1,0 +1,623 @@
+@startuml
+
+title __CODE's Class Diagram__\n
+
+  namespace BowlingGame {
+    class AddPartyView {
+        {static} - BTN_ADD_PATRON : String
+        {static} - BTN_FINISHED : String
+        {static} - BTN_NEW_PATRON : String
+        {static} - BTN_REM_PATRON : String
+        {static} - ERR_MEMBER_EXISTS : String
+        - bowlerDB : ArrayList<Object>
+        - bowlerPanel : ScrollablePanel<Object>
+        - maxSize : int
+        - party : ArrayList<String>
+        - partyPanel : ScrollablePanel<String>
+        - selectedMember : String
+        - selectedNick : String
+        + actionPerformed()
+        + getParty()
+        + valueChanged()
+        ~ AddPartyView()
+        ~ updateNewPatron()
+        - addPatron()
+        - buildBowlerPanel()
+        - onPartyFinished()
+        - removePatron()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class AdhocView {
+        {static} - BTN_BEST : String
+        {static} - BTN_FINISHED : String
+        {static} - BTN_HIGHEST : String
+        {static} - BTN_LOWEST : String
+        + actionPerformed()
+        ~ AdhocView()
+        - displayBestPlayer()
+        - displayHighest()
+        - displayLowest()
+        - setDisplayLabel()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Alley {
+        ~ Alley()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Bowler {
+        - email : String
+        - fullName : String
+        - nickName : String
+        ~ Bowler()
+        ~ getEmail()
+        ~ getFullName()
+        ~ getNickName()
+        ~ log()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlerFile {
+        {static} - BOWLER_DAT : String
+        {static} ~ getBowlerInfo()
+        {static} ~ getBowlers()
+        {static} ~ putBowlerIfDidntExist()
+        - BowlerFile()
+        {static} - putBowlerInfo()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlerScoreView {
+        - panel : Component
+        ~ BowlerScoreView()
+        ~ getPanel()
+        ~ update()
+        {static} - getCharToShow()
+        - setBoxLabels()
+        - setScoreLabels()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlerScorerTest {
+        {static} - bs : ScorableBowler
+        {static} + main()
+        - BowlerScorerTest()
+        {static} - asserter()
+        {static} - checkEquality()
+        {static} - rollMany()
+        {static} - rollSpare()
+        {static} - testAllOnes()
+        {static} - testBest()
+        {static} - testGutters()
+        {static} - testSpares()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlingAlleyDriver {
+        {static} + main()
+        - BowlingAlleyDriver()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ControlDesk {
+        ~ numLanes : int
+        - lanes : List<Lane>
+        - partyQueue : LinkedList<ScorableParty>
+        + run()
+        ~ ControlDesk()
+        ~ addPartyToQueue()
+        ~ assignLane()
+        ~ createEvent()
+        ~ getLanes()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ControlDeskEvent {
+        - partyQueue : ArrayList<String>
+        ~ ControlDeskEvent()
+        ~ getPartyQueue()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ControlDeskView {
+        {static} - BTN_ADD_PARTY : String
+        {static} - BTN_ASSIGN : String
+        {static} - BTN_FINISHED : String
+        {static} - BTN_QUERIES : String
+        - maxMembers : int
+        - partyPanel : ScrollablePanel<Object>
+        + actionPerformed()
+        + receiveEvent()
+        ~ ControlDeskView()
+        ~ updateAddParty()
+        - setupLaneStatusPanel()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class EndGamePrompt {
+        {static} - BTN_NO : String
+        {static} - BTN_YES : String
+        - result : int
+        + actionPerformed()
+        ~ EndGamePrompt()
+        ~ destroy()
+        ~ getResult()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class EndGameReport {
+        {static} - BTN_FINISHED : String
+        {static} - BTN_PRINT : String
+        - result : int
+        - retVal : List<String>
+        - selectedMember : String
+        + actionPerformed()
+        + valueChanged()
+        ~ EndGameReport()
+        ~ shouldPrint()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    interface Event {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Frame {
+        {static} ~ SPARE : int
+        {static} ~ STRIKE : int
+        {static} ~ UNROLLED : int
+        ~ frameNumber : int
+        ~ rollCount : int
+        ~ rolls : int[]
+        ~ Frame()
+        ~ Frame()
+        ~ addRolls()
+        ~ canRollAgain()
+        ~ getContributionToScore()
+        ~ getDisplayValue()
+        ~ getIncrement()
+        ~ isSpare()
+        ~ roll()
+        {static} ~ sumRolls()
+        - isStrike()
+        - reset()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Lane {
+        - paused : boolean
+        + pauseGame()
+        + receiveEvent()
+        + run()
+        ~ Lane()
+        ~ assignParty()
+        ~ createEvent()
+        ~ isPartyAssigned()
+        ~ loadState()
+        ~ saveState()
+        ~ setPauseState()
+        ~ subscribePinsetter()
+        ~ unPauseGame()
+        - bowlOneBowlerOneFrame()
+        - exitGame()
+        - getPinsDown()
+        - onGameFinish()
+        - waitWhilePaused()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LaneEvent {
+        - bowlerNick : String
+        - bowlerNicks : ArrayList<String>
+        - cumulativeScore : int[][]
+        - mechanicalProblemExists : boolean
+        - partySize : int
+        - score : int[][]
+        - totalPinsDown : int
+        ~ LaneEvent()
+        ~ getBowlerNick()
+        ~ getBowlerNicks()
+        ~ getCumulativeScore()
+        ~ getPartySize()
+        ~ getScore()
+        ~ getTotalPinsDown()
+        ~ isMechanicalProblem()
+        ~ isPartyEmpty()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    interface LaneInterface {
+        {abstract} + pauseGame()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LaneStatusView {
+        {static} - BTN_MAINTENANCE : String
+        {static} - BTN_PAUSE : String
+        {static} - BTN_RESUME : String
+        {static} - BTN_VIEW_LANE : String
+        {static} - BTN_VIEW_PINSETTER : String
+        - currentBowler : JLabel
+        - laneShowing : boolean
+        - pinsDown : JLabel
+        - psShowing : boolean
+        - saveFile : String
+        + actionPerformed()
+        + receiveEvent()
+        ~ LaneStatusView()
+        ~ showLane()
+        - loadState()
+        - saveState()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LaneView {
+        {static} - BTN_MAINTENANCE : String
+        - bowlerNicks : List<String>
+        - bsv : List<BowlerScoreView>
+        - frame : JFrame
+        + actionPerformed()
+        + receiveEvent()
+        ~ LaneView()
+        ~ setVisible()
+        - getButtonPanel()
+        - makeFrame()
+        - setupLaneGraphics()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LastFrame {
+        ~ LastFrame()
+        ~ canRollAgain()
+        ~ getContributionToScore()
+        ~ getDisplayValue()
+        ~ getIncrement()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class NewPatronView {
+        {static} - BTN_ABORT : String
+        {static} - BTN_FINISHED : String
+        {static} - TXT_EMAIL_FIELD : String
+        {static} - TXT_FULL_FIELD : String
+        {static} - TXT_NICK_FIELD : String
+        - email : String
+        - full : String
+        - nick : String
+        + actionPerformed()
+        ~ NewPatronView()
+        ~ getEmail()
+        ~ getFull()
+        ~ getNickName()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    interface Observer {
+        {abstract} + receiveEvent()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Party {
+        ~ bowlers : Vector<ScorableBowler>
+        ~ name : String
+        ~ Party()
+        ~ getMemberNicks()
+        ~ getMembers()
+        ~ getName()
+        ~ getPartySize()
+        ~ loadState()
+        ~ saveState()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class PinSetterView {
+        - frame : JFrame
+        - pinVector : Vector<JLabel>
+        - secondRoll : JPanel
+        + receiveEvent()
+        ~ PinSetterView()
+        ~ setVisible()
+        - addDummyPanels()
+        - addPins()
+        - displayKnockedDownPins()
+        - getPanels()
+        - makeFirstRow()
+        - makeFourthRow()
+        - makeSecondRow()
+        - makeThirdRow()
+        - resetColors()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Pinsetter {
+        {static} ~ PIN_COUNT : int
+        - foul : boolean
+        - isPinStanding : boolean[]
+        - pinsDownedOnThisThrow : int
+        - rnd : Random
+        - throwNumber : int
+        ~ Pinsetter()
+        ~ ballThrown()
+        ~ createEvent()
+        ~ resetState()
+        ~ totalPinsDown()
+        - resetPins()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class PinsetterEvent {
+        - foulCommitted : boolean
+        - isReset : boolean
+        - pinsDownThisThrow : int
+        - pinsStillStanding : boolean[]
+        - throwNumber : int
+        ~ PinsetterEvent()
+        ~ isFirstThrow()
+        ~ isFoulCommitted()
+        ~ isPinKnockedDown()
+        ~ isReset()
+        ~ pinsDownOnThisThrow()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class PrintableText {
+        - POINTS_PER_INCH : int
+        - text : String
+        + print()
+        ~ PrintableText()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    abstract class Publisher {
+        - subscribers : List<Observer>
+        ~ Publisher()
+        {abstract} ~ createEvent()
+        ~ publish()
+        ~ subscribe()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScorableBowler {
+        {static} - DELIMITER : String
+        - cumulativeScore : int[]
+        - currFrame : int
+        - frames : Frame[]
+        - perFramePartRes : int[]
+        - score : int
+        ~ ScorableBowler()
+        ~ ScorableBowler()
+        ~ ScorableBowler()
+        ~ canRollAgain()
+        ~ getByFramePartResult()
+        ~ getCumulativeScore()
+        ~ getCurrFrame()
+        ~ getScore()
+        ~ loadState()
+        ~ reset()
+        ~ roll()
+        ~ saveState()
+        ~ updateCumulativeScores()
+        - getRolls()
+        - resetCumulativeScores()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScorableParty {
+        {static} ~ FRAME_COUNT : int
+        {static} ~ LAST_FRAME : int
+        {static} ~ MAX_ROLLS : int
+        {static} - DELIMITER : String
+        {static} - MAX_GAMES : int
+        - bowlerIndex : int
+        - finalScores : int[][]
+        - finished : boolean
+        - frameNumber : int
+        - gameNumber : int
+        - halted : boolean
+        ~ addBowler()
+        ~ canRollAgain()
+        ~ getByBowlerByFramePartResult()
+        ~ getCumulativeScores()
+        ~ getCurrentThrowerNick()
+        ~ getFinalScores()
+        ~ getGameNumber()
+        ~ isFinished()
+        ~ isHalted()
+        ~ loadState()
+        ~ nextBowler()
+        ~ onGameFinish()
+        ~ pause()
+        ~ resetScoresHard()
+        ~ roll()
+        ~ saveState()
+        ~ setFinalScoresOnGameEnd()
+        ~ unpause()
+        - getBowlersFinalScoreForCurrentGame()
+        - isLastFrame()
+        - resetScores()
+        - resetScores()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Score {
+        - date : String
+        - nickname : String
+        - score : Integer
+        + toString()
+        ~ Score()
+        ~ Score()
+        ~ getDate()
+        ~ getNick()
+        ~ getScore()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScoreHistoryFile {
+        {static} - SCORE_HISTORY_DAT : String
+        {static} ~ addScore()
+        {static} ~ generateScoreHistoryString()
+        {static} ~ getBestScore()
+        {static} ~ getLeastScore()
+        {static} ~ getMaxCumulativeScore()
+        {static} ~ getScores()
+        - ScoreHistoryFile()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScoreReport {
+        - content : String
+        ~ ScoreReport()
+        ~ sendPrintout()
+        - sendEmail()
+        - sendLn()
+        - sendLn()
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Util {
+        {static} ~ busyWait()
+        {static} ~ containsString()
+        {static} ~ getDateString()
+        {static} ~ getPatronDetails()
+        - Util()
+    }
+  }
+  
+
+  AddPartyView .up.|> java.awt.event.ActionListener
+  AddPartyView .up.|> javax.swing.event.ListSelectionListener
+  AddPartyView o-- Widget.ButtonPanel : buttonPanel
+  AddPartyView o-- ControlDeskView : controlDesk
+  AddPartyView o-- Widget.WindowFrame : win
+  AdhocView .up.|> java.awt.event.ActionListener
+  AdhocView o-- Widget.ButtonPanel : buttonPanel
+  AdhocView o-- Score : currScore
+  AdhocView o-- Widget.ContainerPanel : statDisplay
+  AdhocView o-- Widget.WindowFrame : win
+  BowlerScoreView o-- Widget.GridPanel : gridPanel
+  ControlDesk .up.|> java.lang.Runnable
+  ControlDesk -up-|> Publisher
+  ControlDeskEvent .up.|> Event
+  ControlDeskView .up.|> Observer
+  ControlDeskView .up.|> java.awt.event.ActionListener
+  ControlDeskView o-- ControlDesk : controlDesk
+  ControlDeskView o-- Widget.ButtonPanel : controlsPanel
+  ControlDeskView o-- Widget.WindowFrame : win
+  EndGamePrompt .up.|> java.awt.event.ActionListener
+  EndGamePrompt o-- Widget.ButtonPanel : buttonPanel
+  EndGamePrompt o-- Widget.WindowFrame : win
+  EndGameReport .up.|> java.awt.event.ActionListener
+  EndGameReport .up.|> javax.swing.event.ListSelectionListener
+  EndGameReport o-- Widget.ButtonPanel : buttonPanel
+  EndGameReport o-- Widget.WindowFrame : win
+  Lane .up.|> LaneInterface
+  Lane .up.|> Observer
+  Lane .up.|> java.lang.Runnable
+  Lane -up-|> Publisher
+  Lane o-- Pinsetter : pinsetter
+  Lane o-- ScorableParty : scorer
+  LaneEvent .up.|> Event
+  LaneStatusView .up.|> Observer
+  LaneStatusView .up.|> java.awt.event.ActionListener
+  LaneStatusView o-- Widget.ButtonPanel : buttonPanel
+  LaneStatusView o-- Widget.ContainerPanel : gamePanel
+  LaneStatusView o-- Lane : lane
+  LaneStatusView o-- LaneView : laneView
+  LaneStatusView o-- PinSetterView : pinSetterView
+  LaneView .up.|> Observer
+  LaneView .up.|> java.awt.event.ActionListener
+  LaneView o-- Widget.ButtonPanel : buttonPanel
+  LaneView o-- Widget.ContainerPanel : containerPanel
+  LaneView o-- LaneInterface : lane
+  LastFrame -up-|> Frame
+  NewPatronView .up.|> java.awt.event.ActionListener
+  NewPatronView o-- AddPartyView : addParty
+  NewPatronView o-- Widget.ButtonPanel : buttonPanel
+  NewPatronView o-- Widget.TextFieldPanel : patronPanel
+  NewPatronView o-- Widget.WindowFrame : window
+  PinSetterView .up.|> Observer
+  Pinsetter -up-|> Publisher
+  PinsetterEvent .up.|> Event
+  PrintableText .up.|> java.awt.print.Printable
+  ScorableBowler -up-|> Bowler
+  ScorableParty -up-|> Party
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

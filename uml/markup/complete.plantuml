@@ -1,0 +1,351 @@
+@startuml
+
+title __EXTENSIBLE-BOWLING-GAME's Class Diagram__\n
+
+  namespace BowlingGame {
+    class AddPartyView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class AdhocView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Alley {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Bowler {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlerFile {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlerScoreView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlerScorerTest {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class BowlingAlleyDriver {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ControlDesk {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ControlDeskEvent {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ControlDeskView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class EndGamePrompt {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class EndGameReport {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    interface Event {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Frame {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Lane {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LaneEvent {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    interface LaneInterface {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LaneStatusView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LaneView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class LastFrame {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class NewPatronView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    interface Observer {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Party {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class PinSetterView {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Pinsetter {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class PinsetterEvent {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class PrintableText {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    abstract class Publisher {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScorableBowler {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScorableParty {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Score {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScoreHistoryFile {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class ScoreReport {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    class Util {
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      class Widget.ButtonPanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      class Widget.ContainerPanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      abstract class Widget.FormPanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      abstract class Widget.GenericPanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      class Widget.GridPanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      class Widget.ScrollablePanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      class Widget.TextFieldPanel {
+      }
+    }
+  }
+  
+
+  namespace BowlingGame {
+    namespace Widget {
+      class Widget.WindowFrame {
+      }
+    }
+  }
+  
+
+  AddPartyView .up.|> java.awt.event.ActionListener
+  AddPartyView .up.|> javax.swing.event.ListSelectionListener
+  AddPartyView o-- Widget.ButtonPanel : buttonPanel
+  AddPartyView o-- ControlDeskView : controlDesk
+  AddPartyView o-- Widget.WindowFrame : win
+  AdhocView .up.|> java.awt.event.ActionListener
+  AdhocView o-- Widget.ButtonPanel : buttonPanel
+  AdhocView o-- Score : currScore
+  AdhocView o-- Widget.ContainerPanel : statDisplay
+  AdhocView o-- Widget.WindowFrame : win
+  BowlerScoreView o-- Widget.GridPanel : gridPanel
+  ControlDesk .up.|> java.lang.Runnable
+  ControlDesk -up-|> Publisher
+  ControlDeskEvent .up.|> Event
+  ControlDeskView .up.|> Observer
+  ControlDeskView .up.|> java.awt.event.ActionListener
+  ControlDeskView o-- ControlDesk : controlDesk
+  ControlDeskView o-- Widget.ButtonPanel : controlsPanel
+  ControlDeskView o-- Widget.WindowFrame : win
+  EndGamePrompt .up.|> java.awt.event.ActionListener
+  EndGamePrompt o-- Widget.ButtonPanel : buttonPanel
+  EndGamePrompt o-- Widget.WindowFrame : win
+  EndGameReport .up.|> java.awt.event.ActionListener
+  EndGameReport .up.|> javax.swing.event.ListSelectionListener
+  EndGameReport o-- Widget.ButtonPanel : buttonPanel
+  EndGameReport o-- Widget.WindowFrame : win
+  Lane .up.|> LaneInterface
+  Lane .up.|> Observer
+  Lane .up.|> java.lang.Runnable
+  Lane -up-|> Publisher
+  Lane o-- Pinsetter : pinsetter
+  Lane o-- ScorableParty : scorer
+  LaneEvent .up.|> Event
+  LaneStatusView .up.|> Observer
+  LaneStatusView .up.|> java.awt.event.ActionListener
+  LaneStatusView o-- Widget.ButtonPanel : buttonPanel
+  LaneStatusView o-- Widget.ContainerPanel : gamePanel
+  LaneStatusView o-- Lane : lane
+  LaneStatusView o-- LaneView : laneView
+  LaneStatusView o-- PinSetterView : pinSetterView
+  LaneView .up.|> Observer
+  LaneView .up.|> java.awt.event.ActionListener
+  LaneView o-- Widget.ButtonPanel : buttonPanel
+  LaneView o-- Widget.ContainerPanel : containerPanel
+  LaneView o-- LaneInterface : lane
+  LastFrame -up-|> Frame
+  NewPatronView .up.|> java.awt.event.ActionListener
+  NewPatronView o-- AddPartyView : addParty
+  NewPatronView o-- Widget.ButtonPanel : buttonPanel
+  NewPatronView o-- Widget.TextFieldPanel : patronPanel
+  NewPatronView o-- Widget.WindowFrame : window
+  PinSetterView .up.|> Observer
+  Pinsetter -up-|> Publisher
+  PinsetterEvent .up.|> Event
+  PrintableText .up.|> java.awt.print.Printable
+  ScorableBowler -up-|> Bowler
+  ScorableParty -up-|> Party
+  Widget.ButtonPanel -up-|> Widget.FormPanel
+  Widget.ContainerPanel -up-|> Widget.GenericPanel
+  Widget.FormPanel -up-|> Widget.GenericPanel
+  Widget.GridPanel -up-|> Widget.GenericPanel
+  Widget.ScrollablePanel -up-|> Widget.GenericPanel
+  Widget.TextFieldPanel -up-|> Widget.FormPanel
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
