@@ -60,7 +60,7 @@ class AddPartyView extends WindowView implements ListSelectionListener {
         setVisible(false);
     }
 
-    public void buttonHandler(String source) {
+    public void buttonHandler(final String source) {
         switch (source) {
             case ButtonNames.BTN_ADD_PATRON:
                 addPatron();
@@ -93,8 +93,8 @@ class AddPartyView extends WindowView implements ListSelectionListener {
                 nickName, newPatron.getFull(), newPatron.getEmail());
         if (res != null) {
             bowlerPanel.setListData(new ArrayList<>(res));
-            party.add(nickName);
-            partyPanel.setListData(party);
+            selectedNick = nickName;
+            addPatron();
         } else {
             System.err.println("A Bowler with that name already exists.");
         }
