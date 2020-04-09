@@ -10,7 +10,6 @@ final class ButtonNames {
     static final String BTN_NO = "No";
 
     static final String BTN_ADD_PARTY = "Add Party";
-    static final String BTN_ASSIGN = "Assign lanes";
     static final String BTN_QUERIES = "Queries";
     static final String BTN_FINISHED = "Finished";
 
