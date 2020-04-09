@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -32,6 +34,8 @@ public class Lane extends LaneWithPinsetter implements Runnable {
 
     void loadState(final String fileName) {
         paused = true;
+        final ScorableParty oldScorer = scorer;
+
         try {
             final FileReader fr = new FileReader(fileName);
             final BufferedReader bufferedReader = new BufferedReader(fr);
@@ -40,8 +44,12 @@ public class Lane extends LaneWithPinsetter implements Runnable {
             bufferedReader.close();
             fr.close();
         } catch (final IOException e) {
-            System.err.println("No saved file exists");
+            final String err = "No saved file exists, or chosen file has invalid format. Please recheck.";
+            JOptionPane.showMessageDialog(null, err);
+            System.err.println(err);
+            scorer = oldScorer;
         }
+
         paused = false;
     }
 

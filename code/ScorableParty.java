@@ -16,14 +16,19 @@ class ScorableParty extends Party {
     }
 
     void loadState(final BufferedReader fr) throws IOException {
-        super.loadState(fr);
-        for (final ScorableBowler bowlerScorer : bowlers) {
-            bowlerScorer.loadState(fr);
+        try{
+            super.loadState(fr);
+            for (final ScorableBowler bowlerScorer : bowlers) {
+                bowlerScorer.loadState(fr);
+            }
+
+            final String[] others = fr.readLine().split(Util.DELIMITER);
+            gameNumber = Integer.parseInt(others[0]);
+            frameNumber = Integer.parseInt(others[1]);
+            bowlerIndex = Integer.parseInt(others[2]);
+        } catch (final Exception err) {
+            throw new IOException();
         }
-        final String[] others = fr.readLine().split(Util.DELIMITER);
-        gameNumber = Integer.parseInt(others[0]);
-        frameNumber = Integer.parseInt(others[1]);
-        bowlerIndex = Integer.parseInt(others[2]);
     }
 
     final void nextBowler() {

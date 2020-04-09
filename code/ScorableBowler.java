@@ -26,13 +26,7 @@ class ScorableBowler extends Bowler {
     }
 
     void saveState(final FileWriter fw) throws IOException {
-        final List<Integer> rolls = getRolls();
-
-        for (int i = 0; i < rolls.size(); i++) {
-            if (i > 0) fw.write(Util.DELIMITER);
-            fw.write(String.valueOf(rolls.get(i)));
-        }
-        fw.write("\n");
+        super.saveState(fw);
         for (int i = 0; i < MAX_GAMES; i++) {
             if (i > 0) fw.write(Util.DELIMITER);
             fw.write(String.valueOf(gameScores[i]));
@@ -42,11 +36,14 @@ class ScorableBowler extends Bowler {
 
     // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        final String[] rolls = fr.readLine().split(Util.DELIMITER);
-        for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
+        try{
+            super.loadState(fr);
 
-        final String[] scores = fr.readLine().split(Util.DELIMITER);
-        for (int i = 0; i < MAX_GAMES; i++) gameScores[i] = Integer.parseInt(scores[i]);
+            final String[] scores = fr.readLine().split(Util.DELIMITER);
+            for (int i = 0; i < MAX_GAMES; i++) gameScores[i] = Integer.parseInt(scores[i]);
+        }catch(final Exception e){
+            throw new IOException();
+        }
     }
 
     void setGameScoresOnGameEnd(final int gameNumber) {

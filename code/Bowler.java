@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 class Bowler extends BowlerInfo {
@@ -7,6 +10,25 @@ class Bowler extends BowlerInfo {
     Bowler(final String nick, final String full, final String mail) {
         super(nick, full, mail);
         resetSoft();
+    }
+
+    void saveState(final FileWriter fw) throws IOException {
+        final ArrayList<Integer> rolls = getRolls();
+
+        for (int i = 0; i < rolls.size(); i++) {
+            if (i > 0) fw.write(Util.DELIMITER);
+            fw.write(String.valueOf(rolls.get(i)));
+        }
+        fw.write("\n");
+    }
+
+    void loadState(final BufferedReader fr) throws IOException {
+        try{
+            final String[] rolls = fr.readLine().split(Util.DELIMITER);
+            for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
+        }catch(final Exception e){
+            throw new IOException();
+        }
     }
 
     void resetSoft() {
