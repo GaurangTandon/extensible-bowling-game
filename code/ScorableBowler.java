@@ -42,11 +42,15 @@ class ScorableBowler extends Bowler {
 
     // assumes the global LaneScorer reset has been called
     void loadState(final BufferedReader fr) throws IOException {
-        final String[] rolls = fr.readLine().split(Util.DELIMITER);
-        for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
+        try {
+            final String[] rolls = fr.readLine().split(Util.DELIMITER);
+            for (final String rollAmount : rolls) roll(Integer.parseInt(rollAmount));
 
-        final String[] scores = fr.readLine().split(Util.DELIMITER);
-        for (int i = 0; i < MAX_GAMES; i++) gameScores[i] = Integer.parseInt(scores[i]);
+            final String[] scores = fr.readLine().split(Util.DELIMITER);
+            for (int i = 0; i < MAX_GAMES; i++) gameScores[i] = Integer.parseInt(scores[i]);
+        } catch (final Exception e) {
+            throw new IOException();
+        }
     }
 
     void setGameScoresOnGameEnd(final int gameNumber) {

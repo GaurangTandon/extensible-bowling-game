@@ -23,12 +23,16 @@ class Party {
     }
 
     void loadState(final BufferedReader fr) throws IOException {
-        final int size = Integer.parseInt(fr.readLine());
-        bowlers.clear();
+        try {
+            final int size = Integer.parseInt(fr.readLine());
+            bowlers.clear();
 
-        for (int i = 0; i < size; i++) {
-            final String[] bowler = fr.readLine().split(Util.DELIMITER);
-            bowlers.add(new ScorableBowler(bowler[0], bowler[1], bowler[2]));
+            for (int i = 0; i < size; i++) {
+                final String[] bowler = fr.readLine().split(Util.DELIMITER);
+                bowlers.add(new ScorableBowler(bowler[0], bowler[1], bowler[2]));
+            }
+        } catch (final Exception e) {
+            throw new IOException();
         }
     }
 

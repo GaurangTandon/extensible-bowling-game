@@ -73,7 +73,7 @@ public class LaneStatusView implements ActionListener, Observer {
             }
         }
         if (source.equals(ButtonNames.BTN_RESUME)) {
-            String fileName = Util.getFileName(gamePanel.getPanel());
+            final String fileName = Util.getFileName(gamePanel.getPanel());
             lane.loadState(fileName);
             lane.pauseManual(false);
         } else if (source.equals(ButtonNames.BTN_PAUSE)) {
