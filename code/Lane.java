@@ -16,8 +16,8 @@ public class Lane extends LaneWithPinsetter implements Runnable {
     private void exitGame(final String partyName) {
         final EndGameReport egr = new EndGameReport(partyName, scorer.getMemberNicks());
         egr.printer(scorer);
-        publish();
         scorer = null;
+        publish();
     }
 
     void saveState(final String fileName) {
@@ -26,7 +26,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
             scorer.saveState(fw);
             fw.close();
         } catch (final IOException e) {
-            e.printStackTrace();
+            System.out.println("Please check permissions, cannot write file");
         }
     }
 
@@ -40,7 +40,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
             bufferedReader.close();
             fr.close();
         } catch (final IOException e) {
-            e.printStackTrace();
+            System.out.println("No saved file exists");
         }
         paused = false;
     }
@@ -107,5 +107,9 @@ public class Lane extends LaneWithPinsetter implements Runnable {
 
     void pauseManual(final boolean state) {
         paused = state;
+    }
+
+    boolean isPaused() {
+        return paused;
     }
 }

@@ -12,13 +12,21 @@ class LaneEvent implements Event {
     private final int totalPinsDown;
 
     LaneEvent(final ScorableParty scorer, final int pinsDown, final boolean isHalted) {
-        bowlerNicks = scorer.getMemberNicks();
-        partySize = scorer.getPartySize();
-        totalPinsDown = pinsDown;
-        bowlerNick = scorer.getCurrentThrowerNick();
-        cumulativeScore = scorer.getCumulativeScores();
-        score = scorer.getByBowlerByFramePartResult();
+        if (scorer == null) {
+            bowlerNicks = new ArrayList<>(0);
+            partySize = 0;
+            bowlerNick = "";
+            cumulativeScore = new int[1][1];
+            score = new int[1][1];
+        } else {
+            bowlerNicks = scorer.getMemberNicks();
+            partySize = scorer.getPartySize();
+            bowlerNick = scorer.getCurrentThrowerNick();
+            cumulativeScore = scorer.getCumulativeScores();
+            score = scorer.getByBowlerByFramePartResult();
+        }
         mechanicalProblemExists = isHalted;
+        totalPinsDown = pinsDown;
     }
 
     final String getBowlerNick() {

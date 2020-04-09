@@ -78,6 +78,7 @@ public class LaneStatusView implements ActionListener, Observer {
         } else if (source.equals(ButtonNames.BTN_PAUSE)) {
             lane.pauseManual(true);
             buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(true);
+            buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(false);
             lane.saveState(saveFile);
         }
     }
@@ -94,8 +95,10 @@ public class LaneStatusView implements ActionListener, Observer {
         final boolean isPartyAssigned = lane.isPartyAssigned();
         buttonPanel.get(ButtonNames.BTN_VIEW_LANE).setEnabled(isPartyAssigned);
         buttonPanel.get(ButtonNames.BTN_VIEW_PINSETTER).setEnabled(isPartyAssigned);
-        buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(isPartyAssigned);
-        buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(!isPartyAssigned);
+
+        final boolean isPaused = lane.isPaused();
+        buttonPanel.get(ButtonNames.BTN_PAUSE).setEnabled(!isPaused && isPartyAssigned);
+        buttonPanel.get(ButtonNames.BTN_RESUME).setEnabled(isPaused || !isPartyAssigned);
 
         final int totalPinsDown = le.getTotalPinsDown();
         pinsDown.setText(Integer.valueOf(totalPinsDown).toString());
