@@ -7,33 +7,33 @@ This document outlines the major groups of classes in our code.
 \begin{itemize}
     \item \textbf{Controllers} implement the core logic of the application. They are responsible for maintaining the state of the view and redrawing the view on any updates. They utilize necessary helper classes to ensure their aim.
           \begin{itemize}
-              \item ControlDesk
-              \item Pinsetter
-              \item Lane
+              \item ControlDesk.ControlDesk
+              \item Pinsetter.Pinsetter
+              \item Lane.Lane
           \end{itemize}
-    \item \textbf{Views} are concerned with providing a GUI to the end user, and do not implement any logic. They receive instructions from Controller clases via Observer pattern.
+    \item \textbf{Views} are concerned with providing a GUI to the end user, and do not implement any logic. They receive instructions from Controller clases via Observer.Observer pattern.
           \begin{itemize}
-              \item AddPartyView (No controller)
-              \item AdhocView (No controller)
+              \item ControlDesk.AddPartyView (No controller)
+              \item ControlDesk.AdhocView (No controller)
               \item BowlerScorerView
-              \item ControlDeskView
-              \item LaneStatusView
-              \item LaneView
-              \item NewPatronView
+              \item ControlDesk.ControlDeskView
+              \item Lane.LaneStatusView
+              \item Lane.LaneView
+              \item ControlDesk.NewPatronView
               \item PinsetterView
-              \item EndGamePrompt
-              \item EndGameReport
+              \item Endgame.EndGamePrompt
+              \item Endgame.EndGameReport
           \end{itemize}
     \item \textbf{Controller helpers} classes provide necessary abstracted help to the main controller classes, as the following, and both are described later in detail.
           \begin{itemize}
-            \item ScorableParty
-            \item ScorableBowler
+            \item Bowlers.ScorableParty
+            \item Bowlers.ScorableBowler
           \end{itemize}
     \item The Events broadcasted as a part of the observer pattern are done through are done through the `XEvent.java' classes. It wraps all data needed by the observers from the publisher.
           \begin{itemize}
-              \item LaneEvent
-              \item PinsetterEvent
-              \item ControlDeskEvent
+              \item Observer.LaneEvent
+              \item Observer.PinsetterEvent
+              \item Observer.ControlDeskEvent
           \end{itemize}
     \item \textbf{View helper} classes that help the main View classes in displaying certain specific window components, like a panel of buttons or a grid panel, etc.
           \begin{itemize}
@@ -48,18 +48,18 @@ This document outlines the major groups of classes in our code.
           \end{itemize}
     \item \textbf{Abstract classes} that layout the necessary functions for classes to implement and decouple our implementations from the requirements due to it's users.
           \begin{itemize}
-              \item Observer
-              \item Publisher
-              \item Event
-              \item LaneWithPinsetter
+              \item Observer.Observer
+              \item Observer.Publisher
+              \item Observer.Event
+              \item Lane.LaneWithPinsetter
           \end{itemize}
     \item \textbf{Utility classes} that help with Input/Output and maintaining data, often for specific classes.
           \begin{itemize}
-              \item Util
-              \item PrintableText
-              \item BowlerFile
-              \item ScoreHistoryFile
-              \item ScoreReport
+              \item Utilities.Util
+              \item Utilities.PrintableText
+              \item Utilities.BowlerFile
+              \item Utilities.ScoreHistoryFile
+              \item Utilities.ScoreReport
           \end{itemize}
     \item Finally, we have the \textbf{driver class}, which initializes an Alley with the corrrect parameters and lets it run:
           \begin{itemize}
@@ -67,44 +67,44 @@ This document outlines the major groups of classes in our code.
           \end{itemize}
     \item Lastly, there is a single Test file, to automate correctness checks of the lane scoring mechanism. We have not added more as it's not an everchanging piece of code, most of the testing is done through asserts, and throwing errors under unexpected events.
           \begin{itemize}
-              \item BowlerScorerTest
+              \item Bowlers.BowlerScorerTest
           \end{itemize}
 \end{itemize}
 
 \subsection{Responsibilities of each major class}
 
 \begin{enumerate}
-    \item \code{Lane}: Manages an entire party and its scoring on a lane. It makes sure bowlers get to bowl one after the other, are able to play multiple games one after another, and in the end can exit the lane while knowing their scores.
+    \item \code{Lane.Lane}: Manages an entire party and its scoring on a lane. It makes sure bowlers get to bowl one after the other, are able to play multiple games one after another, and in the end can exit the lane while knowing their scores.
     \begin{itemize}
         \item To achieve its purpose it utilizes several helper classes:
     \end{itemize}
-    \item \code{ControlDesk}: Allows parties to be added to the alley, wait in the queue to be assigned a lane, and then assign them to a free lane.
+    \item \code{ControlDesk.ControlDesk}: Allows parties to be added to the alley, wait in the queue to be assigned a lane, and then assign them to a free lane.
     \begin{itemize}
         \item To achieve its purpose it utilizes several helper classes:
     \end{itemize}
-    \item \code{ScorableParty}:
-    \item \code{ScorableBowler}:
+    \item \code{Bowlers.ScorableParty}:
+    \item \code{Bowlers.ScorableBowler}:
 \end{enumerate}
 
 \subsection{Describing Specific Classes}
 
-\subsubsection{AddPartyView}
+\subsubsection{ControlDesk.AddPartyView}
 GUI for adding a new party to the control desk. This supports being able to add or remove patrons from a party, or enlist a new patron and then add him.
 
 \subsubsection{Alley}
-Represents an Alley, it's a stub class given it basically integrates ControlDesk and its View together, but given our requirements, this is fine.
+Represents an Alley, it's a stub class given it basically integrates ControlDesk.ControlDesk and its View together, but given our requirements, this is fine.
 
-\subsubsection{BowlerFile}
+\subsubsection{Utilities.BowlerFile}
 Manages the backend of persistently storing patron nickk names, emails, and full names. Has public methods for adding a new patron, searching for existing patron, etc.
 
-\subsubsection{Bowler}
-Stub class for a Bowler object, which contains a name, full name and its email.
+\subsubsection{Bowlers.Bowler}
+Stub class for a Bowlers.Bowler object, which contains a name, full name and its email.
 
 \subsubsection{BowlerScorer}
 Companion to LaneScorer; manages the scoring for individual bowlers of one party on one lane.
 
-\subsubsection{BowlerScorerTest}
+\subsubsection{Bowlers.BowlerScorerTest}
 A test file to make sure scores are correctly updated in BowlerScorer.
 
-\subsubsection{BowlerScoreView}
+\subsubsection{Bowlers.BowlerScoreView}
 GUI that renders a horizontal table of around 20 cells that update everytime that bowler makes a throw. It is unique for each bowler.

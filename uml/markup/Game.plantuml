@@ -3,7 +3,7 @@
 title __CODE's Class Diagram__\n
 
   namespace BowlingGame {
-    class AddPartyView {
+    class ControlDesk.AddPartyView {
         {static} - BTN_ADD_PATRON : String
         {static} - BTN_FINISHED : String
         {static} - BTN_NEW_PATRON : String
@@ -19,7 +19,7 @@ title __CODE's Class Diagram__\n
         + actionPerformed()
         + getParty()
         + valueChanged()
-        ~ AddPartyView()
+        ~ ControlDesk.AddPartyView()
         ~ updateNewPatron()
         - addPatron()
         - buildBowlerPanel()
@@ -30,13 +30,13 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class AdhocView {
+    class ControlDesk.AdhocView {
         {static} - BTN_BEST : String
         {static} - BTN_FINISHED : String
         {static} - BTN_HIGHEST : String
         {static} - BTN_LOWEST : String
         + actionPerformed()
-        ~ AdhocView()
+        ~ ControlDesk.AdhocView()
         - displayBestPlayer()
         - displayHighest()
         - displayLowest()
@@ -53,11 +53,11 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class Bowler {
+    class Bowlers.Bowler {
         - email : String
         - fullName : String
         - nickName : String
-        ~ Bowler()
+        ~ Bowlers.Bowler()
         ~ getEmail()
         ~ getFullName()
         ~ getNickName()
@@ -67,21 +67,21 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class BowlerFile {
+    class Utilities.BowlerFile {
         {static} - BOWLER_DAT : String
         {static} ~ getBowlerInfo()
         {static} ~ getBowlers()
         {static} ~ putBowlerIfDidntExist()
-        - BowlerFile()
+        - Utilities.BowlerFile()
         {static} - putBowlerInfo()
     }
   }
   
 
   namespace BowlingGame {
-    class BowlerScoreView {
+    class Bowlers.BowlerScoreView {
         - panel : Component
-        ~ BowlerScoreView()
+        ~ Bowlers.BowlerScoreView()
         ~ getPanel()
         ~ update()
         {static} - getCharToShow()
@@ -92,10 +92,10 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class BowlerScorerTest {
-        {static} - bs : ScorableBowler
+    class Bowlers.BowlerScorerTest {
+        {static} - bs : Bowlers.ScorableBowler
         {static} + main()
-        - BowlerScorerTest()
+        - Bowlers.BowlerScorerTest()
         {static} - asserter()
         {static} - checkEquality()
         {static} - rollMany()
@@ -117,12 +117,12 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class ControlDesk {
+    class ControlDesk.ControlDesk {
         ~ numLanes : int
-        - lanes : List<Lane>
-        - partyQueue : LinkedList<ScorableParty>
+        - lanes : List<Lane.Lane>
+        - partyQueue : LinkedList<Bowlers.ScorableParty>
         + run()
-        ~ ControlDesk()
+        ~ ControlDesk.ControlDesk()
         ~ addPartyToQueue()
         ~ assignLane()
         ~ createEvent()
@@ -132,16 +132,16 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class ControlDeskEvent {
+    class Observer.ControlDeskEvent {
         - partyQueue : ArrayList<String>
-        ~ ControlDeskEvent()
+        ~ Observer.ControlDeskEvent()
         ~ getPartyQueue()
     }
   }
   
 
   namespace BowlingGame {
-    class ControlDeskView {
+    class ControlDesk.ControlDeskView {
         {static} - BTN_ADD_PARTY : String
         {static} - BTN_ASSIGN : String
         {static} - BTN_FINISHED : String
@@ -150,7 +150,7 @@ title __CODE's Class Diagram__\n
         - partyPanel : ScrollablePanel<Object>
         + actionPerformed()
         + receiveEvent()
-        ~ ControlDeskView()
+        ~ ControlDesk.ControlDeskView()
         ~ updateAddParty()
         - setupLaneStatusPanel()
     }
@@ -158,12 +158,12 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class EndGamePrompt {
+    class Endgame.EndGamePrompt {
         {static} - BTN_NO : String
         {static} - BTN_YES : String
         - result : int
         + actionPerformed()
-        ~ EndGamePrompt()
+        ~ Endgame.EndGamePrompt()
         ~ destroy()
         ~ getResult()
     }
@@ -171,7 +171,7 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class EndGameReport {
+    class Endgame.EndGameReport {
         {static} - BTN_FINISHED : String
         {static} - BTN_PRINT : String
         - result : int
@@ -179,28 +179,28 @@ title __CODE's Class Diagram__\n
         - selectedMember : String
         + actionPerformed()
         + valueChanged()
-        ~ EndGameReport()
+        ~ Endgame.EndGameReport()
         ~ shouldPrint()
     }
   }
   
 
   namespace BowlingGame {
-    interface Event {
+    interface Observer.Event {
     }
   }
   
 
   namespace BowlingGame {
-    class Frame {
+    class Bowlers.Frame {
         {static} ~ SPARE : int
         {static} ~ STRIKE : int
         {static} ~ UNROLLED : int
         ~ frameNumber : int
         ~ rollCount : int
         ~ rolls : int[]
-        ~ Frame()
-        ~ Frame()
+        ~ Bowlers.Frame()
+        ~ Bowlers.Frame()
         ~ addRolls()
         ~ canRollAgain()
         ~ getContributionToScore()
@@ -216,12 +216,12 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class Lane {
+    class Lane.Lane {
         - paused : boolean
         + pauseGame()
         + receiveEvent()
         + run()
-        ~ Lane()
+        ~ Lane.Lane()
         ~ assignParty()
         ~ createEvent()
         ~ isPartyAssigned()
@@ -240,7 +240,7 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class LaneEvent {
+    class Observer.LaneEvent {
         - bowlerNick : String
         - bowlerNicks : ArrayList<String>
         - cumulativeScore : int[][]
@@ -248,7 +248,7 @@ title __CODE's Class Diagram__\n
         - partySize : int
         - score : int[][]
         - totalPinsDown : int
-        ~ LaneEvent()
+        ~ Observer.LaneEvent()
         ~ getBowlerNick()
         ~ getBowlerNicks()
         ~ getCumulativeScore()
@@ -269,7 +269,7 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class LaneStatusView {
+    class Lane.LaneStatusView {
         {static} - BTN_MAINTENANCE : String
         {static} - BTN_PAUSE : String
         {static} - BTN_RESUME : String
@@ -282,7 +282,7 @@ title __CODE's Class Diagram__\n
         - saveFile : String
         + actionPerformed()
         + receiveEvent()
-        ~ LaneStatusView()
+        ~ Lane.LaneStatusView()
         ~ showLane()
         - loadState()
         - saveState()
@@ -291,14 +291,14 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class LaneView {
+    class Lane.LaneView {
         {static} - BTN_MAINTENANCE : String
         - bowlerNicks : List<String>
-        - bsv : List<BowlerScoreView>
+        - bsv : List<Bowlers.BowlerScoreView>
         - frame : JFrame
         + actionPerformed()
         + receiveEvent()
-        ~ LaneView()
+        ~ Lane.LaneView()
         ~ setVisible()
         - getButtonPanel()
         - makeFrame()
@@ -308,8 +308,8 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class LastFrame {
-        ~ LastFrame()
+    class Bowlers.LastFrame {
+        ~ Bowlers.LastFrame()
         ~ canRollAgain()
         ~ getContributionToScore()
         ~ getDisplayValue()
@@ -319,7 +319,7 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class NewPatronView {
+    class ControlDesk.NewPatronView {
         {static} - BTN_ABORT : String
         {static} - BTN_FINISHED : String
         {static} - TXT_EMAIL_FIELD : String
@@ -329,7 +329,7 @@ title __CODE's Class Diagram__\n
         - full : String
         - nick : String
         + actionPerformed()
-        ~ NewPatronView()
+        ~ ControlDesk.NewPatronView()
         ~ getEmail()
         ~ getFull()
         ~ getNickName()
@@ -338,17 +338,17 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    interface Observer {
+    interface Observer.Observer {
         {abstract} + receiveEvent()
     }
   }
   
 
   namespace BowlingGame {
-    class Party {
-        ~ bowlers : Vector<ScorableBowler>
+    class Bowlers.Party {
+        ~ bowlers : Vector<Bowlers.ScorableBowler>
         ~ name : String
-        ~ Party()
+        ~ Bowlers.Party()
         ~ getMemberNicks()
         ~ getMembers()
         ~ getName()
@@ -360,12 +360,12 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class PinSetterView {
+    class Pinsetter.PinSetterView {
         - frame : JFrame
         - pinVector : Vector<JLabel>
         - secondRoll : JPanel
         + receiveEvent()
-        ~ PinSetterView()
+        ~ Pinsetter.PinSetterView()
         ~ setVisible()
         - addDummyPanels()
         - addPins()
@@ -381,14 +381,14 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class Pinsetter {
+    class Pinsetter.Pinsetter {
         {static} ~ PIN_COUNT : int
         - foul : boolean
         - isPinStanding : boolean[]
         - pinsDownedOnThisThrow : int
         - rnd : Random
         - throwNumber : int
-        ~ Pinsetter()
+        ~ Pinsetter.Pinsetter()
         ~ ballThrown()
         ~ createEvent()
         ~ resetState()
@@ -399,13 +399,13 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class PinsetterEvent {
+    class Observer.PinsetterEvent {
         - foulCommitted : boolean
         - isReset : boolean
         - pinsDownThisThrow : int
         - pinsStillStanding : boolean[]
         - throwNumber : int
-        ~ PinsetterEvent()
+        ~ Observer.PinsetterEvent()
         ~ isFirstThrow()
         ~ isFoulCommitted()
         ~ isPinKnockedDown()
@@ -416,19 +416,19 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class PrintableText {
+    class Utilities.PrintableText {
         - POINTS_PER_INCH : int
         - text : String
         + print()
-        ~ PrintableText()
+        ~ Utilities.PrintableText()
     }
   }
   
 
   namespace BowlingGame {
-    abstract class Publisher {
-        - subscribers : List<Observer>
-        ~ Publisher()
+    abstract class Observer.Publisher {
+        - subscribers : List<Observer.Observer>
+        ~ Observer.Publisher()
         {abstract} ~ createEvent()
         ~ publish()
         ~ subscribe()
@@ -437,16 +437,16 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class ScorableBowler {
+    class Bowlers.ScorableBowler {
         {static} - DELIMITER : String
         - cumulativeScore : int[]
         - currFrame : int
-        - frames : Frame[]
+        - frames : Bowlers.Frame[]
         - perFramePartRes : int[]
         - score : int
-        ~ ScorableBowler()
-        ~ ScorableBowler()
-        ~ ScorableBowler()
+        ~ Bowlers.ScorableBowler()
+        ~ Bowlers.ScorableBowler()
+        ~ Bowlers.ScorableBowler()
         ~ canRollAgain()
         ~ getByFramePartResult()
         ~ getCumulativeScore()
@@ -464,7 +464,7 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class ScorableParty {
+    class Bowlers.ScorableParty {
         {static} ~ FRAME_COUNT : int
         {static} ~ LAST_FRAME : int
         {static} ~ MAX_ROLLS : int
@@ -503,13 +503,13 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class Score {
+    class Utilities.Score {
         - date : String
         - nickname : String
         - score : Integer
         + toString()
-        ~ Score()
-        ~ Score()
+        ~ Utilities.Score()
+        ~ Utilities.Score()
         ~ getDate()
         ~ getNick()
         ~ getScore()
@@ -518,7 +518,7 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class ScoreHistoryFile {
+    class Utilities.ScoreHistoryFile {
         {static} - SCORE_HISTORY_DAT : String
         {static} ~ addScore()
         {static} ~ generateScoreHistoryString()
@@ -526,15 +526,15 @@ title __CODE's Class Diagram__\n
         {static} ~ getLeastScore()
         {static} ~ getMaxCumulativeScore()
         {static} ~ getScores()
-        - ScoreHistoryFile()
+        - Utilities.ScoreHistoryFile()
     }
   }
   
 
   namespace BowlingGame {
-    class ScoreReport {
+    class Utilities.ScoreReport {
         - content : String
-        ~ ScoreReport()
+        ~ Utilities.ScoreReport()
         ~ sendPrintout()
         - sendEmail()
         - sendLn()
@@ -544,73 +544,73 @@ title __CODE's Class Diagram__\n
   
 
   namespace BowlingGame {
-    class Util {
+    class Utilities.Util {
         {static} ~ busyWait()
         {static} ~ containsString()
         {static} ~ getDateString()
         {static} ~ getPatronDetails()
-        - Util()
+        - Utilities.Util()
     }
   }
   
 
-  AddPartyView .up.|> java.awt.event.ActionListener
-  AddPartyView .up.|> javax.swing.event.ListSelectionListener
-  AddPartyView o-- Widget.ButtonPanel : buttonPanel
-  AddPartyView o-- ControlDeskView : controlDesk
-  AddPartyView o-- Widget.WindowFrame : win
-  AdhocView .up.|> java.awt.event.ActionListener
-  AdhocView o-- Widget.ButtonPanel : buttonPanel
-  AdhocView o-- Score : currScore
-  AdhocView o-- Widget.ContainerPanel : statDisplay
-  AdhocView o-- Widget.WindowFrame : win
-  BowlerScoreView o-- Widget.GridPanel : gridPanel
-  ControlDesk .up.|> java.lang.Runnable
-  ControlDesk -up-|> Publisher
-  ControlDeskEvent .up.|> Event
-  ControlDeskView .up.|> Observer
-  ControlDeskView .up.|> java.awt.event.ActionListener
-  ControlDeskView o-- ControlDesk : controlDesk
-  ControlDeskView o-- Widget.ButtonPanel : controlsPanel
-  ControlDeskView o-- Widget.WindowFrame : win
-  EndGamePrompt .up.|> java.awt.event.ActionListener
-  EndGamePrompt o-- Widget.ButtonPanel : buttonPanel
-  EndGamePrompt o-- Widget.WindowFrame : win
-  EndGameReport .up.|> java.awt.event.ActionListener
-  EndGameReport .up.|> javax.swing.event.ListSelectionListener
-  EndGameReport o-- Widget.ButtonPanel : buttonPanel
-  EndGameReport o-- Widget.WindowFrame : win
-  Lane .up.|> LaneInterface
-  Lane .up.|> Observer
-  Lane .up.|> java.lang.Runnable
-  Lane -up-|> Publisher
-  Lane o-- Pinsetter : pinsetter
-  Lane o-- ScorableParty : scorer
-  LaneEvent .up.|> Event
-  LaneStatusView .up.|> Observer
-  LaneStatusView .up.|> java.awt.event.ActionListener
-  LaneStatusView o-- Widget.ButtonPanel : buttonPanel
-  LaneStatusView o-- Widget.ContainerPanel : gamePanel
-  LaneStatusView o-- Lane : lane
-  LaneStatusView o-- LaneView : laneView
-  LaneStatusView o-- PinSetterView : pinSetterView
-  LaneView .up.|> Observer
-  LaneView .up.|> java.awt.event.ActionListener
-  LaneView o-- Widget.ButtonPanel : buttonPanel
-  LaneView o-- Widget.ContainerPanel : containerPanel
-  LaneView o-- LaneInterface : lane
-  LastFrame -up-|> Frame
-  NewPatronView .up.|> java.awt.event.ActionListener
-  NewPatronView o-- AddPartyView : addParty
-  NewPatronView o-- Widget.ButtonPanel : buttonPanel
-  NewPatronView o-- Widget.TextFieldPanel : patronPanel
-  NewPatronView o-- Widget.WindowFrame : window
-  PinSetterView .up.|> Observer
-  Pinsetter -up-|> Publisher
-  PinsetterEvent .up.|> Event
-  PrintableText .up.|> java.awt.print.Printable
-  ScorableBowler -up-|> Bowler
-  ScorableParty -up-|> Party
+  ControlDesk.AddPartyView .up.|> java.awt.event.ActionListener
+  ControlDesk.AddPartyView .up.|> javax.swing.event.ListSelectionListener
+  ControlDesk.AddPartyView o-- Widget.ButtonPanel : buttonPanel
+  ControlDesk.AddPartyView o-- ControlDesk.ControlDeskView : controlDesk
+  ControlDesk.AddPartyView o-- Widget.WindowFrame : win
+  ControlDesk.AdhocView .up.|> java.awt.event.ActionListener
+  ControlDesk.AdhocView o-- Widget.ButtonPanel : buttonPanel
+  ControlDesk.AdhocView o-- Utilities.Score : currScore
+  ControlDesk.AdhocView o-- Widget.ContainerPanel : statDisplay
+  ControlDesk.AdhocView o-- Widget.WindowFrame : win
+  Bowlers.BowlerScoreView o-- Widget.GridPanel : gridPanel
+  ControlDesk.ControlDesk .up.|> java.lang.Runnable
+  ControlDesk.ControlDesk -up-|> Observer.Publisher
+  Observer.ControlDeskEvent .up.|> Observer.Event
+  ControlDesk.ControlDeskView .up.|> Observer.Observer
+  ControlDesk.ControlDeskView .up.|> java.awt.event.ActionListener
+  ControlDesk.ControlDeskView o-- ControlDesk.ControlDesk : controlDesk
+  ControlDesk.ControlDeskView o-- Widget.ButtonPanel : controlsPanel
+  ControlDesk.ControlDeskView o-- Widget.WindowFrame : win
+  Endgame.EndGamePrompt .up.|> java.awt.event.ActionListener
+  Endgame.EndGamePrompt o-- Widget.ButtonPanel : buttonPanel
+  Endgame.EndGamePrompt o-- Widget.WindowFrame : win
+  Endgame.EndGameReport .up.|> java.awt.event.ActionListener
+  Endgame.EndGameReport .up.|> javax.swing.event.ListSelectionListener
+  Endgame.EndGameReport o-- Widget.ButtonPanel : buttonPanel
+  Endgame.EndGameReport o-- Widget.WindowFrame : win
+  Lane.Lane .up.|> LaneInterface
+  Lane.Lane .up.|> Observer.Observer
+  Lane.Lane .up.|> java.lang.Runnable
+  Lane.Lane -up-|> Observer.Publisher
+  Lane.Lane o-- Pinsetter.Pinsetter : pinsetter
+  Lane.Lane o-- Bowlers.ScorableParty : scorer
+  Observer.LaneEvent .up.|> Observer.Event
+  Lane.LaneStatusView .up.|> Observer.Observer
+  Lane.LaneStatusView .up.|> java.awt.event.ActionListener
+  Lane.LaneStatusView o-- Widget.ButtonPanel : buttonPanel
+  Lane.LaneStatusView o-- Widget.ContainerPanel : gamePanel
+  Lane.LaneStatusView o-- Lane.Lane : lane
+  Lane.LaneStatusView o-- Lane.LaneView : laneView
+  Lane.LaneStatusView o-- Pinsetter.PinSetterView : pinSetterView
+  Lane.LaneView .up.|> Observer.Observer
+  Lane.LaneView .up.|> java.awt.event.ActionListener
+  Lane.LaneView o-- Widget.ButtonPanel : buttonPanel
+  Lane.LaneView o-- Widget.ContainerPanel : containerPanel
+  Lane.LaneView o-- LaneInterface : lane
+  Bowlers.LastFrame -up-|> Bowlers.Frame
+  ControlDesk.NewPatronView .up.|> java.awt.event.ActionListener
+  ControlDesk.NewPatronView o-- ControlDesk.AddPartyView : addParty
+  ControlDesk.NewPatronView o-- Widget.ButtonPanel : buttonPanel
+  ControlDesk.NewPatronView o-- Widget.TextFieldPanel : patronPanel
+  ControlDesk.NewPatronView o-- Widget.WindowFrame : window
+  Pinsetter.PinSetterView .up.|> Observer.Observer
+  Pinsetter.Pinsetter -up-|> Observer.Publisher
+  Observer.PinsetterEvent .up.|> Observer.Event
+  Utilities.PrintableText .up.|> java.awt.print.Printable
+  Bowlers.ScorableBowler -up-|> Bowlers.Bowler
+  Bowlers.ScorableParty -up-|> Bowlers.Party
 
 
 right footer

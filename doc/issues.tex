@@ -2,9 +2,9 @@
 
 \subsection{LANE - the "God class"}
 
-The single biggest problem with the original code is the existence of a "God class" - Lane.java. God classes are notorious for violating the foundational principle of software desisn - Single Responsibility Class: whereby each class is supposed to perform only one task in the context of the application, and delegate sub-tasks to other helper classes.
+The single biggest problem with the original code is the existence of a "God class" - Lane.Lane.java. God classes are notorious for violating the foundational principle of software desisn - Single Responsibility Class: whereby each class is supposed to perform only one task in the context of the application, and delegate sub-tasks to other helper classes.
 
-Expectedly enough, when we ran \textrm{cloc} (a CLI utility to count lines of code) on the source code, we found that out of 1814 lines of code (excluding comments), 294 were alone in Lane.java (nearly 17\% of entire project), the maximum among all other classes.
+Expectedly enough, when we ran \textrm{cloc} (a CLI utility to count lines of code) on the source code, we found that out of 1814 lines of code (excluding comments), 294 were alone in Lane.Lane.java (nearly 17\% of entire project), the maximum among all other classes.
 
 \subsection{Code repeated throughout codebase}
 
@@ -17,15 +17,15 @@ Quite a lot of code was duplicated line by line through many classes in the code
 	\item Getting Date Strings, Waiting for an event, and many more.
 \end{itemize}
 
-Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
+Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Utilities.Util class} for all of this, abstracted out the common logic there.
 
-\subsection{Misplaced Observer pattern logic}
+\subsection{Misplaced Observer.Observer pattern logic}
 
 \begin{itemize}
 
 	\item Each of the three Controller classes implemented their subscriber logic by using their own \code{subsriber} vector and their own \code{subscribe} method. This was \textbf{duplicated} across all three controllers.
-	\item Moreover, placing Observer pattern logic in the Controller class was a \textbf{semantically poor design choice}, as a Controller's sole purpose is to control observers, and implementing barebone's of Observer goes against this. It is like writing \code{pop} and \code{push} functions of a stack just so that you can use a stack.
-	\item We fixed this by introduing a general \code{Publisher} class.
+	\item Moreover, placing Observer.Observer pattern logic in the Controller class was a \textbf{semantically poor design choice}, as a Controller's sole purpose is to control observers, and implementing barebone's of Observer.Observer goes against this. It is like writing \code{pop} and \code{push} functions of a stack just so that you can use a stack.
+	\item We fixed this by introduing a general \code{Observer.Publisher} class.
 
 \end{itemize}
 
@@ -34,7 +34,7 @@ Apart from the glaring errors in code redundancy spanning all classes that were 
 \begin{itemize}
 	\item The original code wrote its own implementation of a Queue class in Queue.java
 	\item This was completely useless as Java built-in modules already provide several different implementations of a queue.
-	\item Not only that, the original Queue.java was not even \textbf{generified}, instead, it was tied down to a Party class. That meant, the Queue \textbf{wasn't even reusable} for other data types if we wanted to reuse it.
+	\item Not only that, the original Queue.java was not even \textbf{generified}, instead, it was tied down to a Bowlers.Party class. That meant, the Queue \textbf{wasn't even reusable} for other data types if we wanted to reuse it.
 	\item At first, we generified it, but later we ended up deleting and replacing with a built-in \code{java.util.LinkedList} without any loss of functionality.
 \end{itemize}
 
@@ -67,7 +67,7 @@ There were other minor issues plaguing the codebase, the most common ones being:
 
 \subsubsection{Comment-based version control}
 
-The files were using a unique approach to version control, namely, putting edit-log comments at the top of each file, timestamped, with "useful" messages like \textit{"Added things"} and \textit{"Works beautifully"} (\textrm{Lane.java}) This comment log sometimes grew to a sprawling size of more than 100 lines (Lane.java: 130+ lines)
+The files were using a unique approach to version control, namely, putting edit-log comments at the top of each file, timestamped, with "useful" messages like \textit{"Added things"} and \textit{"Works beautifully"} (\textrm{Lane.Lane.java}) This comment log sometimes grew to a sprawling size of more than 100 lines (Lane.Lane.java: 130+ lines)
 
 As we already know, such a version control is completely useless when compared to Git.
 
@@ -80,24 +80,24 @@ Many classes and methods carried useless comments with them. A few actual exampl
  * Class to represent the pinsetter
  */
 
-class Pinsetter{ ... }
+class Pinsetter.Pinsetter{ ... }
 \end{verbatim}
 
 or this gold comment:
 
 \begin{verbatim}
-	/** Pinsetter()
+	/** Pinsetter.Pinsetter()
 	 *
 	 * Constructs a new pinsetter
 	 *
 	 * @pre none
 	 * @post a new pinsetter is created
-	 * @return Pinsetter object
+	 * @return Pinsetter.Pinsetter object
 	 */
-	public Pinsetter() {
+	public Pinsetter.Pinsetter() {
 \end{verbatim}
 
-While it can surely be agreed that the comment is correct, it is widely recognized that \textbf{comments suffer from aging}. For example, if the Pinsetter class was renamed, or the constructor was simply moved from its current position in the file to somewhere else, someone may forget to change the comment. Later in time, the comment will definitely not be helpful.
+While it can surely be agreed that the comment is correct, it is widely recognized that \textbf{comments suffer from aging}. For example, if the Pinsetter.Pinsetter class was renamed, or the constructor was simply moved from its current position in the file to somewhere else, someone may forget to change the comment. Later in time, the comment will definitely not be helpful.
 
 Moreover, it is widely accepted that \textbf{Writing comments is good, but not having to write comments is better.} (\hyperlink{https://softwareengineering.stackexchange.com/a/335513/131646}{read} and \hyperlink{https://www.freecodecamp.org/news/code-comments-the-good-the-bad-and-the-ugly-be9cc65fbf83/}{read}). In general, throughout the codebase, we have removed such useless comments where possible, and retained useful comments where required.
 

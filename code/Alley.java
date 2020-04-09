@@ -16,15 +16,19 @@
  *   *** empty log message ***
  *
  *   Revision 1.1  2003/01/12 19:09:12  ???
- *   Adding Party, Lane, Bowler, and Alley.
+ *   Adding Bowlers.Party, Lane.Lane, Bowlers.Bowler, and Alley.
  *
  */
+
+import ControlDesk.ControlDesk;
+import ControlDesk.ControlDeskView;
+import Observer.Observer;
 
 /**
  * Class that is the outer container for the bowling sim
  */
 
-class Alley {
+final class Alley {
     Alley(@SuppressWarnings("SameParameterValue") final int numLanes) {
         final ControlDesk controldesk = new ControlDesk(numLanes);
         new Thread(controldesk).start();
@@ -32,7 +36,16 @@ class Alley {
         final Observer cdv = new ControlDeskView(controldesk);
         controldesk.subscribe(cdv);
     }
+
+    final static int maxPatronsPerParty = 6;
+
+
+    public static void main(final String[] args) {
+        final int numLanes = 3;
+
+        new Alley(numLanes);
+    }
 }
 
 
-    
+
