@@ -76,9 +76,21 @@ We ended up having to rewrite that method from scratch since there was simply no
 
 This isn't the only method though, you may also look at \code{Lane.run} or \code{Lane.receivePinSetterEvent} or \code{LaneView.receiveLaneEvent}. There are more, but a consistent pattern across them is \textbf{deep nesting of if-elses inside loops or more if-elses}, which evidently increases the complexity manifold.
 
+\subsection{Feature envy}
+
+This is an extremely common code smell, where in the midst of development, developers forget that class A is doing a lot of work from class B, when in fact that work should have been done by class B itself. We identified a few feature envies in different places, such that we count at least three accesses as "repeatedly accessed"
+
+\begin{enumerate}
+	\item Party and Bowler accessed repeatedly in \code{Lane.run}
+	\item Lane accessed repeatedly in \code{LaneStatusView.actionPerformed}: this was actually a simpler case of code duplication unlike others
+	\item Party accessed repeatedly in \code{Lane.assignParty}
+\end{enumerate}
+
+We fixed all such cases by moving the relevant work to that class itself, instead fo calling its methods repeatedly.
+
 \subsection{Minor issues}
 
-There were other minor issues plaguing the codebase, the most common ones being:
+There were other minor issues plaguing the codebase, the most common ones are the following. Also note that we have only shown one or two occurrences of these minor issues, however, they occurred much more frequently in the codebase.
 
 \subsubsection{Overly Broad access specifiers}
 
@@ -183,4 +195,10 @@ We fixed this by providing a \code{Party.getName()} method, as any sane and logi
 
 \subsubsection{Auto-Fixes using the IntelliJ linter}
 
-There are massive fixed using the intelliJ linter primarilty on bad access specifiers, lack of defensive copy, etc. All of that has been fixed. A full report of these fixed is attached in the Code Quality violations segment.
+There are massive fixed using the intelliJ linter primarilty on bad access specifiers, lack of defensive copy, etc. All of that has been fixed. A list of them is as follows:
+
+\begin{tabular}{ c | c}
+\hline
+\textbf{}       & \textbf{Mean} & \textbf{Std. Dev} & \textbf{Maximum} \\
+\hline
+\end{tabular}
