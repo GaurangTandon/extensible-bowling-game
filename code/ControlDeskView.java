@@ -10,8 +10,7 @@ public class ControlDeskView extends WindowView implements Observer {
 
     ControlDeskView(final ControlDesk controlDesk) {
         this.controlDesk = controlDesk;
-        String[] buttons = {ButtonNames.BTN_ADD_PARTY, ButtonNames.BTN_ASSIGN,
-                ButtonNames.BTN_QUERIES, ButtonNames.BTN_FINISHED};
+        String[] buttons = {ButtonNames.BTN_ADD_PARTY, ButtonNames.BTN_QUERIES, ButtonNames.BTN_FINISHED};
         partyPanel = drawScrollable("(Empty)", "Party Queue", 10);
         win = new WindowFrame("Control Desk", new ContainerPanel()
                 .put(generateButtonPanel(buttons, "Controls"), "East")
