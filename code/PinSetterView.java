@@ -120,9 +120,8 @@ public class PinSetterView implements Observer {
             displayKnockedDownPins(pe);
         }
 
-        if (pe.isFirstThrow()) {
-            secondRoll.setBackground(Color.yellow);
-        }
+        final Color secondRollColor = pe.isFirstThrow() ? Color.yellow : Color.black;
+        secondRoll.setBackground(secondRollColor);
 
         final int pinsDownOnThisThrow = pe.pinsDownOnThisThrow();
         if (pinsDownOnThisThrow == -1) {

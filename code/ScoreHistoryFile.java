@@ -48,7 +48,7 @@ final class ScoreHistoryFile {
         final ArrayList<Score> retScores = new ArrayList<>(0);
 
         for (final Score score : scores) {
-            if (nick.equals(score.getDate())) {
+            if (nick.equals(score.getNick())) {
                 retScores.add(score);
             }
         }

@@ -26,7 +26,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
             scorer.saveState(fw);
             fw.close();
         } catch (final IOException e) {
-            System.out.println("Please check permissions, cannot write file");
+            System.err.println("Please check permissions, cannot write file");
         }
     }
 
@@ -40,7 +40,7 @@ public class Lane extends LaneWithPinsetter implements Runnable {
             bufferedReader.close();
             fr.close();
         } catch (final IOException e) {
-            System.out.println("No saved file exists");
+            System.err.println("No saved file exists");
         }
         paused = false;
     }
