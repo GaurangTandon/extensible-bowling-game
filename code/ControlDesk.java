@@ -1,3 +1,6 @@
+import Widget.ContainerPanel;
+
+import javax.swing.*;
 import java.util.*;
 
 class ControlDesk extends Publisher implements Runnable {
@@ -41,7 +44,7 @@ class ControlDesk extends Publisher implements Runnable {
         final ScorableParty newParty = new ScorableParty();
 
         for (final String partyNick : partyNicks) {
-            final Bowler gotBowler = Util.getPatronDetails(partyNick);
+            final BowlerInfo gotBowler = Util.getPatronDetails(partyNick);
             final ScorableBowler newBowler = new ScorableBowler(gotBowler);
             newParty.addBowler(newBowler);
         }
@@ -61,7 +64,18 @@ class ControlDesk extends Publisher implements Runnable {
         return new ControlDeskEvent(displayPartyQueue);
     }
 
-    List<Lane> getLanes() {
-        return lanes;
+    ContainerPanel generateLaneStatusPanel() {
+        final ContainerPanel laneStatusPanel = new Widget.ContainerPanel(
+                numLanes, 1, "Lane Status");
+        for (int i = 0; i < numLanes; i++) {
+            laneStatusPanel.put(new Widget.ContainerPanel(renderLane(i), "Lane " + (i + 1)));
+        }
+        return laneStatusPanel;
+    }
+
+    private JPanel renderLane(final int laneIndex) {
+        final LaneStatusView laneStat = new LaneStatusView(lanes.get(laneIndex), laneIndex + 1);
+        lanes.get(laneIndex).subscribe(laneStat);
+        return laneStat.showLane();
     }
 }

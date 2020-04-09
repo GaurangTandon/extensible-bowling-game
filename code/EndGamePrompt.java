@@ -5,11 +5,7 @@ import java.awt.event.ActionListener;
 class EndGamePrompt implements ActionListener {
 
     private final Widget.WindowFrame win;
-    private final Widget.ButtonPanel buttonPanel;
     private int result;
-
-    private static final String BTN_YES = "Yes";
-    private static final String BTN_NO = "No";
 
     EndGamePrompt(final String partyName) {
         result = 0;
@@ -17,9 +13,9 @@ class EndGamePrompt implements ActionListener {
         final Widget.ContainerPanel labelPanel = new Widget.ContainerPanel("")
                 .put(new JLabel("Party " + partyName
                         + " has finished bowling.\nWould they like to bowl another game?"));
-        buttonPanel = new Widget.ButtonPanel(1, 2, "")
-                .put(BTN_YES, this)
-                .put(BTN_NO, this);
+        final Widget.ButtonPanel buttonPanel = new Widget.ButtonPanel(1, 2, "")
+                .put(ButtonNames.BTN_YES, this)
+                .put(ButtonNames.BTN_NO, this);
 
         win = new Widget.WindowFrame(
                 "Another Game for " + partyName + "?",
@@ -30,12 +26,11 @@ class EndGamePrompt implements ActionListener {
     }
 
     public final void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
+        final String source = ((AbstractButton) e.getSource()).getText();
 
-		if (source.equals(buttonPanel.get(BTN_YES))) {
+        if (source.equals(ButtonNames.BTN_YES)) {
             result = 1;
-        }
-        if (source.equals(buttonPanel.get(BTN_NO))) {
+        } else if (source.equals(ButtonNames.BTN_NO)) {
             result = 2;
         }
 
@@ -45,11 +40,8 @@ class EndGamePrompt implements ActionListener {
         while (result == 0) {
             Util.busyWait(10);
         }
-        return result;
-    }
-
-    final void destroy() {
         win.setVisible(false);
+        return result;
     }
 
 }

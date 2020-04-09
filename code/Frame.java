@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 class Frame {
+    static final int FRAME_COUNT = 10;
+    static final int LAST_FRAME = FRAME_COUNT - 1;
+    // two rolls for n - 1 frames, strike in first roll of last frame, then two more chances
+    static final int MAX_ROLLS = FRAME_COUNT * 2 + 1;
+
+
     static final int UNROLLED = -1;
     int[] rolls;
     int frameNumber;
@@ -25,31 +31,34 @@ class Frame {
     static final int STRIKE = 11;
     static final int SPARE = 12;
 
-    private boolean isStrike() {
-        return rollCount == 1 && rolls[rollCount - 1] == Pinsetter.PIN_COUNT;
+    boolean isStrikePartial(final int roll) {
+        return rolls[roll] == Pinsetter.PIN_COUNT;
     }
 
     boolean isSpare() {
-        final int latestRoll = rolls[rollCount - 1];
-        return rollCount == 2 && rolls[rollCount - 2] + latestRoll == Pinsetter.PIN_COUNT && latestRoll > 0;
+        if (rollCount <= 1) return false;
+        final int latestRoll = rolls[1];
+        return rolls[0] + latestRoll == Pinsetter.PIN_COUNT && latestRoll > 0;
+    }
+
+    private boolean isStrike() {
+        return rollCount == 1 && isStrikePartial(rollCount - 1);
     }
 
     // called to get display value for the latest roll
-    int getDisplayValue() {
-        final int latestRoll = rolls[rollCount - 1];
-
+    void setDisplayValue(final int[] storage, final int startIndex) {
         if (isStrike()) {
-            return STRIKE;
-        } else if (isSpare()) {
-            return SPARE;
-        } else return latestRoll;
+            storage[startIndex] = STRIKE;
+            return;
+        }
+
+        storage[startIndex] = rolls[0];
+        storage[startIndex + 1] = isSpare() ? SPARE : rolls[1];
     }
 
-    void roll(final int pinsDown, final int[] perFramePerPartRes) {
+    void roll(final int pinsDown) {
         rolls[rollCount] = pinsDown;
         rollCount++;
-
-        perFramePerPartRes[2 * frameNumber + rollCount - 1] = getDisplayValue();
     }
 
     void addRolls(final Collection<Integer> rollList) {
@@ -76,7 +85,7 @@ class Frame {
         return rolls[rollCount - 1] != Pinsetter.PIN_COUNT;
     }
 
-    int getIncrement(){
+    int getIncrement() {
         return canRollAgain() ? 0 : 1;
     }
 }

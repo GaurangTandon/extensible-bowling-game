@@ -1,79 +1,42 @@
 import Widget.ContainerPanel;
-import Widget.WindowFrame;
+import Widget.WindowView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
-class AddPartyView implements ActionListener, ListSelectionListener {
-
+class AddPartyView extends WindowView implements ListSelectionListener {
     private static final String ERR_MEMBER_EXISTS = "Member already in Party";
-    private final int maxSize;
 
-    private final Widget.ButtonPanel buttonPanel;
-    private final WindowFrame win;
-    private final Widget.ScrollablePanel<String> partyPanel;
-    private Widget.ScrollablePanel<Object> bowlerPanel;
+    private final Widget.ScrollablePanel partyPanel;
+    private final Widget.ScrollablePanel bowlerPanel;
 
     private final ArrayList<String> party;
     private final ControlDeskView controlDesk;
-    private ArrayList<Object> bowlerDB;
     private String selectedNick, selectedMember;
 
-    private static final String BTN_ADD_PATRON = "Add to Party";
-    private static final String BTN_REM_PATRON = "Remove Member";
-    private static final String BTN_NEW_PATRON = "New Patron";
-    private static final String BTN_FINISHED = "Finished";
-
-    private void buildBowlerPanel() {
-        //noinspection ProhibitedExceptionCaught
-        try {
-            bowlerDB = new ArrayList<>(BowlerFile.getBowlers());
-        } catch (final IOException e) {
-            System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
-            bowlerDB = new ArrayList<>();
-        } catch (final ArrayIndexOutOfBoundsException e) {
-            System.err.println("Array Index out of Bounds Error, you may have trailing whitespace in BOWLERS_DAT.");
-            bowlerDB = new ArrayList<>();
-        }
-
-        bowlerPanel = new Widget.ScrollablePanel<>("Bowler Database", bowlerDB, 8, this);
-    }
-
-    AddPartyView(final ControlDeskView controlDesk, final int max) {
-        this.controlDesk = controlDesk;
-        maxSize = max;
-
-        final ArrayList<String> empty = new ArrayList<>();
-        empty.add("(Empty)");
+    AddPartyView(final ControlDeskView controlDeskView) {
+        super("Add Party");
         party = new ArrayList<>(0);
-        partyPanel = new Widget.ScrollablePanel<>("Your Party", empty, 5, this);
+        controlDesk = controlDeskView;
 
-        buildBowlerPanel();
+        partyPanel = drawScrollable("(Empty)", "Your Party", 5)
+                .attachListener(this);
+        bowlerPanel = drawScrollable(BowlerFile.getBowlers(), "Bowler Database", 8)
+                .attachListener(this);
+        String[] buttons = {ButtonNames.BTN_ADD_PATRON, ButtonNames.BTN_REM_PATRON,
+                ButtonNames.BTN_NEW_PATRON, ButtonNames.BTN_FINISHED};
 
-        buttonPanel = new Widget.ButtonPanel(4, 1, "")
-                .put(BTN_ADD_PATRON, this)
-                .put(BTN_REM_PATRON, this)
-                .put(BTN_NEW_PATRON, this)
-                .put(BTN_FINISHED, this);
-
-        // Window
-        win = new WindowFrame(
-                "Add Party",
-                new ContainerPanel(1, 3, "")
+        container = new ContainerPanel(1, 3, "")
                         .put(partyPanel)
                         .put(bowlerPanel)
-                        .put(buttonPanel)
-        );
+                        .put(generateButtonPanel(buttons, ""));
+        win.addContainer(container.getPanel()).center();
     }
 
     private void addPatron() {
-        if (selectedNick != null && party.size() < maxSize) {
+        if (selectedNick != null && party.size() < BowlingAlleyDriver.maxPatronsPerParty) {
             if (party.contains(selectedNick)) {
                 System.err.println(ERR_MEMBER_EXISTS);
             } else {
@@ -94,22 +57,22 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         if (party != null && !party.isEmpty()) {
             controlDesk.updateAddParty(this);
         }
-        win.setVisible(false);
+        setVisible(false);
     }
 
-    public void actionPerformed(final ActionEvent e) {
-        final Object source = e.getSource();
-        if (source.equals(buttonPanel.get(BTN_ADD_PATRON))) {
-            addPatron();
-        }
-        if (source.equals(buttonPanel.get(BTN_REM_PATRON))) {
-            removePatron();
-        }
-        if (source.equals(buttonPanel.get(BTN_NEW_PATRON))) {
-            new NewPatronView(this);
-        }
-        if (source.equals(buttonPanel.get(BTN_FINISHED))) {
-            onPartyFinished();
+    public void buttonHandler(final String source) {
+        switch (source) {
+            case ButtonNames.BTN_ADD_PATRON:
+                addPatron();
+                break;
+            case ButtonNames.BTN_REM_PATRON:
+                removePatron();
+                break;
+            case ButtonNames.BTN_NEW_PATRON:
+                new NewPatronView(this);
+                break;
+            case ButtonNames.BTN_FINISHED:
+                onPartyFinished();
         }
     }
 
@@ -118,8 +81,7 @@ class AddPartyView implements ActionListener, ListSelectionListener {
         if (source.equals(bowlerPanel.getList())) {
             selectedNick =
                     ((String) ((JList) source).getSelectedValue());
-        }
-        if (source.equals(partyPanel.getList())) {
+        } else if (source.equals(partyPanel.getList())) {
             selectedMember =
                     ((String) ((JList) source).getSelectedValue());
         }
@@ -127,18 +89,18 @@ class AddPartyView implements ActionListener, ListSelectionListener {
 
     void updateNewPatron(final NewPatronView newPatron) {
         final String nickName = newPatron.getNickName();
-        final Vector<String> res = BowlerFile.putBowlerIfDidntExist(nickName, newPatron.getFull(), newPatron.getEmail());
+        final ArrayList<String> res = BowlerFile.putBowlerIfDidntExist(
+                nickName, newPatron.getFull(), newPatron.getEmail());
         if (res != null) {
-            bowlerDB = new ArrayList<>(res);
-            bowlerPanel.setListData(bowlerDB);
-            party.add(nickName);
-            partyPanel.setListData(party);
+            bowlerPanel.setListData(new ArrayList<>(res));
+            selectedNick = nickName;
+            addPatron();
         } else {
             System.err.println("A Bowler with that name already exists.");
         }
     }
 
     public Iterable<String> getParty() {
-        return (ArrayList<String>) party.clone();
+        return (Iterable<String>) party.clone();
     }
 }

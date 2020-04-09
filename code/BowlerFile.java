@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 final class BowlerFile {
@@ -16,18 +17,18 @@ final class BowlerFile {
      * @return a Bowler object
      */
 
-    static Bowler getBowlerInfo(final String nickName)
+    static BowlerInfo getBowlerInfo(final String nickName)
             throws IOException {
         final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
         String data;
-        Bowler foundBowler = null;
+        BowlerInfo foundBowler = null;
 
         while ((data = in.readLine()) != null && foundBowler == null) {
             // File format is nick,first_name,e-mail (csv)
             final String[] bowler = data.split(",");
 
             if (nickName.equals(bowler[0])) {
-                foundBowler = new Bowler(bowler[0], bowler[1], bowler[2]);
+                foundBowler = new BowlerInfo(bowler[0], bowler[1], bowler[2]);
                 foundBowler.log();
             }
         }
@@ -39,9 +40,9 @@ final class BowlerFile {
      * Returns null if bowler exists
      * Returns entire list of new bowlers otherwise
      */
-    static Vector<String> putBowlerIfDidntExist(final String nick, final String full, final String email) {
+    static ArrayList<String> putBowlerIfDidntExist(final String nick, final String full, final String email) {
         try {
-            final Bowler checkBowler = getBowlerInfo(nick);
+            final BowlerInfo checkBowler = getBowlerInfo(nick);
             if (checkBowler != null) return null;
 
             putBowlerInfo(nick, full, email);
@@ -74,20 +75,23 @@ final class BowlerFile {
      * @return a Vector of Strings
      */
 
-    static Vector<String> getBowlers()
-            throws IOException, ArrayIndexOutOfBoundsException {
+    static ArrayList<String> getBowlers() {
+        try {
+            final ArrayList<String> allBowlers = new ArrayList<>();
 
-        final Vector<String> allBowlers = new Vector<>();
-
-        final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
-        String data;
-        while ((data = in.readLine()) != null) {
-            // File format is nick.first_name,e-mail
-            final String[] bowler = data.split(",");
-            //"Nick: bowler[0] Full: bowler[1] email: bowler[2]
-            allBowlers.add(bowler[0]);
+            final BufferedReader in = new BufferedReader(new FileReader(BOWLER_DAT));
+            String data;
+            while ((data = in.readLine()) != null) {
+                // File format is nick.first_name,e-mail
+                final String[] bowler = data.split(",");
+                //"Nick: bowler[0] Full: bowler[1] email: bowler[2]
+                allBowlers.add(bowler[0]);
+            }
+            return allBowlers;
+        } catch (final IOException e) {
+            System.err.println("File Error, the path or permissions for the File are incorrect, check pwd.");
+            return new ArrayList<>(0);
         }
-        return allBowlers;
     }
 
 }

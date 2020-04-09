@@ -3,7 +3,7 @@ import java.util.ArrayList;
 class LastFrame extends Frame {
     LastFrame() {
         rolls = new int[3];
-        frameNumber = ScorableParty.LAST_FRAME;
+        frameNumber = Frame.LAST_FRAME;
         rolls[0] = rolls[1] = rolls[2] = UNROLLED;
     }
 
@@ -24,14 +24,13 @@ class LastFrame extends Frame {
         return sumRolls(rolls, rollIndex, rollCount);
     }
 
-    // called to get display value for the latest roll
-    int getDisplayValue() {
-        final int latestRoll = rolls[rollCount - 1];
+    void setDisplayValue(final int[] storage, final int startIndex) {
+        for (int roll = 0; roll < rollCount; roll++) {
+            final int rollAmount = rolls[roll];
+            final int assign = isStrikePartial(roll) ? STRIKE : rollAmount;
+            storage[startIndex + roll] = assign;
+        }
 
-        if (isSpare()) {
-            return SPARE;
-        } else if (latestRoll == Pinsetter.PIN_COUNT) {
-            return STRIKE;
-        } else return latestRoll;
+        if (isSpare()) storage[startIndex + 1] = SPARE;
     }
 }

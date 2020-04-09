@@ -25,11 +25,11 @@
  */
 
 class Alley {
-    Alley(@SuppressWarnings("SameParameterValue") final int numLanes, final int maxPatronsPerParty) {
+    Alley(@SuppressWarnings("SameParameterValue") final int numLanes) {
         final ControlDesk controldesk = new ControlDesk(numLanes);
         new Thread(controldesk).start();
 
-        final Observer cdv = new ControlDeskView(controldesk, maxPatronsPerParty);
+        final Observer cdv = new ControlDeskView(controldesk);
         controldesk.subscribe(cdv);
     }
 }

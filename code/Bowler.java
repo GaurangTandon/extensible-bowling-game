@@ -1,47 +1,88 @@
-/*
- * Bowler.java
- *
- * Version:
- *     $Id$
- *
- * Revisions:
- *     $Log: Bowler.java,v $
- *     Revision 1.3  2003/01/15 02:57:40  ???
- *     Added accessors and and equals() method
- *
- *     Revision 1.2  2003/01/12 22:23:32  ???
- *     *** empty log message ***
- *
- *     Revision 1.1  2003/01/12 19:09:12  ???
- *     Adding Party, Lane, Bowler, and Alley.
- *
- */
+import java.util.ArrayList;
 
-class Bowler {
-
-    private final String fullName;
-    private final String nickName;
-    private final String email;
+class Bowler extends BowlerInfo {
+    private Frame[] frames;
+    private int currFrame;
 
     Bowler(final String nick, final String full, final String mail) {
-        nickName = nick;
-        fullName = full;
-        email = mail;
+        super(nick, full, mail);
+        resetSoft();
     }
 
-    final String getNickName() {
-        return nickName;
+    void resetSoft() {
+        frames = new Frame[Frame.FRAME_COUNT];
+        for (int i = 0; i < Frame.LAST_FRAME; i++)
+            frames[i] = new Frame(i);
+        frames[Frame.LAST_FRAME] = new LastFrame();
+
+        currFrame = 0;
     }
 
-    final String getFullName() {
-        return fullName;
+    ArrayList<Integer> getRolls() {
+        final ArrayList<Integer> rollList = new ArrayList<>(0);
+        for (final Frame frame : frames) {
+            frame.addRolls(rollList);
+        }
+
+        return rollList;
     }
 
-    final String getEmail() {
-        return email;
+    /**
+     * Add this roll to the array
+     * and also update frame and part index accordingly
+     *
+     * @param pinsDown The number of pins hit in the strike
+     */
+    void roll(final int pinsDown) {
+        final Frame frame = frames[currFrame];
+        frame.roll(pinsDown);
+
+        currFrame += frame.getIncrement();
     }
 
-    final void log() {
-        System.out.println("Name " + nickName + " fullname " + fullName + " email " + email);
+    int[] getCumulativeScore() {
+        final int[] cumulativeScore = new int[Frame.FRAME_COUNT];
+
+        for (int frame = 0; frame < Frame.FRAME_COUNT; frame++)
+            cumulativeScore[frame] = -1;
+
+        final ArrayList<Integer> rolls = getRolls();
+        int rollIndex = 0;
+
+        for (int i = 0; i <= currFrame; i++) {
+            final int contrib = frames[i].getContributionToScore(rolls, rollIndex);
+            if (contrib == -1) break;
+
+            cumulativeScore[i] = contrib;
+            if (i > 0) cumulativeScore[i] += cumulativeScore[i - 1];
+
+            rollIndex += frames[i].rollCount;
+        }
+
+        return cumulativeScore;
+    }
+
+    /**
+     * Used in LaneView to display the entire row of cells for a bowler
+     *
+     * @return integer array, result per frame part
+     */
+    int[] getByFramePartResult() {
+        final int[] perFramePartRes = new int[Frame.MAX_ROLLS];
+        for (int i = 0; i < Frame.MAX_ROLLS; i++) perFramePartRes[i] = -1;
+
+        for (int frame = 0; frame <= Frame.LAST_FRAME; frame++) {
+            frames[frame].setDisplayValue(perFramePartRes, 2 * frame);
+        }
+
+        return perFramePartRes;
+    }
+
+    boolean canRollAgain(final int lanesFrameNumber) {
+        return currFrame == lanesFrameNumber && frames[currFrame].canRollAgain();
+    }
+
+    int getCurrFrame() {
+        return currFrame;
     }
 }

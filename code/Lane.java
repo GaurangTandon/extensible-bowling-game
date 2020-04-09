@@ -1,53 +1,48 @@
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Lane extends Publisher implements Runnable, LaneInterface, Observer {
-    private final Pinsetter pinsetter;
+public class Lane extends LaneWithPinsetter implements Runnable {
     private ScorableParty scorer;
     private boolean paused;
+    private boolean halted;
 
     Lane() {
-        pinsetter = new Pinsetter();
         scorer = null;
-        pinsetter.subscribe(this);
         paused = false;
     }
 
     private void exitGame(final String partyName) {
         final EndGameReport egr = new EndGameReport(partyName, scorer.getMemberNicks());
-
-        final int gameNumber = scorer.getGameNumber();
-        int myIndex = 0;
-
-        for (final Bowler bowler : scorer.getMembers()) {
-            final ScoreReport sr = new ScoreReport(bowler, scorer.getFinalScores(myIndex), gameNumber);
-            myIndex++;
-
-            final String nick = bowler.getNickName();
-            if (egr.shouldPrint(nick)) {
-                System.out.println("Printing " + nick);
-                sr.sendPrintout();
-            }
-        }
-
-        publish();
+        egr.printer(scorer);
         scorer = null;
+        publish();
     }
 
-    void saveState(final FileWriter fw) throws IOException {
-        scorer.saveState(fw);
+    void saveState(final String fileName) {
+        try {
+            final FileWriter fw = new FileWriter(fileName);
+            scorer.saveState(fw);
+            fw.close();
+        } catch (final IOException e) {
+            System.err.println("Please check permissions, cannot write file");
+        }
     }
 
-    void loadState(final BufferedReader fr) throws IOException {
+    void loadState(final String fileName) {
         paused = true;
-        scorer = new ScorableParty();
-        scorer.loadState(fr);
+        try {
+            final FileReader fr = new FileReader(fileName);
+            final BufferedReader bufferedReader = new BufferedReader(fr);
+            scorer = new ScorableParty();
+            scorer.loadState(bufferedReader);
+            bufferedReader.close();
+            fr.close();
+        } catch (final IOException e) {
+            System.err.println("No saved file exists");
+        }
         paused = false;
-    }
-
-    void setPauseState(final boolean state) {
-        paused = state;
     }
 
     private void onGameFinish() {
@@ -55,7 +50,6 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
 
         final EndGamePrompt egp = new EndGamePrompt(partyName);
         final int result = egp.getResult();
-        egp.destroy();
 
         if (result == 1) {
             scorer.onGameFinish();
@@ -64,34 +58,21 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
         }
     }
 
-    private void bowlOneBowlerOneFrame() {
-        while (scorer.canRollAgain()) {
-            pinsetter.ballThrown();
-        }
-
-        scorer.setFinalScoresOnGameEnd();
-        pinsetter.resetState();
-    }
-
     public final void run() {
         //noinspection InfiniteLoopStatement
         while (true) {
             if (isPartyAssigned() && !paused) {
                 if (scorer.isFinished()) onGameFinish();
                 else {
-                    waitWhilePaused();
+                    while (halted) Util.busyWait(10);
 
-                    bowlOneBowlerOneFrame();
+                    while (scorer.canRollAgain()) rollBall();
+                    resetPinsetter();
+
+                    scorer.setFinalScoresOnGameEnd();
                     scorer.nextBowler();
                 }
             }
-
-            Util.busyWait(10);
-        }
-    }
-
-    private void waitWhilePaused() {
-        while (scorer.isHalted()) {
             Util.busyWait(10);
         }
     }
@@ -112,30 +93,23 @@ public class Lane extends Publisher implements Runnable, LaneInterface, Observer
     }
 
     Event createEvent() {
-        return new LaneEvent(scorer.getMemberNicks(), scorer.getPartySize(), scorer.getCurrentThrowerNick(),
-                scorer.getCumulativeScores(), scorer.getByBowlerByFramePartResult(), scorer.isHalted(),
-                getPinsDown());
-    }
-
-    private int getPinsDown() {
-        return pinsetter == null ? 0 : pinsetter.totalPinsDown();
+        return new LaneEvent(scorer, getPinsDown(), halted);
     }
 
     final boolean isPartyAssigned() {
         return scorer != null;
     }
 
-    final void subscribePinsetter(final PinSetterView psv) {
-        pinsetter.subscribe(psv);
-    }
-
-    public final void pauseGame() {
-        scorer.pause();
+    final void pauseGame(final boolean state) {
+        halted = state;
         publish();
     }
 
-    final void unPauseGame() {
-        scorer.unpause();
-        publish();
+    void pauseManual(final boolean state) {
+        paused = state;
+    }
+
+    boolean isPaused() {
+        return paused;
     }
 }

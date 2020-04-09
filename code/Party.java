@@ -2,24 +2,23 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Container that holds bowlers
  */
 class Party {
-    final Vector<ScorableBowler> bowlers;
-    String name;
+    final ArrayList<ScorableBowler> bowlers;
 
     Party() {
-        bowlers = new Vector(0);
-        name = "";
+        bowlers = new ArrayList<>(0);
     }
 
     void saveState(final FileWriter fw) throws IOException {
         fw.write(bowlers.size() + "\n");
-        for (final Bowler bowler : bowlers) {
-            fw.write(bowler.getNickName() + "/" + bowler.getFullName() + "/" + bowler.getEmail() + "\n");
+        for (final BowlerInfo bowler : bowlers) {
+            fw.write(bowler.getNickName() + Util.DELIMITER + bowler.getFullName() + Util.DELIMITER + bowler.getEmail() + "\n");
         }
     }
 
@@ -28,13 +27,13 @@ class Party {
         bowlers.clear();
 
         for (int i = 0; i < size; i++) {
-            final String[] bowler = fr.readLine().split("/");
+            final String[] bowler = fr.readLine().split(Util.DELIMITER);
             bowlers.add(new ScorableBowler(bowler[0], bowler[1], bowler[2]));
         }
     }
 
-    final Vector<ScorableBowler> getMembers() {
-        return bowlers;
+    final List<ScorableBowler> getMembers() {
+        return Collections.unmodifiableList(bowlers);
     }
 
     final int getPartySize() {
@@ -44,13 +43,17 @@ class Party {
     final ArrayList<String> getMemberNicks() {
         final ArrayList<String> nicks = new ArrayList<>(getPartySize());
 
-        for (final Bowler bowler : bowlers) {
+        for (final BowlerInfo bowler : bowlers) {
             nicks.add(bowler.getNickName());
         }
         return nicks;
     }
 
+    void addBowler(final ScorableBowler bowler) {
+        bowlers.add(bowler);
+    }
+
     final String getName() {
-        return name;
+        return bowlers.get(0).getNickName() + "'s Party";
     }
 }

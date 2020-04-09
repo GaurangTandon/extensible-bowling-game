@@ -5,13 +5,15 @@ import javax.swing.event.ListSelectionListener;
 import java.util.ArrayList;
 
 
-public class ScrollablePanel<T> extends GenericPanel {
+public class ScrollablePanel extends GenericPanel {
 
-    private final JList<T> dataList;
+    private final JList<String> dataList;
 
-    public ScrollablePanel(final String title, final ArrayList<? extends T> data, final int visibleCount) {
+    public ScrollablePanel(final String title, final ArrayList<String> data, final int visibleCount) {
         super(title);
-        dataList = new JList<T>((T[])data.toArray());
+        String[] inData = new String[data.size()];
+        inData = data.toArray(inData);
+        dataList = new JList<>(inData);
         dataList.setFixedCellWidth(120);
         dataList.setVisibleRowCount(visibleCount);
         final JScrollPane dataPane = new JScrollPane(dataList);
@@ -20,14 +22,21 @@ public class ScrollablePanel<T> extends GenericPanel {
         panel.add(dataPane);
     }
 
-    public ScrollablePanel(final String title, final ArrayList<T> data, final int visibleCount,
+    public ScrollablePanel(final String title, final ArrayList<String> data, final int visibleCount,
                            final ListSelectionListener listener) {
         this(title, data, visibleCount);
         dataList.addListSelectionListener(listener);
     }
 
-    public void setListData(final ArrayList<? extends T> data) {
-        dataList.setListData((T[]) data.toArray());
+    public ScrollablePanel attachListener(final ListSelectionListener listener) {
+        dataList.addListSelectionListener(listener);
+        return this;
+    }
+
+    public void setListData(final ArrayList<String> data) {
+        String[] inData = new String[data.size()];
+        inData = data.toArray(inData);
+        dataList.setListData(inData);
     }
 
     public JList getList() {

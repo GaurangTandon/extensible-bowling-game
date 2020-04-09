@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 class LaneEvent implements Event {
 
@@ -10,17 +11,22 @@ class LaneEvent implements Event {
     private final String bowlerNick;
     private final int totalPinsDown;
 
-    LaneEvent(final ArrayList<String> theBowlerNicks, final int thePartySize, final String theNick,
-              final int[][] theCumulativeScore, final int[][] byFramePartScores, final boolean mechanicalProblem,
-              final int pinsDown) {
-        bowlerNicks = theBowlerNicks;
-        partySize = thePartySize;
+    LaneEvent(final ScorableParty scorer, final int pinsDown, final boolean isHalted) {
+        if (scorer == null) {
+            bowlerNicks = new ArrayList<>(0);
+            partySize = 0;
+            bowlerNick = "";
+            cumulativeScore = new int[1][1];
+            score = new int[1][1];
+        } else {
+            bowlerNicks = scorer.getMemberNicks();
+            partySize = scorer.getPartySize();
+            bowlerNick = scorer.getCurrentThrowerNick();
+            cumulativeScore = scorer.getCumulativeScores();
+            score = scorer.getByBowlerByFramePartResult();
+        }
+        mechanicalProblemExists = isHalted;
         totalPinsDown = pinsDown;
-
-        bowlerNick = theNick;
-        cumulativeScore = theCumulativeScore;
-        score = byFramePartScores;
-        mechanicalProblemExists = mechanicalProblem;
     }
 
     final String getBowlerNick() {
@@ -28,7 +34,7 @@ class LaneEvent implements Event {
     }
 
     final Iterable<String> getBowlerNicks() {
-        return bowlerNicks;
+        return Collections.unmodifiableList(bowlerNicks);
     }
 
     final boolean isMechanicalProblem() {
