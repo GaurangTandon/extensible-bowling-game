@@ -17,6 +17,36 @@ Quite a lot of code was duplicated line by line through many classes in the code
 	\item Getting Date Strings, Waiting for an event, and many more.
 \end{itemize}
 
+Here's a real example form AddPartyView.java:
+
+\begin{verbatim}
+addPatron = new JButton("Add to Party");
+JPanel addPatronPanel = new JPanel();
+addPatronPanel.setLayout(new FlowLayout());
+addPatron.addActionListener(this);
+addPatronPanel.add(addPatron);
+
+remPatron = new JButton("Remove Member");
+JPanel remPatronPanel = new JPanel();
+remPatronPanel.setLayout(new FlowLayout());
+remPatron.addActionListener(this);
+remPatronPanel.add(remPatron);
+
+newPatron = new JButton("New Patron");
+JPanel newPatronPanel = new JPanel();
+newPatronPanel.setLayout(new FlowLayout());
+newPatron.addActionListener(this);
+newPatronPanel.add(newPatron);
+
+finished = new JButton("Finished");
+JPanel finishedPanel = new JPanel();
+finishedPanel.setLayout(new FlowLayout());
+finished.addActionListener(this);
+finishedPanel.add(finished);
+\end{verbatim}
+
+As you can see it is clearly duplicated a lot of times.
+
 Apart from the glaring errors in code redundancy spanning all classes that were fixed by complete restructuing, some code exists which is used by multiple functions but not native to a class in the inteheritance tree. A few examples are writing to a file, or getting the date string. We have made a \textbf{Util class} for all of this, abstracted out the common logic there.
 
 \subsection{Misplaced Observer pattern logic}
@@ -128,15 +158,14 @@ finalScores = new int[party.getMembers().size()][128]; //Hardcoding a max of 128
 
 As we know well, magic constants are discouraged throughout industry as they hamper \textbf{reusability} as well as make the codebase \textbf{hard to understand}. We do not know if repeated magic constants refer to the same thing or meant something else. They make things messy, so to speak.
 
+\subsubsection{Semantically incorrect subclassing}
+
+As you can read on \hyperlink{https://stackoverflow.com/questions/541487/implements-runnable-vs-extends-thread-in-java}{Stackoverflow}, since the Lane class is not really specializing any of Thread's behavior by extending it, the original code had two instances of semantically incorrect \code{extends Thread} - ControlDesk and Lane.
+
+\subsubsection{Dependent variables}
+
+There were a handful of instances where two class properties were \textbf{tightly coupled} to each other, such that if you changed any one and forgot to change the other, the entire logic would break. An example would be \code{isPartyAssigned} property in Lane.java, which was always true when \code{party != null} and false otherwise. We had fixed this by replacing the single usage of isPartyAssigned with the above conditonal.
+
 \subsubsection{Auto-Fixes using the IntelliJ linter}
 
 There are massive fixed using the intelliJ linter primarilty on bad access specifiers, lack of defensive copy, etc. All of that has been fixed. A full report of these fixed is attached in the Code Quality violations segment.
-
-TODO: once minor issues are done, move some of them to a table as required in assignment
-% https://www.overleaf.com/learn/latex/tables
-\begin{tabular}{ |c|c|c| }
-	\hline
-	Bad identifier names &       \\
-	c                    & c & c \\
-	\hline
-\end{tabular}
