@@ -26,8 +26,8 @@ This document outlines the major groups of classes in our code.
           \end{itemize}
     \item \textbf{Controller helpers} classes provide necessary abstracted help to the main controller classes, as the following, and both are described later in detail.
           \begin{itemize}
-            \item ScorableParty
-            \item ScorableBowler
+              \item ScorableParty
+              \item ScorableBowler
           \end{itemize}
     \item The Events broadcasted as a part of the observer pattern are done through are done through the `XEvent.java' classes. It wraps all data needed by the observers from the publisher.
           \begin{itemize}
@@ -81,6 +81,28 @@ This document outlines the major groups of classes in our code.
     \item \code{Widget} package: maintains several (abstract) classes that \textbf{significantly simplify} the setting up of Views in our project.
     \item \code{Pinsetter}: maintains the state of a pinsetter per lane, and ensures a valid number of pins fall down every time a bowler rolls.
 \end{enumerate}
+
+
+\subsection{Control Flow}
+
+The Control Start from \textbf{Alley} which containes the main function and starts running the program. This runs \textbf{ControlDesk} (assigning a thread to it) and \textbf{ControlDeskView}, while also subscribing ControlDeskView to ControlDesk. This communication will occur via \textbf{ControlDeskEvent}.
+
+\subsubsection{The Control Desk}
+
+The ControlDeskView has several buttons, which shall now describe the flow of Control. \textbf{AddPartyView} is the most important of them. It creates a \textbf{Party} of \textbf{Bowlers}, which the ControlDesk assigns to \textbf{Lane} on a Separate Thread. Lane adds more information about scoring to them by converting Party into \textbf{ScorableParty} which is a collection of \textbf{ScorableBowler} (from Bowlers). In addition, there is a \textbf{NewPatronView} that allows the creation of new players via a text form. Each lane that gets a ScorableParty assigned to it now has a separate thread that it runs on. \textbf{AdhocView} for Queries is also available from here.
+
+\subsubsection{The Lane}
+
+Lane inherits from \textbf{LaneWithPinsetter}, which is an empty lane without any players or score, but it can still support the existance of bowling pins and a single throw using the \textbf{Pinsetter} class. The Pinsetter is responsible for generating these throws for any player, and keeping this process going. It reports back with the number of pins down on each throw in a \textbf{PinsetterEvent}. The Reporting to both Lane and \textbf{PinsetterView} (which is a UI element to see the state of the pins available from lane view).
+
+\subsubsection{The Scoring}
+
+Now coming inside Lane, Lane also has a ScorerableParty, and it's job is to relay events from the Pinsetter to the Party, and handle other jobs coming from the ControlDesk, and UI elements like Load/Save, etc. The central function in \textbf{ScorableBowler} (ScorableParty is a collection of ScorableBowler) is `roll()', and it keeps an array called `rolls' to maintain state, as well as other useful score caches (eg. total score of frame). All of this is relayed to \textbf{BowlerScorerView}, which is a part of \textbf{LaneView} (LaneView has a BowlerScorerView for each bowler). All events from Pinsetter are also relayed to \textbf{LaneStatusView} (instantiated by ControlDesk with Lane), which keeps tabs on the pins down in the current frame and can open the LaneView and PinsetterView. The Scoring logic in BowlerScorer also takes help of 2 more classes, \textbf{Frame}, and it's child \textbf{LastFrame}.
+
+\subsubsection{Others}
+
+Everything else is auxillary. \textbf{EndGamePrompt} and \textbf{EndGameReport} are both view classes that ask the user to continue and show him the results. There are two FileHelper classes, a Utility Class.
+Finally there are some classes for the Observer patter to aid communication and the Widgets library to make working with UI smooth.
 
 \subsection{Describing Specific Classes}
 
