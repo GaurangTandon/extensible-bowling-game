@@ -110,7 +110,6 @@ fabric.properties
 *.aux
 *.log
 *.fls
-main.pdf
 *.synctex.gz
 *.fdb_latexmk
 __*
