@@ -1,7 +1,7 @@
 # Bowling Game
 
 Software Refactoring project based on a Bowling Lane manager and simulator written in Java.
-(The original source of this project is unknown, was given as Software Systems assignment in IIIT Hyderabad).
+(The original source of this project is unknown, was given as Software Systems assignment in IIIT Hyderabad). This project was worked on by [Animesh Sinha](https://github.com/AnimeshSinha1309/), [Avani Gupta](https://github.com/avani17101), and me.
 
 ## Description
 
